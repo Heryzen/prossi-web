@@ -27,12 +27,24 @@ export function Blog() {
 
   return (
     <section className="bg-[#f4ece4] w-full py-[100px] px-6 md:px-[100px] flex flex-col items-center">
-      <div className="max-w-[1240px] w-full flex flex-col items-center gap-[60px]">
+      <div className="max-w-[1240px] w-full flex flex-col items-center gap-[42px]">
         <div className="flex flex-col items-center gap-6 w-full text-center max-w-[1030px]">
-          <div className="flex items-center gap-4">
-            <img src={imgLine4} alt="" className="w-[63px]" />
-            <span className="font-sans font-semibold text-sm text-[#120f0b] tracking-widest uppercase">BLOG & ARTICLES</span>
-            <img src={imgLine2} alt="" className="w-[63px] rotate-180" />
+          <div className="flex gap-[16px] items-center justify-center overflow-clip relative shrink-0">
+            <div className="h-0 relative shrink-0 w-[63px]">
+              <div className="absolute inset-[-5.77px_-9.16%_-5.77px_0]">
+                <img alt="" className="block max-w-none size-full" src={imgLine4} />
+              </div>
+            </div>
+            <span className="font-['Inter'] font-semibold leading-normal not-italic relative shrink-0 text-[14px] text-[#120f0b] whitespace-nowrap">BLOG & ARTICLES</span>
+            <div className="flex items-center justify-center relative shrink-0">
+              <div className="-scale-y-100 flex-none rotate-180">
+                <div className="h-0 relative w-[63px]">
+                  <div className="absolute inset-[-5.77px_-9.16%_-5.77px_0]">
+                    <img alt="" className="block max-w-none size-full" src={imgLine2} />
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
           <h2 className="font-serif font-semibold text-[32px] md:text-[40px] text-[#120f0b] capitalize">
             The Prossi Journal
