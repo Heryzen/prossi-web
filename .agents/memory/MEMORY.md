@@ -1,1 +1,1 @@
-- [Figma slicing into react-vite](figma-slicing-react-vite.md) — concrete-design slicing overrides the vague presentation brief; download assets via HTTP, name files by asset constant, map them, expect a 2nd DESIGN pass for logos/icons/sliders.
+- [Screenshot bottom-fade artifact](screenshot-bottom-fade.md) — app_preview screenshots fade the bottom edge; don't mistake it for a CSS overlay bug.

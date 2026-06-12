@@ -9,7 +9,7 @@ export function Team() {
   const team = [
     { title: "Spesialis Gizi Klinis", img: imgTeamMemberImage },
     { title: "spesialis Kulit & Estetika", img: imgTeamMemberImage1 },
-    { title: "Dokter Estetika", img: imgTeamMemberImage2 }
+    { title: "Dokter Umum", img: imgTeamMemberImage2 }
   ];
 
   return (
@@ -21,7 +21,7 @@ export function Team() {
             <span className="font-sans font-semibold text-sm text-white tracking-widest uppercase">OUR DOCTORS</span>
             <img src={imgLine2} alt="" className="w-[63px] rotate-180" />
           </div>
-          <h2 className="font-serif font-semibold text-[32px] md:text-[40px] text-white capitalize">
+          <h2 className="font-['Lato'] font-semibold text-[32px] md:text-[40px] text-white capitalize">
             Ditangani oleh Dokter Spesialis yang Berpengalaman
           </h2>
           <p className="font-sans text-lg text-white max-w-[816px]">
@@ -38,13 +38,12 @@ export function Team() {
               <h3 className="font-serif font-semibold text-[26px] text-white text-center capitalize">
                 {member.title}
               </h3>
+              <button className="bg-[#b59637] border border-[#ecd5a5] rounded-full px-9 py-[18px] text-white font-serif font-semibold text-lg hover:opacity-90 transition-opacity">
+                View Doctors
+              </button>
             </div>
           ))}
         </div>
-
-        <button className="bg-transparent border border-[#ecd5a5] rounded-full px-9 py-[18px] text-white font-serif font-semibold text-lg hover:bg-white hover:text-[#b59637] transition-colors">
-          Read More
-        </button>
       </div>
     </section>
   );

@@ -1,6 +1,7 @@
 import React from "react";
 import imgBackground1 from "@/assets/figma/imgBackground1.png";
-import imgFrame1618873279 from "@/assets/figma/imgFrame1618873279.jpg";
+import imgSystemUiconsArrowLeft from "@/assets/figma/imgSystemUiconsArrowLeft.svg";
+import imgSystemUiconsArrowLeft1 from "@/assets/figma/imgSystemUiconsArrowLeft1.svg";
 
 export function Hero() {
   return (
@@ -9,22 +10,29 @@ export function Hero() {
         <img src={imgBackground1} alt="" className="absolute h-full w-full object-cover" />
         <div className="absolute inset-0 bg-gradient-to-b from-[#f4ece4] from-[14%] via-[#f4ece4]/85 via-[48%] to-transparent to-[62%]"></div>
       </div>
-      
+
       <div className="relative z-10 max-w-[816px] flex flex-col items-center gap-[42px] px-6 text-center mt-[-168px]">
         <div className="flex flex-col gap-4 items-center w-full">
-          <h1 className="font-serif text-[40px] md:text-[64px] leading-tight text-[#120f0b]">
+          <h1 className="font-serif text-[40px] md:text-[64px] leading-tight text-[#503d1c]">
             Kulit Lebih Sehat. Tubuh Lebih Ideal. Dengan Pendekatan medis yang <span className="font-['Arizonia'] text-[#b59637]">Tepat</span>
           </h1>
-          <p className="font-sans text-lg text-[#120f0b]">
+          <p className="font-sans text-lg text-[#503d1c]">
             Perawatan langsung oleh dokter spesialis dengan diagnosis yang akurat dan hasil yang terarah.
           </p>
         </div>
-        
-        <div className="flex items-center gap-4">
-          <button className="bg-gradient-to-r from-[#e5be80] via-[#edd8ab] to-[#e5be80] border border-[#ecd5a5] rounded-full px-9 py-[18px] text-[#503d1c] font-serif font-semibold text-lg hover:opacity-90 transition-opacity">
-            Konsultasi Sekarang
-          </button>
-        </div>
+
+        <button className="bg-[#b59637] border border-[#ecd5a5] rounded-full px-9 py-[18px] text-white font-serif font-semibold text-lg hover:opacity-90 transition-opacity">
+          Explore Treatments
+        </button>
+      </div>
+
+      <div className="absolute bottom-[64px] left-1/2 -translate-x-1/2 flex items-center gap-6">
+        <button className="w-[52px] h-[52px] rounded-full bg-white/50 flex items-center justify-center hover:bg-white transition-colors cursor-pointer">
+          <img src={imgSystemUiconsArrowLeft} alt="Previous" className="w-[26px] h-[26px]" />
+        </button>
+        <button className="w-[52px] h-[52px] rounded-full bg-[#66533b] flex items-center justify-center hover:bg-[#503d1c] transition-colors cursor-pointer">
+          <img src={imgSystemUiconsArrowLeft1} alt="Next" className="w-[26px] h-[26px] rotate-180" />
+        </button>
       </div>
     </section>
   );

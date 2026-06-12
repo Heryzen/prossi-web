@@ -7,19 +7,22 @@ import imgLine5 from "@/assets/figma/imgLine5.svg";
 export function Services() {
   const services = [
     {
-      title: "Slimming Program by Sp.GK",
+      titleTop: "Slimming Program by",
+      titleBottom: "Sp.GK",
       desc: "Support recovery, energy, and long-term cellular resilience.",
       img: imgProgramImage2,
       borderColor: "border-[#c26345]"
     },
     {
-      title: "Skin Treatment by Sp.DVE",
+      titleTop: "Skin Treatment by",
+      titleBottom: "Sp.DVE",
       desc: "Support recovery, energy, and long-term cellular resilience.",
       img: imgProgramImage,
       borderColor: "border-[#396b72]"
     },
     {
-      title: "Skin Treatment by Dokter Estetika",
+      titleTop: "Skin Treatment by",
+      titleBottom: "Dokter Estetika",
       desc: "Support recovery, energy, and long-term cellular resilience.",
       img: imgProgramImage1,
       borderColor: "border-[#deba69]"
@@ -40,15 +43,11 @@ export function Services() {
           {services.map((svc, i) => (
             <div key={i} className={`bg-gradient-to-b from-white to-[#fff9eb] border-4 ${svc.borderColor} rounded-[24px] p-3 pb-6 flex flex-col items-center gap-8`}>
               <div className="w-full h-[295px] rounded-[24px] overflow-hidden relative shrink-0">
-                <img src={svc.img} alt={svc.title} className="absolute inset-0 w-full h-full object-cover" />
+                <img src={svc.img} alt={svc.titleTop} className="absolute inset-0 w-full h-full object-cover" />
               </div>
               <div className="flex flex-col items-center gap-4 px-4 w-full">
-                <h3 className="font-serif font-semibold text-[22px] md:text-[26px] text-[#120f0b] text-center capitalize leading-tight">
-                  {svc.title.split(" by ").map((t, idx) => (
-                    <React.Fragment key={idx}>
-                      {t}{idx === 0 && " by "}<br/>
-                    </React.Fragment>
-                  ))}
+                <h3 className="font-['Lato'] font-semibold text-[22px] md:text-[26px] text-[#120f0b] text-center capitalize leading-tight">
+                  {svc.titleTop}<br/>{svc.titleBottom}
                 </h3>
                 <div className="w-[290px] h-0 relative">
                   <img src={imgLine5} alt="" className="absolute w-full" />

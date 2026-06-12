@@ -26,7 +26,7 @@ export function Blog() {
   ];
 
   return (
-    <section className="bg-white w-full py-[100px] px-6 md:px-[100px] flex flex-col items-center">
+    <section className="bg-[#f4ece4] w-full py-[100px] px-6 md:px-[100px] flex flex-col items-center">
       <div className="max-w-[1240px] w-full flex flex-col items-center gap-[60px]">
         <div className="flex flex-col items-center gap-6 w-full text-center max-w-[1030px]">
           <div className="flex items-center gap-4">

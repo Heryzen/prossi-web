@@ -18,7 +18,7 @@ export function CTA() {
     if (emblaApi) emblaApi.scrollNext();
   }, [emblaApi]);
 
-  const slides = [1, 2, 3];
+  const slides = [1, 2];
 
   return (
     <section className="bg-[#f4ece4] w-full py-[100px] px-6 flex justify-center overflow-hidden">
@@ -39,10 +39,10 @@ export function CTA() {
                 <div className="relative z-10 w-full md:w-[547px] h-full flex flex-col justify-center px-8 md:px-[60px] py-8">
                   <div className="flex items-center gap-4 mb-6">
                     <img src={imgLine4} alt="" className="w-[63px]" />
-                    <span className="font-sans font-semibold text-sm text-[#120f0b] tracking-widest uppercase">PROMO</span>
+                    <span className="font-sans font-semibold text-sm text-[#120f0b] tracking-widest">Promo</span>
                     <img src={imgLine2} alt="" className="w-[63px] rotate-180" />
                   </div>
-                  <h2 className="font-serif font-semibold text-[32px] md:text-[40px] text-[#120f0b] capitalize leading-tight mb-6">
+                  <h2 className="font-['Lato'] font-semibold text-[32px] md:text-[40px] text-[#120f0b] capitalize leading-tight mb-6">
                     Designed for People Who Expect Clarity
                   </h2>
                   <p className="font-sans text-lg text-[#120f0b] mb-8">

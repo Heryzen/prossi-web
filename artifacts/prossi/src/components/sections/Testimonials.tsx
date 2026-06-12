@@ -63,7 +63,7 @@ export function Testimonials() {
             <span className="font-sans font-semibold text-sm text-[#120f0b] tracking-widest uppercase">TESTIMONIALS</span>
             <img src={imgLine2} alt="" className="w-[63px] rotate-180" />
           </div>
-          <h2 className="font-serif font-semibold text-[32px] md:text-[40px] text-[#120f0b] capitalize">
+          <h2 className="font-['Lato'] font-semibold text-[32px] md:text-[40px] text-[#120f0b] capitalize">
             Voices of Transformation
           </h2>
           <p className="font-sans text-lg text-[#120f0b]">

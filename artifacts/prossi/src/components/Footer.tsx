@@ -3,6 +3,7 @@ import imgUntitledDesign181 from "@/assets/figma/imgUntitledDesign181.png";
 import imgRiInstagramLine from "@/assets/figma/imgRiInstagramLine.svg";
 import imgGgFacebook from "@/assets/figma/imgGgFacebook.svg";
 import imgGroup from "@/assets/figma/imgGroup.svg";
+import imgGroup2 from "@/assets/figma/imgGroup2.svg";
 import imgFluentCall24Filled from "@/assets/figma/imgFluentCall24Filled.svg";
 import imgEmailIcon from "@/assets/figma/imgEmailIcon.svg";
 
@@ -18,15 +19,16 @@ export function Footer() {
             </p>
             <div className="flex gap-3">
               {/* Social icons */}
-              <div className="bg-[#f4ece4] rounded-full w-8 h-8 flex items-center justify-center cursor-pointer hover:bg-white transition-colors">
-                <img src={imgRiInstagramLine} alt="Instagram" className="w-4 h-4 text-[#216d73]" style={{filter: 'brightness(0) saturate(100%) invert(35%) sepia(21%) saturate(1450%) hue-rotate(143deg) brightness(88%) contrast(92%)'}} />
-              </div>
-              <div className="bg-[#f4ece4] rounded-full w-8 h-8 flex items-center justify-center cursor-pointer hover:bg-white transition-colors">
-                <img src={imgGgFacebook} alt="Facebook" className="w-4 h-4 text-[#216d73]" style={{filter: 'brightness(0) saturate(100%) invert(35%) sepia(21%) saturate(1450%) hue-rotate(143deg) brightness(88%) contrast(92%)'}} />
-              </div>
-              <div className="bg-[#f4ece4] rounded-full w-8 h-8 flex items-center justify-center cursor-pointer hover:bg-white transition-colors">
-                <img src={imgGroup} alt="Social" className="w-4 h-4 text-[#216d73]" style={{filter: 'brightness(0) saturate(100%) invert(35%) sepia(21%) saturate(1450%) hue-rotate(143deg) brightness(88%) contrast(92%)'}} />
-              </div>
+              {[
+                { src: imgGroup, alt: "Telegram" },
+                { src: imgRiInstagramLine, alt: "Instagram" },
+                { src: imgGgFacebook, alt: "Facebook" },
+                { src: imgGroup2, alt: "Twitter" },
+              ].map((icon) => (
+                <div key={icon.alt} className="bg-[#f4ece4] rounded-full w-8 h-8 flex items-center justify-center cursor-pointer hover:bg-white transition-colors">
+                  <img src={icon.src} alt={icon.alt} className="w-4 h-4" style={{filter: 'brightness(0) saturate(100%) invert(35%) sepia(21%) saturate(1450%) hue-rotate(143deg) brightness(88%) contrast(92%)'}} />
+                </div>
+              ))}
             </div>
           </div>
           
