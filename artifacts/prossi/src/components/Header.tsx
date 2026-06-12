@@ -4,12 +4,12 @@ import imgUntitledDesign181 from "@/assets/figma/imgUntitledDesign181.png";
 import imgIconamoonArrowUp2Fill from "@/assets/figma/imgIconamoonArrowUp2Fill.svg";
 
 const navItems = [
-  { label: "Home", dropdown: false },
-  { label: "Treatments", dropdown: true },
-  { label: "Doctors", dropdown: true },
-  { label: "About", dropdown: true },
-  { label: "Shop", dropdown: false },
-  { label: "Locations", dropdown: false },
+  { label: "Home", href: "/", dropdown: false },
+  { label: "Treatments", href: null, dropdown: true },
+  { label: "Doctors", href: "/doctors", dropdown: true },
+  { label: "About", href: null, dropdown: true },
+  { label: "Shop", href: null, dropdown: false },
+  { label: "Locations", href: null, dropdown: false },
 ];
 
 export function Header() {
@@ -27,17 +27,30 @@ export function Header() {
         </Link>
 
         <nav className="hidden lg:flex items-center gap-8">
-          {navItems.map((item) => (
-            <button
-              key={item.label}
-              className="flex items-center gap-0.5 text-[16px] font-medium text-[#120f0b] hover:text-[#b59637] transition-colors"
-            >
-              {item.label}
-              {item.dropdown && (
-                <img src={imgIconamoonArrowUp2Fill} alt="" className="w-5 h-5 rotate-180" />
-              )}
-            </button>
-          ))}
+          {navItems.map((item) =>
+            item.href ? (
+              <Link
+                key={item.label}
+                href={item.href}
+                className="flex items-center gap-0.5 text-[16px] font-medium text-[#120f0b] hover:text-[#b59637] transition-colors"
+              >
+                {item.label}
+                {item.dropdown && (
+                  <img src={imgIconamoonArrowUp2Fill} alt="" className="w-5 h-5 rotate-180" />
+                )}
+              </Link>
+            ) : (
+              <button
+                key={item.label}
+                className="flex items-center gap-0.5 text-[16px] font-medium text-[#120f0b] hover:text-[#b59637] transition-colors"
+              >
+                {item.label}
+                {item.dropdown && (
+                  <img src={imgIconamoonArrowUp2Fill} alt="" className="w-5 h-5 rotate-180" />
+                )}
+              </button>
+            )
+          )}
         </nav>
 
         <button className="hidden lg:flex bg-[#b59637] border border-[#ecd5a5] rounded-full px-9 py-[18px] text-white font-serif font-semibold text-lg hover:opacity-90 transition-opacity items-center justify-center">
@@ -58,14 +71,25 @@ export function Header() {
       {/* Mobile menu overlay */}
       {isOpen && (
         <div className="lg:hidden mt-4 flex flex-col gap-4 pb-2">
-          {navItems.map((item) => (
-            <span
-              key={item.label}
-              className="cursor-pointer hover:text-[#b59637] transition-colors font-medium text-[#120f0b]"
-            >
-              {item.label}
-            </span>
-          ))}
+          {navItems.map((item) =>
+            item.href ? (
+              <Link
+                key={item.label}
+                href={item.href}
+                className="cursor-pointer hover:text-[#b59637] transition-colors font-medium text-[#120f0b]"
+                onClick={() => setIsOpen(false)}
+              >
+                {item.label}
+              </Link>
+            ) : (
+              <span
+                key={item.label}
+                className="cursor-pointer hover:text-[#b59637] transition-colors font-medium text-[#120f0b]"
+              >
+                {item.label}
+              </span>
+            )
+          )}
           <button className="bg-[#b59637] border border-[#ecd5a5] rounded-full px-9 py-3 text-white font-serif font-semibold text-base mt-1">
             Book Consultation
           </button>
