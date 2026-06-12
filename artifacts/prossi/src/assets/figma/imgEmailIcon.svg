@@ -1,0 +1,14 @@
+<svg preserveAspectRatio="none" width="100%" height="100%" overflow="visible" style="display: block;" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Email Icon">
+<path id="Vector" d="M18.3327 7.1735V13.9585C18.3327 14.6503 18.0681 15.3159 17.593 15.8187C17.1179 16.3215 16.4684 16.6235 15.7777 16.6627L15.6243 16.6668H4.37435C3.68257 16.6669 3.01699 16.4022 2.51416 15.9271C2.01132 15.452 1.70935 14.8025 1.67018 14.1118L1.66602 13.9585V7.1735L9.70935 11.3868C9.79883 11.4337 9.89834 11.4582 9.99935 11.4582C10.1004 11.4582 10.1999 11.4337 10.2893 11.3868L18.3327 7.1735ZM4.37435 3.3335H15.6243C16.2957 3.33342 16.9431 3.58266 17.441 4.03289C17.939 4.48311 18.252 5.10223 18.3193 5.77016L9.99935 10.1285L1.67935 5.77016C1.74395 5.12876 2.03522 4.53143 2.50081 4.08555C2.96639 3.63967 3.57575 3.37449 4.21935 3.33766L4.37435 3.3335Z" fill="url(#paint0_linear_0_112)"/>
+</g>
+<defs>
+<linearGradient id="paint0_linear_0_112" x1="18.3327" y1="10.0002" x2="1.66602" y2="10.0002" gradientUnits="userSpaceOnUse">
+<stop stop-color="#DEBA69"/>
+<stop offset="0.3" stop-color="#EBD297"/>
+<stop offset="0.5" stop-color="#FBE8A6"/>
+<stop offset="0.7" stop-color="#EBD297"/>
+<stop offset="1" stop-color="#DEBA69"/>
+</linearGradient>
+</defs>
+</svg>

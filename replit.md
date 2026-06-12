@@ -1,6 +1,6 @@
-# [Project name]
+# Prossi
 
-_Replace the heading above with the project's name, and this line with one sentence describing what this app does for users._
+Marketing homepage for "Prossi Clinic", an Indonesian aesthetic/medical clinic (skin treatments, slimming programs, doctor-led care). Presentation-only React + Vite single-page site, sliced from a Figma design.
 
 ## Run & Operate
 
@@ -30,7 +30,11 @@ _Populate as you build — non-obvious choices a reader couldn't infer from the 
 
 ## Product
 
-_Describe the high-level user-facing capabilities of this app once they exist._
+- `artifacts/prossi` (web, served at `/`) — Prossi Clinic homepage. Sections in order: Header, Hero, Philosophy, Stats, Services, Team, Blog, Testimonials, CTA, Footer.
+- Header/Footer are standalone components; sections live in `src/components/sections/`; shared shadcn primitives in `src/components/ui/`.
+- Interactive carousels (Testimonials, CTA) use `embla-carousel-react`.
+- Figma assets live in `src/assets/figma/`; mapping in `artifacts/prossi/FIGMA_ASSET_MAP.md`; raw Figma reference in `artifacts/prossi/.figma-reference/`.
+- Presentation-only: dummy data, no backend wired to this artifact.
 
 ## User preferences
 
