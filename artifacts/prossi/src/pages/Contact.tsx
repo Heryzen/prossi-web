@@ -90,23 +90,23 @@ export default function Contact() {
     <div className={`flex flex-col ${HEADER_OFFSET}`}>
 
       {/* ── Hero banner — rounded card, image fills full background ── */}
-      <div className="mb-8 rounded-[28px] overflow-hidden relative" style={{ minHeight: "260px" }}>
+      <div className="mb-8 rounded-b-[28px] overflow-hidden relative" style={{ height: "clamp(300px, 38vw, 520px)" }}>
         {/* Background: hero image covers full card */}
         <img
           src={imgContactHero}
           alt=""
           className="absolute inset-0 w-full h-full object-cover object-center"
         />
-        {/* Gradient overlay — left side darker for text readability */}
+        {/* Gradient overlay — bottom-left darker for text readability */}
         <div
           className="absolute inset-0"
           style={{
             background:
-              "linear-gradient(to right, rgba(38,22,6,0.88) 0%, rgba(38,22,6,0.72) 35%, rgba(38,22,6,0.3) 60%, transparent 85%)",
+              "linear-gradient(to right, rgba(30,18,4,0.82) 0%, rgba(30,18,4,0.6) 38%, rgba(30,18,4,0.15) 65%, transparent 85%)",
           }}
         />
-        {/* Text content */}
-        <div className="relative z-10 px-10 md:px-[80px] py-12 max-w-[560px]">
+        {/* Text content — positioned at bottom-left */}
+        <div className="absolute inset-0 flex flex-col justify-end px-10 md:px-[80px] pb-12 max-w-[560px]">
           <h1
             className="font-['Lato'] font-bold leading-tight mb-3 text-[#e5c97e]"
             style={{ fontSize: "clamp(28px, 3.2vw, 44px)" }}
