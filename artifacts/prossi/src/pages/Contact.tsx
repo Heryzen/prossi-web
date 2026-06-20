@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
+import { MapContainer, TileLayer, Marker, Popup, useMap, ZoomControl } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import imgContactHero from "@/assets/figma/imgContactHero.png";
@@ -158,41 +158,34 @@ export default function Contact() {
       <div className="px-4 md:px-10 pb-12">
         <div className="max-w-[1240px] mx-auto">
 
-          {/* Section heading */}
-          <div className="mb-5">
-            <h2 className="font-['Lato'] font-bold text-[22px] text-[#120f0b] mb-1">
-              Reservasi Cabang Prossi Klinik
-            </h2>
-            <p className="font-['Inter'] text-[13px] text-[#503d1c]/70">
-              Temukan Cabang Prossi Terdekat Disini
-            </p>
-          </div>
-
           {/* Card container — rounded, clipped */}
           <div
             className="flex overflow-hidden rounded-[20px] border border-[#ede4d8]"
-            style={{ height: "460px", boxShadow: "0 4px 24px rgba(56,0,30,0.06)" }}
+            style={{ height: "480px", boxShadow: "0 4px 24px rgba(56,0,30,0.06)" }}
           >
             {/* Branch sidebar */}
-            <div className="bg-[#fdf9f5] flex flex-col shrink-0 overflow-hidden border-r border-[#ede4d8]" style={{ width: "clamp(240px, 26%, 300px)" }}>
-              <div className="flex flex-col overflow-y-auto flex-1 divide-y divide-[#f0e8de]">
+            <div className="bg-white flex flex-col shrink-0 overflow-hidden border-r border-[#ede4d8]" style={{ width: "clamp(260px, 28%, 340px)" }}>
+              {/* Sidebar header — title inside sidebar */}
+              <div className="px-6 pt-6 pb-4 border-b border-[#f0e8de]">
+                <h2 className="font-['Lato'] font-bold text-[17px] text-[#120f0b] leading-snug mb-0.5">
+                  Reservasi Cabang Prossi Klinik
+                </h2>
+                <p className="font-['Lato'] font-bold text-[12px] text-[#503d1c]/60">
+                  Temukan Cabang Prossi Terdekat Disini
+                </p>
+              </div>
+
+              <div className="flex flex-col overflow-y-auto flex-1 divide-y divide-[#f5ede4]">
                 {branches.map((branch, i) => (
                   <div
                     key={i}
                     onClick={() => setSelectedBranch(i)}
-                    className={`px-5 py-5 cursor-pointer transition-colors ${selectedBranch === i ? "bg-[#f4ece4]" : "hover:bg-[#f9f4ef]"}`}
+                    className={`px-5 py-4 cursor-pointer transition-colors ${selectedBranch === i ? "bg-[#fdf8f2]" : "hover:bg-[#fdf8f2]"}`}
                   >
-                    {/* Active indicator */}
-                    <div className="flex items-start gap-2 mb-2">
-                      <div
-                        className="mt-1 shrink-0 w-2 h-2 rounded-full transition-colors"
-                        style={{ background: selectedBranch === i ? "#b59637" : "#216d73" }}
-                      />
-                      <p className="font-['Lato'] font-bold text-[13px] text-[#120f0b] leading-snug">{branch.name}</p>
-                    </div>
-                    <p className="font-['Inter'] text-[11px] text-[#503d1c]/70 leading-relaxed mb-1 pl-4">{branch.address}</p>
-                    <p className="font-['Inter'] font-semibold text-[10px] text-[#216d73] mb-3 pl-4">{branch.hours}</p>
-                    <div className="flex gap-2 pl-4">
+                    <p className="font-['Lato'] font-bold text-[13px] text-[#120f0b] mb-1 leading-snug">{branch.name}</p>
+                    <p className="font-['Inter'] text-[11px] text-[#503d1c]/70 leading-relaxed mb-1">{branch.address}</p>
+                    <p className="font-['Inter'] font-semibold text-[10px] text-[#216d73] mb-3">{branch.hours}</p>
+                    <div className="flex gap-2">
                       <a
                         href={branch.mapsUrl}
                         target="_blank"
@@ -204,7 +197,7 @@ export default function Contact() {
                       </a>
                       <button
                         onClick={(e) => { e.stopPropagation(); setSelectedBranch(i); }}
-                        className="bg-[#216d73] text-white rounded-full px-3 py-1 text-[10px] font-['Inter'] font-semibold hover:opacity-90 transition-opacity"
+                        className="border border-[#b59637] text-[#b59637] rounded-full px-3 py-1 text-[10px] font-['Inter'] font-semibold hover:bg-[#b59637] hover:text-white transition-colors"
                       >
                         RESERVATION
                       </button>
@@ -220,9 +213,10 @@ export default function Contact() {
                 center={[branches[0].lat, branches[0].lng]}
                 zoom={12}
                 style={{ width: "100%", height: "100%" }}
-                zoomControl={true}
+                zoomControl={false}
                 scrollWheelZoom={true}
               >
+                <ZoomControl position="bottomright" />
                 <TileLayer
                   attribution='&copy; <a href="https://carto.com/attributions">CARTO</a>'
                   url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
