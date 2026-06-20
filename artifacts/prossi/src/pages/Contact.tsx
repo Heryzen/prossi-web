@@ -1,41 +1,86 @@
-import React, { useState } from "react";
-import { Header } from "@/components/Header";
+import React, { useState, useEffect } from "react";
+import { Link } from "wouter";
+import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
+import L from "leaflet";
+import "leaflet/dist/leaflet.css";
 import { Footer } from "@/components/Footer";
 import imgContactHero from "@/assets/figma/imgContactHero.png";
-import imgGoogleMaps from "@/assets/figma/imgGoogleMaps.png";
 import imgGroup from "@/assets/figma/imgGroup.svg";
 import imgRiInstagramLine from "@/assets/figma/imgRiInstagramLine.svg";
 import imgGgFacebook from "@/assets/figma/imgGgFacebook.svg";
 import imgMdiClockOutline from "@/assets/figma/imgMdiClockOutline.svg";
+import imgUntitledDesign181 from "@/assets/figma/imgUntitledDesign181.png";
+import imgIconamoonArrowUp2Fill from "@/assets/figma/imgIconamoonArrowUp2Fill.svg";
+
+// Fix Leaflet default icon paths broken by bundlers
+delete (L.Icon.Default.prototype as unknown as Record<string, unknown>)._getIconUrl;
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png",
+  iconUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png",
+  shadowUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
+});
 
 const branches = [
   {
     name: "Prossi Clinic – Sudirman",
-    address: "Lot 6 Kawasan SCBD Sudirman, Jl. Jenderal Sudirman Kav. 52-53, RT.5/RW.3, Senayan, Kec. Kebayoran Baru, Kota Jakarta Selata...",
+    address:
+      "Lot 6 Kawasan SCBD Sudirman, Jl. Jenderal Sudirman Kav. 52-53, RT.5/RW.3, Senayan, Kec. Kebayoran Baru, Kota Jakarta Selata...",
     hours: "OPEN: Monday – Friday 08:00 AM–09:00 PM",
+    lat: -6.2256,
+    lng: 106.8044,
+    mapsUrl: "https://maps.google.com/?q=Sudirman+SCBD+Jakarta",
   },
   {
     name: "Prossi Clinic – Kemang",
-    address: "Lot 6 Kawasan SCBD Sudirman, Jl. Jenderal Sudirman Kav. 52-53, RT.5/RW.3, Senayan, Kec. Kebayoran Baru, Kota Jakarta Selata...",
+    address:
+      "Lot 6 Kawasan SCBD Sudirman, Jl. Jenderal Sudirman Kav. 52-53, RT.5/RW.3, Senayan, Kec. Kebayoran Baru, Kota Jakarta Selata...",
     hours: "OPEN: Monday – Friday 08:00 AM–09:00 PM",
+    lat: -6.2615,
+    lng: 106.8115,
+    mapsUrl: "https://maps.google.com/?q=Kemang+Jakarta",
   },
   {
     name: "Prossi Clinic – BSD",
-    address: "Lot 6 Kawasan SCBD Sudirman, Jl. Jenderal Sudirman Kav. 52-53, RT.5/RW.3, Senayan, Kec. Kebayoran Baru, Kota Jakarta Selata...",
+    address:
+      "Lot 6 Kawasan SCBD Sudirman, Jl. Jenderal Sudirman Kav. 52-53, RT.5/RW.3, Senayan, Kec. Kebayoran Baru, Kota Jakarta Selata...",
     hours: "OPEN: Monday – Friday 08:00 AM–09:00 PM",
+    lat: -6.2917,
+    lng: 106.6655,
+    mapsUrl: "https://maps.google.com/?q=BSD+Tangerang+Selatan",
   },
 ];
 
-const whatsappRows = [
-  {
-    label: "Reservasi & Informasi Bersama Rossi",
-    phone: "0828118951181",
-  },
-  {
-    label: "Prossi Consult+ Sp GK & Sp DVE (Konsultasi Online)",
-    phone: "0828118951181",
-  },
+const navItems = [
+  { label: "Home", href: "/" },
+  { label: "Treatments", href: null, dropdown: true },
+  { label: "Doctors", href: "/doctors", dropdown: true },
+  { label: "About", href: null },
+  { label: "Shop", href: null },
+  { label: "Locations", href: null },
 ];
+
+const whatsappRows = [
+  { label: "Reservasi & Informasi Bersama Rossi", phone: "0828118951181" },
+  { label: "Prossi Consult+ Sp GK & Sp DVE (Konsultasi Online)", phone: "0828118951181" },
+];
+
+function makeMarkerIcon(color: string, active: boolean) {
+  const size = active ? 16 : 12;
+  return L.divIcon({
+    className: "",
+    html: `<div style="width:${size}px;height:${size}px;background:${color};border:2.5px solid white;border-radius:50%;box-shadow:0 2px 6px rgba(0,0,0,0.35);transition:all 0.2s;"></div>`,
+    iconSize: [size, size],
+    iconAnchor: [size / 2, size / 2],
+  });
+}
+
+function MapFlyTo({ lat, lng }: { lat: number; lng: number }) {
+  const map = useMap();
+  useEffect(() => {
+    map.flyTo([lat, lng], 13, { duration: 0.8 });
+  }, [lat, lng, map]);
+  return null;
+}
 
 function WhatsAppIcon() {
   return (
@@ -55,157 +100,158 @@ export default function Contact() {
   return (
     <div className="min-h-screen bg-[#f4ece4] flex flex-col font-sans text-[#120f0b] overflow-x-hidden">
 
-      {/* ── Top announcement bar — fixed at viewport top, z above header ── */}
+      {/* ── Fixed announcement bar ── */}
       <div className="fixed top-0 left-0 right-0 z-[60] bg-[#120f0b] h-[40px] px-6 md:px-[100px] flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <img
-            src={imgMdiClockOutline}
-            alt=""
-            className="w-3.5 h-3.5"
-            style={{ filter: "brightness(0) invert(1)", opacity: 0.8 }}
-          />
-          <span className="text-white/80 font-['Inter'] text-[13px]">
-            Open Daily · 9:00 AM – 8:00 PM
-          </span>
+          <img src={imgMdiClockOutline} alt="" className="w-3.5 h-3.5" style={{ filter: "brightness(0) invert(1)", opacity: 0.8 }} />
+          <span className="text-white/80 font-['Inter'] text-[13px]">Open Daily · 9:00 AM – 8:00 PM</span>
         </div>
         <div className="flex items-center gap-2">
-          {[
-            { src: imgGroup, alt: "Telegram" },
-            { src: imgRiInstagramLine, alt: "Instagram" },
-            { src: imgGgFacebook, alt: "Facebook" },
-          ].map((icon) => (
-            <div
-              key={icon.alt}
-              className="w-6 h-6 rounded-full bg-white/10 flex items-center justify-center cursor-pointer hover:bg-white/20 transition-colors"
-            >
-              <img
-                src={icon.src}
-                alt={icon.alt}
-                className="w-3.5 h-3.5"
-                style={{ filter: "brightness(0) invert(1)" }}
-              />
+          {[{ src: imgGroup, alt: "Telegram" }, { src: imgRiInstagramLine, alt: "Instagram" }, { src: imgGgFacebook, alt: "Facebook" }].map((icon) => (
+            <div key={icon.alt} className="w-6 h-6 rounded-full bg-white/10 flex items-center justify-center cursor-pointer hover:bg-white/20 transition-colors">
+              <img src={icon.src} alt={icon.alt} className="w-3.5 h-3.5" style={{ filter: "brightness(0) invert(1)" }} />
             </div>
           ))}
         </div>
       </div>
 
-      {/* Spacer so the relative container starts below the fixed top bar */}
+      {/* Page starts below the fixed bar */}
       <div className="relative mt-[40px] flex flex-col flex-1">
-      <Header />
 
-      {/* ── Hero card ── */}
-      <div className="px-6 md:px-[100px] pt-[100px] pb-8">
-        <div className="max-w-[1240px] mx-auto">
-          <div
-            className="relative w-full rounded-[32px] overflow-hidden flex items-center"
-            style={{
-              background: "linear-gradient(105deg, #3d2e18 0%, #4a3920 40%, #5a4a2a 100%)",
-              minHeight: "240px",
-            }}
-          >
-            {/* Subtle texture overlay */}
-            <div className="absolute inset-0 opacity-20 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmZmZmYiIGZpbGwtb3BhY2l0eT0iMC4wMyI+PHBhdGggZD0iTTM2IDM0djZoNnYtNmgtNnptMCAwdi02aC02djZoNnptNiA2djZoNnYtNmgtNnptLTEyIDB2Nmg2di02aC02em0xMi02djZoNnYtNmgtNnoiLz48L2c+PC9nPjwvc3ZnPg==')] bg-repeat" />
+        {/* ── Hero+Header combined rounded card ── */}
+        <div className="px-4 md:px-10 pt-4 pb-8">
+          <div className="max-w-[1240px] mx-auto rounded-[28px] overflow-hidden shadow-[0_8px_40px_rgba(0,0,0,0.12)]">
 
-            {/* Text content */}
-            <div className="relative z-10 flex-1 px-10 md:px-14 py-10">
-              <h1
-                className="font-['Lato'] font-bold capitalize leading-tight mb-3"
-                style={{ fontSize: "clamp(32px, 4vw, 52px)", color: "#e5be80" }}
-              >
+            {/* Nav bar inside the card */}
+            <div className="bg-[#f4ece4] px-6 md:px-10 py-4 flex items-center justify-between">
+              <Link href="/">
+                <img src={imgUntitledDesign181} alt="Prossi Clinic" className="h-[52px] w-auto object-contain cursor-pointer" />
+              </Link>
+              <nav className="hidden lg:flex items-center gap-6">
+                {navItems.map((item) =>
+                  item.href ? (
+                    <Link key={item.label} href={item.href} className="flex items-center gap-0.5 text-[15px] font-medium text-[#120f0b] hover:text-[#b59637] transition-colors">
+                      {item.label}
+                      {item.dropdown && <img src={imgIconamoonArrowUp2Fill} alt="" className="w-4 h-4 rotate-180" />}
+                    </Link>
+                  ) : (
+                    <button key={item.label} className="flex items-center gap-0.5 text-[15px] font-medium text-[#120f0b] hover:text-[#b59637] transition-colors">
+                      {item.label}
+                      {item.dropdown && <img src={imgIconamoonArrowUp2Fill} alt="" className="w-4 h-4 rotate-180" />}
+                    </button>
+                  )
+                )}
+              </nav>
+              <Link href="/contact" className="hidden lg:flex bg-[#b59637] border border-[#ecd5a5] rounded-full px-7 py-3 text-white font-serif font-semibold text-[15px] hover:opacity-90 transition-opacity items-center">
                 Book Consultation
-              </h1>
-              <p className="text-white/80 font-sans text-[16px] max-w-[420px] leading-relaxed">
-                Mulai dari program slimming hingga perawatan kulit, semua treatment
-                dirancang berdasarkan diagnosis dokter untuk hasil yang aman dan terarah.
-              </p>
+              </Link>
             </div>
 
-            {/* Doctor photo */}
-            <div className="relative shrink-0 self-end" style={{ width: "clamp(200px, 30%, 320px)", height: "240px" }}>
-              <img
-                src={imgContactHero}
-                alt="Prossi Clinic Doctor"
-                className="absolute bottom-0 right-0 h-full w-full object-cover object-top"
-                style={{ maskImage: "linear-gradient(to right, transparent 0%, black 30%)", WebkitMaskImage: "linear-gradient(to right, transparent 0%, black 30%)" }}
-              />
+            {/* Hero area inside the card */}
+            <div
+              className="relative flex items-center overflow-hidden"
+              style={{
+                background: "linear-gradient(108deg, #2e2210 0%, #3d2e18 35%, #4e3e28 65%, #5a4828 100%)",
+                minHeight: "220px",
+              }}
+            >
+              {/* Text */}
+              <div className="relative z-10 flex-1 px-10 md:px-14 py-10">
+                <h1 className="font-['Lato'] font-bold leading-tight mb-3 text-[#e5c97e]" style={{ fontSize: "clamp(28px, 3.5vw, 48px)" }}>
+                  Book Consultation
+                </h1>
+                <p className="text-white/75 font-['Inter'] text-[14px] md:text-[15px] max-w-[400px] leading-relaxed">
+                  Mulai dari program slimming hingga perawatan kulit, semua treatment
+                  dirancang berdasarkan diagnosis dokter untuk hasil yang aman dan terarah.
+                </p>
+              </div>
+
+              {/* Doctor photo */}
+              <div className="shrink-0 self-end" style={{ width: "clamp(180px, 28%, 300px)", height: "220px" }}>
+                <img
+                  src={imgContactHero}
+                  alt="Prossi Clinic Doctor"
+                  className="h-full w-full object-cover object-top"
+                  style={{
+                    maskImage: "linear-gradient(to right, transparent 0%, black 25%)",
+                    WebkitMaskImage: "linear-gradient(to right, transparent 0%, black 25%)",
+                  }}
+                />
+              </div>
             </div>
+
           </div>
         </div>
-      </div>
 
-      {/* ── WhatsApp contact rows ── */}
-      <div className="px-6 md:px-[100px] py-6">
-        <div className="max-w-[1240px] mx-auto flex flex-col gap-4">
-          {whatsappRows.map((row, i) => (
-            <a
-              key={i}
-              href={`https://wa.me/${row.phone}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="bg-white border border-[#e8ddd2] rounded-[20px] px-7 py-5 flex items-center gap-5 hover:border-[#b59637] hover:shadow-sm transition-all group cursor-pointer"
-            >
-              <div className="shrink-0 w-[46px] h-[46px]">
-                <WhatsAppIcon />
-              </div>
-              <div className="flex flex-col gap-0.5 flex-1 min-w-0">
-                <span className="font-['Inter'] font-semibold text-[15px] text-[#120f0b] leading-snug">
-                  {row.label}
-                </span>
-                <span className="font-['Lato'] font-bold text-[18px] text-[#120f0b]">
-                  {row.phone}
-                </span>
-              </div>
-              <svg
-                className="shrink-0 w-6 h-6 text-[#b59637] group-hover:translate-x-1 transition-transform"
-                viewBox="0 0 24 24"
-                fill="none"
+        {/* ── WhatsApp contact rows ── */}
+        <div className="px-4 md:px-10 pb-6">
+          <div className="max-w-[1240px] mx-auto flex flex-col gap-4">
+            {whatsappRows.map((row, i) => (
+              <a
+                key={i}
+                href={`https://wa.me/${row.phone}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-white border border-[#ede4d8] rounded-[20px] px-7 py-5 flex items-center gap-5 hover:border-[#b59637] hover:shadow-sm transition-all group cursor-pointer"
               >
-                <path d="M9 18l6-6-6-6" stroke="#b59637" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-            </a>
-          ))}
+                <div className="shrink-0 w-[44px] h-[44px]">
+                  <WhatsAppIcon />
+                </div>
+                <div className="flex flex-col gap-0.5 flex-1 min-w-0">
+                  <span className="font-['Inter'] font-semibold text-[14px] text-[#120f0b] leading-snug">
+                    {row.label}
+                  </span>
+                  <span className="font-['Lato'] font-bold text-[17px] text-[#120f0b]">
+                    {row.phone}
+                  </span>
+                </div>
+                {/* Solid arrow → */}
+                <svg className="shrink-0 w-5 h-5 text-[#b59637] group-hover:translate-x-1 transition-transform" viewBox="0 0 20 20" fill="none">
+                  <path d="M4 10h12M12 6l4 4-4 4" stroke="#b59637" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </a>
+            ))}
+          </div>
         </div>
-      </div>
 
-      {/* ── Map section ── */}
-      <div className="w-full mt-8" style={{ minHeight: "500px" }}>
-        <div className="flex h-full" style={{ minHeight: "500px" }}>
+        {/* ── Interactive Map section ── */}
+        <div className="w-full flex" style={{ height: "520px" }}>
 
           {/* Left panel */}
-          <div
-            className="bg-white shrink-0 flex flex-col overflow-hidden"
-            style={{ width: "clamp(280px, 30%, 380px)", minHeight: "500px" }}
-          >
-            <div className="px-7 pt-8 pb-4 border-b border-[#f0e8e0]">
-              <h2 className="font-['Lato'] font-bold text-[20px] text-[#120f0b] leading-snug mb-1">
+          <div className="bg-white flex flex-col shrink-0 overflow-hidden" style={{ width: "clamp(260px, 28%, 340px)" }}>
+            <div className="px-6 pt-7 pb-4 border-b border-[#f0e8e0]">
+              <h2 className="font-['Lato'] font-bold text-[18px] text-[#120f0b] leading-snug mb-1">
                 Reservasi Cabang Prossi Klinik
               </h2>
-              <p className="font-sans text-[13px] text-[#503d1c]/70">
+              <p className="font-['Inter'] text-[12px] text-[#503d1c]/70">
                 Temukan Cabang Prossi Terdekat Disini
               </p>
             </div>
 
-            <div className="flex flex-col overflow-y-auto flex-1 divide-y divide-[#f0e8e0]">
+            <div className="flex flex-col overflow-y-auto flex-1 divide-y divide-[#f5ede4]">
               {branches.map((branch, i) => (
                 <div
                   key={i}
-                  className={`px-6 py-5 cursor-pointer transition-colors ${selectedBranch === i ? "bg-[#fdf8f2]" : "hover:bg-[#fdf8f2]"}`}
                   onClick={() => setSelectedBranch(i)}
+                  className={`px-5 py-4 cursor-pointer transition-colors ${selectedBranch === i ? "bg-[#fdf8f2]" : "hover:bg-[#fdf8f2]"}`}
                 >
-                  <p className="font-['Lato'] font-bold text-[14px] text-[#120f0b] mb-1">
-                    {branch.name}
-                  </p>
-                  <p className="font-sans text-[12px] text-[#503d1c]/70 leading-snug mb-2">
-                    {branch.address}
-                  </p>
-                  <p className="font-['Inter'] font-semibold text-[11px] text-[#216d73] mb-3">
-                    {branch.hours}
-                  </p>
+                  <p className="font-['Lato'] font-bold text-[13px] text-[#120f0b] mb-1">{branch.name}</p>
+                  <p className="font-['Inter'] text-[11px] text-[#503d1c]/70 leading-snug mb-1">{branch.address}</p>
+                  <p className="font-['Inter'] font-semibold text-[10px] text-[#216d73] mb-3">{branch.hours}</p>
                   <div className="flex gap-2">
-                    <button className="border border-[#b59637] text-[#b59637] rounded-full px-4 py-1.5 text-[11px] font-['Inter'] font-semibold hover:bg-[#b59637] hover:text-white transition-colors">
-                      ⊕ DIRECTION
-                    </button>
-                    <button className="bg-[#216d73] text-white rounded-full px-4 py-1.5 text-[11px] font-['Inter'] font-semibold hover:opacity-90 transition-opacity">
+                    <a
+                      href={branch.mapsUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={(e) => e.stopPropagation()}
+                      className="border border-[#b59637] text-[#b59637] rounded-full px-3 py-1 text-[10px] font-['Inter'] font-semibold hover:bg-[#b59637] hover:text-white transition-colors flex items-center gap-1"
+                    >
+                      <span className="text-[11px]">⊕</span> DIRECTION
+                    </a>
+                    <button
+                      onClick={(e) => { e.stopPropagation(); setSelectedBranch(i); }}
+                      className="bg-[#216d73] text-white rounded-full px-3 py-1 text-[10px] font-['Inter'] font-semibold hover:opacity-90 transition-opacity"
+                    >
                       RESERVATION
                     </button>
                   </div>
@@ -214,41 +260,42 @@ export default function Contact() {
             </div>
           </div>
 
-          {/* Map image */}
-          <div className="flex-1 relative overflow-hidden">
-            <img
-              src={imgGoogleMaps}
-              alt="Prossi Clinic Locations"
-              className="absolute inset-0 w-full h-full object-cover object-center"
-            />
-            {/* Map pins */}
-            {[
-              { top: "42%", left: "52%" },
-              { top: "62%", left: "38%" },
-              { top: "55%", left: "65%" },
-            ].map((pos, i) => (
-              <div
-                key={i}
-                className={`absolute w-4 h-4 rounded-full border-2 border-white shadow-md cursor-pointer transition-transform hover:scale-125 ${selectedBranch === i ? "bg-[#b59637] scale-125" : "bg-[#216d73]"}`}
-                style={{ top: pos.top, left: pos.left, transform: "translate(-50%, -50%)" }}
-                onClick={() => setSelectedBranch(i)}
+          {/* Interactive Leaflet Map */}
+          <div className="flex-1 relative">
+            <MapContainer
+              center={[branches[0].lat, branches[0].lng]}
+              zoom={12}
+              style={{ width: "100%", height: "100%" }}
+              zoomControl={true}
+              scrollWheelZoom={true}
+            >
+              <TileLayer
+                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
               />
-            ))}
-            {/* Zoom controls */}
-            <div className="absolute bottom-5 right-5 flex flex-col bg-white rounded shadow-sm overflow-hidden">
-              <button className="w-8 h-8 flex items-center justify-center text-[#120f0b] text-xl font-light border-b border-[#e5e5e5] hover:bg-[#f5f5f5]">
-                +
-              </button>
-              <button className="w-8 h-8 flex items-center justify-center text-[#120f0b] text-xl font-light hover:bg-[#f5f5f5]">
-                −
-              </button>
-            </div>
+              <MapFlyTo lat={branches[selectedBranch].lat} lng={branches[selectedBranch].lng} />
+              {branches.map((branch, i) => (
+                <Marker
+                  key={i}
+                  position={[branch.lat, branch.lng]}
+                  icon={makeMarkerIcon(selectedBranch === i ? "#b59637" : "#216d73", selectedBranch === i)}
+                  eventHandlers={{ click: () => setSelectedBranch(i) }}
+                >
+                  <Popup>
+                    <div style={{ fontFamily: "Inter, sans-serif", fontSize: 12, minWidth: 160 }}>
+                      <strong style={{ fontSize: 13 }}>{branch.name}</strong>
+                      <p style={{ margin: "4px 0 2px", color: "#503d1c", opacity: 0.8, lineHeight: 1.4 }}>{branch.address}</p>
+                      <p style={{ color: "#216d73", fontWeight: 600 }}>{branch.hours}</p>
+                    </div>
+                  </Popup>
+                </Marker>
+              ))}
+            </MapContainer>
           </div>
         </div>
-      </div>
 
-      <Footer />
-      </div>{/* end relative mt-[40px] wrapper */}
+        <Footer />
+      </div>
     </div>
   );
 }
