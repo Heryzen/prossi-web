@@ -46,3 +46,8 @@ Import them in components, e.g. `import imgProgramImage from "@/assets/figma/img
 | imgLine6 | src/assets/figma/imgLine6.svg | image/svg+xml |
 | imgLayer2 | src/assets/figma/imgLayer2.svg | image/svg+xml |
 | imgShield131932661 | src/assets/figma/imgShield131932661.svg | image/svg+xml |
+| imgMdiClockOutline | src/assets/figma/imgMdiClockOutline.svg | image/svg+xml |
+| imgFaqPlus | src/assets/figma/imgFaqPlus.svg | image/svg+xml |
+| imgFaqMinus | src/assets/figma/imgFaqMinus.svg | image/svg+xml |
+| imgGoogleMaps | src/assets/figma/imgGoogleMaps.png | image/png |
+| imgContactHero | src/assets/figma/imgContactHero.png | image/png |

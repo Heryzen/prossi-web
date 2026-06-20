@@ -53,9 +53,9 @@ export function Header() {
           )}
         </nav>
 
-        <button className="hidden lg:flex bg-[#b59637] border border-[#ecd5a5] rounded-full px-9 py-[18px] text-white font-serif font-semibold text-lg hover:opacity-90 transition-opacity items-center justify-center">
+        <Link href="/contact" className="hidden lg:flex bg-[#b59637] border border-[#ecd5a5] rounded-full px-9 py-[18px] text-white font-serif font-semibold text-lg hover:opacity-90 transition-opacity items-center justify-center">
           Book Consultation
-        </button>
+        </Link>
 
         {/* Mobile menu button */}
         <button
@@ -90,9 +90,9 @@ export function Header() {
               </span>
             )
           )}
-          <button className="bg-[#b59637] border border-[#ecd5a5] rounded-full px-9 py-3 text-white font-serif font-semibold text-base mt-1">
+          <Link href="/contact" onClick={() => setIsOpen(false)} className="bg-[#b59637] border border-[#ecd5a5] rounded-full px-9 py-3 text-white font-serif font-semibold text-base mt-1 text-center">
             Book Consultation
-          </button>
+          </Link>
         </div>
       )}
     </header>

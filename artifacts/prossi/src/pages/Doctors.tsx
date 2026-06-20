@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "wouter";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import imgLine4 from "@/assets/figma/imgLine4.svg";
@@ -188,9 +189,9 @@ export default function Doctors() {
                   </div>
                 </div>
 
-                <button className="bg-[#b59637] border border-[#ecd5a5] rounded-full px-9 py-[14px] text-white font-serif font-semibold text-[17px] hover:opacity-90 transition-opacity w-full mt-auto">
+                <Link href="/contact" className="bg-[#b59637] border border-[#ecd5a5] rounded-full px-9 py-[14px] text-white font-serif font-semibold text-[17px] hover:opacity-90 transition-opacity w-full mt-auto text-center block">
                   Book Konsultasi
-                </button>
+                </Link>
               </div>
             </div>
           ))}
@@ -206,9 +207,9 @@ export default function Doctors() {
         <p className="font-sans text-lg text-white/90 text-center max-w-[600px]">
           Konsultasikan kondisimu langsung dengan dokter spesialis Prossi Clinic.
         </p>
-        <button className="bg-gradient-to-r from-[#e5be80] via-[#edd8ab] to-[#e5be80] border border-[#ecd5a5] rounded-full px-9 py-[18px] text-[#503d1c] font-serif font-semibold text-lg hover:opacity-90 transition-opacity">
+        <Link href="/contact" className="bg-gradient-to-r from-[#e5be80] via-[#edd8ab] to-[#e5be80] border border-[#ecd5a5] rounded-full px-9 py-[18px] text-[#503d1c] font-serif font-semibold text-lg hover:opacity-90 transition-opacity">
           Book Consultation
-        </button>
+        </Link>
       </section>
 
       <Footer />
