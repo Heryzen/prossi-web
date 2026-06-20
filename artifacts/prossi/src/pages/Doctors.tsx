@@ -1,7 +1,5 @@
 import React from "react";
 import { Link } from "wouter";
-import { Header } from "@/components/Header";
-import { Footer } from "@/components/Footer";
 import imgLine4 from "@/assets/figma/imgLine4.svg";
 import imgLine2 from "@/assets/figma/imgLine2.svg";
 import imgLine6 from "@/assets/figma/imgLine6.svg";
@@ -95,8 +93,7 @@ function Divider() {
 
 export default function Doctors() {
   return (
-    <div className="min-h-screen bg-[#f4ece4] flex flex-col font-sans text-[#120f0b] overflow-x-hidden">
-      <Header />
+    <>
 
       {/* Hero banner */}
       <section className="relative w-full h-[420px] flex items-end justify-center pb-0 overflow-hidden">
@@ -212,7 +209,6 @@ export default function Doctors() {
         </Link>
       </section>
 
-      <Footer />
-    </div>
+    </>
   );
 }
