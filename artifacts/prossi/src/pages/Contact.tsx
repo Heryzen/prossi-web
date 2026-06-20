@@ -87,10 +87,10 @@ export default function Contact() {
   const [selectedBranch, setSelectedBranch] = useState(0);
 
   return (
-    <div className="flex flex-col">
+    <div className={`flex flex-col ${HEADER_OFFSET}`}>
 
-      {/* ── Hero banner — full width, image goes behind header ── */}
-      <div className="relative overflow-hidden" style={{ height: "clamp(360px, 42vw, 560px)" }}>
+      {/* ── Hero banner — full width, rounded bottom ── */}
+      <div className="relative overflow-hidden rounded-b-[28px]" style={{ height: "clamp(300px, 38vw, 480px)" }}>
         {/* Background: hero image covers full area incl. header zone */}
         <img
           src={imgContactHero}
@@ -122,9 +122,6 @@ export default function Contact() {
           </p>
         </div>
       </div>
-
-      {/* spacer so content below hero clears properly */}
-      <div className="mb-8" />
 
       {/* ── WhatsApp contact rows ── */}
       <div className="px-4 md:px-10 pb-6">
