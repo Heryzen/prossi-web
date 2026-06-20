@@ -89,41 +89,34 @@ export default function Contact() {
   return (
     <div className={`flex flex-col ${HEADER_OFFSET}`}>
 
-      {/* ── Hero card — full width ── */}
-      <div className="w-full pt-0 pb-8">
+      {/* ── Hero banner — rounded card, image fills full background ── */}
+      <div className="mx-4 md:mx-8 mb-8 rounded-[28px] overflow-hidden relative" style={{ minHeight: "260px" }}>
+        {/* Background: hero image covers full card */}
+        <img
+          src={imgContactHero}
+          alt=""
+          className="absolute inset-0 w-full h-full object-cover object-center"
+        />
+        {/* Gradient overlay — left side darker for text readability */}
         <div
-          className="w-full flex items-center overflow-hidden"
+          className="absolute inset-0"
           style={{
-            background: "linear-gradient(108deg, #2e2210 0%, #3d2e18 35%, #4e3e28 65%, #5a4828 100%)",
-            minHeight: "220px",
+            background:
+              "linear-gradient(to right, rgba(38,22,6,0.88) 0%, rgba(38,22,6,0.72) 35%, rgba(38,22,6,0.3) 60%, transparent 85%)",
           }}
-        >
-          {/* Text */}
-          <div className="flex-1 px-10 md:px-[100px] py-10">
-            <h1
-              className="font-['Lato'] font-bold leading-tight mb-3 text-[#e5c97e]"
-              style={{ fontSize: "clamp(28px, 3.5vw, 48px)" }}
-            >
-              Book Consultation
-            </h1>
-            <p className="text-white/75 font-['Inter'] text-[14px] md:text-[15px] max-w-[400px] leading-relaxed">
-              Mulai dari program slimming hingga perawatan kulit, semua treatment
-              dirancang berdasarkan diagnosis dokter untuk hasil yang aman dan terarah.
-            </p>
-          </div>
-
-          {/* Doctor photo — fades in from right */}
-          <div className="shrink-0 self-end" style={{ width: "clamp(180px, 28%, 300px)", height: "220px" }}>
-            <img
-              src={imgContactHero}
-              alt="Prossi Clinic Doctor"
-              className="h-full w-full object-cover object-top"
-              style={{
-                maskImage: "linear-gradient(to right, transparent 0%, black 25%)",
-                WebkitMaskImage: "linear-gradient(to right, transparent 0%, black 25%)",
-              }}
-            />
-          </div>
+        />
+        {/* Text content */}
+        <div className="relative z-10 px-10 md:px-[80px] py-12 max-w-[560px]">
+          <h1
+            className="font-['Lato'] font-bold leading-tight mb-3 text-[#e5c97e]"
+            style={{ fontSize: "clamp(28px, 3.2vw, 44px)" }}
+          >
+            Book Consultation
+          </h1>
+          <p className="text-white/80 font-['Inter'] text-[14px] md:text-[15px] leading-relaxed">
+            Mulai dari program slimming hingga perawatan kulit, semua treatment
+            dirancang berdasarkan diagnosis dokter untuk hasil yang aman dan terarah.
+          </p>
         </div>
       </div>
 
