@@ -155,82 +155,99 @@ export default function Contact() {
       </div>
 
       {/* ── Interactive Map section ── */}
-      <div className="w-full flex" style={{ height: "520px" }}>
+      <div className="px-4 md:px-10 pb-12">
+        <div className="max-w-[1240px] mx-auto">
 
-        {/* Branch sidebar */}
-        <div className="bg-white flex flex-col shrink-0 overflow-hidden" style={{ width: "clamp(260px, 28%, 340px)" }}>
-          <div className="px-6 pt-7 pb-4 border-b border-[#f0e8e0]">
-            <h2 className="font-['Lato'] font-bold text-[18px] text-[#120f0b] leading-snug mb-1">
+          {/* Section heading */}
+          <div className="mb-5">
+            <h2 className="font-['Lato'] font-bold text-[22px] text-[#120f0b] mb-1">
               Reservasi Cabang Prossi Klinik
             </h2>
-            <p className="font-['Inter'] text-[12px] text-[#503d1c]/70">
+            <p className="font-['Inter'] text-[13px] text-[#503d1c]/70">
               Temukan Cabang Prossi Terdekat Disini
             </p>
           </div>
 
-          <div className="flex flex-col overflow-y-auto flex-1 divide-y divide-[#f5ede4]">
-            {branches.map((branch, i) => (
-              <div
-                key={i}
-                onClick={() => setSelectedBranch(i)}
-                className={`px-5 py-4 cursor-pointer transition-colors ${selectedBranch === i ? "bg-[#fdf8f2]" : "hover:bg-[#fdf8f2]"}`}
-              >
-                <p className="font-['Lato'] font-bold text-[13px] text-[#120f0b] mb-1">{branch.name}</p>
-                <p className="font-['Inter'] text-[11px] text-[#503d1c]/70 leading-snug mb-1">{branch.address}</p>
-                <p className="font-['Inter'] font-semibold text-[10px] text-[#216d73] mb-3">{branch.hours}</p>
-                <div className="flex gap-2">
-                  <a
-                    href={branch.mapsUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    onClick={(e) => e.stopPropagation()}
-                    className="border border-[#b59637] text-[#b59637] rounded-full px-3 py-1 text-[10px] font-['Inter'] font-semibold hover:bg-[#b59637] hover:text-white transition-colors flex items-center gap-1"
-                  >
-                    <span className="text-[11px]">⊕</span> DIRECTION
-                  </a>
-                  <button
-                    onClick={(e) => { e.stopPropagation(); setSelectedBranch(i); }}
-                    className="bg-[#216d73] text-white rounded-full px-3 py-1 text-[10px] font-['Inter'] font-semibold hover:opacity-90 transition-opacity"
-                  >
-                    RESERVATION
-                  </button>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Interactive Leaflet map */}
-        <div className="flex-1 relative">
-          <MapContainer
-            center={[branches[0].lat, branches[0].lng]}
-            zoom={12}
-            style={{ width: "100%", height: "100%" }}
-            zoomControl={true}
-            scrollWheelZoom={true}
+          {/* Card container — rounded, clipped */}
+          <div
+            className="flex overflow-hidden rounded-[20px] border border-[#ede4d8]"
+            style={{ height: "460px", boxShadow: "0 4px 24px rgba(56,0,30,0.06)" }}
           >
-            <TileLayer
-              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            />
-            <MapFlyTo lat={branches[selectedBranch].lat} lng={branches[selectedBranch].lng} />
-            {branches.map((branch, i) => (
-              <Marker
-                key={i}
-                position={[branch.lat, branch.lng]}
-                icon={makeMarkerIcon(selectedBranch === i ? "#b59637" : "#216d73", selectedBranch === i)}
-                eventHandlers={{ click: () => setSelectedBranch(i) }}
-              >
-                <Popup>
-                  <div style={{ fontFamily: "Inter, sans-serif", fontSize: 12, minWidth: 160 }}>
-                    <strong style={{ fontSize: 13 }}>{branch.name}</strong>
-                    <p style={{ margin: "4px 0 2px", color: "#503d1c", opacity: 0.8, lineHeight: 1.4 }}>{branch.address}</p>
-                    <p style={{ color: "#216d73", fontWeight: 600 }}>{branch.hours}</p>
+            {/* Branch sidebar */}
+            <div className="bg-[#fdf9f5] flex flex-col shrink-0 overflow-hidden border-r border-[#ede4d8]" style={{ width: "clamp(240px, 26%, 300px)" }}>
+              <div className="flex flex-col overflow-y-auto flex-1 divide-y divide-[#f0e8de]">
+                {branches.map((branch, i) => (
+                  <div
+                    key={i}
+                    onClick={() => setSelectedBranch(i)}
+                    className={`px-5 py-5 cursor-pointer transition-colors ${selectedBranch === i ? "bg-[#f4ece4]" : "hover:bg-[#f9f4ef]"}`}
+                  >
+                    {/* Active indicator */}
+                    <div className="flex items-start gap-2 mb-2">
+                      <div
+                        className="mt-1 shrink-0 w-2 h-2 rounded-full transition-colors"
+                        style={{ background: selectedBranch === i ? "#b59637" : "#216d73" }}
+                      />
+                      <p className="font-['Lato'] font-bold text-[13px] text-[#120f0b] leading-snug">{branch.name}</p>
+                    </div>
+                    <p className="font-['Inter'] text-[11px] text-[#503d1c]/70 leading-relaxed mb-1 pl-4">{branch.address}</p>
+                    <p className="font-['Inter'] font-semibold text-[10px] text-[#216d73] mb-3 pl-4">{branch.hours}</p>
+                    <div className="flex gap-2 pl-4">
+                      <a
+                        href={branch.mapsUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={(e) => e.stopPropagation()}
+                        className="border border-[#b59637] text-[#b59637] rounded-full px-3 py-1 text-[10px] font-['Inter'] font-semibold hover:bg-[#b59637] hover:text-white transition-colors flex items-center gap-1"
+                      >
+                        <span className="text-[11px]">⊕</span> DIRECTION
+                      </a>
+                      <button
+                        onClick={(e) => { e.stopPropagation(); setSelectedBranch(i); }}
+                        className="bg-[#216d73] text-white rounded-full px-3 py-1 text-[10px] font-['Inter'] font-semibold hover:opacity-90 transition-opacity"
+                      >
+                        RESERVATION
+                      </button>
+                    </div>
                   </div>
-                </Popup>
-              </Marker>
-            ))}
-          </MapContainer>
+                ))}
+              </div>
+            </div>
+
+            {/* Interactive Leaflet map */}
+            <div className="flex-1 relative">
+              <MapContainer
+                center={[branches[0].lat, branches[0].lng]}
+                zoom={12}
+                style={{ width: "100%", height: "100%" }}
+                zoomControl={true}
+                scrollWheelZoom={true}
+              >
+                <TileLayer
+                  attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                />
+                <MapFlyTo lat={branches[selectedBranch].lat} lng={branches[selectedBranch].lng} />
+                {branches.map((branch, i) => (
+                  <Marker
+                    key={i}
+                    position={[branch.lat, branch.lng]}
+                    icon={makeMarkerIcon(selectedBranch === i ? "#b59637" : "#216d73", selectedBranch === i)}
+                    eventHandlers={{ click: () => setSelectedBranch(i) }}
+                  >
+                    <Popup>
+                      <div style={{ fontFamily: "Inter, sans-serif", fontSize: 12, minWidth: 160 }}>
+                        <strong style={{ fontSize: 13 }}>{branch.name}</strong>
+                        <p style={{ margin: "4px 0 2px", color: "#503d1c", opacity: 0.8, lineHeight: 1.4 }}>{branch.address}</p>
+                        <p style={{ color: "#216d73", fontWeight: 600 }}>{branch.hours}</p>
+                      </div>
+                    </Popup>
+                  </Marker>
+                ))}
+              </MapContainer>
+            </div>
+          </div>
+
         </div>
       </div>
 
