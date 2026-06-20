@@ -60,7 +60,7 @@ export function Header() {
       )}
 
       {/* ── Main nav bar ── */}
-      <div className="bg-[#f4ece4] px-6 md:px-[100px] py-4 shadow-[0px_18px_9px_rgba(56,0,30,0.03),0px_5px_5px_rgba(56,0,30,0.04)]">
+      <div className={`bg-[#f4ece4] py-4 shadow-[0px_18px_9px_rgba(56,0,30,0.03),0px_5px_5px_rgba(56,0,30,0.04)] ${showBar ? "mx-4 md:mx-6 rounded-[28px] px-6 md:px-10 mt-1" : "px-6 md:px-[100px]"}`}>
         <div className="max-w-[1240px] mx-auto flex items-center justify-between">
           <Link href="/">
             <img

@@ -87,38 +87,44 @@ export default function Contact() {
   const [selectedBranch, setSelectedBranch] = useState(0);
 
   return (
-    <div className={`flex flex-col ${HEADER_OFFSET}`}>
+    <div className="flex flex-col">
 
-      {/* ── Hero banner — rounded card, image fills full background ── */}
-      <div className="mb-8 rounded-b-[28px] overflow-hidden relative" style={{ height: "clamp(300px, 38vw, 520px)" }}>
-        {/* Background: hero image covers full card */}
+      {/* ── Hero banner — full width, image goes behind header ── */}
+      <div className="relative overflow-hidden" style={{ height: "clamp(360px, 42vw, 560px)" }}>
+        {/* Background: hero image covers full area incl. header zone */}
         <img
           src={imgContactHero}
           alt=""
           className="absolute inset-0 w-full h-full object-cover object-center"
         />
-        {/* Gradient overlay — bottom-left darker for text readability */}
+        {/* Gradient overlay — left side darker for text readability */}
         <div
           className="absolute inset-0"
           style={{
             background:
-              "linear-gradient(to right, rgba(30,18,4,0.82) 0%, rgba(30,18,4,0.6) 38%, rgba(30,18,4,0.15) 65%, transparent 85%)",
+              "linear-gradient(to right, rgba(30,18,4,0.82) 0%, rgba(30,18,4,0.62) 38%, rgba(30,18,4,0.15) 65%, transparent 85%)",
           }}
         />
-        {/* Text content — positioned at bottom-left */}
-        <div className="absolute inset-0 flex flex-col justify-end px-10 md:px-[80px] pb-12 max-w-[560px]">
+        {/* Text content — vertically centered in area below header */}
+        <div
+          className="absolute inset-x-0 bottom-0 flex flex-col justify-center px-10 md:px-[80px] max-w-[600px]"
+          style={{ top: "clamp(120px, 14vw, 160px)", paddingBottom: "clamp(32px, 4vw, 56px)" }}
+        >
           <h1
             className="font-['Lato'] font-bold leading-tight mb-3 text-[#e5c97e]"
             style={{ fontSize: "clamp(28px, 3.2vw, 44px)" }}
           >
             Book Consultation
           </h1>
-          <p className="text-white/80 font-['Inter'] text-[14px] md:text-[15px] leading-relaxed">
+          <p className="text-white/80 font-['Inter'] text-[14px] md:text-[15px] leading-relaxed max-w-[440px]">
             Mulai dari program slimming hingga perawatan kulit, semua treatment
             dirancang berdasarkan diagnosis dokter untuk hasil yang aman dan terarah.
           </p>
         </div>
       </div>
+
+      {/* spacer so content below hero clears properly */}
+      <div className="mb-8" />
 
       {/* ── WhatsApp contact rows ── */}
       <div className="px-4 md:px-10 pb-6">
