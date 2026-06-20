@@ -89,17 +89,17 @@ export default function Contact() {
   return (
     <div className={`flex flex-col ${HEADER_OFFSET}`}>
 
-      {/* ── Hero card ── */}
-      <div className="px-4 md:px-10 pt-3 pb-8">
+      {/* ── Hero card — full width ── */}
+      <div className="w-full pt-0 pb-8">
         <div
-          className="max-w-[1240px] mx-auto rounded-[28px] overflow-hidden flex items-center shadow-[0_6px_30px_rgba(0,0,0,0.12)]"
+          className="w-full flex items-center overflow-hidden"
           style={{
             background: "linear-gradient(108deg, #2e2210 0%, #3d2e18 35%, #4e3e28 65%, #5a4828 100%)",
             minHeight: "220px",
           }}
         >
           {/* Text */}
-          <div className="flex-1 px-10 md:px-14 py-10">
+          <div className="flex-1 px-10 md:px-[100px] py-10">
             <h1
               className="font-['Lato'] font-bold leading-tight mb-3 text-[#e5c97e]"
               style={{ fontSize: "clamp(28px, 3.5vw, 48px)" }}
