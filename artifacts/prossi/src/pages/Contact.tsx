@@ -90,7 +90,7 @@ export default function Contact() {
     <div className={`flex flex-col ${HEADER_OFFSET}`}>
 
       {/* ── Hero banner — rounded card, image fills full background ── */}
-      <div className="mx-4 md:mx-8 mb-8 rounded-[28px] overflow-hidden relative" style={{ minHeight: "260px" }}>
+      <div className="mb-8 rounded-[28px] overflow-hidden relative" style={{ minHeight: "260px" }}>
         {/* Background: hero image covers full card */}
         <img
           src={imgContactHero}
