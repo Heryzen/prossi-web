@@ -1,0 +1,52 @@
+{
+  "pages": {
+    "/_not-found/page": [
+      "static/chunks/webpack-c629000488df672e.js",
+      "static/chunks/6cd49086-2c621d4a895d5f34.js",
+      "static/chunks/329-415aa4a9de8cf097.js",
+      "static/chunks/main-app-94815e2c6ec702ce.js",
+      "static/chunks/app/_not-found/page-51fc0e4469413888.js"
+    ],
+    "/not-found": [
+      "static/chunks/webpack-c629000488df672e.js",
+      "static/chunks/6cd49086-2c621d4a895d5f34.js",
+      "static/chunks/329-415aa4a9de8cf097.js",
+      "static/chunks/main-app-94815e2c6ec702ce.js",
+      "static/chunks/941-5c2ca5f886c72abd.js",
+      "static/chunks/app/not-found-98e79e8d78fb00c1.js"
+    ],
+    "/layout": [
+      "static/chunks/webpack-c629000488df672e.js",
+      "static/chunks/6cd49086-2c621d4a895d5f34.js",
+      "static/chunks/329-415aa4a9de8cf097.js",
+      "static/chunks/main-app-94815e2c6ec702ce.js",
+      "static/css/13747fd0b7ac158e.css",
+      "static/chunks/941-5c2ca5f886c72abd.js",
+      "static/chunks/255-445feaec6f23bd2f.js",
+      "static/chunks/app/layout-a107c9a39f029955.js"
+    ],
+    "/doctors/page": [
+      "static/chunks/webpack-c629000488df672e.js",
+      "static/chunks/6cd49086-2c621d4a895d5f34.js",
+      "static/chunks/329-415aa4a9de8cf097.js",
+      "static/chunks/main-app-94815e2c6ec702ce.js",
+      "static/chunks/941-5c2ca5f886c72abd.js",
+      "static/chunks/app/doctors/page-98e79e8d78fb00c1.js"
+    ],
+    "/contact/page": [
+      "static/chunks/webpack-c629000488df672e.js",
+      "static/chunks/6cd49086-2c621d4a895d5f34.js",
+      "static/chunks/329-415aa4a9de8cf097.js",
+      "static/chunks/main-app-94815e2c6ec702ce.js",
+      "static/chunks/app/contact/page-ac22b4e827df7deb.js"
+    ],
+    "/page": [
+      "static/chunks/webpack-c629000488df672e.js",
+      "static/chunks/6cd49086-2c621d4a895d5f34.js",
+      "static/chunks/329-415aa4a9de8cf097.js",
+      "static/chunks/main-app-94815e2c6ec702ce.js",
+      "static/chunks/806-e02a7d0f7451a4fb.js",
+      "static/chunks/app/page-a9c496e4305ce398.js"
+    ]
+  }
+}

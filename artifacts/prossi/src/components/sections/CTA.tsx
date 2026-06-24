@@ -1,11 +1,7 @@
-import React, { useCallback } from "react";
+"use client";
+
+import { useCallback } from "react";
 import useEmblaCarousel from "embla-carousel-react";
-import imgLine4 from "@/assets/figma/imgLine4.svg";
-import imgLine2 from "@/assets/figma/imgLine2.svg";
-import imgBackground from "@/assets/figma/imgBackground.png";
-import imgObject from "@/assets/figma/imgObject.png";
-import imgSystemUiconsArrowLeft from "@/assets/figma/imgSystemUiconsArrowLeft.svg";
-import imgSystemUiconsArrowLeft1 from "@/assets/figma/imgSystemUiconsArrowLeft1.svg";
 
 export function CTA() {
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true });
@@ -29,9 +25,9 @@ export function CTA() {
               <div key={index} className="flex-[0_0_100%] h-[423px] relative border border-[#deba69] rounded-[32px] overflow-hidden mx-2">
                 <div className="absolute inset-0 z-0">
                   <div className="absolute inset-0 bg-[#f1e7da]"></div>
-                  <img src={imgBackground} alt="" className="absolute w-full h-full object-cover mix-blend-multiply opacity-50" />
+                  <img src="/figma/imgBackground.png" alt="" className="absolute w-full h-full object-cover mix-blend-multiply opacity-50" />
                   <div className="absolute inset-y-0 right-0 w-[60%] flex items-center justify-center">
-                    <img src={imgObject} alt="" className="w-full h-full object-contain object-right opacity-80" />
+                    <img src="/figma/imgObject.png" alt="" className="w-full h-full object-contain object-right opacity-80" />
                   </div>
                   <div className="absolute inset-0 bg-gradient-to-r from-[#f1e7da] from-[40%] to-transparent"></div>
                 </div>
@@ -40,7 +36,7 @@ export function CTA() {
                   <div className="flex gap-[16px] items-center justify-center overflow-clip relative shrink-0 mb-6">
                     <div className="h-0 relative shrink-0 w-[63px]">
                       <div className="absolute inset-[-5.77px_-9.16%_-5.77px_0]">
-                        <img alt="" className="block max-w-none size-full" src={imgLine4} />
+                        <img alt="" className="block max-w-none size-full" src="/figma/imgLine4.svg" />
                       </div>
                     </div>
                     <span className="font-['Inter'] font-semibold leading-normal not-italic relative shrink-0 text-[14px] text-[#120f0b] whitespace-nowrap">Promo</span>
@@ -48,7 +44,7 @@ export function CTA() {
                       <div className="-scale-y-100 flex-none rotate-180">
                         <div className="h-0 relative w-[63px]">
                           <div className="absolute inset-[-5.77px_-9.16%_-5.77px_0]">
-                            <img alt="" className="block max-w-none size-full" src={imgLine2} />
+                            <img alt="" className="block max-w-none size-full" src="/figma/imgLine2.svg" />
                           </div>
                         </div>
                       </div>
@@ -71,10 +67,10 @@ export function CTA() {
 
         <div className="flex items-center gap-6 self-end px-4">
           <button onClick={scrollPrev} className="w-[52px] h-[52px] rounded-full bg-white flex items-center justify-center hover:bg-[#f1e7da] transition-colors cursor-pointer z-10 shadow-sm border border-[#deba69]">
-             <img src={imgSystemUiconsArrowLeft} alt="Previous" className="w-[26px] h-[26px] text-[#503d1c]" />
+             <img src="/figma/imgSystemUiconsArrowLeft.svg" alt="Previous" className="w-[26px] h-[26px] text-[#503d1c]" />
           </button>
           <button onClick={scrollNext} className="w-[52px] h-[52px] rounded-full bg-[#66533b] flex items-center justify-center hover:bg-[#503d1c] transition-colors cursor-pointer z-10 shadow-sm">
-             <img src={imgSystemUiconsArrowLeft1} alt="Next" className="w-[26px] h-[26px] rotate-180" />
+             <img src="/figma/imgSystemUiconsArrowLeft1.svg" alt="Next" className="w-[26px] h-[26px] rotate-180" />
           </button>
         </div>
       </div>

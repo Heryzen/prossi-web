@@ -1,27 +1,19 @@
-import React from "react";
-import imgLine4 from "@/assets/figma/imgLine4.svg";
-import imgLine2 from "@/assets/figma/imgLine2.svg";
-import imgFrame1984078116 from "@/assets/figma/imgFrame1984078116.png";
-import imgFrame1984078117 from "@/assets/figma/imgFrame1984078117.png";
-import imgFrame1984078118 from "@/assets/figma/imgFrame1984078118.png";
-import imgTablerTagFilled from "@/assets/figma/imgTablerTagFilled.svg";
-
 export function Blog() {
   const articles = [
     {
       category: "Spesialis Gizi",
       title: "Panduan nutrisi, slimming, dan kesehatan metabolisme dari dokter Spesialis Gizi Klinik.",
-      img: imgFrame1984078116
+      img: "/figma/imgFrame1984078116.png"
     },
     {
       category: "Spesialis Kulit",
       title: "Informasi terpercaya seputar penyakit kulit dan kelamin dari dokter Sp.DVE.",
-      img: imgFrame1984078117
+      img: "/figma/imgFrame1984078117.png"
     },
     {
       category: "Dokter Estetika",
       title: "Tips dan insight perawatan kecantikan langsung dari dokter estetika Prossi Clinic.",
-      img: imgFrame1984078118
+      img: "/figma/imgFrame1984078118.png"
     }
   ];
 
@@ -32,7 +24,7 @@ export function Blog() {
           <div className="flex gap-[16px] items-center justify-center overflow-clip relative shrink-0">
             <div className="h-0 relative shrink-0 w-[63px]">
               <div className="absolute inset-[-5.77px_-9.16%_-5.77px_0]">
-                <img alt="" className="block max-w-none size-full" src={imgLine4} />
+                <img alt="" className="block max-w-none size-full" src="/figma/imgLine4.svg" />
               </div>
             </div>
             <span className="font-['Inter'] font-semibold leading-normal not-italic relative shrink-0 text-[14px] text-[#120f0b] whitespace-nowrap">BLOG & ARTICLES</span>
@@ -40,7 +32,7 @@ export function Blog() {
               <div className="-scale-y-100 flex-none rotate-180">
                 <div className="h-0 relative w-[63px]">
                   <div className="absolute inset-[-5.77px_-9.16%_-5.77px_0]">
-                    <img alt="" className="block max-w-none size-full" src={imgLine2} />
+                    <img alt="" className="block max-w-none size-full" src="/figma/imgLine2.svg" />
                   </div>
                 </div>
               </div>
@@ -62,7 +54,7 @@ export function Blog() {
               </div>
               <div className="px-8 flex flex-col gap-6">
                 <div className="flex items-center gap-2.5">
-                  <img src={imgTablerTagFilled} alt="Tag" className="w-5 h-5" />
+                  <img src="/figma/imgTablerTagFilled.svg" alt="Tag" className="w-5 h-5" />
                   <span className="font-sans font-medium text-sm text-[#503d1c]">{article.category}</span>
                 </div>
                 <h3 className="font-serif font-semibold text-[26px] text-[#120f0b] leading-tight">

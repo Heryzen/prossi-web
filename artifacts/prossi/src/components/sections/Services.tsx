@@ -1,30 +1,24 @@
-import React from "react";
-import imgProgramImage from "@/assets/figma/imgProgramImage.png";
-import imgProgramImage1 from "@/assets/figma/imgProgramImage1.png";
-import imgProgramImage2 from "@/assets/figma/imgProgramImage2.png";
-import imgLine5 from "@/assets/figma/imgLine5.svg";
-
 export function Services() {
   const services = [
     {
       titleTop: "Slimming Program by",
       titleBottom: "Sp.GK",
       desc: "Support recovery, energy, and long-term cellular resilience.",
-      img: imgProgramImage2,
+      img: "/figma/imgProgramImage2.png",
       borderColor: "border-[#c26345]"
     },
     {
       titleTop: "Skin Treatment by",
       titleBottom: "Sp.DVE",
       desc: "Support recovery, energy, and long-term cellular resilience.",
-      img: imgProgramImage,
+      img: "/figma/imgProgramImage.png",
       borderColor: "border-[#396b72]"
     },
     {
       titleTop: "Skin Treatment by",
       titleBottom: "Dokter Estetika",
       desc: "Support recovery, energy, and long-term cellular resilience.",
-      img: imgProgramImage1,
+      img: "/figma/imgProgramImage1.png",
       borderColor: "border-[#deba69]"
     }
   ];
@@ -50,7 +44,7 @@ export function Services() {
                   {svc.titleTop}<br/>{svc.titleBottom}
                 </h3>
                 <div className="w-[290px] h-0 relative">
-                  <img src={imgLine5} alt="" className="absolute w-full" />
+                  <img src="/figma/imgLine5.svg" alt="" className="absolute w-full" />
                 </div>
                 <p className="font-sans text-base text-[#120f0b] text-center">
                   {svc.desc}

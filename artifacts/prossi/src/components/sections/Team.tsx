@@ -1,15 +1,8 @@
-import React from "react";
-import imgLine4 from "@/assets/figma/imgLine4.svg";
-import imgLine2 from "@/assets/figma/imgLine2.svg";
-import imgTeamMemberImage from "@/assets/figma/imgTeamMemberImage.png";
-import imgTeamMemberImage1 from "@/assets/figma/imgTeamMemberImage1.png";
-import imgTeamMemberImage2 from "@/assets/figma/imgTeamMemberImage2.png";
-
 export function Team() {
   const team = [
-    { title: "Spesialis Gizi Klinis", img: imgTeamMemberImage },
-    { title: "spesialis Kulit & Estetika", img: imgTeamMemberImage1 },
-    { title: "Dokter Umum", img: imgTeamMemberImage2 }
+    { title: "Spesialis Gizi Klinis", img: "/figma/imgTeamMemberImage.png" },
+    { title: "spesialis Kulit & Estetika", img: "/figma/imgTeamMemberImage1.png" },
+    { title: "Dokter Umum", img: "/figma/imgTeamMemberImage2.png" }
   ];
 
   return (
@@ -19,7 +12,7 @@ export function Team() {
           <div className="flex gap-[16px] items-center justify-center overflow-clip relative shrink-0">
             <div className="h-0 relative shrink-0 w-[63px]">
               <div className="absolute inset-[-5.77px_-9.16%_-5.77px_0]">
-                <img alt="" className="block max-w-none size-full" src={imgLine4} />
+                <img alt="" className="block max-w-none size-full" src="/figma/imgLine4.svg" />
               </div>
             </div>
             <span className="font-['Inter'] font-semibold leading-normal not-italic relative shrink-0 text-[14px] text-white whitespace-nowrap">OUR DOCTORS</span>
@@ -27,7 +20,7 @@ export function Team() {
               <div className="-scale-y-100 flex-none rotate-180">
                 <div className="h-0 relative w-[63px]">
                   <div className="absolute inset-[-5.77px_-9.16%_-5.77px_0]">
-                    <img alt="" className="block max-w-none size-full" src={imgLine2} />
+                    <img alt="" className="block max-w-none size-full" src="/figma/imgLine2.svg" />
                   </div>
                 </div>
               </div>

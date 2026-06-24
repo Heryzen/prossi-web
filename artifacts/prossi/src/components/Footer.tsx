@@ -1,29 +1,19 @@
-import React from "react";
-import imgUntitledDesign181 from "@/assets/figma/imgUntitledDesign181.png";
-import imgRiInstagramLine from "@/assets/figma/imgRiInstagramLine.svg";
-import imgGgFacebook from "@/assets/figma/imgGgFacebook.svg";
-import imgGroup from "@/assets/figma/imgGroup.svg";
-import imgGroup2 from "@/assets/figma/imgGroup2.svg";
-import imgFluentCall24Filled from "@/assets/figma/imgFluentCall24Filled.svg";
-import imgEmailIcon from "@/assets/figma/imgEmailIcon.svg";
-
 export function Footer() {
   return (
     <footer className="bg-[#216d73] pt-[100px] px-6 md:px-[100px] w-full mt-24">
       <div className="max-w-[1240px] mx-auto">
         <div className="border-b border-white/30 flex flex-col md:flex-row items-start justify-between pb-10 w-full gap-10">
           <div className="flex flex-col gap-6 w-full md:w-[220px]">
-            <img src={imgUntitledDesign181} alt="Prossi Clinic" className="w-[128px] h-[72px] object-contain brightness-0 invert" />
+            <img src="/figma/imgUntitledDesign181.png" alt="Prossi Clinic" className="w-[128px] h-[72px] object-contain brightness-0 invert" />
             <p className="font-normal text-white/80 text-base">
               Perawatan kulit dan program slimming dengan pendekatan yang aman, terarah, dan dapat dipantau.
             </p>
             <div className="flex gap-3">
-              {/* Social icons */}
               {[
-                { src: imgGroup, alt: "Telegram" },
-                { src: imgRiInstagramLine, alt: "Instagram" },
-                { src: imgGgFacebook, alt: "Facebook" },
-                { src: imgGroup2, alt: "Twitter" },
+                { src: "/figma/imgGroup.svg", alt: "Telegram" },
+                { src: "/figma/imgRiInstagramLine.svg", alt: "Instagram" },
+                { src: "/figma/imgGgFacebook.svg", alt: "Facebook" },
+                { src: "/figma/imgGroup2.svg", alt: "Twitter" },
               ].map((icon) => (
                 <div key={icon.alt} className="bg-[#f4ece4] rounded-full w-8 h-8 flex items-center justify-center cursor-pointer hover:bg-white transition-colors">
                   <img src={icon.src} alt={icon.alt} className="w-4 h-4" style={{filter: 'brightness(0) saturate(100%) invert(35%) sepia(21%) saturate(1450%) hue-rotate(143deg) brightness(88%) contrast(92%)'}} />
@@ -57,11 +47,11 @@ export function Footer() {
               <h4 className="font-serif font-semibold text-lg text-[#f4ece4]">Contact</h4>
               <div className="flex flex-col gap-4 text-white/80">
                 <div className="flex items-center gap-3">
-                  <img src={imgFluentCall24Filled} alt="Phone" className="w-5 h-5 opacity-80" />
+                  <img src="/figma/imgFluentCall24Filled.svg" alt="Phone" className="w-5 h-5 opacity-80" />
                   <p>+(021) 456-7891</p>
                 </div>
                 <div className="flex items-center gap-3">
-                  <img src={imgEmailIcon} alt="Email" className="w-5 h-5 opacity-80" />
+                  <img src="/figma/imgEmailIcon.svg" alt="Email" className="w-5 h-5 opacity-80" />
                   <p>info@prossi.com</p>
                 </div>
               </div>

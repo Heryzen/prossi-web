@@ -1,13 +1,8 @@
-import React from "react";
-import imgBackground1 from "@/assets/figma/imgBackground1.png";
-import imgSystemUiconsArrowLeft from "@/assets/figma/imgSystemUiconsArrowLeft.svg";
-import imgSystemUiconsArrowLeft1 from "@/assets/figma/imgSystemUiconsArrowLeft1.svg";
-
 export function Hero() {
   return (
     <section className="relative w-full h-[880px] flex items-center justify-center pt-[79px]">
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        <img src={imgBackground1} alt="" className="absolute h-full w-full object-cover" />
+        <img src="/figma/imgBackground1.png" alt="" className="absolute h-full w-full object-cover" />
         <div className="absolute inset-0 bg-gradient-to-b from-[#f4ece4] from-[14%] via-[#f4ece4]/85 via-[48%] to-transparent to-[62%]"></div>
       </div>
 
@@ -28,10 +23,10 @@ export function Hero() {
 
       <div className="absolute bottom-[64px] left-1/2 -translate-x-1/2 flex items-center gap-6">
         <button className="w-[52px] h-[52px] rounded-full bg-white/50 flex items-center justify-center hover:bg-white transition-colors cursor-pointer">
-          <img src={imgSystemUiconsArrowLeft} alt="Previous" className="w-[26px] h-[26px]" />
+          <img src="/figma/imgSystemUiconsArrowLeft.svg" alt="Previous" className="w-[26px] h-[26px]" />
         </button>
         <button className="w-[52px] h-[52px] rounded-full bg-[#66533b] flex items-center justify-center hover:bg-[#503d1c] transition-colors cursor-pointer">
-          <img src={imgSystemUiconsArrowLeft1} alt="Next" className="w-[26px] h-[26px] rotate-180" />
+          <img src="/figma/imgSystemUiconsArrowLeft1.svg" alt="Next" className="w-[26px] h-[26px] rotate-180" />
         </button>
       </div>
     </section>

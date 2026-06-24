@@ -1,21 +1,16 @@
-import React from "react";
-import imgImage from "@/assets/figma/imgImage.png";
-import imgImage1 from "@/assets/figma/imgImage1.jpg";
-import imgImage2 from "@/assets/figma/imgImage2.jpg";
-
 export function Philosophy() {
   return (
     <section className="bg-[#c26345] w-full py-20 md:py-[130px] px-6 md:px-[100px] text-white">
       <div className="max-w-[1240px] mx-auto flex flex-col lg:flex-row items-center justify-between gap-12 lg:gap-0">
         <div className="relative w-full lg:w-[624px] h-[400px] md:h-[660px] shrink-0">
           <div className="absolute w-[60%] md:w-[381px] h-[80%] md:h-[537px] left-2 top-2 rounded-[24px] overflow-hidden">
-             <img src={imgImage} alt="Philosophy 1" className="absolute inset-0 w-full h-full object-cover" />
+             <img src="/figma/imgImage.png" alt="Philosophy 1" className="absolute inset-0 w-full h-full object-cover" />
           </div>
           <div className="absolute w-[40%] md:w-[260px] h-[50%] md:h-[338px] right-0 top-[10%] rounded-[24px] overflow-hidden">
-             <img src={imgImage1} alt="Philosophy 2" className="absolute inset-0 w-full h-full object-cover" />
+             <img src="/figma/imgImage1.jpg" alt="Philosophy 2" className="absolute inset-0 w-full h-full object-cover" />
           </div>
           <div className="absolute w-[40%] md:w-[260px] h-[50%] md:h-[338px] right-[15%] bottom-0 rounded-[24px] overflow-hidden">
-             <img src={imgImage2} alt="Philosophy 3" className="absolute inset-0 w-full h-full object-cover" />
+             <img src="/figma/imgImage2.jpg" alt="Philosophy 3" className="absolute inset-0 w-full h-full object-cover" />
           </div>
         </div>
         

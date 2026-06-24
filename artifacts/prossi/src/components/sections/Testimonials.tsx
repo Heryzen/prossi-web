@@ -1,16 +1,7 @@
-import React, { useCallback } from "react";
+"use client";
+
+import { useCallback } from "react";
 import useEmblaCarousel from "embla-carousel-react";
-import imgLine4 from "@/assets/figma/imgLine4.svg";
-import imgLine2 from "@/assets/figma/imgLine2.svg";
-import imgTestimonials from "@/assets/figma/imgTestimonials.jpg";
-import imgStars from "@/assets/figma/imgStars.svg";
-import imgImagePlaceholder from "@/assets/figma/imgImagePlaceholder.png";
-import imgImagePlaceholder1 from "@/assets/figma/imgImagePlaceholder1.png";
-import imgFrame1618873278 from "@/assets/figma/imgFrame1618873278.jpg";
-import imgFrame1618873277 from "@/assets/figma/imgFrame1618873277.jpg";
-import imgFrame1618873279 from "@/assets/figma/imgFrame1618873279.jpg";
-import imgSystemUiconsArrowLeft from "@/assets/figma/imgSystemUiconsArrowLeft.svg";
-import imgSystemUiconsArrowLeft1 from "@/assets/figma/imgSystemUiconsArrowLeft1.svg";
 
 export function Testimonials() {
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true, align: 'start' });
@@ -28,22 +19,22 @@ export function Testimonials() {
       text: `"What separates this team is they don't chase trends. No one tried to sell me peptides or stacks. They measured, waited for the data, and prescribed exactly three interventions. One year later, those three interventions have changed my trajectory. That's the difference between medicine and marketing."`,
       location: "NEW YORK, USA",
       name: "Camelia H.",
-      avatar: imgImagePlaceholder,
-      image: imgFrame1618873278
+      avatar: "/figma/imgImagePlaceholder.png",
+      image: "/figma/imgFrame1618873278.jpg"
     },
     {
       text: `"I came in feeling fine. I left with a clear understanding of exactly where my biology is headed if I don't intervene. Six months later, my metabolic markers have reversed direction, my sleep is actually restorative, and I've dropped eight pounds without trying. The data didn't lie."`,
       location: "NEW YORK, USA",
       name: "Jessica T.",
-      avatar: imgImagePlaceholder,
-      image: imgFrame1618873277
+      avatar: "/figma/imgImagePlaceholder.png",
+      image: "/figma/imgFrame1618873277.jpg"
     },
     {
       text: `"I've done executive health screenings across three continents. This was the first time a physician spent 90 minutes walking me through my results — not just the numbers, but what they actually mean for how I'll feel in ten years. The imaging revealed what physicals have been missing for decades."`,
       location: "SAN FRANCISCO, USA",
       name: "Michael R.",
-      avatar: imgImagePlaceholder1,
-      image: imgFrame1618873279
+      avatar: "/figma/imgImagePlaceholder1.png",
+      image: "/figma/imgFrame1618873279.jpg"
     }
   ];
 
@@ -52,7 +43,7 @@ export function Testimonials() {
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute inset-0 bg-[#f4ece4]"></div>
         <div className="absolute inset-0 opacity-20 overflow-hidden">
-           <img src={imgTestimonials} alt="" className="absolute w-full h-full object-cover mix-blend-multiply" />
+           <img src="/figma/imgTestimonials.jpg" alt="" className="absolute w-full h-full object-cover mix-blend-multiply" />
         </div>
       </div>
 
@@ -61,7 +52,7 @@ export function Testimonials() {
           <div className="flex gap-[16px] items-center justify-center overflow-clip relative shrink-0">
             <div className="h-0 relative shrink-0 w-[63px]">
               <div className="absolute inset-[-5.77px_-9.16%_-5.77px_0]">
-                <img alt="" className="block max-w-none size-full" src={imgLine4} />
+                <img alt="" className="block max-w-none size-full" src="/figma/imgLine4.svg" />
               </div>
             </div>
             <span className="font-['Inter'] font-semibold leading-normal not-italic relative shrink-0 text-[14px] text-[#120f0b] whitespace-nowrap">TESTIMONIALS</span>
@@ -69,7 +60,7 @@ export function Testimonials() {
               <div className="-scale-y-100 flex-none rotate-180">
                 <div className="h-0 relative w-[63px]">
                   <div className="absolute inset-[-5.77px_-9.16%_-5.77px_0]">
-                    <img alt="" className="block max-w-none size-full" src={imgLine2} />
+                    <img alt="" className="block max-w-none size-full" src="/figma/imgLine2.svg" />
                   </div>
                 </div>
               </div>
@@ -90,7 +81,7 @@ export function Testimonials() {
                 <div className="w-full bg-[#fff8f2] border border-[#deba69] rounded-[24px] p-8 flex flex-col md:flex-row gap-6 h-full">
                   <div className="flex flex-col w-full md:w-[316px] shrink-0 justify-between">
                     <div className="flex flex-col gap-4">
-                      <img src={imgStars} alt="5 stars" className="w-[176px] h-[32px]" />
+                      <img src="/figma/imgStars.svg" alt="5 stars" className="w-[176px] h-[32px]" />
                       <p className="font-sans text-lg leading-relaxed text-[#120f0b]">
                         {review.text}
                       </p>
@@ -114,10 +105,10 @@ export function Testimonials() {
 
         <div className="flex items-center gap-6">
           <button onClick={scrollPrev} className="w-[52px] h-[52px] rounded-full bg-white/50 flex items-center justify-center hover:bg-white transition-colors cursor-pointer z-10">
-             <img src={imgSystemUiconsArrowLeft} alt="Previous" className="w-[26px] h-[26px]" />
+             <img src="/figma/imgSystemUiconsArrowLeft.svg" alt="Previous" className="w-[26px] h-[26px]" />
           </button>
           <button onClick={scrollNext} className="w-[52px] h-[52px] rounded-full bg-[#66533b] flex items-center justify-center hover:bg-[#503d1c] transition-colors cursor-pointer z-10">
-             <img src={imgSystemUiconsArrowLeft1} alt="Next" className="w-[26px] h-[26px] rotate-180" />
+             <img src="/figma/imgSystemUiconsArrowLeft1.svg" alt="Next" className="w-[26px] h-[26px] rotate-180" />
           </button>
         </div>
       </div>
