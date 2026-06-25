@@ -1,1 +1,0 @@
-self.__REACT_LOADABLE_MANIFEST='{"app/contact/page.tsx -> @/components/MapSection":{"id":1396,"files":["static/chunks/fe69a73d.ddff67b9c5fc2bdb.js","static/chunks/396.e3362541f8222f40.js"]}}';
