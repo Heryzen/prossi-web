@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { MapContainer, TileLayer, Marker, Popup, ZoomControl, useMap } from "react-leaflet";
 import L from "leaflet";
 
@@ -68,7 +68,18 @@ export function MapSection({
   selectedBranch: number;
   onSelectBranch: (index: number) => void;
 }) {
+  const wrapperRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    return () => {
+      // Clear Leaflet's container ID on unmount to prevent "reused" error during HMR
+      const el = wrapperRef.current?.querySelector(".leaflet-container");
+      if (el) delete (el as unknown as Record<string, unknown>)._leaflet_id;
+    };
+  }, []);
+
   return (
+    <div ref={wrapperRef} style={{ width: "100%", height: "100%" }}>
     <MapContainer
       center={[branches[0].lat, branches[0].lng]}
       zoom={12}
@@ -101,5 +112,6 @@ export function MapSection({
         </Marker>
       ))}
     </MapContainer>
+    </div>
   );
 }

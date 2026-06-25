@@ -1,15 +1,26 @@
 "use client";
 
-import { useState } from "react";
+import { useRef } from "react";
 
 const images = [
-  { src: "/figma/imgProgramImage.png", alt: "Before After 1" },
-  { src: "/figma/imgProgramImage1.png", alt: "Before After 2" },
-  { src: "/figma/imgProgramImage2.png", alt: "Before After 3" },
+  { src: "/figma/imgBeforeAfter1-41fe45.png", alt: "Before After 1" },
+  { src: "/figma/imgBeforeAfter2-41fe45b.png", alt: "Before After 2" },
+  { src: "/figma/imgBeforeAfter1-41fe45.png", alt: "Before After 3" },
+  { src: "/figma/imgBeforeAfter2-41fe45b.png", alt: "Before After 4" },
 ];
 
+const CARD_WIDTH = 717 + 36; // card width + gap
+
 export function BeforeAfter() {
-  const [, setCurrent] = useState(0);
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  const scroll = (dir: "prev" | "next") => {
+    if (!scrollRef.current) return;
+    scrollRef.current.scrollBy({
+      left: dir === "next" ? CARD_WIDTH : -CARD_WIDTH,
+      behavior: "smooth",
+    });
+  };
 
   return (
     <section className="bg-[#f4ece4] w-full py-[60px] px-6 md:px-[40px]">
@@ -23,7 +34,11 @@ export function BeforeAfter() {
           </p>
         </div>
 
-        <div className="flex gap-9 overflow-x-auto pb-2" style={{ scrollbarWidth: "none" }}>
+        <div
+          ref={scrollRef}
+          className="flex gap-9 overflow-x-auto pb-2"
+          style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+        >
           {images.map((img, i) => (
             <div key={i} className="flex-none w-[717px] h-[536px] bg-white rounded-[12px] overflow-hidden">
               <img src={img.src} alt={img.alt} className="w-full h-full object-cover" />
@@ -33,7 +48,7 @@ export function BeforeAfter() {
 
         <div className="flex items-center gap-6 justify-center">
           <button
-            onClick={() => setCurrent((prev) => Math.max(0, prev - 1))}
+            onClick={() => scroll("prev")}
             className="w-[52px] h-[52px] rounded-full bg-white/50 flex items-center justify-center hover:bg-white/80 transition-colors"
             aria-label="Previous"
           >
@@ -42,7 +57,7 @@ export function BeforeAfter() {
             </svg>
           </button>
           <button
-            onClick={() => setCurrent((prev) => Math.min(images.length - 1, prev + 1))}
+            onClick={() => scroll("next")}
             className="w-[52px] h-[52px] rounded-full bg-[#66533b] flex items-center justify-center hover:opacity-90 transition-opacity"
             aria-label="Next"
           >
