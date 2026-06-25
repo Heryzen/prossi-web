@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export function Footer() {
   return (
     <footer className="bg-[#216d73] pt-[60px] px-6 md:px-[100px] w-full">
@@ -10,14 +12,14 @@ export function Footer() {
             </p>
             <div className="flex gap-3">
               {[
-                { src: "/figma/imgGroup.svg", alt: "Telegram" },
-                { src: "/figma/imgRiInstagramLine.svg", alt: "Instagram" },
-                { src: "/figma/imgGgFacebook.svg", alt: "Facebook" },
-                { src: "/figma/imgGroup2.svg", alt: "Twitter" },
+                { src: "/figma/imgGroup.svg", alt: "Telegram", href: "https://t.me/prossiclinic" },
+                { src: "/figma/imgRiInstagramLine.svg", alt: "Instagram", href: "https://instagram.com/prossiclinic" },
+                { src: "/figma/imgGgFacebook.svg", alt: "Facebook", href: "https://facebook.com/prossiclinic" },
+                { src: "/figma/imgGroup2.svg", alt: "Twitter", href: "https://twitter.com/prossiclinic" },
               ].map((icon) => (
-                <div key={icon.alt} className="bg-[#f4ece4] rounded-full w-8 h-8 flex items-center justify-center cursor-pointer hover:bg-white transition-colors">
+                <a key={icon.alt} href={icon.href} target="_blank" rel="noopener noreferrer" className="bg-[#f4ece4] rounded-full w-8 h-8 flex items-center justify-center hover:bg-white transition-colors">
                   <img src={icon.src} alt={icon.alt} className="w-4 h-4" style={{filter: 'brightness(0) saturate(100%) invert(35%) sepia(21%) saturate(1450%) hue-rotate(143deg) brightness(88%) contrast(92%)'}} />
-                </div>
+                </a>
               ))}
             </div>
           </div>
@@ -26,34 +28,34 @@ export function Footer() {
             <div className="flex flex-col gap-6">
               <h4 className="font-serif font-semibold text-lg text-[#f4ece4]">Treatments</h4>
               <div className="flex flex-col gap-4 text-white/80">
-                <a href="#" className="hover:text-white transition-colors">Slimming Program</a>
-                <a href="#" className="hover:text-white transition-colors">Acne & Skin Treatment</a>
-                <a href="#" className="hover:text-white transition-colors">Brightening & Glow</a>
-                <a href="#" className="hover:text-white transition-colors">Laser & Rejuvenation</a>
+                <Link href="/treatments/slimming-program" className="hover:text-white transition-colors">Slimming Program</Link>
+                <Link href="/treatments/skin-treatment" className="hover:text-white transition-colors">Acne & Skin Treatment</Link>
+                <Link href="/treatments/skin-treatment" className="hover:text-white transition-colors">Brightening & Glow</Link>
+                <Link href="/treatments/skin-treatment" className="hover:text-white transition-colors">Laser & Rejuvenation</Link>
               </div>
             </div>
             
             <div className="flex flex-col gap-6">
               <h4 className="font-serif font-semibold text-lg text-[#f4ece4]">Tentang Kami</h4>
               <div className="flex flex-col gap-4 text-white/80">
-                <a href="#" className="hover:text-white transition-colors">Tentang Prossi Clinic</a>
-                <a href="#" className="hover:text-white transition-colors">Dokter Kami</a>
-                <a href="#" className="hover:text-white transition-colors">Prossi Journal</a>
-                <a href="#" className="hover:text-white transition-colors">Careers</a>
+                <Link href="/about" className="hover:text-white transition-colors">Tentang Prossi Clinic</Link>
+                <Link href="/doctors" className="hover:text-white transition-colors">Dokter Kami</Link>
+                <Link href="/about" className="hover:text-white transition-colors">Prossi Journal</Link>
+                <Link href="/careers" className="hover:text-white transition-colors">Careers</Link>
               </div>
             </div>
             
             <div className="flex flex-col gap-6">
               <h4 className="font-serif font-semibold text-lg text-[#f4ece4]">Contact</h4>
               <div className="flex flex-col gap-4 text-white/80">
-                <div className="flex items-center gap-3">
+                <a href="tel:+0214567891" className="flex items-center gap-3 hover:text-white transition-colors">
                   <img src="/figma/imgFluentCall24Filled.svg" alt="Phone" className="w-5 h-5 opacity-80" />
-                  <p>+(021) 456-7891</p>
-                </div>
-                <div className="flex items-center gap-3">
+                  <span>+(021) 456-7891</span>
+                </a>
+                <a href="mailto:info@prossi.com" className="flex items-center gap-3 hover:text-white transition-colors">
                   <img src="/figma/imgEmailIcon.svg" alt="Email" className="w-5 h-5 opacity-80" />
-                  <p>info@prossi.com</p>
-                </div>
+                  <span>info@prossi.com</span>
+                </a>
               </div>
             </div>
             
@@ -76,8 +78,8 @@ export function Footer() {
         <div className="flex flex-col md:flex-row items-center justify-between py-5 text-white/60 text-sm w-full gap-4">
           <p>© 2026 Prossi. All rights reserved.</p>
           <div className="flex gap-8">
-            <a href="#" className="hover:text-white transition-colors">Terms of Use</a>
-            <a href="#" className="hover:text-white transition-colors">Privacy Policy</a>
+            <Link href="/terms" className="hover:text-white transition-colors">Terms of Use</Link>
+            <Link href="/privacy" className="hover:text-white transition-colors">Privacy Policy</Link>
           </div>
         </div>
       </div>

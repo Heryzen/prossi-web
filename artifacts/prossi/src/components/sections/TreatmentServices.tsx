@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 const cards = [
   {
     title: "Slimming Program by Sp.GK",
@@ -62,14 +64,15 @@ export function TreatmentServices() {
                       {card.desc}
                     </p>
                   </div>
-                  <button
+                  <Link
+                    href="/doctors"
                     className="rounded-full px-9 py-[18px] text-white font-['Source_Serif_4',serif] font-semibold text-[18px] bg-[#b59637] hover:opacity-90 transition-opacity"
                     style={{
                       border: "1px solid rgba(236,213,165,1)",
                     }}
                   >
                     View Doctors
-                  </button>
+                  </Link>
                 </div>
               </div>
             </div>

@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export function Blog() {
   const articles = [
     {
@@ -48,7 +50,7 @@ export function Blog() {
 
         <div className="w-full flex flex-col md:flex-row gap-6">
           {articles.map((article, i) => (
-            <div key={i} className="flex-1 bg-[#fff8f2] rounded-[24px] overflow-hidden flex flex-col pb-8">
+            <Link key={i} href="/about" className="flex-1 bg-[#fff8f2] rounded-[24px] overflow-hidden flex flex-col pb-8 hover:shadow-md transition-shadow">
               <div className="w-full h-[260px] relative mb-6">
                 <img src={article.img} alt="" className="absolute inset-0 w-full h-full object-cover" />
               </div>
@@ -61,13 +63,13 @@ export function Blog() {
                   {article.title}
                 </h3>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
 
-        <button className="bg-[#b59637] border border-[#ecd5a5] rounded-full px-9 py-[18px] text-white font-serif font-semibold text-lg hover:opacity-90 transition-opacity">
+        <Link href="/about" className="bg-[#b59637] border border-[#ecd5a5] rounded-full px-9 py-[18px] text-white font-serif font-semibold text-lg hover:opacity-90 transition-opacity">
           Read More
-        </button>
+        </Link>
       </div>
     </section>
   );

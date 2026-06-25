@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export function Hero() {
   return (
     <section className="relative w-full h-[880px] flex items-center justify-center pt-[79px]">
@@ -16,9 +18,9 @@ export function Hero() {
           </p>
         </div>
 
-        <button className="bg-[#b59637] border border-[#ecd5a5] rounded-full px-9 py-[18px] text-white font-serif font-semibold text-lg hover:opacity-90 transition-opacity">
+        <Link href="/treatments" className="bg-[#b59637] border border-[#ecd5a5] rounded-full px-9 py-[18px] text-white font-serif font-semibold text-lg hover:opacity-90 transition-opacity">
           Explore Treatments
-        </button>
+        </Link>
       </div>
 
       <div className="absolute bottom-[64px] left-1/2 -translate-x-1/2 flex items-center gap-6">

@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback } from "react";
+import Link from "next/link";
 import useEmblaCarousel from "embla-carousel-react";
 
 export function CTA() {
@@ -56,9 +57,9 @@ export function CTA() {
                   <p className="font-sans text-lg text-[#120f0b] mb-8">
                     If you value evidence, privacy, and a structured plan, we're ready to support your next phase.
                   </p>
-                  <button className="bg-gradient-to-r from-[#e5be80] via-[#edd8ab] to-[#e5be80] border border-[#ecd5a5] rounded-full px-9 py-[18px] text-[#503d1c] font-serif font-semibold text-lg hover:opacity-90 transition-opacity w-fit">
+                  <Link href="/promo" className="bg-gradient-to-r from-[#e5be80] via-[#edd8ab] to-[#e5be80] border border-[#ecd5a5] rounded-full px-9 py-[18px] text-[#503d1c] font-serif font-semibold text-lg hover:opacity-90 transition-opacity w-fit">
                     View Offers
-                  </button>
+                  </Link>
                 </div>
               </div>
             ))}

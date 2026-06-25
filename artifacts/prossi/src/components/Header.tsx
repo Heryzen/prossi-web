@@ -9,9 +9,9 @@ const navItems = [
   { label: "Treatments", href: "/treatments", dropdown: true },
   { label: "Doctors", href: "/doctors", dropdown: true },
   { label: "About", href: "/about", dropdown: false },
-  { label: "Promo", href: null, dropdown: false },
-  { label: "Shop", href: null, dropdown: false },
-  { label: "Locations", href: null, dropdown: false },
+  { label: "Promo", href: "/promo", dropdown: false },
+  { label: "Shop", href: "/shop", dropdown: false },
+  { label: "Locations", href: "/locations", dropdown: false },
 ];
 
 export function Header() {
@@ -53,13 +53,16 @@ export function Header() {
           </div>
           <div className="flex items-center gap-2">
             {[
-              { src: "/figma/imgGroup.svg", alt: "Telegram" },
-              { src: "/figma/imgRiInstagramLine.svg", alt: "Instagram" },
-              { src: "/figma/imgGgFacebook.svg", alt: "Facebook" },
+              { src: "/figma/imgGroup.svg", alt: "Telegram", href: "https://t.me/prossiclinic" },
+              { src: "/figma/imgRiInstagramLine.svg", alt: "Instagram", href: "https://instagram.com/prossiclinic" },
+              { src: "/figma/imgGgFacebook.svg", alt: "Facebook", href: "https://facebook.com/prossiclinic" },
             ].map((icon) => (
-              <div
+              <a
                 key={icon.alt}
-                className="w-6 h-6 rounded-full bg-white/10 flex items-center justify-center cursor-pointer hover:bg-white/20 transition-colors"
+                href={icon.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-6 h-6 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors"
               >
                 <img
                   src={icon.src}
@@ -67,7 +70,7 @@ export function Header() {
                   className="w-3.5 h-3.5"
                   style={{ filter: "brightness(0) invert(1)" }}
                 />
-              </div>
+              </a>
             ))}
           </div>
         </div>
