@@ -3,10 +3,10 @@
 import { useRef } from "react";
 
 const images = [
-  { src: "/figma/imgBeforeAfter1-41fe45.png", alt: "Before After 1" },
-  { src: "/figma/imgBeforeAfter2-41fe45b.png", alt: "Before After 2" },
-  { src: "/figma/imgBeforeAfter1-41fe45.png", alt: "Before After 3" },
-  { src: "/figma/imgBeforeAfter2-41fe45b.png", alt: "Before After 4" },
+  { src: "/figma/imgBeforeAfter1-41fe45.webp", alt: "Before After 1" },
+  { src: "/figma/imgBeforeAfter2-41fe45b.webp", alt: "Before After 2" },
+  { src: "/figma/imgBeforeAfter1-41fe45.webp", alt: "Before After 3" },
+  { src: "/figma/imgBeforeAfter2-41fe45b.webp", alt: "Before After 4" },
 ];
 
 const CARD_WIDTH = 717 + 36; // card width + gap

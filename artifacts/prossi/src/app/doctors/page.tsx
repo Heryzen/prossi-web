@@ -2,7 +2,7 @@ import Link from "next/link";
 
 const doctors = [
   {
-    img: "/figma/imgTeamMemberImage.png",
+    img: "/figma/imgTeamMemberImage.webp",
     name: "dr. Reina Kartika, Sp.GK",
     specialty: "Spesialis Gizi Klinik",
     tag: "Sp.GK",
@@ -12,7 +12,7 @@ const doctors = [
     borderColor: "border-[#c26345]",
   },
   {
-    img: "/figma/imgTeamMemberImage1.png",
+    img: "/figma/imgTeamMemberImage1.webp",
     name: "dr. Desiree Ayu, Sp.DVE",
     specialty: "Spesialis Kulit & Estetika",
     tag: "Sp.DVE",
@@ -22,7 +22,7 @@ const doctors = [
     borderColor: "border-[#396b72]",
   },
   {
-    img: "/figma/imgTeamMemberImage2.png",
+    img: "/figma/imgTeamMemberImage2.webp",
     name: "dr. Fajar Nugroho",
     specialty: "Dokter Estetika",
     tag: "Estetika",
@@ -86,7 +86,7 @@ export default function Doctors() {
       {/* Hero banner */}
       <section className="relative w-full h-[420px] flex items-end justify-center pb-0 overflow-hidden">
         <div className="absolute inset-0">
-          <img src="/figma/imgBackground1.png" alt="" className="absolute h-full w-full object-cover object-top" />
+          <img src="/figma/imgBackground1.webp" alt="" className="absolute h-full w-full object-cover object-top" />
           <div className="absolute inset-0 bg-gradient-to-b from-[#f4ece4] from-[10%] via-[#f4ece4]/80 via-[45%] to-transparent to-[70%]" />
           <div className="absolute inset-0 bg-gradient-to-t from-[#f4ece4] from-[0%] to-transparent to-[40%]" />
         </div>

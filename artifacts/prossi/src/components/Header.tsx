@@ -96,7 +96,7 @@ export function Header() {
           {/* Logo */}
           <Link href="/">
             <img
-              src="/figma/imgUntitledDesign181.png"
+              src="/figma/imgUntitledDesign181.webp"
               alt="Prossi Clinic"
               className="w-[128px] h-[72px] object-contain"
               style={{ filter: "none" }}

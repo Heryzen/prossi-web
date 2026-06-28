@@ -6,25 +6,25 @@ const programs = [
   {
     title: "Konsultasi dengan Dokter Sp.DVE",
     desc: "Konsultasi langsung dengan Dokter Spesialis Dermatologi, Venereologi, dan Estetika untuk mengetahui kondisi kulitmu secara menyeluruh.",
-    img: "/figma/imgSkinCard1.png",
+    img: "/figma/imgSkinCard1.webp",
     size: "sm" as const,
   },
   {
     title: "Aesthetic Treatment by Sp.DVE",
     desc: "Solusi untuk berbagai permasalahan kulit. Dilengkapi dengan peralatan canggih seperti IPL, Laser, HIFU, dll. Ditangani langsung oleh Dokter Spesialis Dermatologi, Venereologi, dan Estetika",
-    img: "/figma/imgSkinCard2.png",
+    img: "/figma/imgSkinCard2.webp",
     size: "lg" as const,
   },
   {
     title: "ProssiConsult+ by Sp.DVE",
     desc: "Konsultasikan berbagai masalah kulit, penyakit kelamin, dan kondisi dermatologis langsung secara online bersama dokter Spesialis Dermatologi, Venereologi & Estetika (Sp.DVE). Solusi tepat untuk kamu yang ingin tetap mendapatkan penanganan medis profesional dari mana saja.",
-    img: "/figma/imgSkinCard3.png",
+    img: "/figma/imgSkinCard3.webp",
     size: "lg" as const,
   },
   {
     title: "Prossi Clinical Skin Solution",
     desc: "Penanganan komprehensif untuk berbagai kulit, kelamin, dan tindakan bedah kulit minor. Ditangani langsung oleh dokter Spesialis Dermatologi, Venereologi & Estetika (Sp.DVE) yang tepat untuk semua usia.",
-    img: "/figma/imgSkinCard4.png",
+    img: "/figma/imgSkinCard4.webp",
     size: "sm" as const,
   },
 ];

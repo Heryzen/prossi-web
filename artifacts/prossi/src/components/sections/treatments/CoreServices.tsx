@@ -5,37 +5,37 @@ const programs = [
   {
     title: "Konsultasi dengan Dokter Sp.GK",
     desc: "Konsultasi langsung dengan Dokter Spesialis Gizi Klinik untuk mengetahui kondisi tubuhmu secara mendalam, mencakup evaluasi berat badan, komposisi tubuh, riwayat kesehatan, dan pola makan sehari-hari.",
-    img: "/figma/imgCard1.png",
+    img: "/figma/imgCard1.webp",
     size: "sm" as const,
   },
   {
     title: "Slimming Program dengan Dokter Sp.GK",
     desc: "Slimming Program di Prossi Clinic adalah program penanganan berat badan secara medis dan terstruktur yang ditangani langsung oleh dokter Spesialis Gizi Klinik. Program ini tidak hanya berfokus pada penurunan angka di timbangan, tetapi juga memperbaiki komposisi tubuh, metabolisme, dan kebiasaan makan secara menyeluruh.",
-    img: "/figma/imgCard2.png",
+    img: "/figma/imgCard2.webp",
     size: "lg" as const,
   },
   {
     title: "Prossi Gene",
     desc: "Prossi Gene adalah layanan cek genetik yang membantu memahami apa yang dibutuhkan tubuhmu dari metabolisme, nutrisi, hingga gaya hidup terbaik sesuai DNA-mu.",
-    img: "/figma/imgCard3.png",
+    img: "/figma/imgCard3.webp",
     size: "lg" as const,
   },
   {
     title: "Pro Slim",
     desc: "ProSlim adalah paket perawatan lengkap dengan jangka waktu mulai dari 3 sampai 6 bulan yang disupervisi langsung oleh dokter spesialis gizi klinik.",
-    img: "/figma/imgCard4.png",
+    img: "/figma/imgCard4.webp",
     size: "sm" as const,
   },
   {
     title: "Premium Slim Solution Premium Fat Burn Treatment Package (PFTP)",
     desc: "Fat-Burn Treatment Package adalah paket perawatan penurunan berat badan berupa injeksi meso slimming.",
-    img: "/figma/imgCard1.png",
+    img: "/figma/imgCard1.webp",
     size: "sm" as const,
   },
   {
     title: "ProssiConsult+ by Sp.GK",
     desc: "Untuk kamu yang berada jauh dari cabang Prossi Clinic atau di kota yang belum tersedia Prossi Clinic, kini konsultasi program slimming dan nutrisi bisa dilakukan secara online bersama dokter Spesialis Gizi Klinik (Sp.GK). Dapatkan pendampingan dan program yang disesuaikan dengan kondisi tubuhmu tanpa perlu datang langsung ke klinik.",
-    img: "/figma/imgCard2.png",
+    img: "/figma/imgCard2.webp",
     size: "lg" as const,
   },
 ];

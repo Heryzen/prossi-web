@@ -4,7 +4,7 @@ export function Hero() {
   return (
     <section className="relative w-full h-[880px] flex items-center justify-center pt-[79px]">
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        <img src="/figma/imgBackground1.png" alt="" className="absolute h-full w-full object-cover prossi-kenburns" />
+        <img src="/figma/imgBackground1.webp" alt="" className="absolute h-full w-full object-cover prossi-kenburns" />
         <div className="absolute inset-0 bg-gradient-to-b from-[#f4ece4] from-[14%] via-[#f4ece4]/85 via-[48%] to-transparent to-[62%]"></div>
       </div>
 

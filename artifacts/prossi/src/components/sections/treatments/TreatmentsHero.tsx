@@ -3,7 +3,7 @@ export function TreatmentsHero() {
     <div className="relative w-full overflow-hidden rounded-b-[100px]" style={{ minHeight: "560px" }}>
       {/* Background image — stretch to fill like Figma */}
       <img
-        src="/figma/imgHeroTreatments-31d3d2.png"
+        src="/figma/imgHeroTreatments-31d3d2.webp"
         alt=""
         aria-hidden
         className="absolute inset-0 w-full h-full object-cover object-right"

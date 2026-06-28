@@ -11,17 +11,17 @@ const CARD_BG = "linear-gradient(180deg, #ffffff 0%, #fff9eb 100%)";
 const corePrograms = [
   {
     title: "Slimming Program by\nSp.GK",
-    img: "/figma/imgAboutCardSlimming-29ddd5.png",
+    img: "/figma/imgAboutCardSlimming-29ddd5.webp",
     border: CARD_BORDER_SLIMMING,
   },
   {
     title: "Skin Treatment by\nSp.DVE",
-    img: "/figma/imgAboutCardSkinDVE-ee6372.png",
+    img: "/figma/imgAboutCardSkinDVE-ee6372.webp",
     border: CARD_BORDER_DVE,
   },
   {
     title: "Skin Treatment by\nDokter Estetika",
-    img: "/figma/imgAboutCardSkinEst-2ec088.png",
+    img: "/figma/imgAboutCardSkinEst-2ec088.webp",
     border: CARD_BORDER_EST,
   },
 ];
@@ -79,7 +79,7 @@ export default function AboutPage() {
         style={{ height: 440, borderRadius: "0 0 100px 100px" }}
       >
         <img
-          src="/figma/imgContactHero-4f95a9.png"
+          src="/figma/imgContactHero-4f95a9.webp"
           alt=""
           className="absolute inset-0 w-full h-full object-cover object-right"
         />

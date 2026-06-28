@@ -5,17 +5,17 @@ export function Blog() {
     {
       category: "Spesialis Gizi",
       title: "Panduan nutrisi, slimming, dan kesehatan metabolisme dari dokter Spesialis Gizi Klinik.",
-      img: "/figma/imgFrame1984078116.png"
+      img: "/figma/imgFrame1984078116.webp"
     },
     {
       category: "Spesialis Kulit",
       title: "Informasi terpercaya seputar penyakit kulit dan kelamin dari dokter Sp.DVE.",
-      img: "/figma/imgFrame1984078117.png"
+      img: "/figma/imgFrame1984078117.webp"
     },
     {
       category: "Dokter Estetika",
       title: "Tips dan insight perawatan kecantikan langsung dari dokter estetika Prossi Clinic.",
-      img: "/figma/imgFrame1984078118.png"
+      img: "/figma/imgFrame1984078118.webp"
     }
   ];
 

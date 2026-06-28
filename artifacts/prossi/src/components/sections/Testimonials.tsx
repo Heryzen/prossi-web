@@ -19,22 +19,22 @@ export function Testimonials() {
       text: `"What separates this team is they don't chase trends. No one tried to sell me peptides or stacks. They measured, waited for the data, and prescribed exactly three interventions. One year later, those three interventions have changed my trajectory. That's the difference between medicine and marketing."`,
       location: "NEW YORK, USA",
       name: "Camelia H.",
-      avatar: "/figma/imgImagePlaceholder.png",
-      image: "/figma/imgFrame1618873278.jpg"
+      avatar: "/figma/imgImagePlaceholder.webp",
+      image: "/figma/imgFrame1618873278.webp"
     },
     {
       text: `"I came in feeling fine. I left with a clear understanding of exactly where my biology is headed if I don't intervene. Six months later, my metabolic markers have reversed direction, my sleep is actually restorative, and I've dropped eight pounds without trying. The data didn't lie."`,
       location: "NEW YORK, USA",
       name: "Jessica T.",
-      avatar: "/figma/imgImagePlaceholder.png",
-      image: "/figma/imgFrame1618873277.jpg"
+      avatar: "/figma/imgImagePlaceholder.webp",
+      image: "/figma/imgFrame1618873277.webp"
     },
     {
       text: `"I've done executive health screenings across three continents. This was the first time a physician spent 90 minutes walking me through my results — not just the numbers, but what they actually mean for how I'll feel in ten years. The imaging revealed what physicals have been missing for decades."`,
       location: "SAN FRANCISCO, USA",
       name: "Michael R.",
-      avatar: "/figma/imgImagePlaceholder1.png",
-      image: "/figma/imgFrame1618873279.jpg"
+      avatar: "/figma/imgImagePlaceholder1.webp",
+      image: "/figma/imgFrame1618873279.webp"
     }
   ];
 
@@ -43,7 +43,7 @@ export function Testimonials() {
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute inset-0 bg-[#f4ece4]"></div>
         <div className="absolute inset-0 opacity-20 overflow-hidden">
-           <img src="/figma/imgTestimonials.jpg" alt="" className="absolute w-full h-full object-cover mix-blend-multiply" />
+           <img src="/figma/imgTestimonials.webp" alt="" className="absolute w-full h-full object-cover mix-blend-multiply" />
         </div>
       </div>
 

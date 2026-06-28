@@ -23,49 +23,49 @@ const baseArticles = [
     title: "Top Study Hacks for Olympiad Success",
     excerpt:
       "Unlock proven strategies to study smarter, not harder. From time management to problem-solving techniques, these tips will elevate your preparation.",
-    img: "/figma/imgFrame1984078116.png",
+    img: "/figma/imgFrame1984078116.webp",
   },
   {
     title: "Smart Nutrition Habits for a Healthier You",
     excerpt:
       "Unlock proven strategies to study smarter, not harder. From time management to problem-solving techniques, these tips will elevate your preparation.",
-    img: "/figma/imgFrame1984078117.png",
+    img: "/figma/imgFrame1984078117.webp",
   },
   {
     title: "The Journey of a Champion: How I Won My First Olympiad",
     excerpt:
       "Get inspired by the story of a young Olympiad participant who went from nervous beginner to grand champion through persistence and dedication.",
-    img: "/figma/imgFrame1984078118.png",
+    img: "/figma/imgFrame1984078118.webp",
   },
   {
     title: "Why Trial Exams Are Key to Winning the Olympiad",
     excerpt:
       "Discover how trial exams build your confidence, sharpen your skills, and prepare you to ace the big day. Learn how to make the most of your practice sessions.",
-    img: "/figma/imgFrame1984078116.png",
+    img: "/figma/imgFrame1984078116.webp",
   },
   {
     title: "Memahami Jenis Kulit Sebelum Memulai Perawatan",
     excerpt:
       "Kenali tipe kulit Anda — normal, kering, berminyak, atau kombinasi — agar setiap treatment yang dipilih benar-benar sesuai dengan kebutuhan kulit.",
-    img: "/figma/imgFrame1984078117.png",
+    img: "/figma/imgFrame1984078117.webp",
   },
   {
     title: "Slimming Sehat: Mitos dan Fakta dari Dokter Gizi",
     excerpt:
       "Banyak informasi keliru soal menurunkan berat badan. Dokter Spesialis Gizi Prossi meluruskan mitos yang sering bikin program slimming gagal.",
-    img: "/figma/imgFrame1984078118.png",
+    img: "/figma/imgFrame1984078118.webp",
   },
   {
     title: "Rutinitas Perawatan Kulit Harian yang Efektif",
     excerpt:
       "Langkah sederhana namun konsisten adalah kunci kulit sehat. Simak urutan skincare pagi dan malam yang direkomendasikan dokter estetika kami.",
-    img: "/figma/imgFrame1984078116.png",
+    img: "/figma/imgFrame1984078116.webp",
   },
   {
     title: "Kapan Waktu Tepat untuk Laser & Rejuvenation?",
     excerpt:
       "Treatment laser bukan untuk semua kondisi. Pelajari kapan prosedur ini ideal dan apa saja yang perlu dipersiapkan sebelum menjalaninya.",
-    img: "/figma/imgFrame1984078117.png",
+    img: "/figma/imgFrame1984078117.webp",
   },
 ];
 

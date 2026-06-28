@@ -48,13 +48,13 @@ export function ReservationModal({ isOpen, onClose }: Props) {
           style={{ width: 442, borderRadius: "20px 0 0 20px" }}
         >
           <img
-            src="/figma/imgReservationBanner-15f3a5.png"
+            src="/figma/imgReservationBanner-15f3a5.webp"
             alt=""
             className="absolute inset-0 w-full h-full object-cover"
           />
           <div className="absolute" style={{ left: 31, top: 45 }}>
             <img
-              src="/figma/imgUntitledDesign181.png"
+              src="/figma/imgUntitledDesign181.webp"
               alt="Prossi Clinic"
               style={{ width: 128, height: 72, objectFit: "contain" }}
             />

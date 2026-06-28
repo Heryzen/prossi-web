@@ -1,8 +1,8 @@
 export function Team() {
   const team = [
-    { title: "Spesialis Gizi Klinis", img: "/figma/imgTeamMemberImage.png" },
-    { title: "spesialis Kulit & Estetika", img: "/figma/imgTeamMemberImage1.png" },
-    { title: "Dokter Umum", img: "/figma/imgTeamMemberImage2.png" }
+    { title: "Spesialis Gizi Klinis", img: "/figma/imgTeamMemberImage.webp" },
+    { title: "spesialis Kulit & Estetika", img: "/figma/imgTeamMemberImage1.webp" },
+    { title: "Dokter Umum", img: "/figma/imgTeamMemberImage2.webp" }
   ];
 
   return (

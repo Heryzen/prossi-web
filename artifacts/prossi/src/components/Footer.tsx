@@ -6,7 +6,7 @@ export function Footer() {
       <div className="max-w-[1240px] mx-auto">
         <div className="border-b border-white/30 flex flex-col md:flex-row items-start justify-between pb-10 w-full gap-10">
           <div className="flex flex-col gap-6 w-full md:w-[220px]">
-            <img src="/figma/imgUntitledDesign181.png" alt="Prossi Clinic" className="w-[128px] h-[72px] object-contain brightness-0 invert" />
+            <img src="/figma/imgUntitledDesign181.webp" alt="Prossi Clinic" className="w-[128px] h-[72px] object-contain brightness-0 invert" />
             <p className="font-normal text-white/80 text-base">
               Perawatan kulit dan program slimming dengan pendekatan yang aman, terarah, dan dapat dipantau.
             </p>

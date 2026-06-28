@@ -4,13 +4,13 @@ const cards = [
   {
     title: "Slimming Program by Sp.GK",
     desc: "Support recovery, energy, and long-term cellular resilience.",
-    img: "/figma/imgCoreSlimming.png",
+    img: "/figma/imgCoreSlimming.webp",
     borderGradient: "linear-gradient(270deg, rgba(194,99,69,1) 0%, rgba(222,186,105,1) 100%)",
   },
   {
     title: "Skin Treatment by Sp.DVE",
     desc: "Support recovery, energy, and long-term cellular resilience.",
-    img: "/figma/imgCoreSkin.png",
+    img: "/figma/imgCoreSkin.webp",
     borderGradient: "linear-gradient(270deg, rgba(57,107,114,1) 0%, rgba(222,186,105,1) 100%)",
   },
 ];

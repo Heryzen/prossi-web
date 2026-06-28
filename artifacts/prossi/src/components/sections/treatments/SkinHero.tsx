@@ -2,7 +2,7 @@ export function SkinHero() {
   return (
     <div className="relative w-full overflow-hidden rounded-b-[100px]" style={{ minHeight: 500 }}>
       <img
-        src="/figma/imgSkinHeroFull.png"
+        src="/figma/imgSkinHeroFull.webp"
         alt=""
         aria-hidden
         className="absolute inset-0 w-full h-full object-cover object-center"

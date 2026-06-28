@@ -26,9 +26,9 @@ export function CTA() {
               <div key={index} className="flex-[0_0_100%] h-[423px] relative border border-[#deba69] rounded-[32px] overflow-hidden mx-2">
                 <div className="absolute inset-0 z-0">
                   <div className="absolute inset-0 bg-[#f1e7da]"></div>
-                  <img src="/figma/imgBackground.png" alt="" className="absolute w-full h-full object-cover mix-blend-multiply opacity-50" />
+                  <img src="/figma/imgBackground.webp" alt="" className="absolute w-full h-full object-cover mix-blend-multiply opacity-50" />
                   <div className="absolute inset-y-0 right-0 w-[60%] flex items-center justify-center">
-                    <img src="/figma/imgObject.png" alt="" className="w-full h-full object-contain object-right opacity-80" />
+                    <img src="/figma/imgObject.webp" alt="" className="w-full h-full object-contain object-right opacity-80" />
                   </div>
                   <div className="absolute inset-0 bg-gradient-to-r from-[#f1e7da] from-[40%] to-transparent"></div>
                 </div>

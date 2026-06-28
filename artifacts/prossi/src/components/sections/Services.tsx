@@ -4,21 +4,21 @@ export function Services() {
       titleTop: "Slimming Program by",
       titleBottom: "Sp.GK",
       desc: "Support recovery, energy, and long-term cellular resilience.",
-      img: "/figma/imgProgramImage2.png",
+      img: "/figma/imgProgramImage2.webp",
       borderColor: "border-[#c26345]"
     },
     {
       titleTop: "Skin Treatment by",
       titleBottom: "Sp.DVE",
       desc: "Support recovery, energy, and long-term cellular resilience.",
-      img: "/figma/imgProgramImage.png",
+      img: "/figma/imgProgramImage.webp",
       borderColor: "border-[#396b72]"
     },
     {
       titleTop: "Skin Treatment by",
       titleBottom: "Dokter Estetika",
       desc: "Support recovery, energy, and long-term cellular resilience.",
-      img: "/figma/imgProgramImage1.png",
+      img: "/figma/imgProgramImage1.webp",
       borderColor: "border-[#deba69]"
     }
   ];

@@ -43,7 +43,7 @@ export default async function ArticleDetailPage({
           style={{ height: 440, borderRadius: "0 0 100px 100px" }}
         >
           <img
-            src="/figma/imgContactHero-4f95a9.png"
+            src="/figma/imgContactHero-4f95a9.webp"
             alt=""
             className="absolute inset-0 w-full h-full object-cover object-right"
           />
