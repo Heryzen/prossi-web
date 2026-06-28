@@ -3,36 +3,7 @@
 import { useEffect, useRef } from "react";
 import { MapContainer, TileLayer, Marker, Popup, ZoomControl, useMap } from "react-leaflet";
 import L from "leaflet";
-
-const branches = [
-  {
-    name: "Prossi Clinic – Sudirman",
-    address:
-      "Lot 6 Kawasan SCBD Sudirman, Jl. Jenderal Sudirman Kav. 52-53, RT.5/RW.3, Senayan, Kec. Kebayoran Baru, Kota Jakarta Selata...",
-    hours: "OPEN: Monday – Friday 08:00 AM–09:00 PM",
-    lat: -6.2256,
-    lng: 106.8044,
-    mapsUrl: "https://maps.google.com/?q=Sudirman+SCBD+Jakarta",
-  },
-  {
-    name: "Prossi Clinic – Kemang",
-    address:
-      "Lot 6 Kawasan SCBD Sudirman, Jl. Jenderal Sudirman Kav. 52-53, RT.5/RW.3, Senayan, Kec. Kebayoran Baru, Kota Jakarta Selata...",
-    hours: "OPEN: Monday – Friday 08:00 AM–09:00 PM",
-    lat: -6.2615,
-    lng: 106.8115,
-    mapsUrl: "https://maps.google.com/?q=Kemang+Jakarta",
-  },
-  {
-    name: "Prossi Clinic – BSD",
-    address:
-      "Lot 6 Kawasan SCBD Sudirman, Jl. Jenderal Sudirman Kav. 52-53, RT.5/RW.3, Senayan, Kec. Kebayoran Baru, Kota Jakarta Selata...",
-    hours: "OPEN: Monday – Friday 08:00 AM–09:00 PM",
-    lat: -6.2917,
-    lng: 106.6655,
-    mapsUrl: "https://maps.google.com/?q=BSD+Tangerang+Selatan",
-  },
-];
+import { branches } from "./locations-data";
 
 if (typeof window !== "undefined") {
   delete (L.Icon.Default.prototype as unknown as Record<string, unknown>)._getIconUrl;
