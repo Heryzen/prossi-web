@@ -1,13 +1,14 @@
 import Link from "next/link";
 
-export default function DoctorCategoryPage({ params }: { params: { slug: string } }) {
+export default async function DoctorCategoryPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
   const labels: Record<string, string> = {
     "dokter-spesialis-gizi-klinik": "Dokter Spesialis Gizi Klinik",
     "dokter-spesialis-dve": "Dokter Spesialis DVE",
     "dokter-umum": "Dokter Umum",
   };
 
-  const label = labels[params.slug] ?? "Dokter";
+  const label = labels[slug] ?? "Dokter";
 
   return (
     <main className="min-h-screen bg-[#f4ece4] flex flex-col items-center justify-center px-6 pt-[120px] pb-[80px]">
