@@ -77,18 +77,22 @@ export function Header() {
       </div>
 
       {/* ── Main navbar ── */}
-      <div className={`transition-all duration-300 ${scrolled ? "px-[100px] py-2" : "px-0 py-0"}`}>
-        {/* Single element — animates from full-width bar to floating pill */}
+      <div className={`transition-all duration-500 ease-in-out ${scrolled ? "px-[100px] py-2" : "px-0 py-0"}`}>
+        {/* Background bar morphs full-width → centered pill … */}
         <div
-          className="flex items-center justify-between bg-[#f4ece4] transition-all duration-500 ease-in-out"
+          className="bg-[#f4ece4] mx-auto transition-all duration-500 ease-in-out"
           style={{
             borderRadius: scrolled ? "9999px" : "0px",
             maxWidth: scrolled ? "1240px" : "100%",
-            margin: scrolled ? "0 auto" : "0",
-            padding: scrolled ? "10px 32px" : "16px 100px",
             boxShadow: "0px 5px 10px rgba(56,0,30,0.04), 0px 18px 18px rgba(56,0,30,0.03), 0px 41px 25px rgba(56,0,30,0.02), 0px 73px 29px rgba(56,0,30,0.01)",
           }}
         >
+          {/* … while the content keeps a constant 1240px width so the menu
+              never reflows/spreads during the morph. */}
+          <div
+            className="flex items-center justify-between w-full max-w-[1240px] mx-auto transition-all duration-500 ease-in-out"
+            style={{ padding: scrolled ? "10px 32px" : "16px 32px" }}
+          >
           {/* Logo */}
           <Link href="/">
             <img
@@ -196,6 +200,7 @@ export function Header() {
             <span className={`block w-6 h-0.5 transition-opacity ${mobileOpen ? "opacity-0" : ""} bg-[#120f0b]`} />
             <span className={`block w-6 h-0.5 transition-transform ${mobileOpen ? "-rotate-45 -translate-y-2" : ""} bg-[#120f0b]`} />
           </button>
+          </div>
         </div>
 
         {/* Mobile menu */}

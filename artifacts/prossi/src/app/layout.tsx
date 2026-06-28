@@ -3,6 +3,7 @@ import "./globals.css";
 import { Providers } from "./providers";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
+import { PageLoader } from "@/components/PageLoader";
 
 export const metadata: Metadata = {
   title: "Prossi Clinic",
@@ -35,6 +36,7 @@ export default function RootLayout({
       </head>
       <body>
         <Providers>
+          <PageLoader />
           <div className="min-h-screen bg-[#f4ece4] flex flex-col font-sans text-[#120f0b] overflow-x-hidden relative">
             <Header />
             <main className="flex-1 flex flex-col w-full">

@@ -107,3 +107,56 @@
     @apply font-sans antialiased bg-background text-foreground;
   }
 }
+
+/* ── Prossi page loader intro ── */
+@keyframes prossiWordIn {
+  0%   { opacity: 0; transform: translateY(14px); filter: blur(6px); }
+  100% { opacity: 1; transform: translateY(0);    filter: blur(0); }
+}
+@keyframes prossiShimmer {
+  0%   { background-position: 160% center; }
+  100% { background-position: -60% center; }
+}
+@keyframes prossiLineIn {
+  0%   { transform: scaleX(0); opacity: 0; }
+  100% { transform: scaleX(1); opacity: 1; }
+}
+@keyframes prossiSubIn {
+  0%   { opacity: 0; letter-spacing: 1.1em; }
+  100% { opacity: 1; letter-spacing: 0.62em; }
+}
+@keyframes prossiBreathe {
+  0%, 100% { transform: scale(0.92); opacity: 0.7; }
+  50%      { transform: scale(1.06); opacity: 1; }
+}
+.prossi-loader-word {
+  animation:
+    prossiWordIn 900ms cubic-bezier(0.22, 1, 0.36, 1) both,
+    prossiShimmer 2.4s linear 600ms infinite;
+}
+.prossi-loader-line {
+  transform-origin: center;
+  animation: prossiLineIn 700ms cubic-bezier(0.22, 1, 0.36, 1) 650ms both;
+}
+.prossi-loader-sub {
+  animation: prossiSubIn 900ms cubic-bezier(0.22, 1, 0.36, 1) 850ms both;
+}
+@media (prefers-reduced-motion: reduce) {
+  .prossi-loader-word, .prossi-loader-line, .prossi-loader-sub { animation: none; opacity: 1; }
+}
+
+/* ── Hero entrance + Ken Burns ── */
+@keyframes prossiFadeUp {
+  0%   { opacity: 0; transform: translateY(22px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+@keyframes prossiKenBurns {
+  0%   { transform: scale(1); }
+  100% { transform: scale(1.09); }
+}
+.prossi-fade-up { animation: prossiFadeUp 850ms cubic-bezier(0.22, 1, 0.36, 1) both; }
+.prossi-kenburns { animation: prossiKenBurns 18s ease-in-out infinite alternate; transform-origin: center; }
+@media (prefers-reduced-motion: reduce) {
+  .prossi-fade-up { animation: none; opacity: 1; transform: none; }
+  .prossi-kenburns { animation: none; }
+}

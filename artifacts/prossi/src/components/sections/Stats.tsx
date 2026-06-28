@@ -1,3 +1,5 @@
+import { CountUp } from "@/components/CountUp";
+
 export function Stats() {
   const stats = [
     { value: "10+", label: "Tahun Pengalaman", icon: "/figma/imgPremium187273551.svg" },
@@ -13,9 +15,10 @@ export function Stats() {
             <div key={i} className="flex items-center gap-5">
               <img src={stat.icon} alt="" className="w-[54px] h-[54px] shrink-0" />
               <div className="flex flex-col">
-                <span className="font-serif font-semibold text-[40px] text-[#503d1c] capitalize leading-none">
-                  {stat.value}
-                </span>
+                <CountUp
+                  value={stat.value}
+                  className="font-serif font-semibold text-[40px] text-[#503d1c] capitalize leading-none"
+                />
                 <span className="font-sans text-lg text-[#120f0b] opacity-80 mt-1">
                   {stat.label}
                 </span>
