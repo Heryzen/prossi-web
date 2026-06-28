@@ -91,14 +91,14 @@ export function Header() {
               never reflows/spreads during the morph. */}
           <div
             className="flex items-center justify-between w-full max-w-[1240px] mx-auto transition-all duration-500 ease-in-out"
-            style={{ padding: scrolled ? "10px 32px" : "16px 32px" }}
+            style={{ padding: scrolled ? "10px 32px" : "16px 20px" }}
           >
           {/* Logo */}
           <Link href="/">
             <img
               src="/figma/imgUntitledDesign181.webp"
               alt="Prossi Clinic"
-              className="w-[128px] h-[72px] object-contain"
+              className="w-[90px] h-[50px] lg:w-[128px] lg:h-[72px] object-contain"
               style={{ filter: "none" }}
             />
           </Link>
