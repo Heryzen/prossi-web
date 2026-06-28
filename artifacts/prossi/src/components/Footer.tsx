@@ -59,19 +59,6 @@ export function Footer() {
               </div>
             </div>
             
-            <div className="flex flex-col gap-4 w-full md:w-[304px]">
-              <h4 className="font-serif font-semibold text-lg text-[#f4ece4]">Newsletter</h4>
-              <div className="flex flex-col gap-3 w-full">
-                <input 
-                  type="email" 
-                  placeholder="E-mail" 
-                  className="bg-white/15 border border-white/20 rounded-full px-6 py-4 text-sm text-white placeholder:text-white/60 focus:outline-none focus:border-white"
-                />
-                <button className="bg-gradient-to-r from-[#e5be80] via-[#edd8ab] to-[#e5be80] text-[#503d1c] font-serif font-semibold text-lg rounded-full px-9 py-4 hover:opacity-90 transition-opacity">
-                  Subscribe Now
-                </button>
-              </div>
-            </div>
           </div>
         </div>
         

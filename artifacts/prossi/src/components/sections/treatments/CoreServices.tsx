@@ -59,7 +59,7 @@ function ProgramCard({ title, desc, img, size }: { title: string; desc: string; 
         </div>
         {/* info padding: 0px 16px, gap: 32px between image and info */}
         <div className="flex flex-col gap-4 px-4 pt-8">
-          <h3 className="font-['Poppins',sans-serif] font-semibold text-[24px] text-[#120f0b] uppercase leading-tight">
+          <h3 className="font-['Poppins',sans-serif] font-semibold text-[18px] md:text-[24px] text-[#120f0b] uppercase leading-tight">
             {title}
           </h3>
           <p className="font-['Inter',sans-serif] font-normal text-[16px] text-[#120f0b] leading-relaxed">
@@ -94,10 +94,10 @@ export function CoreServices() {
               Slimming Program
             </span>
           </div>
-          <h2 className="font-['Source_Serif_4',serif] font-semibold text-[40px] text-white">
+          <h2 className="font-['Source_Serif_4',serif] font-semibold text-[26px] md:text-[40px] text-white">
             Pilih Perawatan Sesuai Kebutuhan Anda
           </h2>
-          <p className="font-['Inter',sans-serif] text-[18px] text-white">
+          <p className="font-['Inter',sans-serif] text-[14px] md:text-[18px] text-white">
             Setiap kategori dirancang untuk membantu Anda menemukan solusi yang paling sesuai dengan kondisi Anda.
           </p>
         </div>

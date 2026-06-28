@@ -6,7 +6,7 @@ export function Team() {
   ];
 
   return (
-    <section className="bg-[#b59637] w-full py-[100px] px-6 md:px-[100px] flex flex-col items-center">
+    <section className="bg-[#b59637] w-full py-12 lg:py-[100px] px-6 lg:px-[100px] flex flex-col items-center">
       <div className="max-w-[1240px] w-full flex flex-col items-center gap-[60px]">
         <div className="flex flex-col items-center gap-6 w-full text-center">
           <div className="flex gap-[16px] items-center justify-center overflow-clip relative shrink-0">
@@ -27,14 +27,11 @@ export function Team() {
             </div>
           </div>
           <h2 className="font-['Lato'] font-semibold text-[32px] md:text-[40px] text-white capitalize">
-            Ditangani oleh Dokter Spesialis yang Berpengalaman
+            Ditangani oleh Dokter-Dokter Profesional dan Berpengalaman
           </h2>
-          <p className="font-sans text-lg text-white max-w-[816px]">
-            Setiap pasien ditangani langsung oleh dokter spesialis, memastikan diagnosis yang tepat dan perawatan yang sesuai dengan kondisi Anda.
-          </p>
         </div>
 
-        <div className="w-full flex flex-col md:flex-row gap-6">
+        <div className="w-full flex flex-col lg:flex-row gap-6">
           {team.map((member, i) => (
             <div key={i} className="flex-1 flex flex-col items-center gap-6">
               <div className="w-full h-[428px] border border-[#deba69] rounded-t-[50000px] overflow-hidden relative">
@@ -43,12 +40,17 @@ export function Team() {
               <h3 className="font-serif font-semibold text-[26px] text-white text-center capitalize">
                 {member.title}
               </h3>
-              <button className="bg-[#b59637] border border-[#ecd5a5] rounded-full px-9 py-[18px] text-white font-serif font-semibold text-lg hover:opacity-90 transition-opacity">
+              <button className="hidden lg:flex bg-[#b59637] border border-[#ecd5a5] rounded-full px-9 py-[18px] text-white font-serif font-semibold text-lg hover:opacity-90 transition-opacity">
                 View Doctors
               </button>
             </div>
           ))}
         </div>
+
+        {/* Single "View Doctors" button shown only on mobile */}
+        <button className="lg:hidden mt-2 bg-[#b59637] border border-[#ecd5a5] rounded-full px-9 py-[18px] text-white font-serif font-semibold text-lg hover:opacity-90 transition-opacity">
+          View Doctors
+        </button>
       </div>
     </section>
   );

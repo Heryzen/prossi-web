@@ -32,8 +32,7 @@ export default function LocationsPage() {
       {/* ── Hero ── */}
       <div className="bg-white">
         <div
-          className="relative w-full overflow-hidden"
-          style={{ height: 440, borderRadius: "0 0 100px 100px" }}
+          className="relative w-full overflow-hidden h-[320px] md:h-[440px] rounded-b-[100px]"
         >
           <img
             src="/figma/imgContactHero-4f95a9.webp"
@@ -48,13 +47,13 @@ export default function LocationsPage() {
             }}
           />
           <div
-            className="relative z-10 flex flex-col gap-4"
-            style={{ paddingLeft: 100, paddingTop: 200, maxWidth: 711 }}
+            className="relative z-10 flex flex-col gap-4 px-6 pt-[100px] md:pl-[100px] md:pt-[200px]"
+            style={{ maxWidth: 711 }}
           >
             <h1
               className="font-['Source_Serif_4',serif] font-bold leading-tight"
               style={{
-                fontSize: 45,
+                fontSize: "clamp(28px, 7vw, 45px)",
                 background:
                   "linear-gradient(270deg, rgba(251,232,166,1) 0%, rgba(235,210,151,1) 41%, rgba(251,232,166,1) 67%, rgba(251,232,166,1) 100%)",
                 WebkitBackgroundClip: "text",
@@ -66,7 +65,7 @@ export default function LocationsPage() {
             </h1>
             <p
               className="font-['Inter',sans-serif] font-normal text-white"
-              style={{ fontSize: 18 }}
+              style={{ fontSize: "clamp(14px, 4vw, 18px)" }}
             >
               Kami Hadir di 34 Provinsi di Seluruh Indonesia
             </p>
@@ -74,41 +73,39 @@ export default function LocationsPage() {
         </div>
       </div>
 
-      {/* ── Map + branch list ── */}
-      <div className="relative w-full bg-white" style={{ height: 680 }}>
-        {/* Map */}
-        <div className="absolute inset-0">
+      {/* ── Map + branch list — mobile: stacked, desktop: overlay ── */}
+      <div className="flex flex-col md:block md:relative w-full md:h-[680px] bg-white">
+        {/* Map — below panel on mobile, full-area behind panel on desktop */}
+        <div className="order-2 md:order-none md:absolute md:inset-0 w-full h-[300px] md:h-full">
           <MapSection selectedBranch={selected} onSelectBranch={setSelected} />
         </div>
 
-        {/* Floating branch panel */}
+        {/* Branch panel — above map on mobile, floating overlay on desktop */}
         <div
-          className="absolute top-8 left-4 md:left-20 bottom-8 z-[500] flex flex-col bg-white rounded-[8px] overflow-hidden"
+          className="order-1 md:order-none md:absolute md:top-8 md:left-20 md:bottom-8 md:z-[500] flex flex-col bg-white md:rounded-[8px] overflow-hidden"
           style={{
-            width: 480,
-            maxWidth: "calc(100% - 2rem)",
-            boxShadow:
-              "0px 0px 1px rgba(0,10,55,0.31), 0px 3px 12px rgba(0,10,55,0.18)",
+            boxShadow: "0px 0px 1px rgba(0,10,55,0.31), 0px 3px 12px rgba(0,10,55,0.18)",
+            maxWidth: 480,
           }}
         >
           {/* Header */}
-          <div className="flex flex-col gap-1 border-b border-[#f3f3f3]" style={{ padding: "40px 40px 20px" }}>
+          <div className="flex flex-col gap-1 border-b border-[#f3f3f3] px-6 pt-8 pb-4 md:px-10 md:pt-10 md:pb-5">
             <h2
               className="font-['Lato',sans-serif] font-bold text-[#292929]"
-              style={{ fontSize: 24, lineHeight: "28px", letterSpacing: "0.0417em" }}
+              style={{ fontSize: 22, lineHeight: "28px", letterSpacing: "0.03em" }}
             >
               Cabang Prossi Klinik
             </h2>
             <p
               className="font-['Readex_Pro','Inter',sans-serif] font-semibold text-[#292929]"
-              style={{ fontSize: 18, lineHeight: "26px" }}
+              style={{ fontSize: 16, lineHeight: "24px" }}
             >
               Temukan Cabang Prossi Terdekat Disini
             </p>
           </div>
 
           {/* Scrollable list */}
-          <div className="flex-1 overflow-y-auto flex flex-col gap-3" style={{ padding: "20px 40px" }}>
+          <div className="flex-1 overflow-y-auto flex flex-col gap-3 px-6 py-4 md:px-10">
             {branches.map((b, i) => {
               const active = i === selected;
               return (
@@ -118,7 +115,7 @@ export default function LocationsPage() {
                   onClick={() => setSelected(i)}
                   className="text-left flex flex-col gap-3 rounded-[6px] border bg-white transition-colors"
                   style={{
-                    padding: 20,
+                    padding: 16,
                     borderColor: active ? "#b59637" : "#dbdbdb",
                     boxShadow: active ? "0 0 0 1px #b59637" : "none",
                   }}
@@ -136,7 +133,6 @@ export default function LocationsPage() {
                     </span>
                   </div>
 
-                  {/* Buttons */}
                   <div className="flex justify-end gap-2">
                     <a
                       href={b.mapsUrl}
@@ -144,7 +140,7 @@ export default function LocationsPage() {
                       rel="noopener noreferrer"
                       onClick={(e) => e.stopPropagation()}
                       className="flex items-center gap-2 rounded-full bg-[#c5a855] text-white font-['Lato',sans-serif] font-bold uppercase hover:bg-[#b59637] transition-colors"
-                      style={{ padding: "4px 12px", fontSize: 14, lineHeight: "20px" }}
+                      style={{ padding: "4px 12px", fontSize: 13, lineHeight: "20px" }}
                     >
                       <DirectionIcon />
                       Direction
@@ -153,7 +149,7 @@ export default function LocationsPage() {
                       href="/contact"
                       onClick={(e) => e.stopPropagation()}
                       className="flex items-center rounded-full border-2 border-[#b59637] text-[#b59637] font-['Lato',sans-serif] font-bold uppercase hover:bg-[#b59637] hover:text-white transition-colors"
-                      style={{ padding: "3px 12px", fontSize: 14, lineHeight: "20px" }}
+                      style={{ padding: "3px 12px", fontSize: 13, lineHeight: "20px" }}
                     >
                       Reservation
                     </Link>

@@ -68,7 +68,7 @@ export function MoreToRead({ articles }: { articles: Article[] }) {
   const visible = articles.slice(start, start + VISIBLE);
 
   return (
-    <div className="bg-white flex flex-col gap-[47px]" style={{ padding: "100px 160px" }}>
+    <div className="bg-white flex flex-col gap-[47px] px-6 py-12 md:px-[160px] md:py-[100px]">
       <h2
         className="font-['Merriweather_Sans',sans-serif] font-extrabold text-[#11151C]"
         style={{ fontSize: 28, lineHeight: "34px" }}

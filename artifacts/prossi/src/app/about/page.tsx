@@ -75,8 +75,7 @@ export default function AboutPage() {
       <div className="bg-white">
       {/* ── Hero ── */}
       <div
-        className="relative w-full overflow-hidden"
-        style={{ height: 440, borderRadius: "0 0 100px 100px" }}
+        className="relative w-full overflow-hidden h-[320px] md:h-[440px] rounded-b-[100px]"
       >
         <img
           src="/figma/imgContactHero-4f95a9.webp"
@@ -90,14 +89,11 @@ export default function AboutPage() {
               "linear-gradient(270deg, rgba(105,85,56,0) 30%, rgba(105,85,56,0.6) 41%, rgba(105,85,56,0.82) 53%, rgba(105,85,56,1) 100%)",
           }}
         />
-        <div
-          className="relative z-10 flex flex-col gap-4"
-          style={{ paddingLeft: 100, paddingTop: 200, maxWidth: 711 }}
-        >
+        <div className="relative z-10 flex flex-col gap-4 px-6 pt-[100px] md:px-0 md:pt-[200px]" style={{ maxWidth: 711, paddingLeft: undefined }}>
           <h1
-            className="font-['Source_Serif_4',serif] font-normal leading-tight"
+            className="font-['Source_Serif_4',serif] font-normal leading-tight md:pl-[100px]"
             style={{
-              fontSize: 45,
+              fontSize: "clamp(28px, 7vw, 45px)",
               background:
                 "linear-gradient(270deg, rgba(251,232,166,1) 0%, rgba(235,210,151,1) 41%, rgba(251,232,166,1) 67%, rgba(251,232,166,1) 100%)",
               WebkitBackgroundClip: "text",
@@ -108,8 +104,8 @@ export default function AboutPage() {
             Tentang Prossi
           </h1>
           <p
-            className="font-['Lato',sans-serif] font-normal text-white"
-            style={{ fontSize: 18, lineHeight: "1.6" }}
+            className="font-['Lato',sans-serif] font-normal text-white md:pl-[100px]"
+            style={{ fontSize: "clamp(14px, 4vw, 18px)", lineHeight: "1.6" }}
           >
             Lebih Dari Sekadar Klinik Estetika. Di Prossi, kami percaya bahwa perawatan bukan hanya tentang penampilan tetapi tentang bagaimana seseorang merasa lebih sehat, lebih percaya diri, dan lebih nyaman dengan dirinya sendiri.
           </p>
@@ -117,7 +113,7 @@ export default function AboutPage() {
       </div>
 
       {/* ── About intro ── */}
-      <div style={{ padding: "40px 160px 80px" }}>
+      <div className="px-6 py-10 md:px-[160px] md:pt-[40px] md:pb-[80px]">
         <div className="flex flex-col items-center gap-8">
           <div
             className="w-full rounded-[20px]"
@@ -135,7 +131,7 @@ export default function AboutPage() {
       </div>{/* end bg-white wrapper */}
 
       {/* ── Perjalanan Prossi ── */}
-      <div style={{ padding: "80px 260px", background: "#F4ECE4" }}>
+      <div className="px-6 py-12 md:px-[260px] md:py-[80px]" style={{ background: "#F4ECE4" }}>
         <div className="flex flex-col items-center gap-6 text-center">
           <h2
             className="font-['Merriweather_Sans',sans-serif] font-extrabold text-[#11151C]"
@@ -159,11 +155,8 @@ export default function AboutPage() {
       </div>
 
       {/* ── Vision / Mission ── */}
-      <div
-        className="flex items-center gap-12"
-        style={{ padding: "80px 0 120px 160px", background: "#FFFFFF" }}
-      >
-        <div className="flex flex-col gap-20 flex-1">
+      <div className="flex flex-col md:flex-row md:items-center md:gap-12 bg-white px-6 py-12 md:pl-[160px] md:pr-0 md:pt-[80px] md:pb-[120px]">
+        <div className="flex flex-col gap-10 md:gap-20 flex-1">
           <div className="flex flex-col gap-2">
             <h3
               className="font-['Merriweather_Sans',sans-serif] font-extrabold text-[#11151C]"
@@ -195,18 +188,13 @@ export default function AboutPage() {
         </div>
 
         <div
-          style={{
-            width: 761,
-            height: 640,
-            background: "#E4C986",
-            borderRadius: "20px 0 0 20px",
-            flexShrink: 0,
-          }}
+          className="mt-10 md:mt-0 w-full md:w-[761px] md:shrink-0 rounded-[20px] md:rounded-[20px_0_0_20px]"
+          style={{ height: 320, background: "#E4C986" }}
         />
       </div>
 
       {/* ── Core Services ── */}
-      <div style={{ background: "#F4ECE4", padding: "62px 82px 80px" }}>
+      <div className="px-6 py-12 md:px-[82px] md:pt-[62px] md:pb-[80px]" style={{ background: "#F4ECE4" }}>
         <div className="flex flex-col items-center gap-4 mb-14">
           <h2
             className="font-['Source_Serif_4',serif] font-semibold text-[#120f0b] text-center"

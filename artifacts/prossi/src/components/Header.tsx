@@ -35,23 +35,23 @@ export function Header() {
     <header className="fixed top-0 left-0 right-0 z-50">
       {/* ── Top bar — slides in on scroll ── */}
       <div
-        className={`overflow-hidden transition-all duration-500 ease-in-out ${showTopBar ? "max-h-[40px] opacity-100" : "max-h-0 opacity-0"}`}
+        className={`overflow-hidden transition-all duration-500 ease-in-out ${showTopBar ? "max-h-[32px] opacity-100" : "max-h-0 opacity-0"}`}
       >
         <div
-          className={`h-[40px] px-[100px] flex items-center justify-between ${isTreatments ? "bg-[#b59637]" : "bg-[#120f0b]"}`}
+          className={`h-[32px] px-4 lg:px-[100px] flex items-center justify-between ${isTreatments ? "bg-[#b59637]" : "bg-[#120f0b]"}`}
         >
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5">
             <img
               src="/figma/imgMdiClockOutline.svg"
               alt=""
-              className="w-3.5 h-3.5"
+              className="w-3 h-3 lg:w-3.5 lg:h-3.5 shrink-0"
               style={{ filter: "brightness(0) invert(1)", opacity: 0.8 }}
             />
-            <span className="text-white/80 font-['Inter'] text-[13px]">
+            <span className="text-white/80 font-['Inter'] text-[11px] lg:text-[13px] whitespace-nowrap">
               Open Daily · 9:00 AM – 8:00 PM
             </span>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="hidden lg:flex items-center gap-2">
             {[
               { src: "/figma/imgGroup.svg", alt: "Telegram", href: "https://t.me/prossiclinic" },
               { src: "/figma/imgRiInstagramLine.svg", alt: "Instagram", href: "https://instagram.com/prossiclinic" },
@@ -91,14 +91,14 @@ export function Header() {
               never reflows/spreads during the morph. */}
           <div
             className="flex items-center justify-between w-full max-w-[1240px] mx-auto transition-all duration-500 ease-in-out"
-            style={{ padding: scrolled ? "10px 32px" : "16px 20px" }}
+            style={{ padding: scrolled ? "8px 32px" : "10px 20px" }}
           >
           {/* Logo */}
           <Link href="/">
             <img
               src="/figma/imgUntitledDesign181.webp"
               alt="Prossi Clinic"
-              className="w-[90px] h-[50px] lg:w-[128px] lg:h-[72px] object-contain"
+              className="w-[72px] h-[40px] lg:w-[128px] lg:h-[72px] object-contain"
               style={{ filter: "none" }}
             />
           </Link>

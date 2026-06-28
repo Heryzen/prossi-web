@@ -39,7 +39,7 @@ export function Testimonials() {
   ];
 
   return (
-    <section className="relative w-full py-[100px] overflow-hidden flex flex-col items-center">
+    <section className="relative w-full py-12 lg:py-[100px] overflow-hidden flex flex-col items-center">
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute inset-0 bg-[#f4ece4]"></div>
         <div className="absolute inset-0 opacity-20 overflow-hidden">
@@ -47,7 +47,7 @@ export function Testimonials() {
         </div>
       </div>
 
-      <div className="relative z-10 max-w-[1440px] w-full flex flex-col items-center gap-[60px] px-6 md:px-[100px]">
+      <div className="relative z-10 max-w-[1440px] w-full flex flex-col items-center gap-[60px] px-6 lg:px-[100px]">
         <div className="flex flex-col items-center gap-6 w-full text-center max-w-[1019px]">
           <div className="flex gap-[16px] items-center justify-center overflow-clip relative shrink-0">
             <div className="h-0 relative shrink-0 w-[63px]">

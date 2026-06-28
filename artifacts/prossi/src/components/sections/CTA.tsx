@@ -18,7 +18,7 @@ export function CTA() {
   const slides = [1, 2];
 
   return (
-    <section className="bg-[#f4ece4] w-full py-[100px] px-6 flex justify-center overflow-hidden">
+    <section className="bg-[#f4ece4] w-full py-12 lg:py-[100px] px-6 flex justify-center overflow-hidden">
       <div className="max-w-[1240px] w-full flex flex-col gap-6">
         <div className="w-full relative rounded-[32px] overflow-hidden bg-transparent" ref={emblaRef}>
           <div className="flex">
@@ -51,7 +51,7 @@ export function CTA() {
                       </div>
                     </div>
                   </div>
-                  <h2 className="font-['Lato'] font-semibold text-[32px] md:text-[40px] text-[#120f0b] capitalize leading-tight mb-6">
+                  <h2 className="font-['Lato'] font-semibold text-2xl lg:text-[40px] text-[#120f0b] capitalize leading-tight mb-6">
                     Designed for People Who Expect Clarity
                   </h2>
                   <p className="font-sans text-lg text-[#120f0b] mb-8">

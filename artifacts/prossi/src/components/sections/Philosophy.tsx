@@ -1,6 +1,6 @@
 export function Philosophy() {
   return (
-    <section className="bg-[#c26345] w-full py-20 md:py-[130px] px-6 md:px-[100px] text-white">
+    <section className="bg-[#c26345] w-full py-12 lg:py-[130px] px-6 lg:px-[100px] text-white">
       <div className="max-w-[1240px] mx-auto flex flex-col lg:flex-row items-center justify-between gap-12 lg:gap-0">
         <div className="relative w-full lg:w-[624px] h-[400px] md:h-[660px] shrink-0">
           <div className="absolute w-[60%] md:w-[381px] h-[80%] md:h-[537px] left-2 top-2 rounded-[24px] overflow-hidden">
@@ -16,8 +16,8 @@ export function Philosophy() {
         
         <div className="flex flex-col items-start w-full lg:w-[559px] shrink-0">
           <div className="flex flex-col gap-6 w-full">
-            <h2 className="font-serif text-[40px] md:text-[64px] leading-none text-white">
-              Slimming Glowing No <span className="font-['Arizonia'] text-[46px] md:text-[70px]">Pusing</span>
+            <h2 className="font-serif text-3xl lg:text-[64px] leading-none text-white">
+              Slimming Glowing No <span className="font-['Arizonia'] text-[36px] lg:text-[70px]">Pusing</span>
             </h2>
             <p className="font-sans text-base md:text-lg leading-relaxed text-white whitespace-pre-wrap">
               Prossi Clinic menghadirkan solusi kesehatan dan kecantikan yang komprehensif.
