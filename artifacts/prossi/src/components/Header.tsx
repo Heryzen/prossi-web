@@ -77,7 +77,7 @@ export function Header() {
       </div>
 
       {/* ── Main navbar ── */}
-      <div className={`transition-all duration-500 ease-in-out ${scrolled ? "px-[100px] py-2" : "px-0 py-0"}`}>
+      <div className={`transition-all duration-500 ease-in-out ${scrolled ? "lg:px-[100px] py-2" : "px-0 py-0"}`}>
         {/* Background bar morphs full-width → centered pill … */}
         <div
           className="bg-[#f4ece4] mx-auto transition-all duration-500 ease-in-out"
