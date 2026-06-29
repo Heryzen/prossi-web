@@ -32,8 +32,8 @@ const programs = [
 function ProgramCard({ title, desc, img, size }: { title: string; desc: string; img: string; size: "sm" | "lg" }) {
   return (
     <div
-      className="rounded-[24px] p-[1px]"
-      style={{ background: CARD_BORDER, flex: size === "sm" ? "0 1 504px" : "0 1 712px" }}
+      className="rounded-[24px] p-[1px] flex-1"
+      style={{ background: CARD_BORDER }}
     >
       <div className="rounded-[23px] flex flex-col h-full" style={{ background: CARD_BG, padding: "12px 12px 32px" }}>
         <div className="w-full h-[210px] shrink-0 rounded-[20px] overflow-hidden">

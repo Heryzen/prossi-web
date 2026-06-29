@@ -40,14 +40,11 @@ const programs = [
   },
 ];
 
-function ProgramCard({ title, desc, img, size }: { title: string; desc: string; img: string; size: "sm" | "lg" }) {
+function ProgramCard({ title, desc, img }: { title: string; desc: string; img: string; size: "sm" | "lg" }) {
   return (
     <div
-      className="rounded-[24px] p-[1px] w-full"
-      style={{
-        background: CARD_BORDER,
-        flex: size === "sm" ? "0 1 504px" : "0 1 712px",
-      }}
+      className="rounded-[24px] p-[1px] w-full flex-1"
+      style={{ background: CARD_BORDER }}
     >
       {/* padding: 12px 12px 32px — matches Figma */}
       <div
