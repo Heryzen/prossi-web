@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 const navItems = [
+  { label: "Home", href: "/", dropdown: false },
   { label: "Treatments", href: "/treatments", dropdown: true },
   { label: "Doctors", href: "/doctors", dropdown: true },
   { label: "Promo", href: "/promo", dropdown: false },
