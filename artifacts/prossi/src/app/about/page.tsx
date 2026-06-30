@@ -1,4 +1,3 @@
-import { CompareSection } from "@/components/sections/treatments/CompareSection";
 
 const CARD_BORDER_SLIMMING =
   "linear-gradient(270deg, rgba(194,99,69,1) 0%, rgba(222,186,105,1) 100%)";
@@ -216,7 +215,6 @@ export default function AboutPage() {
         </div>
       </div>
 
-      <CompareSection />
     </div>
   );
 }

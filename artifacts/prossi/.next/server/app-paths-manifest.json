@@ -1,8 +1,4 @@
 {
-  "/page": "app/page.js",
-  "/treatments/skin-treatment/page": "app/treatments/skin-treatment/page.js",
-  "/treatments/slimming-program/page": "app/treatments/slimming-program/page.js",
-  "/_not-found/page": "app/_not-found/page.js",
-  "/contact/page": "app/contact/page.js",
-  "/article/page": "app/article/page.js"
+  "/about/page": "app/about/page.js",
+  "/page": "app/page.js"
 }

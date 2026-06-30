@@ -1,70 +1,38 @@
 {
   "pages": {
-    "/layout": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/css/app/layout.css",
-      "static/chunks/app/layout.js"
-    ],
-    "/not-found": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/not-found.js"
+    "/about/page": [
+      "static/chunks/artifacts_prossi_src_app_globals_c85677c1.css",
+      "static/chunks/node_modules__pnpm_6722be9a._.js",
+      "static/chunks/artifacts_prossi_src_0fdeb185._.js",
+      "static/chunks/artifacts_prossi_src_app_layout_tsx_4a96fa26._.js",
+      "static/chunks/f61bf_next_dist_client_components_builtin_global-error_c4f7e2a6.js",
+      "static/chunks/[turbopack]_browser_dev_hmr-client_hmr-client_ts_37fa0b29._.js",
+      "static/chunks/f61bf_next_dist_compiled_react-dom_f58aa104._.js",
+      "static/chunks/f61bf_next_dist_compiled_next-devtools_index_95fe796f.js",
+      "static/chunks/f61bf_next_dist_compiled_0f688179._.js",
+      "static/chunks/f61bf_next_dist_client_3aec3e1c._.js",
+      "static/chunks/f61bf_next_dist_409e25e6._.js",
+      "static/chunks/69652_@swc_helpers_cjs_77b72907._.js",
+      "static/chunks/artifacts_prossi_a0ff3932._.js",
+      "static/chunks/turbopack-artifacts_prossi_5718c594._.js"
     ],
     "/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/page.js"
-    ],
-    "/locations/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/locations/page.js"
-    ],
-    "/contact/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/contact/page.js"
-    ],
-    "/article/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/article/page.js"
-    ],
-    "/article/[id]/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/article/[id]/page.js"
-    ],
-    "/treatments/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/treatments/page.js"
-    ],
-    "/about/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/about/page.js"
-    ],
-    "/doctors/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/doctors/page.js"
-    ],
-    "/treatments/slimming-program/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/treatments/slimming-program/page.js"
-    ],
-    "/treatments/skin-treatment/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/treatments/skin-treatment/page.js"
-    ],
-    "/_not-found/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/_not-found/page.js"
+      "static/chunks/artifacts_prossi_src_app_globals_c85677c1.css",
+      "static/chunks/node_modules__pnpm_6722be9a._.js",
+      "static/chunks/artifacts_prossi_src_0fdeb185._.js",
+      "static/chunks/artifacts_prossi_src_app_layout_tsx_4a96fa26._.js",
+      "static/chunks/f61bf_next_dist_client_components_builtin_global-error_c4f7e2a6.js",
+      "static/chunks/_1abf415a._.js",
+      "static/chunks/artifacts_prossi_src_app_page_tsx_c4f7e2a6._.js",
+      "static/chunks/[turbopack]_browser_dev_hmr-client_hmr-client_ts_37fa0b29._.js",
+      "static/chunks/f61bf_next_dist_compiled_react-dom_f58aa104._.js",
+      "static/chunks/f61bf_next_dist_compiled_next-devtools_index_95fe796f.js",
+      "static/chunks/f61bf_next_dist_compiled_0f688179._.js",
+      "static/chunks/f61bf_next_dist_client_3aec3e1c._.js",
+      "static/chunks/f61bf_next_dist_409e25e6._.js",
+      "static/chunks/69652_@swc_helpers_cjs_77b72907._.js",
+      "static/chunks/artifacts_prossi_a0ff3932._.js",
+      "static/chunks/turbopack-artifacts_prossi_5718c594._.js"
     ]
   }
 }
