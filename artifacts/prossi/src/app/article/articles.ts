@@ -2,7 +2,7 @@ export const ITEMS_PER_PAGE = 4;
 export const TOTAL_PAGES = 10;
 
 export type Article = {
-  id: number;
+  id: number | string;
   title: string;
   excerpt: string;
   img: string;
@@ -89,6 +89,6 @@ export function getArticle(id: number): Article | undefined {
   return allArticles.find((a) => a.id === id);
 }
 
-export function relatedArticles(id: number, count = 3): Article[] {
+export function relatedArticles(id: number | string, count = 3): Article[] {
   return allArticles.filter((a) => a.id !== id).slice(0, count);
 }

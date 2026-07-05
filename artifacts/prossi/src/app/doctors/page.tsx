@@ -1,12 +1,38 @@
 import { DoctorsPageContent } from "@/components/DoctorsPageContent";
-import { ALL_DOCTORS } from "@/components/doctors-data";
+import { ALL_DOCTORS, type Doctor } from "@/components/doctors-data";
+import { directusFetch, assetUrl } from "@/lib/directus";
 
-export default function Doctors() {
+type CmsDoctor = {
+  name: string;
+  photo: string | null;
+  specialty: string;
+  bio: string;
+  schedule_days: string;
+  schedule_hours: string;
+};
+
+export default async function Doctors() {
+  const cms = await directusFetch<CmsDoctor[]>(
+    "/items/doctors?filter[status][_eq]=published&sort=sort&fields=name,photo,specialty,bio,schedule_days,schedule_hours"
+  );
+
+  const doctors: Doctor[] =
+    cms && cms.length > 0
+      ? cms.map((d) => ({
+          img: d.photo ? assetUrl(d.photo) : "/figma/imgDoctorPlaceholder.png",
+          name: d.name,
+          specialty: d.specialty.toUpperCase(),
+          bio: d.bio,
+          schedule: d.schedule_days,
+          hours: d.schedule_hours,
+        }))
+      : ALL_DOCTORS;
+
   return (
     <DoctorsPageContent
       eyebrow="DOKTER SPESIALIS"
       heroGradientRgb="63,109,112"
-      doctors={ALL_DOCTORS}
+      doctors={doctors}
     />
   );
 }

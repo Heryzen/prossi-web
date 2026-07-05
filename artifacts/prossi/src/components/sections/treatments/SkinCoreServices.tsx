@@ -1,3 +1,5 @@
+import { directusFetch, assetUrl } from "@/lib/directus";
+
 const CARD_BORDER =
   "linear-gradient(270deg, rgba(222,186,105,1) 0%, rgba(235,210,151,1) 30%, rgba(251,232,166,1) 50%, rgba(235,210,151,1) 70%, rgba(222,186,105,1) 100%)";
 const CARD_BG = "linear-gradient(180deg, #ffffff 0%, #fff9eb 100%)";
@@ -52,7 +54,26 @@ function ProgramCard({ title, desc, img, size }: { title: string; desc: string; 
   );
 }
 
-export function SkinCoreServices() {
+type CmsTreatment = { name: string; description: string; image: string | null };
+
+export async function SkinCoreServices() {
+  const cms = await directusFetch<CmsTreatment[]>(
+    "/items/treatments?filter[category][_eq]=skin&filter[status][_eq]=published&sort=sort&fields=name,description,image"
+  );
+
+  const items =
+    cms && cms.length > 0
+      ? cms.map((t, i) => ({
+          title: t.name,
+          desc: t.description,
+          img: t.image ? assetUrl(t.image) : programs[i % programs.length].img,
+          size: "sm" as const,
+        }))
+      : programs;
+
+  const rows: (typeof items)[] = [];
+  for (let i = 0; i < items.length; i += 2) rows.push(items.slice(i, i + 2));
+
   return (
     <section className="w-full pt-[60px] pb-[80px] px-6 md:px-[100px]" style={{ background: "#426B6A" }}>
       <div className="max-w-[1240px] mx-auto flex flex-col items-center gap-[60px]">
@@ -78,16 +99,15 @@ export function SkinCoreServices() {
           </p>
         </div>
 
-        {/* Cards — 2 rows */}
+        {/* Cards — 2 per row */}
         <div className="flex flex-col gap-6 w-full">
-          <div className="flex flex-col md:flex-row gap-6 w-full">
-            <ProgramCard {...programs[0]} />
-            <ProgramCard {...programs[1]} />
-          </div>
-          <div className="flex flex-col md:flex-row gap-6 w-full">
-            <ProgramCard {...programs[2]} />
-            <ProgramCard {...programs[3]} />
-          </div>
+          {rows.map((row, ri) => (
+            <div key={ri} className="flex flex-col md:flex-row gap-6 w-full">
+              {row.map((item) => (
+                <ProgramCard key={item.title} {...item} />
+              ))}
+            </div>
+          ))}
         </div>
       </div>
     </section>

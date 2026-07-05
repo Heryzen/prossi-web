@@ -14,7 +14,20 @@ const navItems = [
   { label: "Locations", href: "/locations", dropdown: false },
 ];
 
-export function Header() {
+export type HeaderTopBar = {
+  openHours: string;
+  telegram: string;
+  instagram: string;
+  facebook: string;
+};
+
+export function Header({ topBar }: { topBar?: HeaderTopBar }) {
+  const openHours = topBar?.openHours ?? "Open Daily · 9:00 AM – 8:00 PM";
+  const socialLinks = [
+    { src: "/figma/imgGroup.svg", alt: "Telegram", href: topBar?.telegram ?? "https://t.me/prossiclinic" },
+    { src: "/figma/imgRiInstagramLine.svg", alt: "Instagram", href: topBar?.instagram ?? "https://instagram.com/prossiclinic" },
+    { src: "/figma/imgGgFacebook.svg", alt: "Facebook", href: topBar?.facebook ?? "https://facebook.com/prossiclinic" },
+  ];
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [treatmentsOpen, setTreatmentsOpen] = useState(false);
@@ -48,15 +61,11 @@ export function Header() {
               style={{ filter: "brightness(0) invert(1)", opacity: 0.8 }}
             />
             <span className="text-white/80 font-['Inter'] text-[11px] lg:text-[13px] whitespace-nowrap">
-              Open Daily · 9:00 AM – 8:00 PM
+              {openHours}
             </span>
           </div>
           <div className="hidden lg:flex items-center gap-2">
-            {[
-              { src: "/figma/imgGroup.svg", alt: "Telegram", href: "https://t.me/prossiclinic" },
-              { src: "/figma/imgRiInstagramLine.svg", alt: "Instagram", href: "https://instagram.com/prossiclinic" },
-              { src: "/figma/imgGgFacebook.svg", alt: "Facebook", href: "https://facebook.com/prossiclinic" },
-            ].map((icon) => (
+            {socialLinks.map((icon) => (
               <a
                 key={icon.alt}
                 href={icon.href}

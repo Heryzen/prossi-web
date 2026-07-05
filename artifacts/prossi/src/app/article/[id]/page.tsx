@@ -1,7 +1,26 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getArticle, relatedArticles } from "../articles";
+import { getArticle, relatedArticles, type Article } from "../articles";
 import { MoreToRead } from "../MoreToRead";
+import { directusFetch, assetUrl } from "@/lib/directus";
+
+type CmsArticle = {
+  id: string;
+  title: string;
+  excerpt: string;
+  content: string;
+  cover_image: string | null;
+  date_created: string;
+  author: { name: string } | null;
+};
+
+function formatDate(iso: string): string {
+  return new Date(iso).toLocaleDateString("id-ID", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  });
+}
 
 function ChevronRight({ className = "" }: { className?: string }) {
   return (
@@ -29,10 +48,51 @@ export default async function ArticleDetailPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const article = getArticle(Number(id));
-  if (!article) notFound();
 
-  const related = relatedArticles(article.id, 7);
+  // CMS-first: uuid → Directus; numeric → static pool fallback
+  let article: Article | undefined;
+  let htmlContent: string | null = null;
+  let related: Article[] = [];
+
+  const isNumeric = /^\d+$/.test(id);
+  if (!isNumeric) {
+    const cms = await directusFetch<CmsArticle>(
+      `/items/articles/${id}?fields=id,title,excerpt,content,cover_image,date_created,author.name`
+    );
+    if (cms) {
+      article = {
+        id: cms.id,
+        title: cms.title,
+        excerpt: cms.excerpt,
+        img: cms.cover_image ? assetUrl(cms.cover_image) : "/figma/imgFrame1984078116.webp",
+        date: formatDate(cms.date_created),
+        author: cms.author?.name ?? "Prossi Clinic",
+        publishedAt: formatDate(cms.date_created),
+        body: [],
+      };
+      htmlContent = cms.content;
+
+      const others = await directusFetch<CmsArticle[]>(
+        `/items/articles?filter[status][_eq]=published&filter[id][_neq]=${id}&limit=7&fields=id,title,excerpt,cover_image,date_created`
+      );
+      related =
+        others?.map((o) => ({
+          id: o.id,
+          title: o.title,
+          excerpt: o.excerpt,
+          img: o.cover_image ? assetUrl(o.cover_image) : "/figma/imgFrame1984078116.webp",
+          date: formatDate(o.date_created),
+          author: "",
+          publishedAt: "",
+          body: [],
+        })) ?? [];
+    }
+  } else {
+    article = getArticle(Number(id));
+    if (article) related = relatedArticles(article.id, 7);
+  }
+
+  if (!article) notFound();
 
   return (
     <div className="flex flex-col pt-[79px]">
@@ -165,19 +225,27 @@ export default async function ArticleDetailPage({
           />
         </div>
         <div className="flex flex-col gap-5" style={{ maxWidth: 860 }}>
-          {article.body.map((p, i) => (
-            <p
-              key={i}
-              className="font-['Inter',sans-serif] font-medium text-[#4A576F]"
-              style={{
-                fontSize: 16,
-                lineHeight: "24px",
-                letterSpacing: "0.0094em",
-              }}
-            >
-              {p}
-            </p>
-          ))}
+          {htmlContent ? (
+            <div
+              className="font-['Inter',sans-serif] font-medium text-[#4A576F] flex flex-col gap-5 [&_p]:leading-6"
+              style={{ fontSize: 16, letterSpacing: "0.0094em" }}
+              dangerouslySetInnerHTML={{ __html: htmlContent }}
+            />
+          ) : (
+            article.body.map((p, i) => (
+              <p
+                key={i}
+                className="font-['Inter',sans-serif] font-medium text-[#4A576F]"
+                style={{
+                  fontSize: 16,
+                  lineHeight: "24px",
+                  letterSpacing: "0.0094em",
+                }}
+              >
+                {p}
+              </p>
+            ))
+          )}
         </div>
       </div>
 

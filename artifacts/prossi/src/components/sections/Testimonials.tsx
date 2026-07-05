@@ -3,7 +3,15 @@
 import { useCallback } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 
-export function Testimonials() {
+export type Review = {
+  text: string;
+  location: string;
+  name: string;
+  avatar: string;
+  image: string;
+};
+
+export function Testimonials({ reviews: reviewsProp }: { reviews?: Review[] }) {
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true, align: 'start' });
 
   const scrollPrev = useCallback(() => {
@@ -14,7 +22,7 @@ export function Testimonials() {
     if (emblaApi) emblaApi.scrollNext();
   }, [emblaApi]);
 
-  const reviews = [
+  const defaultReviews: Review[] = [
     {
       text: `"What separates this team is they don't chase trends. No one tried to sell me peptides or stacks. They measured, waited for the data, and prescribed exactly three interventions. One year later, those three interventions have changed my trajectory. That's the difference between medicine and marketing."`,
       location: "NEW YORK, USA",
@@ -37,6 +45,8 @@ export function Testimonials() {
       image: "/figma/imgFrame1618873279.webp"
     }
   ];
+
+  const reviews = reviewsProp && reviewsProp.length > 0 ? reviewsProp : defaultReviews;
 
   return (
     <section className="relative w-full py-12 lg:py-[100px] overflow-hidden flex flex-col items-center">

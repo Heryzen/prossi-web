@@ -1,21 +1,33 @@
 import Link from "next/link";
+import { directusFetch, assetUrl } from "@/lib/directus";
 
-const cards = [
-  {
-    title: "Slimming Program by Sp.GK",
-    desc: "Support recovery, energy, and long-term cellular resilience.",
-    img: "/figma/imgCoreSlimming.webp",
-    borderGradient: "linear-gradient(270deg, rgba(194,99,69,1) 0%, rgba(222,186,105,1) 100%)",
-  },
-  {
-    title: "Skin Treatment by Sp.DVE",
-    desc: "Support recovery, energy, and long-term cellular resilience.",
-    img: "/figma/imgCoreSkin.webp",
-    borderGradient: "linear-gradient(270deg, rgba(57,107,114,1) 0%, rgba(222,186,105,1) 100%)",
-  },
-];
+type Settings = {
+  home_slimming_desc: string | null;
+  home_slimming_image: string | null;
+  home_skin_desc: string | null;
+  home_skin_image: string | null;
+};
 
-export function TreatmentServices() {
+export async function TreatmentServices() {
+  const s = await directusFetch<Settings>(
+    "/items/site_settings?fields=home_slimming_desc,home_slimming_image,home_skin_desc,home_skin_image"
+  );
+
+  const cards = [
+    {
+      title: "Slimming Program by Sp.GK",
+      desc: s?.home_slimming_desc ?? "Support recovery, energy, and long-term cellular resilience.",
+      img: s?.home_slimming_image ? assetUrl(s.home_slimming_image) : "/figma/imgCoreSlimming.webp",
+      borderGradient: "linear-gradient(270deg, rgba(194,99,69,1) 0%, rgba(222,186,105,1) 100%)",
+    },
+    {
+      title: "Skin Treatment by Sp.DVE",
+      desc: s?.home_skin_desc ?? "Support recovery, energy, and long-term cellular resilience.",
+      img: s?.home_skin_image ? assetUrl(s.home_skin_image) : "/figma/imgCoreSkin.webp",
+      borderGradient: "linear-gradient(270deg, rgba(57,107,114,1) 0%, rgba(222,186,105,1) 100%)",
+    },
+  ];
+
   return (
     <section className="bg-[#f4ece4] w-full py-12 lg:py-[80px] px-6 lg:px-[100px]">
       <div className="max-w-[1440px] mx-auto flex flex-col items-center gap-[60px]">

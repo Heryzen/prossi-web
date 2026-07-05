@@ -4,7 +4,29 @@ import { useCallback } from "react";
 import Link from "next/link";
 import useEmblaCarousel from "embla-carousel-react";
 
-export function CTA() {
+export type PromoSlide = {
+  title: string;
+  description: string;
+  ctaLink: string;
+  image: string | null;
+};
+
+const defaultSlides: PromoSlide[] = [
+  {
+    title: "Designed for People Who Expect Clarity",
+    description: "If you value evidence, privacy, and a structured plan, we're ready to support your next phase.",
+    ctaLink: "/promo",
+    image: null,
+  },
+  {
+    title: "Designed for People Who Expect Clarity",
+    description: "If you value evidence, privacy, and a structured plan, we're ready to support your next phase.",
+    ctaLink: "/promo",
+    image: null,
+  },
+];
+
+export function CTA({ promos }: { promos?: PromoSlide[] }) {
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true });
 
   const scrollPrev = useCallback(() => {
@@ -15,20 +37,24 @@ export function CTA() {
     if (emblaApi) emblaApi.scrollNext();
   }, [emblaApi]);
 
-  const slides = [1, 2];
+  const slides = promos && promos.length > 0 ? promos : defaultSlides;
 
   return (
     <section className="bg-[#f4ece4] w-full py-12 lg:py-[100px] px-6 flex justify-center overflow-hidden">
       <div className="max-w-[1240px] w-full flex flex-col gap-6">
         <div className="w-full relative rounded-[32px] overflow-hidden bg-transparent" ref={emblaRef}>
           <div className="flex">
-            {slides.map((_, index) => (
+            {slides.map((slide, index) => (
               <div key={index} className="flex-[0_0_100%] h-[423px] relative border border-[#deba69] rounded-[32px] overflow-hidden mx-2">
                 <div className="absolute inset-0 z-0">
                   <div className="absolute inset-0 bg-[#f1e7da]"></div>
                   <img src="/figma/imgBackground.webp" alt="" className="absolute w-full h-full object-cover mix-blend-multiply opacity-50" />
                   <div className="absolute inset-y-0 right-0 w-[60%] flex items-center justify-center">
-                    <img src="/figma/imgObject.webp" alt="" className="w-full h-full object-contain object-right opacity-80" />
+                    <img
+                      src={slide.image ?? "/figma/imgObject.webp"}
+                      alt=""
+                      className={slide.image ? "w-full h-full object-cover" : "w-full h-full object-contain object-right opacity-80"}
+                    />
                   </div>
                   <div className="absolute inset-0 bg-gradient-to-r from-[#f1e7da] from-[40%] to-transparent"></div>
                 </div>
@@ -52,12 +78,12 @@ export function CTA() {
                     </div>
                   </div>
                   <h2 className="font-['Lato'] font-semibold text-2xl lg:text-[40px] text-[#120f0b] capitalize leading-tight mb-6">
-                    Designed for People Who Expect Clarity
+                    {slide.title}
                   </h2>
                   <p className="font-sans text-lg text-[#120f0b] mb-8">
-                    If you value evidence, privacy, and a structured plan, we're ready to support your next phase.
+                    {slide.description}
                   </p>
-                  <Link href="/promo" className="bg-gradient-to-r from-[#e5be80] via-[#edd8ab] to-[#e5be80] border border-[#ecd5a5] rounded-full px-9 py-[18px] text-[#503d1c] font-serif font-semibold text-lg hover:opacity-90 transition-opacity w-fit">
+                  <Link href={slide.ctaLink} className="bg-gradient-to-r from-[#e5be80] via-[#edd8ab] to-[#e5be80] border border-[#ecd5a5] rounded-full px-9 py-[18px] text-[#503d1c] font-serif font-semibold text-lg hover:opacity-90 transition-opacity w-fit">
                     View Offers
                   </Link>
                 </div>

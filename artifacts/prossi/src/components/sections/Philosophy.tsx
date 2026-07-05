@@ -1,4 +1,26 @@
-export function Philosophy() {
+import { directusFetch } from "@/lib/directus";
+
+const DEFAULT_HEADING = "Slimming Glowing No Pusing";
+const DEFAULT_TEXT = [
+  "Prossi Clinic menghadirkan solusi kesehatan dan kecantikan yang komprehensif.",
+  "Dari program slimming berbasis medis bersama dokter Spesialis Gizi Klinik (Sp.GK), penanganan berbagai penyakit kulit dan kelamin oleh dokter Spesialis Dermatologi, Venereologi & Estetika (Sp.DVE), hingga perawatan estetika kulit sehari-hari bersama dokter estetika berpengalaman.",
+  "Dilengkapi dengan teknologi canggih seperti IPL, Laser, dan HIFU, serta program gizi lengkap dengan suplemen sehat, semua dirancang personal sesuai kebutuhan tubuh dan kulitmu.",
+].join("\n\n");
+
+type Settings = { philosophy_heading: string | null; philosophy_text: string | null };
+
+export async function Philosophy() {
+  const s = await directusFetch<Settings>(
+    "/items/site_settings?fields=philosophy_heading,philosophy_text"
+  );
+  const heading = s?.philosophy_heading ?? DEFAULT_HEADING;
+  const text = s?.philosophy_text ?? DEFAULT_TEXT;
+
+  // kata terakhir heading di-styling script (Arizonia) sesuai design
+  const words = heading.trim().split(" ");
+  const lastWord = words.pop();
+  const headingRest = words.join(" ");
+
   return (
     <section className="bg-[#c26345] w-full py-12 lg:py-[130px] px-6 lg:px-[100px] text-white">
       <div className="max-w-[1240px] mx-auto flex flex-col lg:flex-row items-center justify-between gap-12 lg:gap-0">
@@ -17,14 +39,10 @@ export function Philosophy() {
         <div className="flex flex-col items-start w-full lg:w-[559px] shrink-0">
           <div className="flex flex-col gap-6 w-full">
             <h2 className="font-serif text-3xl lg:text-[64px] leading-none text-white">
-              Slimming Glowing No <span className="font-['Arizonia'] text-[36px] lg:text-[70px]">Pusing</span>
+              {headingRest} <span className="font-['Arizonia'] text-[36px] lg:text-[70px]">{lastWord}</span>
             </h2>
             <p className="font-sans text-base md:text-lg leading-relaxed text-white whitespace-pre-wrap">
-              Prossi Clinic menghadirkan solusi kesehatan dan kecantikan yang komprehensif.
-              <br/><br/>
-              Dari program slimming berbasis medis bersama dokter Spesialis Gizi Klinik (Sp.GK), penanganan berbagai penyakit kulit dan kelamin oleh dokter Spesialis Dermatologi, Venereologi & Estetika (Sp.DVE), hingga perawatan estetika kulit sehari-hari bersama dokter estetika berpengalaman.
-              <br/><br/>
-              Dilengkapi dengan teknologi canggih seperti IPL, Laser, dan HIFU, serta program gizi lengkap dengan suplemen sehat, semua dirancang personal sesuai kebutuhan tubuh dan kulitmu.
+              {text}
             </p>
           </div>
         </div>

@@ -1,15 +1,23 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo, useState } from "react";
-import {
-  allArticles,
-  ITEMS_PER_PAGE,
-  TOTAL_PAGES,
-  type Article,
-} from "./articles";
+import { useEffect, useMemo, useState } from "react";
+import { allArticles, ITEMS_PER_PAGE, type Article } from "./articles";
 
 const categories = ["Spesialis Gizi", "Spesialis Kulit", "Dokter Estetika"];
+
+const DIRECTUS_URL = process.env.NEXT_PUBLIC_DIRECTUS_URL ?? "http://localhost:8055";
+
+type CmsArticle = {
+  id: string;
+  title: string;
+  excerpt: string;
+  cover_image: string | null;
+  date_created: string;
+  category: { name: string } | null;
+};
+
+type ListArticle = Article & { category?: string };
 
 function ArticleCard({ id, title, date, excerpt, img }: Article) {
   return (
@@ -103,15 +111,53 @@ function buildPageItems(current: number, total: number): (number | "…")[] {
 
 export default function ArticlePage() {
   const [page, setPage] = useState(1);
+  const [articles, setArticles] = useState<ListArticle[]>(allArticles);
+  const [selectedCat, setSelectedCat] = useState<string | null>(null);
+
+  useEffect(() => {
+    fetch(
+      `${DIRECTUS_URL}/items/articles?filter[status][_eq]=published&sort=-date_created&fields=id,title,excerpt,cover_image,date_created,category.name`
+    )
+      .then((r) => (r.ok ? r.json() : null))
+      .then((json) => {
+        const data: CmsArticle[] | undefined = json?.data;
+        if (data && data.length > 0) {
+          setArticles(
+            data.map((a) => ({
+              id: a.id,
+              title: a.title,
+              excerpt: a.excerpt,
+              img: a.cover_image
+                ? `${DIRECTUS_URL}/assets/${a.cover_image}`
+                : "/figma/imgFrame1984078116.webp",
+              date: new Date(a.date_created).toLocaleDateString("id-ID", {
+                day: "numeric", month: "long", year: "numeric",
+              }),
+              author: "",
+              publishedAt: "",
+              body: [],
+              category: a.category?.name,
+            }))
+          );
+        }
+      })
+      .catch(() => {});
+  }, []);
+
+  const filtered = useMemo(
+    () => (selectedCat ? articles.filter((a) => a.category === selectedCat) : articles),
+    [articles, selectedCat]
+  );
+  const totalPages = Math.max(1, Math.ceil(filtered.length / ITEMS_PER_PAGE));
 
   const pageArticles = useMemo(
-    () => allArticles.slice((page - 1) * ITEMS_PER_PAGE, page * ITEMS_PER_PAGE),
-    [page]
+    () => filtered.slice((page - 1) * ITEMS_PER_PAGE, page * ITEMS_PER_PAGE),
+    [filtered, page]
   );
-  const pageItems = useMemo(() => buildPageItems(page, TOTAL_PAGES), [page]);
+  const pageItems = useMemo(() => buildPageItems(page, totalPages), [page, totalPages]);
 
   const goTo = (p: number) => {
-    const next = Math.min(Math.max(p, 1), TOTAL_PAGES);
+    const next = Math.min(Math.max(p, 1), totalPages);
     if (next === page) return;
     setPage(next);
     if (typeof document !== "undefined") {
@@ -174,13 +220,17 @@ export default function ArticlePage() {
       <div
         className="flex flex-col justify-center gap-3 bg-white px-6 pt-10 pb-5 md:px-[160px] md:pt-[80px] md:pb-[20px]"
       >
-        <div className="flex gap-3">
-          {categories.map((cat, i) => (
+        <div className="flex gap-3 flex-wrap">
+          {categories.map((cat) => (
             <button
               key={cat}
               type="button"
-              className={`flex items-center justify-center rounded-full font-['Inter',sans-serif] font-semibold text-[14px] leading-[22px] transition-colors ${
-                i === 0
+              onClick={() => {
+                setSelectedCat(selectedCat === cat ? null : cat);
+                setPage(1);
+              }}
+              className={`flex items-center justify-center rounded-full font-['Inter',sans-serif] font-semibold text-[14px] leading-[22px] transition-colors cursor-pointer ${
+                selectedCat === cat
                   ? "bg-[#B59637] text-white border border-white"
                   : "bg-transparent text-[#11151C] border border-[#11151C] hover:bg-[#B59637] hover:text-white hover:border-[#B59637]"
               }`}
@@ -256,7 +306,7 @@ export default function ArticlePage() {
 
           <PageButton
             onClick={() => goTo(page + 1)}
-            disabled={page === TOTAL_PAGES}
+            disabled={page === totalPages}
             ariaLabel="Next page"
           >
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none">

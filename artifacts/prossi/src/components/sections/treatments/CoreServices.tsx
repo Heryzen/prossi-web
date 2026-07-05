@@ -1,3 +1,5 @@
+import { directusFetch, assetUrl } from "@/lib/directus";
+
 const CARD_BORDER = "linear-gradient(270deg, rgba(222,186,105,1) 0%, rgba(235,210,151,1) 30%, rgba(251,232,166,1) 50%, rgba(235,210,151,1) 70%, rgba(222,186,105,1) 100%)";
 const CARD_BG = "linear-gradient(180deg, #ffffff 0%, #fff9eb 100%)";
 
@@ -68,12 +70,25 @@ function ProgramCard({ title, desc, img }: { title: string; desc: string; img: s
   );
 }
 
-export function CoreServices() {
-  const rows: [typeof programs[0], typeof programs[1]][] = [
-    [programs[0], programs[1]],
-    [programs[2], programs[3]],
-    [programs[4], programs[5]],
-  ];
+type CmsTreatment = { name: string; description: string; image: string | null };
+
+export async function CoreServices() {
+  const cms = await directusFetch<CmsTreatment[]>(
+    "/items/treatments?filter[category][_eq]=slimming&filter[status][_eq]=published&sort=sort&fields=name,description,image"
+  );
+
+  const items =
+    cms && cms.length > 0
+      ? cms.map((t, i) => ({
+          title: t.name,
+          desc: t.description,
+          img: t.image ? assetUrl(t.image) : programs[i % programs.length].img,
+          size: "sm" as const,
+        }))
+      : programs;
+
+  const rows: (typeof items)[] = [];
+  for (let i = 0; i < items.length; i += 2) rows.push(items.slice(i, i + 2));
 
   return (
     <section className="bg-[#cd724f] w-full pt-[60px] pb-[80px] px-6 md:px-[100px]">
@@ -101,10 +116,11 @@ export function CoreServices() {
 
         {/* Cards — 3 rows, alternating sm+lg */}
         <div className="flex flex-col gap-6 w-full">
-          {rows.map(([left, right], ri) => (
+          {rows.map((row, ri) => (
             <div key={ri} className="flex flex-col md:flex-row gap-6 w-full">
-              <ProgramCard {...left} />
-              <ProgramCard {...right} />
+              {row.map((item) => (
+                <ProgramCard key={item.title} {...item} />
+              ))}
             </div>
           ))}
         </div>

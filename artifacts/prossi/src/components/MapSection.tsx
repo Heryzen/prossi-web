@@ -3,7 +3,7 @@
 import { useEffect, useRef } from "react";
 import { MapContainer, TileLayer, Marker, Popup, ZoomControl, useMap } from "react-leaflet";
 import L from "leaflet";
-import { branches } from "./locations-data";
+import { branches as staticBranches, type Branch } from "./locations-data";
 
 if (typeof window !== "undefined") {
   delete (L.Icon.Default.prototype as unknown as Record<string, unknown>)._getIconUrl;
@@ -35,9 +35,11 @@ function MapFlyTo({ lat, lng }: { lat: number; lng: number }) {
 export function MapSection({
   selectedBranch,
   onSelectBranch,
+  branches = staticBranches,
 }: {
   selectedBranch: number;
   onSelectBranch: (index: number) => void;
+  branches?: Branch[];
 }) {
   const wrapperRef = useRef<HTMLDivElement>(null);
 

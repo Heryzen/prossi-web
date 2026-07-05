@@ -1,4 +1,12 @@
 {
-  "/about/page": "app/about/page.js",
-  "/page": "app/page.js"
+  "/_not-found/page": "app/_not-found/page.js",
+  "/article/page": "app/article/page.js",
+  "/contact/page": "app/contact/page.js",
+  "/doctors/[slug]/page": "app/doctors/[slug]/page.js",
+  "/doctors/page": "app/doctors/page.js",
+  "/locations/page": "app/locations/page.js",
+  "/page": "app/page.js",
+  "/promo/page": "app/promo/page.js",
+  "/register/page": "app/register/page.js",
+  "/treatments/slimming-program/page": "app/treatments/slimming-program/page.js"
 }

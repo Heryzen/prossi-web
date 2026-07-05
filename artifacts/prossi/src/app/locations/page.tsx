@@ -1,9 +1,19 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import dynamic from "next/dynamic";
-import { branches } from "@/components/locations-data";
+import { branches as staticBranches, type Branch } from "@/components/locations-data";
+
+const DIRECTUS_URL = process.env.NEXT_PUBLIC_DIRECTUS_URL ?? "http://localhost:8055";
+
+type CmsLocation = {
+  name: string;
+  address: string;
+  latitude: number;
+  longitude: number;
+  open_hours: string;
+};
 
 const MapSection = dynamic(
   () => import("@/components/MapSection").then((m) => m.MapSection),
@@ -26,6 +36,28 @@ function DirectionIcon() {
 
 export default function LocationsPage() {
   const [selected, setSelected] = useState(0);
+  const [branches, setBranches] = useState<Branch[]>(staticBranches);
+
+  useEffect(() => {
+    fetch(`${DIRECTUS_URL}/items/locations?fields=name,address,latitude,longitude,open_hours`)
+      .then((r) => (r.ok ? r.json() : null))
+      .then((json) => {
+        const data: CmsLocation[] | undefined = json?.data;
+        if (data && data.length > 0) {
+          setBranches(
+            data.map((l) => ({
+              name: l.name,
+              address: l.address,
+              hours: l.open_hours ? `OPEN: ${l.open_hours}` : "",
+              lat: l.latitude,
+              lng: l.longitude,
+              mapsUrl: `https://maps.google.com/?q=${l.latitude},${l.longitude}`,
+            }))
+          );
+        }
+      })
+      .catch(() => {});
+  }, []);
 
   return (
     <div className="flex flex-col pt-[79px]">
@@ -77,7 +109,7 @@ export default function LocationsPage() {
       <div className="flex flex-col md:block md:relative w-full md:h-[680px] bg-white">
         {/* Map — below panel on mobile, full-area behind panel on desktop */}
         <div className="order-2 md:order-none md:absolute md:inset-0 w-full h-[300px] md:h-full">
-          <MapSection selectedBranch={selected} onSelectBranch={setSelected} />
+          <MapSection selectedBranch={selected} onSelectBranch={setSelected} branches={branches} />
         </div>
 
         {/* Branch panel — above map on mobile, floating overlay on desktop */}
@@ -127,9 +159,8 @@ export default function LocationsPage() {
                     <span className="font-['Lato',sans-serif] font-bold text-[#292929]" style={{ fontSize: 12, lineHeight: "18px" }}>
                       {b.address}
                     </span>
-                    <span className="font-['Lato',sans-serif] text-[#b59637]" style={{ fontSize: 12, lineHeight: "18px" }}>
-                      <span className="font-normal">OPEN: Monday – Friday </span>
-                      <span className="font-bold">08:00 AM–09:00 PM</span>
+                    <span className="font-['Lato',sans-serif] font-bold text-[#b59637]" style={{ fontSize: 12, lineHeight: "18px" }}>
+                      {b.hours}
                     </span>
                   </div>
 

@@ -1,9 +1,26 @@
-export function Team() {
-  const team = [
-    { title: "Spesialis Gizi Klinis", img: "/figma/imgTeamMemberImage.webp" },
-    { title: "spesialis Kulit & Estetika", img: "/figma/imgTeamMemberImage1.webp" },
-    { title: "Dokter Umum", img: "/figma/imgTeamMemberImage2.webp" }
-  ];
+import Link from "next/link";
+import { directusFetch, assetUrl } from "@/lib/directus";
+
+const staticTeam = [
+  { title: "Spesialis Gizi Klinis", img: "/figma/imgTeamMemberImage.webp" },
+  { title: "spesialis Kulit & Estetika", img: "/figma/imgTeamMemberImage1.webp" },
+  { title: "Dokter Umum", img: "/figma/imgTeamMemberImage2.webp" },
+];
+
+type CmsDoctor = { specialty: string; photo: string | null };
+
+export async function Team() {
+  const cms = await directusFetch<CmsDoctor[]>(
+    "/items/doctors?filter[status][_eq]=published&sort=sort&fields=specialty,photo"
+  );
+
+  const team =
+    cms && cms.length > 0
+      ? cms.map((d, i) => ({
+          title: d.specialty,
+          img: d.photo ? assetUrl(d.photo) : staticTeam[i % staticTeam.length].img,
+        }))
+      : staticTeam;
 
   return (
     <section className="bg-[#b59637] w-full py-12 lg:py-[100px] px-6 lg:px-[100px] flex flex-col items-center">
@@ -40,17 +57,23 @@ export function Team() {
               <h3 className="font-serif font-semibold text-[26px] text-white text-center capitalize">
                 {member.title}
               </h3>
-              <button className="hidden lg:flex bg-[#b59637] border border-[#ecd5a5] rounded-full px-9 py-[18px] text-white font-serif font-semibold text-lg hover:opacity-90 transition-opacity">
+              <Link
+                href="/doctors"
+                className="hidden lg:flex bg-[#b59637] border border-[#ecd5a5] rounded-full px-9 py-[18px] text-white font-serif font-semibold text-lg hover:opacity-90 transition-opacity"
+              >
                 View Doctors
-              </button>
+              </Link>
             </div>
           ))}
         </div>
 
         {/* Single "View Doctors" button shown only on mobile */}
-        <button className="lg:hidden mt-2 bg-[#b59637] border border-[#ecd5a5] rounded-full px-9 py-[18px] text-white font-serif font-semibold text-lg hover:opacity-90 transition-opacity">
+        <Link
+          href="/doctors"
+          className="lg:hidden mt-2 bg-[#b59637] border border-[#ecd5a5] rounded-full px-9 py-[18px] text-white font-serif font-semibold text-lg hover:opacity-90 transition-opacity"
+        >
           View Doctors
-        </button>
+        </Link>
       </div>
     </section>
   );

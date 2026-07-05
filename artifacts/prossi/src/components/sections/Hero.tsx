@@ -1,9 +1,15 @@
 "use client";
 
 import Link from "next/link";
-import { useState, useCallback } from "react";
+import { useState, useCallback, type ReactNode } from "react";
 
-const slides = [
+export type HeroSlide = {
+  img: string;
+  heading: ReactNode;
+  sub: string;
+};
+
+const defaultSlides: HeroSlide[] = [
   {
     img: "/figma/imgBackground1.webp",
     heading: (
@@ -36,12 +42,13 @@ const slides = [
   },
 ];
 
-export function Hero() {
+export function Hero({ slides: slidesProp }: { slides?: HeroSlide[] }) {
+  const slides = slidesProp && slidesProp.length > 0 ? slidesProp : defaultSlides;
   const [current, setCurrent] = useState(0);
 
   const goTo = useCallback((idx: number) => {
     setCurrent((idx + slides.length) % slides.length);
-  }, []);
+  }, [slides.length]);
 
   const next = useCallback(() => goTo(current + 1), [current, goTo]);
   const prev = useCallback(() => goTo(current - 1), [current, goTo]);
