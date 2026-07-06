@@ -213,7 +213,7 @@ export function DoctorsPageContent({
                     <img src={doc.img} alt={doc.name} className="w-full h-full object-cover object-top" />
                   </div>
                 </div>
-                <div className="flex flex-col items-center gap-2 text-center">
+                <div className="flex flex-col items-center gap-2 text-center flex-1">
                   <h3 className="font-serif font-semibold text-[24px] md:text-[26px] text-[#120f0b] capitalize leading-tight">
                     {doc.name}
                   </h3>
@@ -224,7 +224,7 @@ export function DoctorsPageContent({
                 <button
                   type="button"
                   onClick={() => setSelected(doc)}
-                  className="bg-[#b59637] border border-[#ecd5a5] rounded-full px-9 py-[16px] md:py-[18px] text-white font-serif font-semibold text-[17px] md:text-[18px] hover:opacity-90 transition-opacity w-full max-w-[322px] cursor-pointer"
+                  className="mt-auto bg-[#b59637] border border-[#ecd5a5] rounded-full px-9 py-[16px] md:py-[18px] text-white font-serif font-semibold text-[17px] md:text-[18px] hover:opacity-90 transition-opacity w-full max-w-[322px] cursor-pointer"
                 >
                   View Profile
                 </button>

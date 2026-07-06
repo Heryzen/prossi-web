@@ -9,7 +9,37 @@ export type Review = {
   name: string;
   avatar: string;
   image: string;
+  rating?: number;
 };
+
+function Stars({ count }: { count: number }) {
+  return (
+    <div className="flex gap-1">
+      {Array.from({ length: 5 }, (_, i) => (
+        <svg key={i} width="32" height="32" viewBox="0 0 24 24" fill={i < count ? "#FFD665" : "#e5ddd0"}>
+          <path d="M12 2l2.9 6.3 6.9.8-5.1 4.7 1.4 6.8L12 17.2 5.9 20.6l1.4-6.8L2.2 9.1l6.9-.8z" />
+        </svg>
+      ))}
+    </div>
+  );
+}
+
+function Avatar({ src, name }: { src: string; name: string }) {
+  if (src) {
+    return <img src={src} alt={name} className="w-[62px] h-[62px] rounded-full object-cover" />;
+  }
+  const initials = name
+    .split(" ")
+    .map((w) => w[0])
+    .slice(0, 2)
+    .join("")
+    .toUpperCase();
+  return (
+    <div className="w-[62px] h-[62px] rounded-full bg-[#b59637] flex items-center justify-center text-white font-semibold text-lg shrink-0">
+      {initials}
+    </div>
+  );
+}
 
 export function Testimonials({ reviews: reviewsProp }: { reviews?: Review[] }) {
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true, align: 'start' });
@@ -91,13 +121,13 @@ export function Testimonials({ reviews: reviewsProp }: { reviews?: Review[] }) {
                 <div className="w-full bg-[#fff8f2] border border-[#deba69] rounded-[24px] p-8 flex flex-col md:flex-row gap-6 h-full">
                   <div className="flex flex-col w-full md:w-[316px] shrink-0 justify-between">
                     <div className="flex flex-col gap-4">
-                      <img src="/figma/imgStars.svg" alt="5 stars" className="w-[176px] h-[32px]" />
+                      <Stars count={review.rating ?? 5} />
                       <p className="font-sans text-lg leading-relaxed text-[#120f0b]">
                         {review.text}
                       </p>
                     </div>
                     <div className="flex items-center gap-4 mt-8">
-                      <img src={review.avatar} alt={review.name} className="w-[62px] h-[62px] rounded-full object-cover" />
+                      <Avatar src={review.avatar} name={review.name} />
                       <div className="flex flex-col gap-2 text-[#120f0b]">
                         <span className="font-sans font-semibold text-sm opacity-60 uppercase">{review.location}</span>
                         <span className="font-sans font-medium text-base">{review.name}</span>
