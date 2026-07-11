@@ -99,11 +99,18 @@ export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
   const orderNumber = searchParams.get("order_number");
   const phone = searchParams.get("phone");
+  const memberId = searchParams.get("member_id");
 
   try {
     if (orderNumber) {
       const rows = await directus(`/items/orders?filter[order_number][_eq]=${encodeURIComponent(orderNumber)}&limit=1`);
       return NextResponse.json({ order: rows?.[0] ?? null });
+    }
+    if (memberId) {
+      const rows = await directus(
+        `/items/orders?filter[member][_eq]=${encodeURIComponent(memberId)}&sort=-date_created&limit=50`
+      );
+      return NextResponse.json({ orders: rows });
     }
     if (phone) {
       const rows = await directus(

@@ -213,6 +213,10 @@ export function Header({ topBar }: { topBar?: HeaderTopBar }) {
             {/* Login / Account */}
             {memberName ? (
               <div className="flex items-center gap-1.5 text-[14px]">
+                <Link href="/shop/orders" className="font-medium text-[#120f0b] hover:text-[#b59637] transition-colors">
+                  Pesanan Saya
+                </Link>
+                <span className="text-[#d8cbb4]">·</span>
                 <span className="font-medium text-[#120f0b]">Halo, {memberName.split(" ")[0]}</span>
                 <span className="text-[#d8cbb4]">·</span>
                 <button
