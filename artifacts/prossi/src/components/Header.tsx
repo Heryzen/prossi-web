@@ -36,6 +36,7 @@ export function Header({ topBar }: { topBar?: HeaderTopBar }) {
   const [treatmentsOpen, setTreatmentsOpen] = useState(false);
   const [doctorsOpen, setDoctorsOpen] = useState(false);
   const [cartMenuOpen, setCartMenuOpen] = useState(false);
+  const [accountMenuOpen, setAccountMenuOpen] = useState(false);
   const location = usePathname();
 
   const isTreatments = location.startsWith("/treatments");
@@ -213,16 +214,37 @@ export function Header({ topBar }: { topBar?: HeaderTopBar }) {
           <div className="hidden lg:flex items-center gap-4">
             {/* Login / Account */}
             {memberName ? (
-              <div className="flex items-center gap-1.5 text-[14px]">
-                <span className="font-medium text-[#120f0b]">Halo, {memberName.split(" ")[0]}</span>
-                <span className="text-[#d8cbb4]">·</span>
+              <div className="relative">
                 <button
                   type="button"
-                  onClick={handleLogout}
-                  className="font-medium text-[#868787] hover:text-[#b59637] transition-colors cursor-pointer"
+                  onClick={() => setAccountMenuOpen(!accountMenuOpen)}
+                  aria-label="Menu akun"
+                  className="flex items-center justify-center w-9 h-9 rounded-full bg-[#f4ece4] hover:bg-[#ecd5a5] transition-colors cursor-pointer"
                 >
-                  Keluar
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                    <path d="M12 12a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9ZM4 20.5c1.4-3.6 4.6-5.5 8-5.5s6.6 1.9 8 5.5" stroke="#120f0b" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
                 </button>
+
+                {accountMenuOpen && (
+                  <div className="absolute right-0 top-[calc(100%+14px)] w-[200px] rounded-[20px] bg-white p-4 shadow-[0px_10px_30px_rgba(18,15,11,0.12)] z-50">
+                    <div className="flex flex-col gap-1">
+                      <span className="px-4 py-2 text-[14px] font-semibold text-[#120f0b] truncate">
+                        Halo, {memberName.split(" ")[0]}
+                      </span>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setAccountMenuOpen(false);
+                          handleLogout();
+                        }}
+                        className="text-left rounded-lg px-4 py-3 text-[15px] text-[#868787] hover:bg-[#f4ece4] hover:text-[#b59637] transition-colors cursor-pointer"
+                      >
+                        Keluar
+                      </button>
+                    </div>
+                  </div>
+                )}
               </div>
             ) : (
               <Link href="/login" className="text-[14px] font-medium text-[#120f0b] hover:text-[#b59637] transition-colors">
