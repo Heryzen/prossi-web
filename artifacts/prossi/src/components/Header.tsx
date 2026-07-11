@@ -33,10 +33,8 @@ export function Header({ topBar }: { topBar?: HeaderTopBar }) {
   const [memberName, setMemberName] = useState<string | null>(null);
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [treatmentsOpen, setTreatmentsOpen] = useState(false);
-  const [doctorsOpen, setDoctorsOpen] = useState(false);
-  const [cartMenuOpen, setCartMenuOpen] = useState(false);
-  const [accountMenuOpen, setAccountMenuOpen] = useState(false);
+  const [openMenu, setOpenMenu] = useState<"treatments" | "cart" | "account" | null>(null);
+  const treatmentsOpen = openMenu === "treatments";
   const location = usePathname();
 
   const isTreatments = location.startsWith("/treatments");
@@ -134,9 +132,7 @@ export function Header({ topBar }: { topBar?: HeaderTopBar }) {
           {/* Desktop nav */}
           <nav className="hidden lg:flex items-center gap-8">
             {navItems.map((item) => {
-              const isOpen =
-                item.label === "Treatments" ? treatmentsOpen :
-                item.label === "Doctors" ? doctorsOpen : false;
+              const isOpen = item.label === "Treatments" && treatmentsOpen;
               const textColor = "text-[#120f0b]";
               const isActive = location === item.href;
 
@@ -145,15 +141,7 @@ export function Header({ topBar }: { topBar?: HeaderTopBar }) {
                   {item.dropdown ? (
                     <button
                       type="button"
-                      onClick={() => {
-                        if (item.label === "Treatments") {
-                          setTreatmentsOpen(!treatmentsOpen);
-                          setDoctorsOpen(false);
-                        } else if (item.label === "Doctors") {
-                          setDoctorsOpen(!doctorsOpen);
-                          setTreatmentsOpen(false);
-                        }
-                      }}
+                      onClick={() => setOpenMenu(treatmentsOpen ? null : "treatments")}
                       className={`flex items-center gap-0.5 text-[16px] ${isActive ? "font-semibold" : "font-medium"} ${textColor} hover:text-[#b59637] transition-colors`}
                     >
                       {item.label}
@@ -184,23 +172,9 @@ export function Header({ topBar }: { topBar?: HeaderTopBar }) {
                             key={t.label}
                             href={t.href}
                             className="rounded-lg px-4 py-3 text-[15px] text-[#120f0b] hover:bg-[#f4ece4] hover:text-[#b59637] transition-colors"
-                            onClick={() => setTreatmentsOpen(false)}
+                            onClick={() => setOpenMenu(null)}
                           >
                             {t.label}
-                          </Link>
-                        ))}
-                        {item.label === "Doctors" && [
-                          { label: "Dokter Spesialis Gizi Klinik", href: "/doctors/dokter-spesialis-gizi-klinik" },
-                          { label: "Dokter Spesialis DVE", href: "/doctors/dokter-spesialis-dve" },
-                          { label: "Dokter Umum", href: "/doctors/dokter-umum" },
-                        ].map((d) => (
-                          <Link
-                            key={d.label}
-                            href={d.href}
-                            className="rounded-lg px-4 py-3 text-[15px] text-[#120f0b] hover:bg-[#f4ece4] hover:text-[#b59637] transition-colors"
-                            onClick={() => setDoctorsOpen(false)}
-                          >
-                            {d.label}
                           </Link>
                         ))}
                       </div>
@@ -217,7 +191,7 @@ export function Header({ topBar }: { topBar?: HeaderTopBar }) {
               <div className="relative">
                 <button
                   type="button"
-                  onClick={() => setAccountMenuOpen(!accountMenuOpen)}
+                  onClick={() => setOpenMenu(openMenu === "account" ? null : "account")}
                   aria-label="Menu akun"
                   className="flex items-center justify-center w-9 h-9 rounded-full bg-[#f4ece4] hover:bg-[#ecd5a5] transition-colors cursor-pointer"
                 >
@@ -226,7 +200,7 @@ export function Header({ topBar }: { topBar?: HeaderTopBar }) {
                   </svg>
                 </button>
 
-                {accountMenuOpen && (
+                {openMenu === "account" && (
                   <div className="absolute right-0 top-[calc(100%+14px)] w-[200px] rounded-[20px] bg-white p-4 shadow-[0px_10px_30px_rgba(18,15,11,0.12)] z-50">
                     <div className="flex flex-col gap-1">
                       <span className="px-4 py-2 text-[14px] font-semibold text-[#120f0b] truncate">
@@ -235,7 +209,7 @@ export function Header({ topBar }: { topBar?: HeaderTopBar }) {
                       <button
                         type="button"
                         onClick={() => {
-                          setAccountMenuOpen(false);
+                          setOpenMenu(null);
                           handleLogout();
                         }}
                         className="text-left rounded-lg px-4 py-3 text-[15px] text-[#868787] hover:bg-[#f4ece4] hover:text-[#b59637] transition-colors cursor-pointer"
@@ -256,7 +230,7 @@ export function Header({ topBar }: { topBar?: HeaderTopBar }) {
             <div className="relative">
               <button
                 type="button"
-                onClick={() => setCartMenuOpen(!cartMenuOpen)}
+                onClick={() => setOpenMenu(openMenu === "cart" ? null : "cart")}
                 aria-label="Menu keranjang"
                 className="relative flex items-center justify-center w-9 h-9 hover:opacity-70 transition-opacity cursor-pointer"
               >
@@ -270,12 +244,12 @@ export function Header({ topBar }: { topBar?: HeaderTopBar }) {
                 )}
               </button>
 
-              {cartMenuOpen && (
+              {openMenu === "cart" && (
                 <div className="absolute right-0 top-[calc(100%+14px)] w-[220px] rounded-[20px] bg-white p-4 shadow-[0px_10px_30px_rgba(18,15,11,0.12)] z-50">
                   <div className="flex flex-col gap-1">
                     <Link
                       href="/cart"
-                      onClick={() => setCartMenuOpen(false)}
+                      onClick={() => setOpenMenu(null)}
                       className="rounded-lg px-4 py-3 text-[15px] text-[#120f0b] hover:bg-[#f4ece4] hover:text-[#b59637] transition-colors"
                     >
                       Keranjang{cartCount > 0 ? ` (${cartCount})` : ""}
@@ -283,7 +257,7 @@ export function Header({ topBar }: { topBar?: HeaderTopBar }) {
                     {memberName && (
                       <Link
                         href="/shop/orders"
-                        onClick={() => setCartMenuOpen(false)}
+                        onClick={() => setOpenMenu(null)}
                         className="rounded-lg px-4 py-3 text-[15px] text-[#120f0b] hover:bg-[#f4ece4] hover:text-[#b59637] transition-colors"
                       >
                         Pesanan Saya
@@ -297,7 +271,7 @@ export function Header({ topBar }: { topBar?: HeaderTopBar }) {
             {/* CTA Button */}
             <Link
               href="/contact"
-              className="flex bg-[#b59637] rounded-full px-5 h-9 text-white font-medium text-[14px] hover:opacity-90 transition-opacity items-center justify-center whitespace-nowrap"
+              className="flex bg-[#b59637] rounded-full px-7 h-11 text-white font-medium text-[15px] hover:opacity-90 transition-opacity items-center justify-center whitespace-nowrap"
             >
               Reservation
             </Link>
@@ -324,7 +298,7 @@ export function Header({ topBar }: { topBar?: HeaderTopBar }) {
                   <>
                     <button
                       type="button"
-                      onClick={() => setTreatmentsOpen(!treatmentsOpen)}
+                      onClick={() => setOpenMenu(treatmentsOpen ? null : "treatments")}
                       className="flex items-center justify-between w-full py-2 font-medium text-[#120f0b] hover:text-[#b59637] transition-colors"
                     >
                       <span>Treatments</span>
