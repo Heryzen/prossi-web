@@ -7,8 +7,10 @@ interface Props {
   onClose: () => void;
 }
 
+type Location = { id: string; name: string; wa_number: string };
+
 const TREATMENTS = ["Slimming Program", "Skin Treatment"];
-const CLINICS = ["Prossi Clinic Jakarta", "Prossi Clinic Bandung", "Prossi Clinic Surabaya"];
+const DIRECTUS_URL = process.env.NEXT_PUBLIC_DIRECTUS_URL ?? "http://localhost:8055";
 
 function getMemberId(): string | undefined {
   try {
@@ -24,37 +26,61 @@ export function ReservationModal({ isOpen, onClose }: Props) {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
+  const [waLink, setWaLink] = useState<string | null>(null);
+  const [locations, setLocations] = useState<Location[]>([]);
 
-  const handleSubmit = async () => {
+  useEffect(() => {
+    if (!isOpen || locations.length > 0) return;
+    fetch(`${DIRECTUS_URL}/items/locations?fields=id,name,wa_number&sort=name`)
+      .then((r) => (r.ok ? r.json() : null))
+      .then((json) => {
+        if (json?.data) setLocations(json.data);
+      })
+      .catch(() => {});
+  }, [isOpen, locations.length]);
+
+  const handleSubmit = () => {
     if (!form.fullName || !form.phone || !form.treatment || !form.clinic) {
       setError("Lengkapi semua kolom terlebih dahulu.");
       return;
     }
+    const location = locations.find((l) => l.id === form.clinic);
+    if (!location) {
+      setError("Klinik tidak ditemukan, coba pilih ulang.");
+      return;
+    }
+
+    // Buka tab WA segera (masih dalam gesture klik yang sama) sebelum await apa pun,
+    // supaya tidak diblokir popup blocker browser.
+    const waMessage = `Halo, saya ${form.fullName} (${form.phone}) ingin melakukan reservasi untuk ${form.treatment} di ${location.name}.`;
+    const link = `https://wa.me/${location.wa_number.replace(/\D/g, "")}?text=${encodeURIComponent(waMessage)}`;
+    setWaLink(link);
+    window.open(link, "_blank", "noopener,noreferrer");
+
     setSubmitting(true);
     setError(null);
-    try {
-      const res = await fetch("/api/reservations", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          full_name: form.fullName,
-          phone: form.phone,
-          treatment: form.treatment,
-          clinic: form.clinic,
-          member_id: getMemberId(),
-        }),
-      });
-      const json = await res.json();
-      if (!res.ok) {
-        setError(json.error ?? "Gagal mengirim reservasi, coba lagi.");
-        return;
-      }
-      setSuccess(true);
-    } catch {
-      setError("Tidak bisa terhubung ke server.");
-    } finally {
-      setSubmitting(false);
-    }
+    fetch("/api/reservations", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        full_name: form.fullName,
+        phone: form.phone,
+        treatment: form.treatment,
+        clinic: location.name,
+        location_id: location.id,
+        member_id: getMemberId(),
+      }),
+    })
+      .then((res) => res.json().then((json) => ({ ok: res.ok, json })))
+      .then(({ ok, json }) => {
+        if (!ok) {
+          setError(json.error ?? "Gagal menyimpan reservasi, coba lagi.");
+          return;
+        }
+        setSuccess(true);
+      })
+      .catch(() => setError("Tidak bisa terhubung ke server."))
+      .finally(() => setSubmitting(false));
   };
 
   useEffect(() => {
@@ -65,6 +91,7 @@ export function ReservationModal({ isOpen, onClose }: Props) {
       setForm({ fullName: "", phone: "", treatment: "", clinic: "" });
       setError(null);
       setSuccess(false);
+      setWaLink(null);
     }
     return () => { document.body.style.overflow = ""; };
   }, [isOpen]);
@@ -196,8 +223,8 @@ export function ReservationModal({ isOpen, onClose }: Props) {
                     style={{ borderRadius: 4, color: form.clinic ? "#292929" : "#AEAFAF" }}
                   >
                     <option value="" disabled>Select Clinic</option>
-                    {CLINICS.map((c) => (
-                      <option key={c} value={c} style={{ color: "#292929" }}>{c}</option>
+                    {locations.map((l) => (
+                      <option key={l.id} value={l.id} style={{ color: "#292929" }}>{l.name}</option>
                     ))}
                   </select>
                   <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
@@ -217,8 +244,19 @@ export function ReservationModal({ isOpen, onClose }: Props) {
                   </svg>
                 </div>
                 <p className="font-['Readex_Pro',sans-serif] text-[16px] text-[#292929]">
-                  Reservasi berhasil dikirim! Tim kami akan menghubungi Anda via WhatsApp untuk konfirmasi jadwal.
+                  Reservasi tersimpan! Kami sudah membuka WhatsApp untuk Anda — lanjutkan chat dengan tim kami di sana untuk konfirmasi jadwal.
                 </p>
+                {waLink && (
+                  <a
+                    href={waLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full flex items-center justify-center gap-2 font-['Lato',sans-serif] font-medium text-[16px] text-white hover:opacity-90 transition-opacity"
+                    style={{ maxWidth: 426, padding: "12px 16px", background: "#25D366", borderRadius: 8 }}
+                  >
+                    Belum terbuka? Buka WhatsApp
+                  </a>
+                )}
                 <button
                   type="button"
                   onClick={onClose}
