@@ -48,11 +48,11 @@ export function Header({ topBar }: { topBar?: HeaderTopBar }) {
   useEffect(() => {
     try {
       const raw = localStorage.getItem("prossi_member");
-      if (raw) setMemberName(JSON.parse(raw).full_name ?? null);
+      setMemberName(raw ? JSON.parse(raw).full_name ?? null : null);
     } catch {
-      /* ignore */
+      setMemberName(null);
     }
-  }, []);
+  }, [location]);
 
   const handleLogout = () => {
     localStorage.removeItem("prossi_member");
