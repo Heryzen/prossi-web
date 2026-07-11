@@ -10,7 +10,7 @@ export default function SlimmingProgramPage() {
         <TreatmentsHero />
         <CoreServices />
       </div>
-      <BeforeAfter />
+      <BeforeAfter category="slimming" />
       <CompareSection />
     </>
   );

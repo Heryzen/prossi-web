@@ -12,6 +12,13 @@ type CmsDoctor = {
   treatment_category: string | null;
 };
 
+type CmsArticle = {
+  id: string;
+  title: string;
+  cover_image: string | null;
+  category: { name: string } | null;
+};
+
 const CATEGORY_LABEL: Record<string, string> = {
   slimming: "Slimming Program",
   skin: "Skin Treatment",
@@ -28,9 +35,22 @@ export default async function Doctors({
     ? `&filter[treatment_category][_eq]=${encodeURIComponent(category)}`
     : "";
 
-  const cms = await directusFetch<CmsDoctor[]>(
-    `/items/doctors?filter[status][_eq]=published&sort=sort&fields=name,photo,specialty,bio,schedule_days,schedule_hours,treatment_category${filter}`
-  );
+  const [cms, cmsArticles] = await Promise.all([
+    directusFetch<CmsDoctor[]>(
+      `/items/doctors?filter[status][_eq]=published&sort=sort&fields=name,photo,specialty,bio,schedule_days,schedule_hours,treatment_category${filter}`
+    ),
+    directusFetch<CmsArticle[]>(
+      "/items/articles?filter[status][_eq]=published&sort=-date_created&limit=3&fields=id,title,cover_image,category.name"
+    ),
+  ]);
+
+  const articles =
+    cmsArticles?.map((a) => ({
+      id: a.id,
+      img: a.cover_image ? assetUrl(a.cover_image) : "/figma/imgArticleGizi.png",
+      tag: a.category?.name ?? "Prossi Journal",
+      title: a.title,
+    })) ?? [];
 
   const doctors: Doctor[] =
     cms && cms.length > 0
@@ -54,6 +74,7 @@ export default async function Doctors({
       eyebrow={eyebrow}
       heroGradientRgb={heroGradientRgb}
       doctors={doctors}
+      articles={articles}
     />
   );
 }

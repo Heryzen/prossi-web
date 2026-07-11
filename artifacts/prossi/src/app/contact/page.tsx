@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import { ReservationModal } from "@/components/ReservationModal";
 
@@ -8,6 +8,9 @@ const MapSection = dynamic(
   () => import("@/components/MapSection").then((m) => m.MapSection),
   { ssr: false }
 );
+
+const DIRECTUS_URL = process.env.NEXT_PUBLIC_DIRECTUS_URL ?? "http://localhost:8055";
+const FALLBACK_WA_NUMBER = process.env.NEXT_PUBLIC_WA_NUMBER ?? "";
 
 const branches = [
   {
@@ -39,18 +42,13 @@ const branches = [
   },
 ];
 
-const whatsappRows = [
-  {
-    label: "Reservasi & Informasi Bersama Rossi",
-    phone: "0828118951181",
-    href: "https://wa.me/0828118951181",
-  },
-  {
-    label: "Prossi Consult+ Sp GK & Sp DVE (Konsultasi Online)",
-    phone: "0828118951181",
-    href: "https://wa.me/0828118951181",
-  },
-];
+function buildWhatsappRows(waNumber: string) {
+  const digits = waNumber.replace(/\D/g, "");
+  return [
+    { label: "Reservasi & Informasi Bersama Rossi", phone: waNumber, href: `https://wa.me/${digits}` },
+    { label: "Prossi Consult+ Sp GK & Sp DVE (Konsultasi Online)", phone: waNumber, href: `https://wa.me/${digits}` },
+  ];
+}
 
 function WhatsAppIcon() {
   return (
@@ -83,6 +81,18 @@ const HEADER_OFFSET = "pt-[79px]";
 export default function Contact() {
   const [selectedBranch, setSelectedBranch] = useState(0);
   const [reservationOpen, setReservationOpen] = useState(false);
+  const [waNumber, setWaNumber] = useState(FALLBACK_WA_NUMBER);
+
+  useEffect(() => {
+    fetch(`${DIRECTUS_URL}/items/site_settings?fields=whatsapp_number`)
+      .then((r) => (r.ok ? r.json() : null))
+      .then((json) => {
+        if (json?.data?.whatsapp_number) setWaNumber(json.data.whatsapp_number);
+      })
+      .catch(() => {});
+  }, []);
+
+  const whatsappRows = buildWhatsappRows(waNumber);
 
   return (
     <>

@@ -10,7 +10,7 @@ export default function SkinTreatmentPage() {
         <SkinHero />
         <SkinCoreServices />
       </div>
-      <BeforeAfter />
+      <BeforeAfter category="skin" />
       <CompareSection />
     </>
   );

@@ -9,24 +9,6 @@ const GOLD_RING =
 const HEADING_GRADIENT =
   "linear-gradient(270deg, rgba(251,232,166,1) 0%, rgba(235,210,151,1) 41%, rgba(251,232,166,1) 67%, rgba(251,232,166,1) 100%)";
 
-const articles = [
-  {
-    img: "/figma/imgArticleGizi.png",
-    tag: "Spesialis Gizi",
-    title: "Panduan nutrisi, slimming, dan kesehatan metabolisme dari dokter Spesialis Gizi Klinik.",
-  },
-  {
-    img: "/figma/imgArticleKulit.png",
-    tag: "Spesialis Kulit",
-    title: "Informasi terpercaya seputar penyakit kulit dan kelamin dari dokter Sp.DVE.",
-  },
-  {
-    img: "/figma/imgArticleEstetika.png",
-    tag: "Dokter Estetika",
-    title: "Tips dan insight perawatan kecantikan langsung dari dokter estetika Prossi Clinic.",
-  },
-];
-
 function Eyebrow({ text }: { text: string }) {
   return (
     <div className="flex gap-4 items-center justify-center">
@@ -132,15 +114,19 @@ function DoctorModal({ doctor, onClose }: { doctor: Doctor; onClose: () => void 
   );
 }
 
+type Article = { id: string; img: string; tag: string; title: string };
+
 export function DoctorsPageContent({
   eyebrow,
   heroGradientRgb,
   doctors,
+  articles,
 }: {
   eyebrow: string;
   /** e.g. "205,114,79" (terracotta) or "63,109,112" (teal) */
   heroGradientRgb: string;
   doctors: Doctor[];
+  articles: Article[];
 }) {
   const [selected, setSelected] = useState<Doctor | null>(null);
   const rgb = heroGradientRgb;
@@ -249,7 +235,11 @@ export function DoctorsPageContent({
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full">
             {articles.map((a) => (
-              <div key={a.tag} className="bg-[#fff8f2] rounded-[24px] overflow-hidden pb-8 flex flex-col gap-6">
+              <Link
+                key={a.id}
+                href={`/article/${a.id}`}
+                className="bg-[#fff8f2] rounded-[24px] overflow-hidden pb-8 flex flex-col gap-6 hover:opacity-90 transition-opacity"
+              >
                 <div className="w-full h-[220px] md:h-[260px]">
                   <img src={a.img} alt={a.tag} className="w-full h-full object-cover" />
                 </div>
@@ -264,7 +254,7 @@ export function DoctorsPageContent({
                     {a.title}
                   </h3>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
 

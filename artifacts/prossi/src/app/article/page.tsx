@@ -3,8 +3,9 @@
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { allArticles, ITEMS_PER_PAGE, type Article } from "./articles";
+import ArticleListLoading from "./loading";
 
-const categories = ["Spesialis Gizi", "Spesialis Kulit", "Dokter Estetika"];
+const FALLBACK_CATEGORIES = ["Spesialis Gizi", "Spesialis Kulit", "Dokter Estetika"];
 
 const DIRECTUS_URL = process.env.NEXT_PUBLIC_DIRECTUS_URL ?? "http://localhost:8055";
 
@@ -16,6 +17,8 @@ type CmsArticle = {
   date_created: string;
   category: { name: string } | null;
 };
+
+type CmsCategory = { id: string; name: string };
 
 type ListArticle = Article & { category?: string };
 
@@ -111,16 +114,22 @@ function buildPageItems(current: number, total: number): (number | "…")[] {
 
 export default function ArticlePage() {
   const [page, setPage] = useState(1);
-  const [articles, setArticles] = useState<ListArticle[]>(allArticles);
+  const [articles, setArticles] = useState<ListArticle[]>([]);
+  const [categories, setCategories] = useState<string[]>([]);
+  const [loading, setLoading] = useState(true);
   const [selectedCat, setSelectedCat] = useState<string | null>(null);
 
   useEffect(() => {
-    fetch(
-      `${DIRECTUS_URL}/items/articles?filter[status][_eq]=published&sort=-date_created&fields=id,title,excerpt,cover_image,date_created,category.name`
-    )
-      .then((r) => (r.ok ? r.json() : null))
-      .then((json) => {
-        const data: CmsArticle[] | undefined = json?.data;
+    Promise.all([
+      fetch(
+        `${DIRECTUS_URL}/items/articles?filter[status][_eq]=published&sort=-date_created&fields=id,title,excerpt,cover_image,date_created,category.name`
+      ).then((r) => (r.ok ? r.json() : null)),
+      fetch(`${DIRECTUS_URL}/items/article_categories?fields=id,name`).then((r) =>
+        r.ok ? r.json() : null
+      ),
+    ])
+      .then(([articlesJson, categoriesJson]) => {
+        const data: CmsArticle[] | undefined = articlesJson?.data;
         if (data && data.length > 0) {
           setArticles(
             data.map((a) => ({
@@ -139,9 +148,18 @@ export default function ArticlePage() {
               category: a.category?.name,
             }))
           );
+        } else {
+          setArticles(allArticles);
         }
+
+        const cats: CmsCategory[] | undefined = categoriesJson?.data;
+        setCategories(cats && cats.length > 0 ? cats.map((c) => c.name) : FALLBACK_CATEGORIES);
       })
-      .catch(() => {});
+      .catch(() => {
+        setArticles(allArticles);
+        setCategories(FALLBACK_CATEGORIES);
+      })
+      .finally(() => setLoading(false));
   }, []);
 
   const filtered = useMemo(
@@ -166,6 +184,8 @@ export default function ArticlePage() {
         ?.scrollIntoView({ behavior: "smooth", block: "start" });
     }
   };
+
+  if (loading) return <ArticleListLoading />;
 
   return (
     <div className="flex flex-col pt-[79px]">
