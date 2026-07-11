@@ -1,26 +1,27 @@
 /**
  * Kirim pesan WhatsApp keluar (order confirmation, payment success, shipping update)
- * via WhatsApp Cloud API. Butuh WHATSAPP_ACCESS_TOKEN + WHATSAPP_PHONE_NUMBER_ID.
+ * via Fonnte (https://docs.fonnte.com/api-send-message/). Butuh FONNTE_TOKEN.
  * Kalau belum dikonfigurasi, pesan di-log ke console (aman untuk development).
  */
 export async function sendWhatsAppMessage(to: string, text: string): Promise<void> {
-  const token = process.env.WHATSAPP_ACCESS_TOKEN;
-  const phoneNumberId = process.env.WHATSAPP_PHONE_NUMBER_ID;
+  const token = process.env.FONNTE_TOKEN;
 
-  if (!token || !phoneNumberId) {
+  if (!token) {
     console.log(`[WA notif - belum dikonfigurasi] to=${to}: ${text}`);
     return;
   }
 
   try {
-    await fetch(`https://graph.facebook.com/v20.0/${phoneNumberId}/messages`, {
+    await fetch("https://api.fonnte.com/send", {
       method: "POST",
-      headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
-      body: JSON.stringify({
-        messaging_product: "whatsapp",
-        to: to.replace(/\D/g, ""),
-        type: "text",
-        text: { body: text },
+      headers: {
+        Authorization: token,
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      body: new URLSearchParams({
+        target: to.replace(/\D/g, ""),
+        message: text,
+        countryCode: "62",
       }),
     });
   } catch (e) {
