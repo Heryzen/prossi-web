@@ -209,32 +209,33 @@ export function Header({ topBar }: { topBar?: HeaderTopBar }) {
             })}
           </nav>
 
-          <div className="hidden lg:flex items-center gap-5">
+          <div className="hidden lg:flex items-center gap-4">
             {/* Login / Account */}
             {memberName ? (
-              <div className="flex items-center gap-3">
-                <span className="text-[14px] font-medium text-[#120f0b]">Halo, {memberName.split(" ")[0]}</span>
+              <div className="flex items-center gap-1.5 text-[14px]">
+                <span className="font-medium text-[#120f0b]">Halo, {memberName.split(" ")[0]}</span>
+                <span className="text-[#d8cbb4]">·</span>
                 <button
                   type="button"
                   onClick={handleLogout}
-                  className="text-[13px] font-medium text-[#b59637] hover:underline cursor-pointer"
+                  className="font-medium text-[#868787] hover:text-[#b59637] transition-colors cursor-pointer"
                 >
                   Keluar
                 </button>
               </div>
             ) : (
-              <Link href="/login" className="text-[15px] font-medium text-[#120f0b] hover:text-[#b59637] transition-colors">
+              <Link href="/login" className="text-[14px] font-medium text-[#120f0b] hover:text-[#b59637] transition-colors">
                 Masuk
               </Link>
             )}
 
             {/* Cart icon */}
-            <Link href="/cart" className="relative flex items-center justify-center w-10 h-10 hover:opacity-70 transition-opacity">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <Link href="/cart" className="relative flex items-center justify-center w-9 h-9 hover:opacity-70 transition-opacity">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
                 <path d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.3 4.6A1 1 0 0 0 5.6 19H17M9 21a1 1 0 1 0 0-2 1 1 0 0 0 0 2zM17 21a1 1 0 1 0 0-2 1 1 0 0 0 0 2z" stroke="#120f0b" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
               {cartCount > 0 && (
-                <span className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-[#b59637] text-white text-[11px] font-semibold flex items-center justify-center">
+                <span className="absolute -top-0.5 -right-0.5 w-[18px] h-[18px] rounded-full bg-[#b59637] text-white text-[10px] font-semibold flex items-center justify-center">
                   {cartCount}
                 </span>
               )}
@@ -243,7 +244,7 @@ export function Header({ topBar }: { topBar?: HeaderTopBar }) {
             {/* CTA Button */}
             <Link
               href="/contact"
-              className="flex bg-[#b59637] border border-[#ecd5a5] rounded-full px-9 py-[18px] text-white font-['Source_Serif_Pro',serif] font-semibold text-[18px] hover:opacity-90 transition-opacity items-center justify-center"
+              className="flex bg-[#b59637] rounded-full px-5 h-9 text-white font-medium text-[14px] hover:opacity-90 transition-opacity items-center justify-center whitespace-nowrap"
             >
               Reservation
             </Link>
