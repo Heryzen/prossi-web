@@ -2,16 +2,27 @@
 
 import Link from "next/link";
 import { useMemo, useState } from "react";
+import { useCart } from "@/lib/cart";
 
 export type Product = {
   slug: string;
   name: string;
+  price: number;
   priceLabel: string;
   img: string | null;
   category: string | null;
 };
 
 function ProductCard({ product }: { product: Product }) {
+  const { addItem } = useCart();
+  const [added, setAdded] = useState(false);
+
+  const handleAdd = () => {
+    addItem({ slug: product.slug, name: product.name, price: product.price, image: product.img }, 1);
+    setAdded(true);
+    setTimeout(() => setAdded(false), 1500);
+  };
+
   return (
     <div
       className="bg-white border border-[#e6ecf7] rounded-[20px] overflow-hidden flex flex-col"
@@ -43,13 +54,34 @@ function ProductCard({ product }: { product: Product }) {
           <p className="font-['Inter',sans-serif] font-bold text-[20px] leading-6 text-[#11151c]" style={{ letterSpacing: "0.0075em" }}>
             {product.priceLabel}
           </p>
-          <Link
-            href={`/shop/${product.slug}`}
-            className="w-full bg-[#b59637] rounded-[100px] px-4 py-3 text-white font-['Inter',sans-serif] font-semibold text-[14px] leading-[22px] text-center hover:opacity-90 transition-opacity block"
-            style={{ boxShadow: "0px 2px 0px rgba(0,0,0,0.04)" }}
-          >
-            Beli Sekarang
-          </Link>
+          <div className="flex gap-2">
+            <button
+              type="button"
+              onClick={handleAdd}
+              aria-label="Tambah ke Keranjang"
+              title="Tambah ke Keranjang"
+              className={`shrink-0 w-11 h-11 rounded-full border flex items-center justify-center transition-colors cursor-pointer ${
+                added ? "bg-[#b59637] border-[#b59637]" : "border-[#b59637] hover:bg-[#b59637]/10"
+              }`}
+            >
+              {added ? (
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                  <path d="M5 13l4 4L19 7" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              ) : (
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                  <path d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.3 4.6A1 1 0 0 0 5.6 19H17M9 21a1 1 0 1 0 0-2 1 1 0 0 0 0 2zM17 21a1 1 0 1 0 0-2 1 1 0 0 0 0 2z" stroke="#b59637" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              )}
+            </button>
+            <Link
+              href={`/shop/${product.slug}`}
+              className="flex-1 bg-[#b59637] rounded-[100px] px-4 py-3 text-white font-['Inter',sans-serif] font-semibold text-[14px] leading-[22px] text-center hover:opacity-90 transition-opacity block"
+              style={{ boxShadow: "0px 2px 0px rgba(0,0,0,0.04)" }}
+            >
+              Beli Sekarang
+            </Link>
+          </div>
         </div>
       </div>
     </div>

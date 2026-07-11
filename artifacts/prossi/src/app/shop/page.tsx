@@ -22,6 +22,7 @@ const rupiah = (n: number) => `Rp ${n.toLocaleString("id-ID")}`;
 const fallbackProducts: Product[] = Array.from({ length: 6 }, (_, i) => ({
   slug: `sample-${i}`,
   name: "Soothe Crème - Krim Pelembap Wajah Anti Kering, Mengandung Ceramide, BPOM",
+  price: 89000,
   priceLabel: "Rp 89.000",
   img: null,
   category: null,
@@ -42,6 +43,7 @@ export default async function ShopPage() {
       ? cms.map((p) => ({
           slug: p.slug,
           name: p.name,
+          price: p.price,
           priceLabel: rupiah(p.price),
           img: p.image ? assetUrl(p.image) : null,
           category: p.category?.name ?? null,
