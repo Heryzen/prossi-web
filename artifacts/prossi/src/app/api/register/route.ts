@@ -1,7 +1,9 @@
 import { NextResponse } from "next/server";
+import { sendWhatsAppMessage } from "@/lib/whatsapp";
 
 const DIRECTUS_URL = process.env.NEXT_PUBLIC_DIRECTUS_URL ?? "http://localhost:8055";
 const TOKEN = process.env.DIRECTUS_STATIC_TOKEN;
+const CODE_TTL_MS = 5 * 60 * 1000;
 
 function normalizePhone(phone: string): string {
   const digits = phone.replace(/\D/g, "").replace(/^0+/, "").replace(/^62/, "");
@@ -9,10 +11,7 @@ function normalizePhone(phone: string): string {
 }
 
 function generateCode(): string {
-  const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
-  let code = "";
-  for (let i = 0; i < 5; i++) code += chars[Math.floor(Math.random() * chars.length)];
-  return `PROSSI-${code}`;
+  return String(Math.floor(100000 + Math.random() * 900000));
 }
 
 async function directus(path: string, init?: RequestInit) {
@@ -42,6 +41,7 @@ export async function POST(req: Request) {
 
     const normalized = normalizePhone(phone);
     const code = generateCode();
+    const expiresAt = new Date(Date.now() + CODE_TTL_MS).toISOString();
 
     // sudah ada member dengan nomor ini?
     const existing = await directus(
@@ -55,7 +55,7 @@ export async function POST(req: Request) {
       // pending: perbarui data + kode baru
       await directus(`/items/members/${existing[0].id}`, {
         method: "PATCH",
-        body: JSON.stringify({ full_name, email, password, otp_code: code }),
+        body: JSON.stringify({ full_name, email, password, otp_code: code, otp_expires_at: expiresAt }),
       });
     } else {
       // email dipakai member lain?
@@ -74,19 +74,19 @@ export async function POST(req: Request) {
           phone: normalized,
           password,
           otp_code: code,
+          otp_expires_at: expiresAt,
           status: "pending",
           verified_via: "whatsapp",
         }),
       });
     }
 
-    const waNumber = process.env.NEXT_PUBLIC_WA_NUMBER ?? "628123456789";
-    const text = encodeURIComponent(`Kode verifikasi saya: ${code}`);
-    return NextResponse.json({
-      code,
-      waLink: `https://wa.me/${waNumber}?text=${text}`,
-      phone: normalized,
-    });
+    await sendWhatsAppMessage(
+      normalized,
+      `Kode verifikasi Prossi Clinic kamu: ${code}. Berlaku 5 menit, jangan bagikan ke siapa pun.`
+    );
+
+    return NextResponse.json({ phone: normalized, expiresInSeconds: CODE_TTL_MS / 1000 });
   } catch (e) {
     return NextResponse.json({ error: String(e instanceof Error ? e.message : e) }, { status: 500 });
   }

@@ -1,12 +1,14 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
-type Step = "register" | "verify";
+type Step = "register" | "verify" | "done";
 
 const inputCls =
   "w-full h-10 bg-white border border-[#dbdbdb] rounded px-[9px] font-['Readex_Pro',sans-serif] text-[16px] text-[#292929] placeholder:text-[#aeafaf] outline-none focus:border-[#b59637] transition-colors";
+
+const CODE_LENGTH = 6;
 
 function HelpFooter() {
   return (
@@ -28,32 +30,21 @@ export default function Register() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [code, setCode] = useState("");
-  const [waLink, setWaLink] = useState("");
+
   const [registeredPhone, setRegisteredPhone] = useState("");
-  const [done, setDone] = useState(false);
+  const [digits, setDigits] = useState<string[]>(Array(CODE_LENGTH).fill(""));
+  const [verifying, setVerifying] = useState(false);
+  const [verifyError, setVerifyError] = useState<string | null>(null);
+  const [secondsLeft, setSecondsLeft] = useState(0);
+  const inputRefs = useRef<Array<HTMLInputElement | null>>([]);
 
-  // polling status verifikasi selama step verify
   useEffect(() => {
-    if (step !== "verify" || done) return;
-    const t = setInterval(async () => {
-      try {
-        const res = await fetch(`/api/register/status?phone=${encodeURIComponent(registeredPhone)}`);
-        const json = await res.json();
-        if (json.status === "active") setDone(true);
-      } catch {
-        /* keep polling */
-      }
-    }, 3000);
+    if (step !== "verify" || secondsLeft <= 0) return;
+    const t = setInterval(() => setSecondsLeft((s) => Math.max(0, s - 1)), 1000);
     return () => clearInterval(t);
-  }, [step, done, registeredPhone]);
+  }, [step, secondsLeft]);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (password !== confirmPassword) {
-      setError("Konfirmasi password tidak cocok.");
-      return;
-    }
+  const requestCode = async (): Promise<boolean> => {
     setSubmitting(true);
     setError(null);
     try {
@@ -65,17 +56,101 @@ export default function Register() {
       const json = await res.json();
       if (!res.ok) {
         setError(json.error ?? "Terjadi kesalahan, coba lagi.");
-        return;
+        return false;
       }
-      setCode(json.code);
-      setWaLink(json.waLink);
       setRegisteredPhone(json.phone);
-      setStep("verify");
+      setSecondsLeft(json.expiresInSeconds ?? 300);
+      setDigits(Array(CODE_LENGTH).fill(""));
+      setVerifyError(null);
+      return true;
     } catch {
       setError("Tidak bisa terhubung ke server.");
+      return false;
     } finally {
       setSubmitting(false);
     }
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (password !== confirmPassword) {
+      setError("Konfirmasi password tidak cocok.");
+      return;
+    }
+    if (await requestCode()) setStep("verify");
+  };
+
+  const handleResend = async () => {
+    if (secondsLeft > 0 || submitting) return;
+    await requestCode();
+  };
+
+  const focusInput = (index: number) => {
+    inputRefs.current[index]?.focus();
+  };
+
+  const handleDigitChange = (index: number, value: string) => {
+    const clean = value.replace(/\D/g, "");
+    if (!clean) {
+      setDigits((prev) => {
+        const next = [...prev];
+        next[index] = "";
+        return next;
+      });
+      return;
+    }
+    setDigits((prev) => {
+      const next = [...prev];
+      for (let i = 0; i < clean.length && index + i < CODE_LENGTH; i++) {
+        next[index + i] = clean[i];
+      }
+      return next;
+    });
+    const nextIndex = Math.min(index + clean.length, CODE_LENGTH - 1);
+    focusInput(nextIndex);
+  };
+
+  const handleKeyDown = (index: number, e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Backspace" && !digits[index] && index > 0) {
+      focusInput(index - 1);
+    }
+  };
+
+  const handleVerify = async () => {
+    const code = digits.join("");
+    if (code.length !== CODE_LENGTH) {
+      setVerifyError("Masukkan 6 digit kode.");
+      return;
+    }
+    setVerifying(true);
+    setVerifyError(null);
+    try {
+      const res = await fetch("/api/register/verify", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ phone: registeredPhone, code }),
+      });
+      const json = await res.json();
+      if (!res.ok) {
+        setVerifyError(json.error ?? "Kode salah, coba lagi.");
+        return;
+      }
+      localStorage.setItem(
+        "prossi_member",
+        JSON.stringify({ id: json.id, full_name: json.full_name, email: json.email, phone: json.phone })
+      );
+      setStep("done");
+    } catch {
+      setVerifyError("Tidak bisa terhubung ke server.");
+    } finally {
+      setVerifying(false);
+    }
+  };
+
+  const formatCountdown = (s: number) => {
+    const m = Math.floor(s / 60).toString().padStart(2, "0");
+    const sec = (s % 60).toString().padStart(2, "0");
+    return `${m}:${sec}`;
   };
 
   return (
@@ -198,53 +273,76 @@ export default function Register() {
         </div>
       )}
 
-      {/* ── Step 2: Reverse OTP via WhatsApp — modal over scrim ── */}
-      {step === "verify" && !done && (
+      {/* ── Step 2: Verifikasi kode 6 digit via WhatsApp — modal over scrim ── */}
+      {step === "verify" && (
         <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center px-4 py-8 overflow-y-auto">
-          <div className="bg-white rounded-[8px] w-full max-w-[661px] px-6 py-10 md:px-12 md:py-[45px] flex flex-col items-center gap-8 my-auto text-center" style={{ boxShadow: "0 0 1px rgba(0,10,55,0.31), 0 3px 5px rgba(0,10,55,0.2)" }}>
-            <div className="flex flex-col gap-[5px]">
+          <div
+            className="bg-white rounded-[8px] w-full max-w-[661px] px-6 py-10 md:px-12 md:py-[45px] flex flex-col items-center gap-[49px] my-auto text-center"
+            style={{ boxShadow: "0 0 1px rgba(0,10,55,0.31), 0 3px 5px rgba(0,10,55,0.2)" }}
+          >
+            <div className="flex flex-col gap-[5px] w-full">
               <h1 className="font-['Readex_Pro',sans-serif] font-semibold text-[26px] md:text-[30px] leading-[42px] text-[#292929]">
-                Verifikasi via WhatsApp
+                Verifikasi Nomor Anda
               </h1>
               <p className="font-['Readex_Pro',sans-serif] text-[16px] md:text-[18px] leading-[26px] text-[#292929]">
-                Kirim kode di bawah ini dari nomor <strong>{registeredPhone}</strong> ke WhatsApp resmi Prossi Clinic
+                Masukkan 6 digit kode yang kami kirim melalui WhatsApp ke <strong>{registeredPhone}</strong>
               </p>
             </div>
 
-            {/* Kode verifikasi */}
-            <div className="bg-[#f4ece4] border-2 border-dashed border-[#b59637] rounded-[12px] px-8 py-5">
-              <span className="font-mono font-bold text-[28px] md:text-[36px] text-[#503d1c] tracking-wider">
-                {code}
-              </span>
+            <div className="flex gap-3 w-full justify-center">
+              {digits.map((d, i) => (
+                <input
+                  key={i}
+                  ref={(el) => {
+                    inputRefs.current[i] = el;
+                  }}
+                  type="text"
+                  inputMode="numeric"
+                  maxLength={CODE_LENGTH}
+                  value={d}
+                  onChange={(e) => handleDigitChange(i, e.target.value)}
+                  onKeyDown={(e) => handleKeyDown(i, e)}
+                  className="w-[56px] h-[64px] md:w-[70px] md:h-[70px] text-center border border-[#b6b7b7] rounded-lg font-['MADE_Outer_Sans',sans-serif] font-bold text-[32px] text-[#292929] outline-none focus:border-[#b59637] transition-colors"
+                />
+              ))}
             </div>
 
-            <a
-              href={waLink}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-full max-w-[426px] bg-[#25D366] rounded-[20px] px-4 py-3 text-white font-['Lato'] font-medium text-[16px] uppercase tracking-wide hover:opacity-90 transition-opacity flex items-center justify-center gap-2"
-            >
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="#fff">
-                <path d="M12 2a10 10 0 0 0-8.53 15.23L2 22l4.9-1.44A10 10 0 1 0 12 2m0 2a8 8 0 1 1-4.29 14.77l-.31-.19-2.9.85.87-2.82-.2-.32A8 8 0 0 1 12 4m-3.15 3.9c-.2 0-.5.07-.77.36-.26.29-1 1-1 2.43s1.03 2.82 1.17 3.01c.14.19 2 3.19 4.93 4.35 2.44.96 2.94.77 3.47.72.53-.05 1.7-.7 1.94-1.37.24-.67.24-1.25.17-1.37-.07-.12-.26-.19-.55-.34-.29-.14-1.7-.84-1.97-.93-.26-.1-.46-.14-.65.14-.19.29-.74.94-.91 1.13-.17.19-.34.22-.62.07-.29-.14-1.21-.44-2.3-1.42-.85-.75-1.42-1.69-1.59-1.97-.17-.29-.02-.45.13-.59.13-.13.29-.34.43-.5.14-.17.19-.29.29-.48.1-.19.05-.36-.02-.5-.07-.15-.65-1.56-.89-2.14-.23-.56-.47-.48-.65-.49z" />
-              </svg>
-              Buka WhatsApp &amp; Kirim Kode
-            </a>
+            {verifyError && (
+              <p className="font-['Readex_Pro',sans-serif] text-[14px] text-red-600 -mt-6">{verifyError}</p>
+            )}
 
-            {/* Status menunggu */}
-            <div className="flex items-center gap-3">
-              <span className="w-4 h-4 rounded-full border-2 border-[#b59637] border-t-transparent animate-spin" />
-              <span className="font-['Readex_Pro',sans-serif] text-[14px] md:text-[16px] text-[#868787]">
-                Menunggu verifikasi... halaman akan lanjut otomatis setelah kode diterima
-              </span>
+            <p className="font-['Readex_Pro',sans-serif] text-[16px] md:text-[18px] text-[#292929] -mt-6">
+              {secondsLeft > 0 ? (
+                `Kirim ulang kode dalam ${formatCountdown(secondsLeft)}`
+              ) : (
+                <button
+                  type="button"
+                  onClick={handleResend}
+                  disabled={submitting}
+                  className="text-[#4d66d7] font-medium hover:underline cursor-pointer disabled:opacity-50"
+                >
+                  {submitting ? "Mengirim ulang..." : "Kirim Ulang Kode"}
+                </button>
+              )}
+            </p>
+
+            <div className="flex flex-col gap-3 w-full max-w-[426px]">
+              <button
+                type="button"
+                onClick={handleVerify}
+                disabled={verifying}
+                className="w-full bg-[#b59637] rounded-[20px] px-4 py-3 text-white font-['Lato'] font-medium text-[16px] uppercase tracking-wide hover:opacity-90 transition-opacity disabled:opacity-50 cursor-pointer"
+              >
+                {verifying ? "Memverifikasi..." : "Lanjutkan"}
+              </button>
+              <button
+                type="button"
+                onClick={() => setStep("register")}
+                className="w-full bg-transparent border-2 border-[#b59637] rounded-[30px] px-4 py-3 text-[#b59637] font-['Lato'] font-medium text-[16px] uppercase tracking-wide hover:bg-[#b59637]/10 transition-colors cursor-pointer"
+              >
+                Ganti Nomor Telepon
+              </button>
             </div>
-
-            <button
-              type="button"
-              onClick={() => setStep("register")}
-              className="w-full max-w-[426px] bg-transparent border-2 border-[#b59637] rounded-[30px] px-4 py-3 text-[#b59637] font-['Lato'] font-medium text-[16px] uppercase tracking-wide hover:bg-[#b59637]/10 transition-colors cursor-pointer"
-            >
-              Ubah Data / Nomor
-            </button>
 
             <HelpFooter />
           </div>
@@ -252,7 +350,7 @@ export default function Register() {
       )}
 
       {/* ── Success ── */}
-      {done && (
+      {step === "done" && (
         <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center px-4 py-8 overflow-y-auto">
           <div className="bg-white rounded-[8px] w-full max-w-[661px] px-6 py-10 md:px-12 md:py-[60px] flex flex-col items-center gap-8 text-center my-auto" style={{ boxShadow: "0 0 1px rgba(0,10,55,0.31), 0 3px 5px rgba(0,10,55,0.2)" }}>
             <div className="w-16 h-16 rounded-full bg-[#b59637] flex items-center justify-center">
