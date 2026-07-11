@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useCart } from "@/lib/cart";
 
 const navItems = [
   { label: "Home", href: "/", dropdown: false },
@@ -28,6 +29,8 @@ export function Header({ topBar }: { topBar?: HeaderTopBar }) {
     { src: "/figma/imgRiInstagramLine.svg", alt: "Instagram", href: topBar?.instagram ?? "https://instagram.com/prossiclinic" },
     { src: "/figma/imgGgFacebook.svg", alt: "Facebook", href: topBar?.facebook ?? "https://facebook.com/prossiclinic" },
   ];
+  const { count: cartCount } = useCart();
+  const [memberName, setMemberName] = useState<string | null>(null);
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [treatmentsOpen, setTreatmentsOpen] = useState(false);
@@ -41,6 +44,20 @@ export function Header({ topBar }: { topBar?: HeaderTopBar }) {
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem("prossi_member");
+      if (raw) setMemberName(JSON.parse(raw).full_name ?? null);
+    } catch {
+      /* ignore */
+    }
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem("prossi_member");
+    setMemberName(null);
+  };
 
   const showTopBar = scrolled;
 
@@ -192,13 +209,45 @@ export function Header({ topBar }: { topBar?: HeaderTopBar }) {
             })}
           </nav>
 
-          {/* CTA Button */}
-          <Link
-            href="/contact"
-            className="hidden lg:flex bg-[#b59637] border border-[#ecd5a5] rounded-full px-9 py-[18px] text-white font-['Source_Serif_Pro',serif] font-semibold text-[18px] hover:opacity-90 transition-opacity items-center justify-center"
-          >
-            Reservation
-          </Link>
+          <div className="hidden lg:flex items-center gap-5">
+            {/* Login / Account */}
+            {memberName ? (
+              <div className="flex items-center gap-3">
+                <span className="text-[14px] font-medium text-[#120f0b]">Halo, {memberName.split(" ")[0]}</span>
+                <button
+                  type="button"
+                  onClick={handleLogout}
+                  className="text-[13px] font-medium text-[#b59637] hover:underline cursor-pointer"
+                >
+                  Keluar
+                </button>
+              </div>
+            ) : (
+              <Link href="/login" className="text-[15px] font-medium text-[#120f0b] hover:text-[#b59637] transition-colors">
+                Masuk
+              </Link>
+            )}
+
+            {/* Cart icon */}
+            <Link href="/cart" className="relative flex items-center justify-center w-10 h-10 hover:opacity-70 transition-opacity">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <path d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.3 4.6A1 1 0 0 0 5.6 19H17M9 21a1 1 0 1 0 0-2 1 1 0 0 0 0 2zM17 21a1 1 0 1 0 0-2 1 1 0 0 0 0 2z" stroke="#120f0b" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+              {cartCount > 0 && (
+                <span className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-[#b59637] text-white text-[11px] font-semibold flex items-center justify-center">
+                  {cartCount}
+                </span>
+              )}
+            </Link>
+
+            {/* CTA Button */}
+            <Link
+              href="/contact"
+              className="flex bg-[#b59637] border border-[#ecd5a5] rounded-full px-9 py-[18px] text-white font-['Source_Serif_Pro',serif] font-semibold text-[18px] hover:opacity-90 transition-opacity items-center justify-center"
+            >
+              Reservation
+            </Link>
+          </div>
 
           {/* Mobile hamburger */}
           <button

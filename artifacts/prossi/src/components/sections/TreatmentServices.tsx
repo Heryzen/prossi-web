@@ -19,12 +19,14 @@ export async function TreatmentServices() {
       desc: s?.home_slimming_desc ?? "Support recovery, energy, and long-term cellular resilience.",
       img: s?.home_slimming_image ? assetUrl(s.home_slimming_image) : "/figma/imgCoreSlimming.webp",
       borderGradient: "linear-gradient(270deg, rgba(194,99,69,1) 0%, rgba(222,186,105,1) 100%)",
+      category: "slimming",
     },
     {
       title: "Skin Treatment by Sp.DVE",
       desc: s?.home_skin_desc ?? "Support recovery, energy, and long-term cellular resilience.",
       img: s?.home_skin_image ? assetUrl(s.home_skin_image) : "/figma/imgCoreSkin.webp",
       borderGradient: "linear-gradient(270deg, rgba(57,107,114,1) 0%, rgba(222,186,105,1) 100%)",
+      category: "skin",
     },
   ];
 
@@ -77,7 +79,7 @@ export async function TreatmentServices() {
                     </p>
                   </div>
                   <Link
-                    href="/doctors"
+                    href={`/doctors?category=${card.category}`}
                     className="rounded-full px-9 py-[18px] text-white font-['Source_Serif_4',serif] font-semibold text-[18px] bg-[#b59637] hover:opacity-90 transition-opacity"
                     style={{
                       border: "1px solid rgba(236,213,165,1)",

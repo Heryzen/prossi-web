@@ -9,11 +9,27 @@ type CmsDoctor = {
   bio: string;
   schedule_days: string;
   schedule_hours: string;
+  treatment_category: string | null;
 };
 
-export default async function Doctors() {
+const CATEGORY_LABEL: Record<string, string> = {
+  slimming: "Slimming Program",
+  skin: "Skin Treatment",
+};
+
+export default async function Doctors({
+  searchParams,
+}: {
+  searchParams: Promise<{ category?: string }>;
+}) {
+  const { category } = await searchParams;
+
+  const filter = category
+    ? `&filter[treatment_category][_eq]=${encodeURIComponent(category)}`
+    : "";
+
   const cms = await directusFetch<CmsDoctor[]>(
-    "/items/doctors?filter[status][_eq]=published&sort=sort&fields=name,photo,specialty,bio,schedule_days,schedule_hours"
+    `/items/doctors?filter[status][_eq]=published&sort=sort&fields=name,photo,specialty,bio,schedule_days,schedule_hours,treatment_category${filter}`
   );
 
   const doctors: Doctor[] =
@@ -26,12 +42,17 @@ export default async function Doctors() {
           schedule: d.schedule_days,
           hours: d.schedule_hours,
         }))
-      : ALL_DOCTORS;
+      : category
+        ? []
+        : ALL_DOCTORS;
+
+  const eyebrow = category ? `DOKTER ${CATEGORY_LABEL[category] ?? ""}`.toUpperCase() : "DOKTER SPESIALIS";
+  const heroGradientRgb = category === "skin" ? "63,109,112" : category === "slimming" ? "205,114,79" : "63,109,112";
 
   return (
     <DoctorsPageContent
-      eyebrow="DOKTER SPESIALIS"
-      heroGradientRgb="63,109,112"
+      eyebrow={eyebrow}
+      heroGradientRgb={heroGradientRgb}
       doctors={doctors}
     />
   );

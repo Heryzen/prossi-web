@@ -32,9 +32,12 @@ async function directus(path: string, init?: RequestInit) {
 
 export async function POST(req: Request) {
   try {
-    const { full_name, email, phone } = await req.json();
-    if (!full_name || !email || !phone) {
+    const { full_name, email, phone, password } = await req.json();
+    if (!full_name || !email || !phone || !password) {
       return NextResponse.json({ error: "Data tidak lengkap" }, { status: 400 });
+    }
+    if (String(password).length < 6) {
+      return NextResponse.json({ error: "Password minimal 6 karakter" }, { status: 400 });
     }
 
     const normalized = normalizePhone(phone);
@@ -52,15 +55,24 @@ export async function POST(req: Request) {
       // pending: perbarui data + kode baru
       await directus(`/items/members/${existing[0].id}`, {
         method: "PATCH",
-        body: JSON.stringify({ full_name, email, otp_code: code }),
+        body: JSON.stringify({ full_name, email, password, otp_code: code }),
       });
     } else {
+      // email dipakai member lain?
+      const emailTaken = await directus(
+        `/items/members?filter[email][_eq]=${encodeURIComponent(email)}&fields=id&limit=1`
+      );
+      if (emailTaken.length > 0) {
+        return NextResponse.json({ error: "Email sudah terdaftar. Gunakan email lain atau masuk dengan akun tersebut." }, { status: 409 });
+      }
+
       await directus("/items/members", {
         method: "POST",
         body: JSON.stringify({
           full_name,
           email,
           phone: normalized,
+          password,
           otp_code: code,
           status: "pending",
           verified_via: "whatsapp",
