@@ -6,8 +6,14 @@ import { Footer } from "@/components/Footer";
 import { PageLoader } from "@/components/PageLoader";
 import { directusFetch } from "@/lib/directus";
 
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+
 export const metadata: Metadata = {
-  title: "Prossi Clinic",
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: "Prossi Clinic",
+    template: "%s | Prossi Clinic",
+  },
   description:
     "Prossi Clinic — Perawatan kulit dan program slimming dengan pendekatan medis yang tepat.",
   robots: "index, follow",
@@ -16,7 +22,26 @@ export const metadata: Metadata = {
     description:
       "Prossi Clinic — Perawatan kulit dan program slimming dengan pendekatan medis yang tepat.",
     type: "website",
+    locale: "id_ID",
+    images: ["/opengraph.jpg"],
   },
+};
+
+const ORGANIZATION_JSON_LD = {
+  "@context": "https://schema.org",
+  "@type": "MedicalClinic",
+  name: "Prossi Clinic",
+  url: SITE_URL,
+  logo: `${SITE_URL}/figma/imgUntitledDesign181.webp`,
+  image: `${SITE_URL}/opengraph.jpg`,
+  telephone: "+0214567891",
+  email: "info@prossi.com",
+  medicalSpecialty: ["Dermatology", "Weight Management", "Aesthetic Medicine"],
+  sameAs: [
+    "https://t.me/prossiclinic",
+    "https://instagram.com/prossiclinic",
+    "https://facebook.com/prossiclinic",
+  ],
 };
 
 type SiteSettings = {
@@ -44,7 +69,7 @@ export default async function RootLayout({
     : undefined;
 
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="id" suppressHydrationWarning>
       <head>
         <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -52,6 +77,10 @@ export default async function RootLayout({
         <link
           href="https://fonts.googleapis.com/css2?family=Source+Serif+Pro:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&family=Inter:wght@400;500;600;700&family=Arizonia&family=Lato:wght@400;600;700&display=swap"
           rel="stylesheet"
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(ORGANIZATION_JSON_LD) }}
         />
       </head>
       <body>

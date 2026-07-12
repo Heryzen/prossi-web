@@ -64,7 +64,7 @@ export async function Blog() {
               className="flex-1 bg-[#fff8f2] rounded-[24px] overflow-hidden flex flex-col pb-8 hover:shadow-md transition-shadow"
             >
               <div className="w-full h-[260px] relative mb-6">
-                <img src={article.img} alt="" className="absolute inset-0 w-full h-full object-cover" />
+                <img src={article.img} alt={article.title} className="absolute inset-0 w-full h-full object-cover" />
               </div>
               <div className="px-8 flex flex-col gap-6">
                 <div className="flex items-center gap-2.5">

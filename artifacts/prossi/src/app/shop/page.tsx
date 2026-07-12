@@ -1,5 +1,11 @@
+import type { Metadata } from "next";
 import { directusFetch, assetUrl } from "@/lib/directus";
 import { ShopGrid, type Product } from "./ShopGrid";
+
+export const metadata: Metadata = {
+  title: "Shop",
+  description: "Produk perawatan kulit dan suplemen rekomendasi dokter Prossi Clinic.",
+};
 
 const HEADING_GRADIENT =
   "linear-gradient(270deg, rgba(251,232,166,1) 0%, rgba(235,210,151,1) 41%, rgba(251,232,166,1) 67%, rgba(251,232,166,1) 100%)";

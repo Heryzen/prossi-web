@@ -1,2 +1,9 @@
 User-agent: *
 Allow: /
+Disallow: /cart
+Disallow: /login
+Disallow: /register
+Disallow: /shop/checkout
+Disallow: /shop/orders
+
+Sitemap: https://prossi-web-prossi.vercel.app/sitemap.xml

@@ -241,7 +241,7 @@ export function DoctorsPageContent({
                 className="bg-[#fff8f2] rounded-[24px] overflow-hidden pb-8 flex flex-col gap-6 hover:opacity-90 transition-opacity"
               >
                 <div className="w-full h-[220px] md:h-[260px]">
-                  <img src={a.img} alt={a.tag} className="w-full h-full object-cover" />
+                  <img src={a.img} alt={a.title} className="w-full h-full object-cover" />
                 </div>
                 <div className="flex flex-col gap-6 px-6 md:px-8">
                   <div className="flex items-center gap-[10px]">

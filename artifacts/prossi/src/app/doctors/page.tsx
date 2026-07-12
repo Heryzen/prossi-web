@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { DoctorsPageContent } from "@/components/DoctorsPageContent";
 import { ALL_DOCTORS, type Doctor } from "@/components/doctors-data";
 import { directusFetch, assetUrl } from "@/lib/directus";
@@ -23,6 +24,22 @@ const CATEGORY_LABEL: Record<string, string> = {
   slimming: "Slimming Program",
   skin: "Skin Treatment",
 };
+
+export async function generateMetadata({
+  searchParams,
+}: {
+  searchParams: Promise<{ category?: string }>;
+}): Promise<Metadata> {
+  const { category } = await searchParams;
+  const label = category ? CATEGORY_LABEL[category] : undefined;
+  return {
+    title: label ? `Dokter ${label}` : "Dokter Spesialis",
+    description: label
+      ? `Daftar dokter spesialis ${label} di Prossi Clinic.`
+      : "Daftar dokter spesialis Prossi Clinic — Sp.GK, Sp.DVE, dan dokter estetika berpengalaman.",
+    alternates: { canonical: category ? `/doctors?category=${category}` : "/doctors" },
+  };
+}
 
 export default async function Doctors({
   searchParams,
@@ -69,12 +86,33 @@ export default async function Doctors({
   const eyebrow = category ? `DOKTER ${CATEGORY_LABEL[category] ?? ""}`.toUpperCase() : "DOKTER SPESIALIS";
   const heroGradientRgb = category === "skin" ? "63,109,112" : category === "slimming" ? "205,114,79" : "63,109,112";
 
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    itemListElement: doctors.map((d, i) => ({
+      "@type": "ListItem",
+      position: i + 1,
+      item: {
+        "@type": "Physician",
+        name: d.name,
+        image: d.img,
+        medicalSpecialty: d.specialty,
+      },
+    })),
+  };
+
   return (
-    <DoctorsPageContent
-      eyebrow={eyebrow}
-      heroGradientRgb={heroGradientRgb}
-      doctors={doctors}
-      articles={articles}
-    />
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <DoctorsPageContent
+        eyebrow={eyebrow}
+        heroGradientRgb={heroGradientRgb}
+        doctors={doctors}
+        articles={articles}
+      />
+    </>
   );
 }

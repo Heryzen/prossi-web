@@ -1,4 +1,5 @@
 import Link from "next/link";
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { directusFetch, assetUrl } from "@/lib/directus";
 import { AddToCartActions } from "./AddToCartActions";
@@ -14,18 +15,58 @@ type CmsProduct = {
 
 const rupiah = (n: number) => `Rp ${n.toLocaleString("id-ID")}`;
 
-export default async function ProductDetailPage({ params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = await params;
-
+async function fetchProduct(slug: string) {
   const results = await directusFetch<CmsProduct[]>(
     `/items/products?filter[slug][_eq]=${encodeURIComponent(slug)}&filter[status][_eq]=published&fields=name,slug,description,price,image,stock&limit=1`
   );
-  const product = results?.[0];
+  return results?.[0];
+}
+
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const { slug } = await params;
+  const product = await fetchProduct(slug);
+  if (!product) return {};
+  return {
+    title: product.name,
+    description: product.description,
+    alternates: { canonical: `/shop/${slug}` },
+    openGraph: {
+      title: product.name,
+      description: product.description,
+      images: product.image ? [assetUrl(product.image)] : undefined,
+      type: "website",
+    },
+  };
+}
+
+export default async function ProductDetailPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+
+  const product = await fetchProduct(slug);
 
   if (!product) notFound();
 
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: product.name,
+    description: product.description,
+    image: product.image ? assetUrl(product.image) : undefined,
+    offers: {
+      "@type": "Offer",
+      priceCurrency: "IDR",
+      price: product.price,
+      availability:
+        product.stock > 0 ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
+    },
+  };
+
   return (
     <section className="bg-white w-full pt-[100px] pb-[80px] px-6 md:px-[160px]">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <div className="max-w-[1120px] mx-auto flex flex-col gap-8">
         <Link
           href="/shop"

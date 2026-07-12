@@ -1,4 +1,10 @@
 import Link from "next/link";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Kebijakan Privasi",
+  description: "Kebijakan privasi Prossi Clinic terkait pengumpulan dan penggunaan data pasien.",
+};
 
 export default function PrivacyPage() {
   return (

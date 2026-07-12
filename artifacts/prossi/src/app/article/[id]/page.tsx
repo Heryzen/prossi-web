@@ -1,8 +1,11 @@
 import Link from "next/link";
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getArticle, relatedArticles, type Article } from "../articles";
 import { MoreToRead } from "../MoreToRead";
 import { directusFetch, assetUrl } from "@/lib/directus";
+
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
 
 type CmsArticle = {
   id: string;
@@ -42,6 +45,43 @@ function ChevronRight({ className = "" }: { className?: string }) {
   );
 }
 
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}): Promise<Metadata> {
+  const { id } = await params;
+  const isNumeric = /^\d+$/.test(id);
+
+  if (isNumeric) {
+    const article = getArticle(Number(id));
+    if (!article) return {};
+    return {
+      title: article.title,
+      description: article.excerpt,
+      openGraph: { title: article.title, description: article.excerpt, images: [article.img], type: "article" },
+    };
+  }
+
+  const cms = await directusFetch<CmsArticle>(
+    `/items/articles/${id}?fields=id,title,excerpt,content,cover_image,date_created,author.name`
+  );
+  if (!cms) return {};
+  const image = cms.cover_image ? assetUrl(cms.cover_image) : "/figma/imgFrame1984078116.webp";
+  return {
+    title: cms.title,
+    description: cms.excerpt,
+    alternates: { canonical: `/article/${id}` },
+    openGraph: {
+      title: cms.title,
+      description: cms.excerpt,
+      images: [image],
+      type: "article",
+      publishedTime: cms.date_created,
+    },
+  };
+}
+
 export default async function ArticleDetailPage({
   params,
 }: {
@@ -53,6 +93,7 @@ export default async function ArticleDetailPage({
   let article: Article | undefined;
   let htmlContent: string | null = null;
   let related: Article[] = [];
+  let publishedISO: string | null = null;
 
   const isNumeric = /^\d+$/.test(id);
   if (!isNumeric) {
@@ -71,6 +112,7 @@ export default async function ArticleDetailPage({
         body: [],
       };
       htmlContent = cms.content;
+      publishedISO = cms.date_created;
 
       const others = await directusFetch<CmsArticle[]>(
         `/items/articles?filter[status][_eq]=published&filter[id][_neq]=${id}&limit=7&fields=id,title,excerpt,cover_image,date_created`
@@ -94,8 +136,35 @@ export default async function ArticleDetailPage({
 
   if (!article) notFound();
 
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Article",
+        headline: article.title,
+        description: article.excerpt,
+        image: article.img,
+        author: { "@type": "Organization", name: article.author || "Prossi Clinic" },
+        publisher: { "@type": "Organization", name: "Prossi Clinic" },
+        ...(publishedISO ? { datePublished: publishedISO } : {}),
+      },
+      {
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Home", item: SITE_URL },
+          { "@type": "ListItem", position: 2, name: "Insight & Inspiration", item: `${SITE_URL}/article` },
+          { "@type": "ListItem", position: 3, name: article.title, item: `${SITE_URL}/article/${id}` },
+        ],
+      },
+    ],
+  };
+
   return (
     <div className="flex flex-col pt-[79px]">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       {/* ── Hero ── */}
       <div className="bg-white">
         <div

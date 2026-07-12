@@ -1,5 +1,11 @@
 import Link from "next/link";
+import type { Metadata } from "next";
 import { directusFetch, assetUrl } from "@/lib/directus";
+
+export const metadata: Metadata = {
+  title: "Promo",
+  description: "Promo dan penawaran terbaru dari Prossi Clinic untuk program slimming dan skin treatment.",
+};
 
 const GOLD_RING =
   "linear-gradient(270deg, rgba(222,186,105,1) 0%, rgba(235,210,151,1) 30%, rgba(251,232,166,1) 50%, rgba(235,210,151,1) 70%, rgba(222,186,105,1) 100%)";

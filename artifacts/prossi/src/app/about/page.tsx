@@ -1,3 +1,10 @@
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Tentang Prossi Clinic",
+  description:
+    "Kenali Prossi Clinic — klinik dengan pendekatan medis berbasis data, ditangani langsung oleh dokter Spesialis Gizi Klinik dan Dermatologi, Venereologi & Estetika.",
+};
 
 const CARD_BORDER_SLIMMING =
   "linear-gradient(270deg, rgba(194,99,69,1) 0%, rgba(222,186,105,1) 100%)";
