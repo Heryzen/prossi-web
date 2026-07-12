@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback } from "react";
+import { useCallback, useEffect, useState } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 
 export type Review = {
@@ -53,8 +53,30 @@ function Avatar({ src, name }: { src: string; name: string }) {
   );
 }
 
+function isDirectVideo(url: string) {
+  return /\.(mp4|webm|mov)$/i.test(url);
+}
+
+function PlayIcon() {
+  return (
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" className="ml-1">
+      <path d="M8 5v14l11-7z" fill="#120f0b" />
+    </svg>
+  );
+}
+
 export function Testimonials({ reviews: reviewsProp }: { reviews?: Review[] }) {
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true, align: 'start' });
+  const [activeVideo, setActiveVideo] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!activeVideo) return;
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setActiveVideo(null);
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [activeVideo]);
 
   const scrollPrev = useCallback(() => {
     if (emblaApi) emblaApi.scrollPrev();
@@ -148,20 +170,23 @@ export function Testimonials({ reviews: reviewsProp }: { reviews?: Review[] }) {
                   </div>
                   <div className="flex-1 h-[200px] md:h-[338px] rounded-xl overflow-hidden relative">
                     {review.videoUrl ? (
-                      /\.(mp4|webm|mov)$/i.test(review.videoUrl) ? (
-                        <video
-                          src={review.videoUrl}
-                          controls
-                          className="absolute inset-0 w-full h-full object-cover"
-                        />
-                      ) : (
-                        <iframe
-                          src={review.videoUrl}
-                          allow="autoplay; encrypted-media; picture-in-picture"
-                          allowFullScreen
-                          className="absolute inset-0 w-full h-full border-0"
-                        />
-                      )
+                      <button
+                        type="button"
+                        onClick={() => setActiveVideo(review.videoUrl!)}
+                        aria-label={`Play video testimonial from ${review.name}`}
+                        className="group absolute inset-0 w-full h-full cursor-pointer"
+                      >
+                        {review.image ? (
+                          <img src={review.image} alt="" className="absolute inset-0 w-full h-full object-cover" />
+                        ) : (
+                          <DefaultMedia />
+                        )}
+                        <div className="absolute inset-0 bg-black/25 group-hover:bg-black/40 transition-colors flex items-center justify-center">
+                          <span className="flex items-center justify-center w-16 h-16 rounded-full bg-white/90 group-hover:bg-white group-hover:scale-105 transition-all shadow-lg">
+                            <PlayIcon />
+                          </span>
+                        </div>
+                      </button>
                     ) : review.image ? (
                       <img src={review.image} alt="" className="absolute inset-0 w-full h-full object-cover" />
                     ) : (
@@ -183,6 +208,39 @@ export function Testimonials({ reviews: reviewsProp }: { reviews?: Review[] }) {
           </button>
         </div>
       </div>
+
+      {activeVideo && (
+        <div
+          className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 p-6"
+          onClick={() => setActiveVideo(null)}
+        >
+          <div
+            className="relative w-full max-w-[900px] aspect-video bg-black rounded-xl overflow-hidden"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {isDirectVideo(activeVideo) ? (
+              <video src={activeVideo} controls autoPlay className="absolute inset-0 w-full h-full object-contain" />
+            ) : (
+              <iframe
+                src={activeVideo}
+                allow="autoplay; encrypted-media; picture-in-picture"
+                allowFullScreen
+                className="absolute inset-0 w-full h-full border-0"
+              />
+            )}
+            <button
+              type="button"
+              onClick={() => setActiveVideo(null)}
+              aria-label="Close video"
+              className="absolute top-3 right-3 w-10 h-10 rounded-full bg-black/60 hover:bg-black/80 transition-colors flex items-center justify-center text-white cursor-pointer"
+            >
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      )}
     </section>
   );
 }
