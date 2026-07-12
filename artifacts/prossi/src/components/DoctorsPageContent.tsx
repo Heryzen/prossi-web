@@ -40,7 +40,7 @@ function DoctorModal({ doctor, onClose }: { doctor: Doctor; onClose: () => void 
           <button
             type="button"
             onClick={onClose}
-            className="absolute top-5 right-6 text-[#503d1c] text-2xl leading-none hover:opacity-70 transition-opacity"
+            className="absolute top-5 right-6 w-9 h-9 flex items-center justify-center rounded-full text-[#503d1c] text-xl leading-none cursor-pointer hover:bg-[#503d1c]/10 hover:text-[#b59637] transition-colors"
             aria-label="Close"
           >
             ✕

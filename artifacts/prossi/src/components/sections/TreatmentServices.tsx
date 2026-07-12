@@ -80,7 +80,7 @@ export async function TreatmentServices() {
                   </div>
                   <Link
                     href={`/doctors?category=${card.category}`}
-                    className="rounded-full px-9 py-[18px] text-white font-['Source_Serif_4',serif] font-semibold text-[18px] bg-[#b59637] hover:opacity-90 transition-opacity"
+                    className="rounded-full px-9 py-[18px] text-white font-['Source_Serif_4',serif] font-semibold text-[18px] bg-[#b59637] hover:bg-[#a3852f] hover:shadow-lg hover:scale-[1.04] transition-all duration-200"
                     style={{
                       border: "1px solid rgba(236,213,165,1)",
                     }}

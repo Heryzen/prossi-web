@@ -59,7 +59,7 @@ export async function Team() {
               </h3>
               <Link
                 href="/doctors"
-                className="hidden lg:flex bg-[#b59637] border border-[#ecd5a5] rounded-full px-9 py-[18px] text-white font-serif font-semibold text-lg hover:opacity-90 transition-opacity"
+                className="hidden lg:flex bg-[#b59637] border border-[#ecd5a5] rounded-full px-9 py-[18px] text-white font-serif font-semibold text-lg hover:bg-[#a3852f] hover:shadow-lg hover:scale-[1.04] transition-all duration-200"
               >
                 View Doctors
               </Link>
