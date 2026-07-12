@@ -221,8 +221,15 @@ export function Header({ topBar }: { topBar?: HeaderTopBar }) {
                 )}
               </div>
             ) : (
-              <Link href="/login" className="text-[14px] font-medium text-[#120f0b] hover:text-[#b59637] transition-colors">
-                Masuk
+              <Link
+                href="/login"
+                aria-label="Masuk"
+                title="Masuk"
+                className="flex items-center justify-center w-9 h-9 rounded-full bg-[#f4ece4] hover:bg-[#ecd5a5] transition-colors"
+              >
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                  <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4M10 17l5-5-5-5M15 12H3" stroke="#120f0b" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
               </Link>
             )}
 
