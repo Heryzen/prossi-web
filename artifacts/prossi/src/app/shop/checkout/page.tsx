@@ -473,7 +473,7 @@ function CheckoutContent() {
                     key={method.label}
                     type="button"
                     onClick={() => setSelected(method.label)}
-                    className="flex items-center gap-3 py-4 cursor-pointer text-left"
+                    className="flex items-center gap-3 py-4 px-2 -mx-2 rounded-lg cursor-pointer text-left hover:bg-[#f8f9fd] transition-colors"
                     style={{ borderBottom: "2px solid #eff1fc" }}
                   >
                     <img src={method.logo} alt="" className="w-[29px] h-5 object-contain shrink-0" />

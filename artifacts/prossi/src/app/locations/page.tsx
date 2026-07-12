@@ -145,7 +145,7 @@ export default function LocationsPage() {
                   key={i}
                   type="button"
                   onClick={() => setSelected(i)}
-                  className="text-left flex flex-col gap-3 rounded-[6px] border bg-white transition-colors"
+                  className="text-left flex flex-col gap-3 rounded-[6px] border bg-white transition-colors cursor-pointer"
                   style={{
                     padding: 16,
                     borderColor: active ? "#b59637" : "#dbdbdb",

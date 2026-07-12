@@ -140,7 +140,7 @@ export function ReservationModal({ isOpen, onClose }: Props) {
           {/* Close button */}
           <button
             onClick={onClose}
-            className="absolute top-6 right-11 z-10 p-1 hover:opacity-70 transition-opacity"
+            className="absolute top-6 right-11 z-10 p-1 hover:opacity-70 transition-opacity cursor-pointer"
             aria-label="Close"
           >
             <svg width="20" height="20" viewBox="0 0 20 20" fill="none">

@@ -45,7 +45,7 @@ export function BeforeAfterCarousel({ pairs }: { pairs: BeforeAfterPair[] }) {
       <div className="flex items-center gap-6 justify-center">
         <button
           onClick={() => scroll("prev")}
-          className="w-[52px] h-[52px] rounded-full bg-white/50 flex items-center justify-center hover:bg-white/80 transition-colors"
+          className="w-[52px] h-[52px] rounded-full bg-white/50 flex items-center justify-center hover:bg-white/80 transition-colors cursor-pointer"
           aria-label="Previous"
         >
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -54,7 +54,7 @@ export function BeforeAfterCarousel({ pairs }: { pairs: BeforeAfterPair[] }) {
         </button>
         <button
           onClick={() => scroll("next")}
-          className="w-[52px] h-[52px] rounded-full bg-[#66533b] flex items-center justify-center hover:opacity-90 transition-opacity"
+          className="w-[52px] h-[52px] rounded-full bg-[#66533b] flex items-center justify-center hover:opacity-90 transition-opacity cursor-pointer"
           aria-label="Next"
         >
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none">

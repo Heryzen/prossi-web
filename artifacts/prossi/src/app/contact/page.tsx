@@ -228,7 +228,16 @@ export default function Contact() {
                 {branches.map((branch, i) => (
                   <div
                     key={i}
+                    role="button"
+                    tabIndex={0}
+                    aria-pressed={selectedBranch === i}
                     onClick={() => setSelectedBranch(i)}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" || e.key === " ") {
+                        e.preventDefault();
+                        setSelectedBranch(i);
+                      }
+                    }}
                     className="cursor-pointer rounded-md"
                     style={{
                       padding: 16,
