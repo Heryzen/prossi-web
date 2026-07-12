@@ -37,36 +37,26 @@ export async function Footer() {
             <p className="font-normal text-white/80 text-base">
               {footerText}
             </p>
-            <div className="flex gap-3">
-              {socials.map((icon) => (
-                <a key={icon.alt} href={icon.href} target="_blank" rel="noopener noreferrer" className="bg-[#f4ece4] rounded-full w-8 h-8 flex items-center justify-center hover:bg-white transition-colors">
-                  <img src={icon.src} alt={icon.alt} className="w-4 h-4" style={{filter: 'brightness(0) saturate(100%) invert(35%) sepia(21%) saturate(1450%) hue-rotate(143deg) brightness(88%) contrast(92%)'}} />
-                </a>
-              ))}
-            </div>
           </div>
-          
+
           <div className="flex flex-col md:flex-row flex-1 justify-between w-full md:pl-[72px] gap-10">
             <div className="flex flex-col gap-6">
               <h4 className="font-serif font-semibold text-lg text-[#f4ece4]">Treatments</h4>
               <div className="flex flex-col gap-4 text-white/80">
                 <Link href="/treatments/slimming-program" className="hover:text-white transition-colors">Slimming Program</Link>
-                <Link href="/treatments/skin-treatment" className="hover:text-white transition-colors">Acne & Skin Treatment</Link>
-                <Link href="/treatments/skin-treatment" className="hover:text-white transition-colors">Brightening & Glow</Link>
-                <Link href="/treatments/skin-treatment" className="hover:text-white transition-colors">Laser & Rejuvenation</Link>
+                <Link href="/treatments/skin-treatment" className="hover:text-white transition-colors">Skin Treatment</Link>
               </div>
             </div>
-            
+
             <div className="flex flex-col gap-6">
               <h4 className="font-serif font-semibold text-lg text-[#f4ece4]">Tentang Kami</h4>
               <div className="flex flex-col gap-4 text-white/80">
                 <Link href="/about" className="hover:text-white transition-colors">Tentang Prossi Clinic</Link>
                 <Link href="/doctors" className="hover:text-white transition-colors">Dokter Kami</Link>
-                <Link href="/about" className="hover:text-white transition-colors">Prossi Journal</Link>
                 <Link href="/careers" className="hover:text-white transition-colors">Careers</Link>
               </div>
             </div>
-            
+
             <div className="flex flex-col gap-6">
               <h4 className="font-serif font-semibold text-lg text-[#f4ece4]">Contact</h4>
               <div className="flex flex-col gap-4 text-white/80">
@@ -79,8 +69,15 @@ export async function Footer() {
                   <span>{email}</span>
                 </a>
               </div>
+              <div className="flex gap-3 justify-end">
+                {socials.map((icon) => (
+                  <a key={icon.alt} href={icon.href} target="_blank" rel="noopener noreferrer" className="bg-[#f4ece4] rounded-full w-8 h-8 flex items-center justify-center hover:bg-white transition-colors">
+                    <img src={icon.src} alt={icon.alt} className="w-4 h-4" style={{filter: 'brightness(0) saturate(100%) invert(35%) sepia(21%) saturate(1450%) hue-rotate(143deg) brightness(88%) contrast(92%)'}} />
+                  </a>
+                ))}
+              </div>
             </div>
-            
+
           </div>
         </div>
         
