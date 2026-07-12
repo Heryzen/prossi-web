@@ -186,7 +186,6 @@ export function Header({ topBar }: { topBar?: HeaderTopBar }) {
                         {item.label === "Doctors" && [
                           { label: "Dokter Spesialis Gizi Klinik", category: "slimming" },
                           { label: "Dokter Spesialis Dermatologi, Venereologi, dan Estetika", category: "skin" },
-                          { label: "Dokter Estetika", category: "aesthetic" },
                         ].map((d) => (
                           <Link
                             key={d.category}
@@ -362,7 +361,6 @@ export function Header({ topBar }: { topBar?: HeaderTopBar }) {
                         {[
                           { label: "Dokter Spesialis Gizi Klinik", category: "slimming" },
                           { label: "Dokter Spesialis Dermatologi, Venereologi, dan Estetika", category: "skin" },
-                          { label: "Dokter Estetika", category: "aesthetic" },
                         ].map((d) => (
                           <Link
                             key={d.category}
