@@ -15,6 +15,7 @@ type CmsTestimonial = {
   quote: string;
   photo: string | null;
   banner_image: string | null;
+  video_url: string | null;
   rating: number | null;
 };
 type CmsPromo = { title: string; description: string; image: string | null; cta_link: string | null };
@@ -24,7 +25,7 @@ export default async function Home() {
     directusFetch<CmsBanner[]>(
       "/items/hero_banners?filter[status][_eq]=published&sort=sort&fields=heading,subheading,image"
     ),
-    directusFetch<CmsTestimonial[]>("/items/testimonials?fields=name,city,quote,photo,banner_image,rating"),
+    directusFetch<CmsTestimonial[]>("/items/testimonials?fields=name,city,quote,photo,banner_image,video_url,rating"),
     directusFetch<CmsPromo[]>(
       "/items/promos?filter[status][_eq]=published&fields=title,description,image,cta_link"
     ),
@@ -48,11 +49,8 @@ export default async function Home() {
           name: t.name,
           rating: t.rating ?? 5,
           avatar: t.photo ? assetUrl(t.photo) : "",
-          image: t.banner_image
-            ? assetUrl(t.banner_image)
-            : t.photo
-              ? assetUrl(t.photo)
-              : "/figma/imgFrame1618873277.webp",
+          videoUrl: t.video_url,
+          image: t.banner_image ? assetUrl(t.banner_image) : t.photo ? assetUrl(t.photo) : null,
         }))
       : undefined;
 

@@ -8,9 +8,21 @@ export type Review = {
   location: string;
   name: string;
   avatar: string;
-  image: string;
+  image: string | null;
+  videoUrl?: string | null;
   rating?: number;
 };
+
+function DefaultMedia() {
+  return (
+    <div
+      className="w-full h-full flex items-center justify-center"
+      style={{ background: "linear-gradient(180deg, #f4ece4 0%, #e8d9bd 100%)" }}
+    >
+      <span className="font-serif font-semibold text-[22px] text-[#b59637] opacity-60">PROSSI</span>
+    </div>
+  );
+}
 
 function Stars({ count }: { count: number }) {
   return (
@@ -135,7 +147,26 @@ export function Testimonials({ reviews: reviewsProp }: { reviews?: Review[] }) {
                     </div>
                   </div>
                   <div className="flex-1 h-[200px] md:h-[338px] rounded-xl overflow-hidden relative">
-                    <img src={review.image} alt="" className="absolute inset-0 w-full h-full object-cover" />
+                    {review.videoUrl ? (
+                      /\.(mp4|webm|mov)$/i.test(review.videoUrl) ? (
+                        <video
+                          src={review.videoUrl}
+                          controls
+                          className="absolute inset-0 w-full h-full object-cover"
+                        />
+                      ) : (
+                        <iframe
+                          src={review.videoUrl}
+                          allow="autoplay; encrypted-media; picture-in-picture"
+                          allowFullScreen
+                          className="absolute inset-0 w-full h-full border-0"
+                        />
+                      )
+                    ) : review.image ? (
+                      <img src={review.image} alt="" className="absolute inset-0 w-full h-full object-cover" />
+                    ) : (
+                      <DefaultMedia />
+                    )}
                   </div>
                 </div>
               </div>
