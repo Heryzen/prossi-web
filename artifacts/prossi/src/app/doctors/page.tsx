@@ -22,6 +22,7 @@ type CmsArticle = {
 const CATEGORY_LABEL: Record<string, string> = {
   slimming: "Slimming Program",
   skin: "Skin Treatment",
+  aesthetic: "Estetika",
 };
 
 export default async function Doctors({
@@ -67,7 +68,8 @@ export default async function Doctors({
         : ALL_DOCTORS;
 
   const eyebrow = category ? `DOKTER ${CATEGORY_LABEL[category] ?? ""}`.toUpperCase() : "DOKTER SPESIALIS";
-  const heroGradientRgb = category === "skin" ? "63,109,112" : category === "slimming" ? "205,114,79" : "63,109,112";
+  const heroGradientRgb =
+    category === "skin" ? "63,109,112" : category === "slimming" ? "205,114,79" : category === "aesthetic" ? "181,150,55" : "63,109,112";
 
   return (
     <DoctorsPageContent

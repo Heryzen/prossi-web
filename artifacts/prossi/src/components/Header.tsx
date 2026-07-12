@@ -8,7 +8,7 @@ import { useCart } from "@/lib/cart";
 const navItems = [
   { label: "Home", href: "/", dropdown: false },
   { label: "Treatments", href: "/treatments", dropdown: true },
-  { label: "Doctors", href: "/doctors", dropdown: false },
+  { label: "Doctors", href: "/doctors", dropdown: true },
   { label: "Promo", href: "/promo", dropdown: false },
   { label: "Article", href: "/article", dropdown: false },
   { label: "Shop", href: "/shop", dropdown: false },
@@ -33,8 +33,9 @@ export function Header({ topBar }: { topBar?: HeaderTopBar }) {
   const [memberName, setMemberName] = useState<string | null>(null);
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [openMenu, setOpenMenu] = useState<"treatments" | "cart" | "account" | null>(null);
+  const [openMenu, setOpenMenu] = useState<"treatments" | "doctors" | "cart" | "account" | null>(null);
   const treatmentsOpen = openMenu === "treatments";
+  const doctorsOpen = openMenu === "doctors";
   const location = usePathname();
 
   const isTreatments = location.startsWith("/treatments");
@@ -132,7 +133,8 @@ export function Header({ topBar }: { topBar?: HeaderTopBar }) {
           {/* Desktop nav */}
           <nav className="hidden lg:flex items-center gap-8">
             {navItems.map((item) => {
-              const isOpen = item.label === "Treatments" && treatmentsOpen;
+              const menuKey = item.label === "Treatments" ? "treatments" : item.label === "Doctors" ? "doctors" : null;
+              const isOpen = menuKey !== null && openMenu === menuKey;
               const textColor = "text-[#120f0b]";
               const isActive = location === item.href;
 
@@ -141,7 +143,7 @@ export function Header({ topBar }: { topBar?: HeaderTopBar }) {
                   {item.dropdown ? (
                     <button
                       type="button"
-                      onClick={() => setOpenMenu(treatmentsOpen ? null : "treatments")}
+                      onClick={() => setOpenMenu(isOpen ? null : menuKey)}
                       className={`flex items-center gap-0.5 text-[16px] ${isActive ? "font-semibold" : "font-medium"} ${textColor} hover:text-[#b59637] transition-colors`}
                     >
                       {item.label}
@@ -162,7 +164,11 @@ export function Header({ topBar }: { topBar?: HeaderTopBar }) {
 
                   {/* Dropdown panel */}
                   {item.dropdown && isOpen && (
-                    <div className="absolute left-1/2 top-[calc(100%+14px)] -translate-x-1/2 w-[260px] rounded-[20px] bg-white p-4 shadow-[0px_10px_30px_rgba(18,15,11,0.12)] z-50">
+                    <div
+                      className={`absolute left-1/2 top-[calc(100%+14px)] -translate-x-1/2 rounded-[20px] bg-white p-4 shadow-[0px_10px_30px_rgba(18,15,11,0.12)] z-50 ${
+                        item.label === "Doctors" ? "w-[344px]" : "w-[260px]"
+                      }`}
+                    >
                       <div className="flex flex-col gap-1">
                         {item.label === "Treatments" && [
                           { label: "Slimming Program", href: "/treatments/slimming-program" },
@@ -175,6 +181,20 @@ export function Header({ topBar }: { topBar?: HeaderTopBar }) {
                             onClick={() => setOpenMenu(null)}
                           >
                             {t.label}
+                          </Link>
+                        ))}
+                        {item.label === "Doctors" && [
+                          { label: "Dokter Spesialis Gizi Klinik", category: "slimming" },
+                          { label: "Dokter Spesialis Dermatologi, Venereologi, dan Estetika", category: "skin" },
+                          { label: "Dokter Estetika", category: "aesthetic" },
+                        ].map((d) => (
+                          <Link
+                            key={d.category}
+                            href={`/doctors?category=${d.category}`}
+                            className="rounded-lg px-4 py-3 text-[15px] leading-snug text-[#120f0b] hover:bg-[#f4ece4] hover:text-[#b59637] transition-colors"
+                            onClick={() => setOpenMenu(null)}
+                          >
+                            {d.label}
                           </Link>
                         ))}
                       </div>
@@ -301,21 +321,26 @@ export function Header({ topBar }: { topBar?: HeaderTopBar }) {
           <div className="lg:hidden mt-2 flex flex-col gap-1 bg-[#f4ece4] rounded-2xl px-4 py-4">
             {navItems.map((item) => (
               <div key={item.label}>
-                {item.dropdown && item.label === "Treatments" ? (
+                {item.dropdown && (item.label === "Treatments" || item.label === "Doctors") ? (
                   <>
                     <button
                       type="button"
-                      onClick={() => setOpenMenu(treatmentsOpen ? null : "treatments")}
+                      onClick={() => {
+                        const key = item.label === "Treatments" ? "treatments" : "doctors";
+                        setOpenMenu(openMenu === key ? null : key);
+                      }}
                       className="flex items-center justify-between w-full py-2 font-medium text-[#120f0b] hover:text-[#b59637] transition-colors"
                     >
-                      <span>Treatments</span>
+                      <span>{item.label}</span>
                       <img
                         src="/figma/imgIconamoonArrowUp2Fill.svg"
                         alt=""
-                        className={`w-4 h-4 transition-transform ${treatmentsOpen ? "rotate-0" : "rotate-180"}`}
+                        className={`w-4 h-4 transition-transform ${
+                          (item.label === "Treatments" ? treatmentsOpen : doctorsOpen) ? "rotate-0" : "rotate-180"
+                        }`}
                       />
                     </button>
-                    {treatmentsOpen && (
+                    {item.label === "Treatments" && treatmentsOpen && (
                       <div className="flex flex-col gap-1 pl-4 pb-2">
                         {[
                           { label: "Slimming Program", href: "/treatments/slimming-program" },
@@ -328,6 +353,24 @@ export function Header({ topBar }: { topBar?: HeaderTopBar }) {
                             className="py-2 text-[15px] text-[#120f0b]/80 hover:text-[#b59637] transition-colors"
                           >
                             {t.label}
+                          </Link>
+                        ))}
+                      </div>
+                    )}
+                    {item.label === "Doctors" && doctorsOpen && (
+                      <div className="flex flex-col gap-1 pl-4 pb-2">
+                        {[
+                          { label: "Dokter Spesialis Gizi Klinik", category: "slimming" },
+                          { label: "Dokter Spesialis Dermatologi, Venereologi, dan Estetika", category: "skin" },
+                          { label: "Dokter Estetika", category: "aesthetic" },
+                        ].map((d) => (
+                          <Link
+                            key={d.category}
+                            href={`/doctors?category=${d.category}`}
+                            onClick={() => setMobileOpen(false)}
+                            className="py-2 text-[15px] leading-snug text-[#120f0b]/80 hover:text-[#b59637] transition-colors"
+                          >
+                            {d.label}
                           </Link>
                         ))}
                       </div>
