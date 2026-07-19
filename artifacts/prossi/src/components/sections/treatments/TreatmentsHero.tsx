@@ -1,6 +1,6 @@
 export function TreatmentsHero() {
   return (
-    <div className="relative w-full overflow-hidden rounded-b-[100px] h-[400px] md:h-[560px]">
+    <div className="relative w-full overflow-hidden rounded-b-[100px] h-[460px] md:h-[560px]">
       {/* Background image — stretch to fill like Figma */}
       <img
         src="/figma/imgHeroTreatments-31d3d2.webp"

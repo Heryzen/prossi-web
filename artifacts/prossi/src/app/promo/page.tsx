@@ -67,7 +67,7 @@ export default async function PromoPage() {
                     </Link>
                   </div>
                   {p.image && (
-                    <div className="flex-1 min-h-[240px]">
+                    <div className="hidden md:block flex-1 min-h-[240px]">
                       <img src={assetUrl(p.image)} alt={p.title} className="w-full h-full object-cover" />
                     </div>
                   )}

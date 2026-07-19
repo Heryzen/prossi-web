@@ -3,6 +3,7 @@ export const TOTAL_PAGES = 10;
 
 export type Article = {
   id: number | string;
+  slug?: string;
   title: string;
   excerpt: string;
   img: string;

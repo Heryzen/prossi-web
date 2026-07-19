@@ -33,19 +33,28 @@ const PAYMENT_METHODS = [
   },
 ];
 
-const PROVINCES = ["DKI Jakarta", "Banten", "Jawa Barat", "Jawa Tengah", "Jawa Timur", "Bali"];
+type AreaResult = {
+  id: string;
+  label: string;
+  district: string;
+  city: string;
+  province: string;
+  postal_code: string;
+};
 
 type Address = {
   name: string;
   phone: string;
+  area_id: string;
   province: string;
   city: string;
   district: string;
   postal: string;
   detail: string;
+  note: string;
 };
 
-const emptyAddress: Address = { name: "", phone: "", province: "", city: "", district: "", postal: "", detail: "" };
+const emptyAddress: Address = { name: "", phone: "", area_id: "", province: "", city: "", district: "", postal: "", detail: "", note: "" };
 
 const inputCls =
   "w-full border border-[#c4cfe1] rounded-[5px] px-3 py-[9px] font-['Inter',sans-serif] font-medium text-[14px] text-[#11151c] placeholder:text-[#889bbf] outline-none focus:border-[#b59637] transition-colors bg-white";
@@ -124,6 +133,12 @@ function CheckoutContent() {
   const [orderNumber, setOrderNumber] = useState<string | null>(null);
   const [paymentDisplay, setPaymentDisplay] = useState<PaymentDisplay | null>(null);
 
+  const [areaQuery, setAreaQuery] = useState("");
+  const [areaSuggestions, setAreaSuggestions] = useState<AreaResult[]>([]);
+  const [areaLoading, setAreaLoading] = useState(false);
+  const [areaOpen, setAreaOpen] = useState(false);
+  const areaTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
   // quick-buy (Beli Sekarang) — ambil detail produk by slug
   useEffect(() => {
     if (!productSlug) return;
@@ -147,12 +162,43 @@ function CheckoutContent() {
   const set = (k: keyof Address) => (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) =>
     setAddr({ ...addr, [k]: e.target.value });
 
+  const handleAreaInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const v = e.target.value;
+    setAreaQuery(v);
+    setAddr((prev) => ({ ...prev, area_id: "", province: "", city: "", district: "", postal: "" }));
+    setAreaOpen(false);
+    if (areaTimerRef.current) clearTimeout(areaTimerRef.current);
+    if (v.length < 3) { setAreaSuggestions([]); return; }
+    areaTimerRef.current = setTimeout(async () => {
+      setAreaLoading(true);
+      try {
+        const res = await fetch(`/api/shipping/areas?input=${encodeURIComponent(v)}`);
+        const json = await res.json();
+        setAreaSuggestions(json.areas ?? []);
+        setAreaOpen((json.areas?.length ?? 0) > 0);
+      } catch { /* ignore */ }
+      finally { setAreaLoading(false); }
+    }, 400);
+  };
+
+  function selectArea(area: AreaResult) {
+    setAreaQuery(area.label);
+    setAddr((prev) => ({ ...prev, area_id: area.id, district: area.district, city: area.city, province: area.province, postal: area.postal_code }));
+    setAreaOpen(false);
+    setAreaSuggestions([]);
+  }
+
   const subtotal = items.reduce((sum, i) => sum + i.price * i.qty, 0);
   const shippingCost = selectedRate?.cost ?? 0;
   const total = subtotal + shippingCost;
 
   const handleSaveAddress = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!addr.area_id) {
+      setError("Pilih kecamatan dari daftar dropdown terlebih dahulu.");
+      return;
+    }
+    setError(null);
     setSaved(true);
     setEditing(false);
     setRatesLoading(true);
@@ -161,6 +207,7 @@ function CheckoutContent() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
+          area_id: addr.area_id,
           postal_code: addr.postal,
           items: items.map((i) => ({ name: i.name, value: i.price, qty: i.qty })),
         }),
@@ -323,34 +370,60 @@ function CheckoutContent() {
                     <label className={labelCls}>Phone Number</label>
                     <input required className={inputCls} placeholder="08xxxxxxxxxx" value={addr.phone} onChange={set("phone")} inputMode="tel" />
                   </div>
-                  <div className="w-full md:w-[calc(50%-4px)]">
-                    <label className={labelCls}>Province</label>
-                    <select required className={inputCls} value={addr.province} onChange={set("province")}>
-                      <option value="" disabled>Select province</option>
-                      {PROVINCES.map((p) => <option key={p}>{p}</option>)}
-                    </select>
-                  </div>
-                  <div className="w-full md:w-[calc(50%-4px)]">
-                    <label className={labelCls}>City</label>
-                    <input required className={inputCls} placeholder="Select city" value={addr.city} onChange={set("city")} />
-                  </div>
-                  <div className="w-full md:w-[calc(50%-4px)]">
-                    <label className={labelCls}>District</label>
-                    <input required className={inputCls} placeholder="Select district" value={addr.district} onChange={set("district")} />
-                  </div>
-                  <div className="w-full md:w-[calc(50%-4px)]">
-                    <label className={labelCls}>Postal Code</label>
-                    <input required className={inputCls} placeholder="Enter code" value={addr.postal} onChange={set("postal")} inputMode="numeric" />
+                  <div className="w-full relative">
+                    <label className={labelCls}>Kecamatan / Kelurahan</label>
+                    <input
+                      className={inputCls}
+                      placeholder="Ketik kecamatan/kota, mis. Pesanggrahan atau Jakarta Selatan"
+                      value={areaQuery}
+                      onChange={handleAreaInput}
+                      onFocus={() => areaSuggestions.length > 0 && setAreaOpen(true)}
+                      onBlur={() => setTimeout(() => setAreaOpen(false), 150)}
+                      autoComplete="off"
+                    />
+                    {areaLoading && (
+                      <span className="absolute right-3 top-[42px] w-4 h-4 border-2 border-[#b59637] border-t-transparent rounded-full animate-spin" />
+                    )}
+                    {areaOpen && areaSuggestions.length > 0 && (
+                      <ul className="absolute top-full left-0 right-0 z-50 bg-white border border-[#c4cfe1] rounded-[8px] shadow-lg max-h-[220px] overflow-y-auto mt-1">
+                        {areaSuggestions.map((area) => (
+                          <li
+                            key={area.id}
+                            onMouseDown={() => selectArea(area)}
+                            className="px-4 py-3 font-['Inter',sans-serif] text-[13px] text-[#11151c] cursor-pointer hover:bg-[#f4ece4] border-b border-[#f0f3fa] last:border-0"
+                          >
+                            {area.label}
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                    {addr.area_id && (
+                      <p className="mt-1.5 font-['Inter',sans-serif] text-[12px] text-[#2a7a50]">
+                        ✓ {addr.district}, {addr.city}, {addr.province} · Kode Pos {addr.postal}
+                      </p>
+                    )}
                   </div>
                   <div className="w-full">
-                    <label className={labelCls}>Address Details</label>
+                    <label className={labelCls}>Alamat Lengkap</label>
                     <textarea
                       required
                       rows={3}
                       className={inputCls}
-                      placeholder="Enter street name, building name or number, nearby landmarks, or other information"
+                      placeholder="Jl. ... No. ..., RT/RW, blok/unit"
                       value={addr.detail}
                       onChange={set("detail")}
+                    />
+                  </div>
+                  <div className="w-full">
+                    <label className={labelCls}>
+                      Patokan / Catatan untuk Kurir{" "}
+                      <span className="font-normal text-[#889bbf]">(opsional)</span>
+                    </label>
+                    <input
+                      className={inputCls}
+                      placeholder="mis. pagar hijau, seberang minimarket, titip satpam"
+                      value={addr.note}
+                      onChange={set("note")}
                     />
                   </div>
                   <button
@@ -370,8 +443,13 @@ function CheckoutContent() {
                       <span className="font-['Inter',sans-serif] font-medium text-[14px] text-[#3b4963]">{addr.phone}</span>
                       <span className="font-['Inter',sans-serif] font-medium text-[14px] text-[#3b4963]">{addr.detail}</span>
                       <span className="font-['Inter',sans-serif] font-medium text-[14px] text-[#3b4963]">
-                        {addr.district}, {addr.city}, {addr.province}, {addr.postal}
+                        {addr.district}, {addr.city}, {addr.province} {addr.postal}
                       </span>
+                      {addr.note && (
+                        <span className="font-['Inter',sans-serif] text-[13px] text-[#889bbf]">
+                          Catatan: {addr.note}
+                        </span>
+                      )}
                     </div>
                   </div>
                   <button

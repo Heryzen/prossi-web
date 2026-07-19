@@ -151,7 +151,7 @@ export function Testimonials({ reviews: reviewsProp }: { reviews?: Review[] }) {
         <div className="w-full overflow-hidden" ref={emblaRef}>
           <div className="flex gap-6 -ml-6">
             {reviews.map((review, i) => (
-              <div key={i} className="flex-[0_0_100%] md:flex-[0_0_608px] pl-6">
+              <div key={i} className="flex-[0_0_100%] md:flex-[0_0_869px] pl-6">
                 <div className="w-full bg-[#fff8f2] border border-[#deba69] rounded-[24px] p-8 flex flex-col md:flex-row gap-6 h-full">
                   <div className="flex flex-col w-full md:w-[316px] shrink-0 justify-between">
                     <div className="flex flex-col gap-4">
@@ -168,7 +168,7 @@ export function Testimonials({ reviews: reviewsProp }: { reviews?: Review[] }) {
                       </div>
                     </div>
                   </div>
-                  <div className="flex-1 h-[200px] md:h-[338px] rounded-xl overflow-hidden relative">
+                  <div className="w-full h-[200px] md:flex-1 md:h-[338px] rounded-xl overflow-hidden relative">
                     {review.videoUrl ? (
                       <button
                         type="button"
@@ -177,7 +177,7 @@ export function Testimonials({ reviews: reviewsProp }: { reviews?: Review[] }) {
                         className="group absolute inset-0 w-full h-full cursor-pointer"
                       >
                         {review.image ? (
-                          <img src={review.image} alt="" className="absolute inset-0 w-full h-full object-cover" />
+                          <img src={review.image} alt="" className="absolute inset-0 w-full h-full object-cover object-top" />
                         ) : (
                           <DefaultMedia />
                         )}
@@ -188,7 +188,7 @@ export function Testimonials({ reviews: reviewsProp }: { reviews?: Review[] }) {
                         </div>
                       </button>
                     ) : review.image ? (
-                      <img src={review.image} alt="" className="absolute inset-0 w-full h-full object-cover" />
+                      <img src={review.image} alt="" className="absolute inset-0 w-full h-full object-cover object-top" />
                     ) : (
                       <DefaultMedia />
                     )}

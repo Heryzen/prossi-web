@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useRef, useState } from "react";
+import ReCAPTCHA from "react-google-recaptcha";
 
 type Step = "register" | "choose-method" | "verify" | "done";
 type VerifyMethod = "sms" | "wa";
@@ -58,11 +59,18 @@ export default function Register() {
   const [otpLoading, setOtpLoading] = useState(false);
   const [verifying, setVerifying] = useState(false);
 
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null);
+  const recaptchaRef = useRef<ReCAPTCHA>(null);
+
   // useRef keeps a stable array across renders — fixes stale closure bug of plain array
   const inputRefs = useRef<Array<HTMLInputElement | null>>(Array(CODE_LENGTH).fill(null));
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!captchaToken) {
+      setError("Selesaikan verifikasi reCAPTCHA terlebih dahulu.");
+      return;
+    }
     if (password !== confirmPassword) {
       setError("Konfirmasi password tidak cocok.");
       return;
@@ -94,6 +102,8 @@ export default function Register() {
       setError("Tidak bisa terhubung ke server.");
     } finally {
       setSubmitting(false);
+      setCaptchaToken(null);
+      recaptchaRef.current?.reset();
     }
   };
 
@@ -305,10 +315,17 @@ export default function Register() {
                 </Link>
               </p>
 
+              <ReCAPTCHA
+                ref={recaptchaRef}
+                sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY ?? ""}
+                onChange={(token) => setCaptchaToken(token)}
+                onExpired={() => setCaptchaToken(null)}
+              />
+
               <button
                 type="submit"
-                disabled={submitting}
-                className="w-full bg-[#b59637] rounded-[20px] px-4 py-3 text-white font-['Lato'] font-medium text-[16px] uppercase tracking-wide hover:opacity-90 transition-opacity disabled:opacity-50 cursor-pointer"
+                disabled={submitting || !captchaToken}
+                className="w-full bg-[#b59637] rounded-[20px] px-4 py-3 text-white font-['Lato'] font-medium text-[16px] uppercase tracking-wide hover:opacity-90 transition-opacity disabled:opacity-50 cursor-pointer disabled:cursor-not-allowed"
               >
                 {submitting ? "Memproses..." : "Register"}
               </button>

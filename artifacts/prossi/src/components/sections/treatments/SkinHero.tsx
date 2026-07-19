@@ -1,6 +1,6 @@
 export function SkinHero() {
   return (
-    <div className="relative w-full overflow-hidden rounded-b-[100px] h-[400px] md:h-[560px]">
+    <div className="relative w-full overflow-hidden rounded-b-[100px] h-[460px] md:h-[560px]">
       <img
         src="/figma/imgSkinHeroFull.webp"
         alt=""

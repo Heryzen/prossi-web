@@ -6,11 +6,27 @@ import { useEffect, useState } from "react";
 const rupiah = (n: number) => `Rp ${n.toLocaleString("id-ID")}`;
 
 const STATUS_LABEL: Record<string, string> = {
-  new: "Pesanan Baru",
+  pending_payment: "Menunggu Bayar",
+  paid: "Dibayar",
   processing: "Diproses",
+  packaging: "Dikemas",
+  ready_to_ship: "Siap Kirim",
   shipped: "Dikirim",
-  completed: "Selesai",
+  delivered: "Selesai",
   cancelled: "Dibatalkan",
+  new: "Pesanan Baru",
+  completed: "Selesai",
+};
+
+const STATUS_CHIP: Record<string, string> = {
+  pending_payment: "bg-[#fdf0e8] text-[#b85c1a]",
+  paid: "bg-[#edf7f2] text-[#2a7a50]",
+  processing: "bg-[#eef3fb] text-[#2d5fa8]",
+  packaging: "bg-[#eef3fb] text-[#2d5fa8]",
+  ready_to_ship: "bg-[#eef3fb] text-[#2d5fa8]",
+  shipped: "bg-[#f3eef8] text-[#6b3fa0]",
+  delivered: "bg-[#edf7f2] text-[#2a7a50]",
+  cancelled: "bg-[#fdf0ee] text-[#a8312a]",
 };
 
 const PAYMENT_LABEL: Record<string, string> = {
@@ -24,6 +40,7 @@ type Order = {
   order_number: string;
   total: number;
   status: string;
+  internal_status: string | null;
   payment_status: string;
   date_created: string;
 };
@@ -58,7 +75,7 @@ export default function OrderHistoryPage() {
 
   if (loading) {
     return (
-      <section className="bg-white w-full pt-[100px] pb-[80px] px-6 md:px-[160px]">
+      <section className="bg-white w-full pt-[140px] pb-[80px] px-6 md:px-[160px]">
         <div className="max-w-[700px] mx-auto flex flex-col gap-4">
           {Array.from({ length: 3 }, (_, i) => (
             <div key={i} className="h-20 w-full bg-[#f4ece4] rounded-[12px] animate-pulse" />
@@ -70,7 +87,7 @@ export default function OrderHistoryPage() {
 
   if (!loggedIn) {
     return (
-      <section className="bg-white w-full pt-[100px] pb-[80px] px-6 md:px-[160px]">
+      <section className="bg-white w-full pt-[140px] pb-[80px] px-6 md:px-[160px]">
         <div className="max-w-[700px] mx-auto flex flex-col items-center gap-6 text-center">
           <h1 className="font-['Merriweather_Sans',sans-serif] font-extrabold text-[24px] text-[#11151c]">
             Riwayat Pesanan
@@ -90,7 +107,7 @@ export default function OrderHistoryPage() {
   }
 
   return (
-    <section className="bg-white w-full pt-[100px] pb-[80px] px-6 md:px-[160px]">
+    <section className="bg-white w-full pt-[140px] pb-[80px] px-6 md:px-[160px]">
       <div className="max-w-[700px] mx-auto flex flex-col gap-8">
         <h1 className="font-['Merriweather_Sans',sans-serif] font-extrabold text-[24px] text-[#11151c]">
           Riwayat Pesanan
@@ -133,12 +150,19 @@ export default function OrderHistoryPage() {
                     })}
                   </span>
                   <div className="flex gap-2">
-                    <span className="px-3 py-1 rounded-[100px] font-['Inter',sans-serif] font-semibold text-[12px] bg-[#f1f4fa] text-[#11151c]">
-                      {STATUS_LABEL[order.status] ?? order.status}
-                    </span>
-                    <span className="px-3 py-1 rounded-[100px] font-['Inter',sans-serif] font-semibold text-[12px] bg-[#f4ece4] text-[#b59637]">
-                      {PAYMENT_LABEL[order.payment_status] ?? order.payment_status}
-                    </span>
+                    {(() => {
+                      const st = order.internal_status ?? order.status;
+                      return (
+                        <span className={`px-3 py-1 rounded-[100px] font-['Inter',sans-serif] font-semibold text-[12px] ${STATUS_CHIP[st] ?? "bg-[#f1f4fa] text-[#11151c]"}`}>
+                          {STATUS_LABEL[st] ?? st}
+                        </span>
+                      );
+                    })()}
+                    {order.payment_status !== "paid" && (
+                      <span className="px-3 py-1 rounded-[100px] font-['Inter',sans-serif] font-semibold text-[12px] bg-[#f4ece4] text-[#b59637]">
+                        {PAYMENT_LABEL[order.payment_status] ?? order.payment_status}
+                      </span>
+                    )}
                   </div>
                 </div>
               </Link>

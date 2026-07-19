@@ -19,14 +19,14 @@ export async function TreatmentServices() {
       desc: s?.home_slimming_desc ?? "Support recovery, energy, and long-term cellular resilience.",
       img: s?.home_slimming_image ? assetUrl(s.home_slimming_image) : "/figma/imgCoreSlimming.webp",
       borderGradient: "linear-gradient(270deg, rgba(194,99,69,1) 0%, rgba(222,186,105,1) 100%)",
-      category: "slimming",
+      href: "/treatments/slimming-program",
     },
     {
       title: "Skin Treatment by Sp.DVE",
       desc: s?.home_skin_desc ?? "Support recovery, energy, and long-term cellular resilience.",
       img: s?.home_skin_image ? assetUrl(s.home_skin_image) : "/figma/imgCoreSkin.webp",
       borderGradient: "linear-gradient(270deg, rgba(57,107,114,1) 0%, rgba(222,186,105,1) 100%)",
-      category: "skin",
+      href: "/treatments/skin-treatment",
     },
   ];
 
@@ -79,13 +79,13 @@ export async function TreatmentServices() {
                     </p>
                   </div>
                   <Link
-                    href={`/doctors?category=${card.category}`}
+                    href={card.href}
                     className="rounded-full px-9 py-[18px] text-white font-['Source_Serif_4',serif] font-semibold text-[18px] bg-[#b59637] hover:bg-[#a3852f] hover:shadow-lg hover:scale-[1.04] transition-all duration-200"
                     style={{
                       border: "1px solid rgba(236,213,165,1)",
                     }}
                   >
-                    View Doctors
+                    View Treatments
                   </Link>
                 </div>
               </div>

@@ -28,7 +28,7 @@ export default function CartPage() {
   }
 
   return (
-    <section className="bg-white w-full pt-[100px] pb-[80px] px-6 md:px-[160px]">
+    <section className="bg-white w-full pt-[140px] pb-[80px] px-6 md:px-[160px]">
       <div className="max-w-[900px] mx-auto flex flex-col gap-8">
         <h1 className="font-['Merriweather_Sans',sans-serif] font-extrabold text-[24px] md:text-[28px] text-[#11151c]">
           Keranjang Belanja

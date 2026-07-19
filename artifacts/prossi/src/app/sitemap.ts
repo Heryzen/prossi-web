@@ -3,7 +3,7 @@ import { directusFetch } from "@/lib/directus";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
 
-type CmsArticle = { id: string; date_created: string };
+type CmsArticle = { id: string; slug: string; date_created: string };
 type CmsProduct = { slug: string };
 
 const STATIC_ROUTES = [
@@ -27,7 +27,7 @@ const STATIC_ROUTES = [
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const [articles, products] = await Promise.all([
-    directusFetch<CmsArticle[]>("/items/articles?filter[status][_eq]=published&fields=id,date_created"),
+    directusFetch<CmsArticle[]>("/items/articles?filter[status][_eq]=published&fields=id,slug,date_created"),
     directusFetch<CmsProduct[]>("/items/products?filter[status][_eq]=published&fields=slug"),
   ]);
 
@@ -37,7 +37,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   const articleEntries: MetadataRoute.Sitemap =
     articles?.map((a) => ({
-      url: `${SITE_URL}/article/${a.id}`,
+      url: `${SITE_URL}/article/${a.slug}`,
       lastModified: a.date_created,
     })) ?? [];
 

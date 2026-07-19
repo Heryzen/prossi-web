@@ -4,18 +4,21 @@ import { directusFetch, assetUrl } from "@/lib/directus";
 const staticArticles = [
   {
     id: null as string | null,
+    slug: null as string | null,
     category: "Spesialis Gizi",
     title: "Panduan nutrisi, slimming, dan kesehatan metabolisme dari dokter Spesialis Gizi Klinik.",
     img: "/figma/imgFrame1984078116.webp",
   },
   {
     id: null as string | null,
+    slug: null as string | null,
     category: "Spesialis Kulit",
     title: "Informasi terpercaya seputar penyakit kulit dan kelamin dari dokter Sp.DVE.",
     img: "/figma/imgFrame1984078117.webp",
   },
   {
     id: null as string | null,
+    slug: null as string | null,
     category: "Dokter Estetika",
     title: "Tips dan insight perawatan kecantikan langsung dari dokter estetika Prossi Clinic.",
     img: "/figma/imgFrame1984078118.webp",
@@ -24,6 +27,7 @@ const staticArticles = [
 
 type CmsArticle = {
   id: string;
+  slug: string;
   title: string;
   cover_image: string | null;
   category: { name: string } | null;
@@ -31,13 +35,14 @@ type CmsArticle = {
 
 export async function Blog() {
   const cms = await directusFetch<CmsArticle[]>(
-    "/items/articles?filter[status][_eq]=published&sort=-date_created&limit=3&fields=id,title,cover_image,category.name"
+    "/items/articles?filter[status][_eq]=published&sort=-date_created&limit=3&fields=id,slug,title,cover_image,category.name"
   );
 
   const articles =
     cms && cms.length > 0
       ? cms.map((a, i) => ({
           id: a.id,
+          slug: a.slug as string | null,
           category: a.category?.name ?? "Artikel",
           title: a.title,
           img: a.cover_image ? assetUrl(a.cover_image) : staticArticles[i % staticArticles.length].img,
@@ -45,11 +50,11 @@ export async function Blog() {
       : staticArticles;
 
   return (
-    <section className="bg-[#f4ece4] w-full py-12 lg:py-[100px] px-6 lg:px-[100px] flex flex-col items-center">
+    <section className="bg-white w-full py-12 lg:py-[100px] px-6 lg:px-[100px] flex flex-col items-center">
       <div className="max-w-[1240px] w-full flex flex-col items-center gap-[42px]">
         <div className="flex flex-col items-center gap-6 w-full text-center max-w-[1030px]">
           <h2 className="font-serif font-semibold text-[32px] md:text-[40px] text-[#120f0b] capitalize">
-            The Prossi Journal
+            Articles
           </h2>
           <p className="font-sans text-lg text-[#120f0b] max-w-[816px]">
             Artikel dari dokter Prossi Clinic untuk membantu Anda memahami kondisi kulit dan tubuh, sebelum memulai perawatan yang tepat.
@@ -60,7 +65,7 @@ export async function Blog() {
           {articles.map((article, i) => (
             <Link
               key={i}
-              href={article.id ? `/article/${article.id}` : "/article"}
+              href={article.slug ?? article.id ? `/article/${article.slug ?? article.id}` : "/article"}
               className="flex-1 bg-[#fff8f2] rounded-[24px] overflow-hidden flex flex-col pb-8 hover:shadow-md transition-shadow"
             >
               <div className="w-full h-[260px] relative mb-6">

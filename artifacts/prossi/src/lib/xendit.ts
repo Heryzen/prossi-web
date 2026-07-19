@@ -67,7 +67,7 @@ export async function createXenditPayment(params: {
           reusability: "ONE_TIME_USE",
           ewallet: {
             channel_code: EWALLET_CHANNELS[params.method],
-            channel_properties: { success_return_url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://prossi.com" },
+            channel_properties: { success_return_url: process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000" },
           },
         },
       };

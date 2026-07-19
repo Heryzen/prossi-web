@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Register | Prossi Clinic",
+  title: "Register",
   robots: "noindex, nofollow",
 };
 

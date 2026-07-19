@@ -9,6 +9,7 @@ const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
 
 type CmsArticle = {
   id: string;
+  slug: string;
   title: string;
   excerpt: string;
   content: string;
@@ -16,6 +17,13 @@ type CmsArticle = {
   date_created: string;
   author: { name: string } | null;
 };
+
+async function fetchCmsArticleBySlug(slug: string): Promise<CmsArticle | null> {
+  const results = await directusFetch<CmsArticle[]>(
+    `/items/articles?filter[slug][_eq]=${encodeURIComponent(slug)}&limit=1&fields=id,slug,title,excerpt,content,cover_image,date_created,author.name`
+  );
+  return results?.[0] ?? null;
+}
 
 function formatDate(iso: string): string {
   return new Date(iso).toLocaleDateString("id-ID", {
@@ -48,13 +56,13 @@ function ChevronRight({ className = "" }: { className?: string }) {
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ id: string }>;
+  params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
-  const { id } = await params;
-  const isNumeric = /^\d+$/.test(id);
+  const { slug } = await params;
+  const isNumeric = /^\d+$/.test(slug);
 
   if (isNumeric) {
-    const article = getArticle(Number(id));
+    const article = getArticle(Number(slug));
     if (!article) return {};
     return {
       title: article.title,
@@ -63,15 +71,13 @@ export async function generateMetadata({
     };
   }
 
-  const cms = await directusFetch<CmsArticle>(
-    `/items/articles/${id}?fields=id,title,excerpt,content,cover_image,date_created,author.name`
-  );
+  const cms = await fetchCmsArticleBySlug(slug);
   if (!cms) return {};
   const image = cms.cover_image ? assetUrl(cms.cover_image) : "/figma/imgFrame1984078116.webp";
   return {
     title: cms.title,
     description: cms.excerpt,
-    alternates: { canonical: `/article/${id}` },
+    alternates: { canonical: `/article/${cms.slug}` },
     openGraph: {
       title: cms.title,
       description: cms.excerpt,
@@ -85,24 +91,23 @@ export async function generateMetadata({
 export default async function ArticleDetailPage({
   params,
 }: {
-  params: Promise<{ id: string }>;
+  params: Promise<{ slug: string }>;
 }) {
-  const { id } = await params;
+  const { slug } = await params;
 
-  // CMS-first: uuid → Directus; numeric → static pool fallback
+  // CMS-first: slug → Directus; numeric → static pool fallback
   let article: Article | undefined;
   let htmlContent: string | null = null;
   let related: Article[] = [];
   let publishedISO: string | null = null;
 
-  const isNumeric = /^\d+$/.test(id);
+  const isNumeric = /^\d+$/.test(slug);
   if (!isNumeric) {
-    const cms = await directusFetch<CmsArticle>(
-      `/items/articles/${id}?fields=id,title,excerpt,content,cover_image,date_created,author.name`
-    );
+    const cms = await fetchCmsArticleBySlug(slug);
     if (cms) {
       article = {
         id: cms.id,
+        slug: cms.slug,
         title: cms.title,
         excerpt: cms.excerpt,
         img: cms.cover_image ? assetUrl(cms.cover_image) : "/figma/imgFrame1984078116.webp",
@@ -115,11 +120,12 @@ export default async function ArticleDetailPage({
       publishedISO = cms.date_created;
 
       const others = await directusFetch<CmsArticle[]>(
-        `/items/articles?filter[status][_eq]=published&filter[id][_neq]=${id}&limit=7&fields=id,title,excerpt,cover_image,date_created`
+        `/items/articles?filter[status][_eq]=published&filter[id][_neq]=${cms.id}&limit=7&fields=id,slug,title,excerpt,cover_image,date_created`
       );
       related =
         others?.map((o) => ({
           id: o.id,
+          slug: o.slug,
           title: o.title,
           excerpt: o.excerpt,
           img: o.cover_image ? assetUrl(o.cover_image) : "/figma/imgFrame1984078116.webp",
@@ -130,7 +136,7 @@ export default async function ArticleDetailPage({
         })) ?? [];
     }
   } else {
-    article = getArticle(Number(id));
+    article = getArticle(Number(slug));
     if (article) related = relatedArticles(article.id, 7);
   }
 
@@ -153,7 +159,7 @@ export default async function ArticleDetailPage({
         itemListElement: [
           { "@type": "ListItem", position: 1, name: "Home", item: SITE_URL },
           { "@type": "ListItem", position: 2, name: "Insight & Inspiration", item: `${SITE_URL}/article` },
-          { "@type": "ListItem", position: 3, name: article.title, item: `${SITE_URL}/article/${id}` },
+          { "@type": "ListItem", position: 3, name: article.title, item: `${SITE_URL}/article/${article.slug ?? article.id}` },
         ],
       },
     ],
@@ -217,7 +223,7 @@ export default async function ArticleDetailPage({
         className="flex flex-col justify-center gap-3 bg-white px-6 pt-10 pb-5 md:px-[160px] md:pt-[80px] md:pb-[20px]"
       >
         {/* Breadcrumb */}
-        <nav className="flex items-center gap-6 flex-wrap">
+        <nav className="flex items-center gap-2 flex-wrap">
           <Link
             href="/"
             className="font-['Inter',sans-serif] font-medium text-[#11151C] hover:underline"

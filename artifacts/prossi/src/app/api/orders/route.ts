@@ -80,6 +80,7 @@ export async function POST(req: Request) {
         payment_method,
         payment_status: "unpaid",
         status: "new",
+        internal_status: "pending_payment",
       }),
     });
 

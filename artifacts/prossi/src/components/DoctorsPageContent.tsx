@@ -61,7 +61,7 @@ function DoctorModal({ doctor, onClose }: { doctor: Doctor; onClose: () => void 
                 </div>
               </div>
               <div className="flex flex-col gap-3 text-center md:text-left">
-                <h3 className="font-['Lato'] font-semibold text-[28px] md:text-[36px] text-[#120f0b] capitalize leading-tight">
+                <h3 className="font-['Lato'] font-semibold text-[22px] md:text-[28px] text-[#120f0b] capitalize leading-tight">
                   {doctor.name}
                 </h3>
                 <p className="font-['Inter'] font-semibold text-[15px] text-[#503d1c] uppercase">
@@ -98,7 +98,7 @@ function DoctorModal({ doctor, onClose }: { doctor: Doctor; onClose: () => void 
               <div className="flex flex-col gap-4 mt-auto">
                 <Link
                   href="/contact"
-                  className="bg-[#b59637] border border-[#ecd5a5] rounded-full px-9 py-[16px] text-white font-['Lato'] font-semibold text-[16px] capitalize text-center hover:opacity-90 transition-opacity w-full md:w-auto md:self-start"
+                  className="bg-[#b59637] border border-[#ecd5a5] rounded-full px-9 py-[16px] text-white font-['Lato'] font-semibold text-[16px] capitalize text-center hover:opacity-90 transition-opacity w-full"
                 >
                   Reservasi
                 </Link>
@@ -114,7 +114,7 @@ function DoctorModal({ doctor, onClose }: { doctor: Doctor; onClose: () => void 
   );
 }
 
-type Article = { id: string; img: string; tag: string; title: string };
+type Article = { id: string; slug?: string; img: string; tag: string; title: string };
 
 export function DoctorsPageContent({
   eyebrow,
@@ -185,32 +185,32 @@ export function DoctorsPageContent({
             </p>
           </div>
 
-          <div className="flex flex-wrap justify-center gap-12 md:gap-6 w-full">
+          <div className="grid grid-cols-2 gap-x-4 gap-y-10 md:flex md:flex-wrap md:justify-center md:gap-6 w-full">
             {doctors.map((doc) => (
               <div
                 key={doc.name}
-                className="flex flex-col items-center gap-8 w-full md:w-[calc(33.333%-16px)] max-w-[397px]"
+                className="flex flex-col items-center gap-3 md:gap-8 md:w-[calc(33.333%-16px)] max-w-[397px]"
               >
                 <div
-                  className="p-[1px] rounded-full w-[260px] h-[260px] md:w-[322px] md:h-[322px]"
+                  className="p-[1px] rounded-full w-[140px] h-[140px] md:w-[322px] md:h-[322px]"
                   style={{ background: GOLD_RING }}
                 >
                   <div className="rounded-full overflow-hidden w-full h-full">
                     <img src={doc.img} alt={doc.name} className="w-full h-full object-cover object-top" />
                   </div>
                 </div>
-                <div className="flex flex-col items-center gap-2 text-center flex-1">
-                  <h3 className="font-serif font-semibold text-[24px] md:text-[26px] text-[#120f0b] capitalize leading-tight">
+                <div className="flex flex-col items-center gap-1 md:gap-2 text-center flex-1">
+                  <h3 className="font-serif font-semibold text-[14px] md:text-[26px] text-[#120f0b] capitalize leading-tight">
                     {doc.name}
                   </h3>
-                  <p className="font-['Inter'] font-semibold text-[16px] md:text-[18px] text-[#503d1c] uppercase">
+                  <p className="font-['Inter'] font-semibold text-[11px] md:text-[18px] text-[#503d1c] uppercase">
                     {doc.specialty}
                   </p>
                 </div>
                 <button
                   type="button"
                   onClick={() => setSelected(doc)}
-                  className="mt-auto bg-[#b59637] border border-[#ecd5a5] rounded-full px-9 py-[16px] md:py-[18px] text-white font-serif font-semibold text-[17px] md:text-[18px] hover:opacity-90 transition-opacity w-full max-w-[322px] cursor-pointer"
+                  className="mt-auto bg-[#b59637] border border-[#ecd5a5] rounded-full px-4 py-2 text-[11px] md:px-9 md:py-[18px] md:text-[18px] text-white font-serif font-semibold hover:opacity-90 transition-opacity w-full max-w-[322px] cursor-pointer"
                 >
                   View Profile
                 </button>
@@ -237,7 +237,7 @@ export function DoctorsPageContent({
             {articles.map((a) => (
               <Link
                 key={a.id}
-                href={`/article/${a.id}`}
+                href={`/article/${a.slug ?? a.id}`}
                 className="bg-[#fff8f2] rounded-[24px] overflow-hidden pb-8 flex flex-col gap-6 hover:opacity-90 transition-opacity"
               >
                 <div className="w-full h-[220px] md:h-[260px]">

@@ -51,7 +51,7 @@ function RelatedCard({ article }: { article: Article }) {
       </div>
       <div>
         <Link
-          href={`/article/${article.id}`}
+          href={`/article/${article.slug ?? article.id}`}
           className="inline-flex items-center justify-center rounded-[8px] font-['Inter',sans-serif] font-semibold text-[14px] text-[#11151C] hover:bg-[#f4ece4] transition-colors"
           style={{ padding: "12px 16px", lineHeight: "22px" }}
         >

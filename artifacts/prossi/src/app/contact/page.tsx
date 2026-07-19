@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import { ReservationModal } from "@/components/ReservationModal";
+import { branches as staticBranches, type Branch } from "@/components/locations-data";
 
 const MapSection = dynamic(
   () => import("@/components/MapSection").then((m) => m.MapSection),
@@ -12,41 +13,24 @@ const MapSection = dynamic(
 const DIRECTUS_URL = process.env.NEXT_PUBLIC_DIRECTUS_URL ?? "http://localhost:8055";
 const FALLBACK_WA_NUMBER = process.env.NEXT_PUBLIC_WA_NUMBER ?? "";
 
-const branches = [
-  {
-    name: "Prossi Clinic – Sudirman",
-    address:
-      "Lot 6 Kawasan SCBD Sudirman, Jl. Jenderal Sudirman Kav. 52-53, RT.5/RW.1, Senayan, Kec. Kebayoran Baru, Kota Jakarta Selatan, DKI Jakarta 12190",
-    hours: "OPEN: Monday – Friday 08:00 AM–09:00 PM",
-    lat: -6.2256,
-    lng: 106.8044,
-    mapsUrl: "https://maps.google.com/?q=Sudirman+SCBD+Jakarta",
-  },
-  {
-    name: "Prossi Clinic – Kemang",
-    address:
-      "Lot 6 Kawasan SCBD Sudirman, Jl. Jenderal Sudirman Kav. 52-53, RT.5/RW.1, Senayan, Kec. Kebayoran Baru, Kota Jakarta Selatan, DKI Jakarta 12190",
-    hours: "OPEN: Monday – Friday 08:00 AM–09:00 PM",
-    lat: -6.2615,
-    lng: 106.8115,
-    mapsUrl: "https://maps.google.com/?q=Kemang+Jakarta",
-  },
-  {
-    name: "Prossi Clinic – BSD",
-    address:
-      "Lot 6 Kawasan SCBD Sudirman, Jl. Jenderal Sudirman Kav. 52-53, RT.5/RW.1, Senayan, Kec. Kebayoran Baru, Kota Jakarta Selatan, DKI Jakarta 12190",
-    hours: "OPEN: Monday – Friday 08:00 AM–09:00 PM",
-    lat: -6.2917,
-    lng: 106.6655,
-    mapsUrl: "https://maps.google.com/?q=BSD+Tangerang+Selatan",
-  },
-];
+type CmsLocation = {
+  name: string;
+  address: string;
+  latitude: number;
+  longitude: number;
+  open_hours: string;
+};
 
-function buildWhatsappRows(waNumber: string) {
-  const digits = waNumber.replace(/\D/g, "");
+function buildWhatsappRows(waNumber: string, waConsultNumber: string) {
+  const reservasiDigits = waNumber.replace(/\D/g, "");
+  const consultDigits = (waConsultNumber || waNumber).replace(/\D/g, "");
   return [
-    { label: "Reservasi & Informasi Bersama Rossi", phone: waNumber, href: `https://wa.me/${digits}` },
-    { label: "Prossi Consult+ Sp GK & Sp DVE (Konsultasi Online)", phone: waNumber, href: `https://wa.me/${digits}` },
+    { label: "Reservasi & Informasi Bersama Rossi", phone: waNumber, href: `https://wa.me/${reservasiDigits}` },
+    {
+      label: "Prossi Consult+ Sp GK & Sp DVE (Konsultasi Online)",
+      phone: waConsultNumber || waNumber,
+      href: `https://wa.me/${consultDigits}`,
+    },
   ];
 }
 
@@ -82,17 +66,41 @@ export default function Contact() {
   const [selectedBranch, setSelectedBranch] = useState(0);
   const [reservationOpen, setReservationOpen] = useState(false);
   const [waNumber, setWaNumber] = useState(FALLBACK_WA_NUMBER);
+  const [waConsultNumber, setWaConsultNumber] = useState("");
+  const [branches, setBranches] = useState<Branch[]>(staticBranches);
 
   useEffect(() => {
-    fetch(`${DIRECTUS_URL}/items/site_settings?fields=whatsapp_number`)
+    fetch(`${DIRECTUS_URL}/items/site_settings?fields=whatsapp_number,whatsapp_consult_number`)
       .then((r) => (r.ok ? r.json() : null))
       .then((json) => {
         if (json?.data?.whatsapp_number) setWaNumber(json.data.whatsapp_number);
+        if (json?.data?.whatsapp_consult_number) setWaConsultNumber(json.data.whatsapp_consult_number);
       })
       .catch(() => {});
   }, []);
 
-  const whatsappRows = buildWhatsappRows(waNumber);
+  useEffect(() => {
+    fetch(`${DIRECTUS_URL}/items/locations?fields=name,address,latitude,longitude,open_hours`)
+      .then((r) => (r.ok ? r.json() : null))
+      .then((json) => {
+        const data: CmsLocation[] | undefined = json?.data;
+        if (data && data.length > 0) {
+          setBranches(
+            data.map((l) => ({
+              name: l.name,
+              address: l.address,
+              hours: l.open_hours ? `OPEN: ${l.open_hours}` : "",
+              lat: l.latitude,
+              lng: l.longitude,
+              mapsUrl: `https://maps.google.com/?q=${l.latitude},${l.longitude}`,
+            }))
+          );
+        }
+      })
+      .catch(() => {});
+  }, []);
+
+  const whatsappRows = buildWhatsappRows(waNumber, waConsultNumber);
 
   return (
     <>
@@ -195,7 +203,7 @@ export default function Contact() {
           className="w-full md:absolute md:inset-0 order-2 md:order-none h-[300px] md:h-full"
           style={{ isolation: "isolate" }}
         >
-          <MapSection selectedBranch={selectedBranch} onSelectBranch={setSelectedBranch} />
+          <MapSection selectedBranch={selectedBranch} onSelectBranch={setSelectedBranch} branches={branches} />
         </div>
 
         {/* Panel — full width on mobile (order-1), absolute overlay on desktop */}
@@ -284,7 +292,11 @@ export default function Contact() {
 
     </div>
 
-    <ReservationModal isOpen={reservationOpen} onClose={() => setReservationOpen(false)} />
+    <ReservationModal
+      isOpen={reservationOpen}
+      onClose={() => setReservationOpen(false)}
+      initialClinicName={branches[selectedBranch]?.name}
+    />
     </>
   );
 }

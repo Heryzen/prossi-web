@@ -51,11 +51,14 @@ export function MapSection({
     };
   }, []);
 
+  const fallbackCenter: [number, number] = [-2.5, 118]; // Indonesia
+  const active = branches[selectedBranch] ?? branches[0];
+
   return (
     <div ref={wrapperRef} style={{ width: "100%", height: "100%" }}>
     <MapContainer
-      center={[branches[0].lat, branches[0].lng]}
-      zoom={12}
+      center={active ? [active.lat, active.lng] : fallbackCenter}
+      zoom={active ? 12 : 4}
       style={{ width: "100%", height: "100%" }}
       zoomControl={false}
       scrollWheelZoom={true}
@@ -67,7 +70,7 @@ export function MapSection({
         subdomains="abcd"
         maxZoom={19}
       />
-      <MapFlyTo lat={branches[selectedBranch].lat} lng={branches[selectedBranch].lng} />
+      {active && <MapFlyTo lat={active.lat} lng={active.lng} />}
       {branches.map((branch, i) => (
         <Marker
           key={i}

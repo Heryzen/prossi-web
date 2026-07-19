@@ -37,7 +37,7 @@ export async function POST(req: Request) {
     if (status === "PAID" || status === "SUCCEEDED" || status === "COMPLETED") {
       await directus(`/items/orders/${order.id}`, {
         method: "PATCH",
-        body: JSON.stringify({ payment_status: "paid", status: "processing" }),
+        body: JSON.stringify({ payment_status: "paid", status: "processing", internal_status: "paid" }),
       });
       sendWhatsAppMessage(
         order.guest_phone,

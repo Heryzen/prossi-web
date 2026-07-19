@@ -69,9 +69,9 @@ export default async function Home() {
       <Reveal><Philosophy /></Reveal>
       <Reveal><TreatmentServices /></Reveal>
       <Reveal><Team /></Reveal>
-      <Reveal><Blog /></Reveal>
       <Reveal><Testimonials reviews={reviews} /></Reveal>
       <Reveal><CTA promos={promos} /></Reveal>
+      <Reveal><Blog /></Reveal>
     </>
   );
 }

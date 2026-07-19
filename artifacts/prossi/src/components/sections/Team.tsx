@@ -48,32 +48,24 @@ export async function Team() {
           </h2>
         </div>
 
-        <div className="w-full flex flex-col lg:flex-row gap-6">
+        <div className="w-full grid grid-cols-3 gap-2 lg:flex lg:flex-row lg:gap-6">
           {team.map((member, i) => (
-            <div key={i} className="flex-1 flex flex-col items-center gap-6">
-              <div className="w-full h-[428px] border border-[#deba69] rounded-t-[50000px] overflow-hidden relative">
-                <img src={member.img} alt={member.title} className="absolute inset-0 w-full h-full object-cover" />
+            <div key={i} className="flex flex-col items-center gap-2 lg:flex-1 lg:gap-6">
+              <div className="w-full h-[200px] lg:h-[428px] border border-[#deba69] rounded-t-[50000px] overflow-hidden relative">
+                <img src={member.img} alt={member.title} className="absolute inset-0 w-full h-full object-cover object-top" />
               </div>
-              <h3 className="font-serif font-semibold text-[26px] text-white text-center capitalize">
+              <h3 className="font-serif font-semibold text-[11px] leading-tight lg:text-[26px] text-white text-center capitalize">
                 {member.title}
               </h3>
               <Link
                 href="/doctors"
-                className="hidden lg:flex bg-[#b59637] border border-[#ecd5a5] rounded-full px-9 py-[18px] text-white font-serif font-semibold text-lg hover:bg-[#a3852f] hover:shadow-lg hover:scale-[1.04] transition-all duration-200"
+                className="w-full text-center lg:w-auto bg-[#b59637] border border-[#ecd5a5] rounded-full px-2 py-1.5 text-[9px] lg:px-9 lg:py-[18px] lg:text-lg text-white font-serif font-semibold hover:bg-[#a3852f] hover:shadow-lg hover:scale-[1.04] transition-all duration-200 whitespace-nowrap"
               >
                 View Doctors
               </Link>
             </div>
           ))}
         </div>
-
-        {/* Single "View Doctors" button shown only on mobile */}
-        <Link
-          href="/doctors"
-          className="lg:hidden mt-2 bg-[#b59637] border border-[#ecd5a5] rounded-full px-9 py-[18px] text-white font-serif font-semibold text-lg hover:opacity-90 transition-opacity"
-        >
-          View Doctors
-        </Link>
       </div>
     </section>
   );

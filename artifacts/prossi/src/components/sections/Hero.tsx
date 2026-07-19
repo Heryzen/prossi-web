@@ -61,7 +61,7 @@ export function Hero({ slides: slidesProp }: { slides?: HeroSlide[] }) {
         style={{ transform: `translateX(-${current * 100}%)` }}
       >
         {slides.map((slide, i) => (
-          <div key={i} className="relative w-full shrink-0">
+          <div key={i} className="relative w-full shrink-0 overflow-hidden">
             {/* Background image */}
             <img
               src={slide.img}

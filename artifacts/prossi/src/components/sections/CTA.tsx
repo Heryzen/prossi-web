@@ -45,7 +45,7 @@ export function CTA({ promos }: { promos?: PromoSlide[] }) {
         <div className="w-full relative rounded-[32px] overflow-hidden bg-transparent" ref={emblaRef}>
           <div className="flex">
             {slides.map((slide, index) => (
-              <div key={index} className="flex-[0_0_100%] h-[423px] relative border border-[#deba69] rounded-[32px] overflow-hidden mx-2">
+              <div key={index} className="flex-[0_0_100%] lg:flex-[0_0_848px] h-[423px] relative border border-[#deba69] rounded-[32px] overflow-hidden mx-2">
                 <div className="absolute inset-0 z-0">
                   <div className="absolute inset-0 bg-[#f1e7da]"></div>
                   <img src="/figma/imgBackground.webp" alt="" className="absolute w-full h-full object-cover mix-blend-multiply opacity-50" />
@@ -92,7 +92,7 @@ export function CTA({ promos }: { promos?: PromoSlide[] }) {
           </div>
         </div>
 
-        <div className="flex items-center gap-6 self-end px-4">
+        <div className="flex items-center gap-6 self-center px-4">
           <button onClick={scrollPrev} className="w-[52px] h-[52px] rounded-full bg-white flex items-center justify-center hover:bg-[#f1e7da] transition-colors cursor-pointer z-10 shadow-sm border border-[#deba69]">
              <img src="/figma/imgSystemUiconsArrowLeft.svg" alt="Previous" className="w-[26px] h-[26px] text-[#503d1c]" />
           </button>

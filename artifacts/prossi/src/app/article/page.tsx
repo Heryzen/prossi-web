@@ -11,6 +11,7 @@ const DIRECTUS_URL = process.env.NEXT_PUBLIC_DIRECTUS_URL ?? "http://localhost:8
 
 type CmsArticle = {
   id: string;
+  slug: string;
   title: string;
   excerpt: string;
   cover_image: string | null;
@@ -22,12 +23,12 @@ type CmsCategory = { id: string; name: string };
 
 type ListArticle = Article & { category?: string };
 
-function ArticleCard({ id, title, date, excerpt, img }: Article) {
+function ArticleCard({ id, slug, title, date, excerpt, img, featured }: Article & { featured?: boolean }) {
   return (
     <article className="flex flex-col md:flex-row items-stretch gap-8 w-full">
       <div
-        className="rounded-[20px] overflow-hidden shrink-0 w-full md:w-[440px]"
-        style={{ height: 246, background: "#FFE3E7" }}
+        className={`rounded-[20px] overflow-hidden shrink-0 w-full ${featured ? "md:w-[640px]" : "md:w-[440px]"}`}
+        style={{ height: featured ? 358 : 246, background: "#FFE3E7" }}
       >
         <img src={img} alt={title} className="w-full h-full object-cover" />
       </div>
@@ -35,7 +36,7 @@ function ArticleCard({ id, title, date, excerpt, img }: Article) {
         <div className="flex flex-col gap-1">
           <h3
             className="font-['Merriweather_Sans',sans-serif] font-extrabold text-[#0D1F3E]"
-            style={{ fontSize: 20, lineHeight: "30px" }}
+            style={{ fontSize: featured ? 26 : 20, lineHeight: featured ? "36px" : "30px" }}
           >
             {title}
           </h3>
@@ -54,7 +55,7 @@ function ArticleCard({ id, title, date, excerpt, img }: Article) {
         </p>
         <div>
           <Link
-            href={`/article/${id}`}
+            href={`/article/${slug ?? id}`}
             className="inline-flex items-center justify-center rounded-[8px] font-['Inter',sans-serif] font-semibold text-[14px] text-[#11151C] hover:bg-[#f4ece4] transition-colors"
             style={{ padding: "12px 16px", lineHeight: "22px" }}
           >
@@ -86,12 +87,12 @@ function PageButton({
       disabled={disabled}
       aria-label={ariaLabel}
       aria-current={active ? "page" : undefined}
-      className={`flex items-center justify-center rounded-[8px] font-['Inter',sans-serif] text-[18px] leading-[26px] transition-colors ${
+      className={`flex items-center justify-center rounded-[8px] font-['Inter',sans-serif] text-[14px] leading-[20px] transition-colors ${
         active
           ? "bg-[#11151C] text-white font-semibold"
           : "text-[#11151C] hover:bg-[#f4ece4]"
       } ${disabled ? "opacity-30 cursor-not-allowed hover:bg-transparent" : "cursor-pointer"}`}
-      style={{ padding: "11px 8px", minWidth: 44 }}
+      style={{ padding: "8px 6px", minWidth: 36 }}
     >
       {children}
     </button>
@@ -122,7 +123,7 @@ export default function ArticlePage() {
   useEffect(() => {
     Promise.all([
       fetch(
-        `${DIRECTUS_URL}/items/articles?filter[status][_eq]=published&sort=-date_created&fields=id,title,excerpt,cover_image,date_created,category.name`
+        `${DIRECTUS_URL}/items/articles?filter[status][_eq]=published&sort=-date_created&fields=id,slug,title,excerpt,cover_image,date_created,category.name`
       ).then((r) => (r.ok ? r.json() : null)),
       fetch(`${DIRECTUS_URL}/items/article_categories?fields=id,name`).then((r) =>
         r.ok ? r.json() : null
@@ -134,6 +135,7 @@ export default function ArticlePage() {
           setArticles(
             data.map((a) => ({
               id: a.id,
+              slug: a.slug,
               title: a.title,
               excerpt: a.excerpt,
               img: a.cover_image
@@ -281,8 +283,8 @@ export default function ArticlePage() {
         id="article-list"
         className="flex flex-col items-end gap-10 scroll-mt-[100px] bg-white px-6 py-10 md:px-[160px] md:pt-[40px] md:pb-[80px]"
       >
-        {pageArticles.map((a) => (
-          <ArticleCard key={a.id} {...a} />
+        {pageArticles.map((a, i) => (
+          <ArticleCard key={a.id} {...a} featured={page === 1 && i === 0} />
         ))}
 
         {/* ── Pagination ── */}
@@ -292,7 +294,7 @@ export default function ArticlePage() {
             disabled={page === 1}
             ariaLabel="Previous page"
           >
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
               <path
                 d="M15 6l-6 6 6 6"
                 stroke="currentColor"
@@ -308,7 +310,7 @@ export default function ArticlePage() {
               <span
                 key={`ellipsis-${i}`}
                 className="flex items-center justify-center text-[#11151C] text-[18px] select-none"
-                style={{ minWidth: 44 }}
+                style={{ minWidth: 36 }}
               >
                 …
               </span>
@@ -329,7 +331,7 @@ export default function ArticlePage() {
             disabled={page === totalPages}
             ariaLabel="Next page"
           >
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
               <path
                 d="M9 6l6 6-6 6"
                 stroke="currentColor"
