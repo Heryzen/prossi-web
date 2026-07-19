@@ -2,7 +2,8 @@
 
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { Suspense, useEffect, useState } from "react";
+import { Suspense, useEffect, useRef, useState } from "react";
+import ReCAPTCHA from "react-google-recaptcha";
 import { useCart, type CartItem } from "@/lib/cart";
 import type { ShippingRate } from "@/lib/biteship";
 import type { PaymentDisplay } from "@/lib/xendit";
@@ -113,6 +114,8 @@ function CheckoutContent() {
   const [selected, setSelected] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null);
+  const recaptchaRef = useRef<ReCAPTCHA>(null);
 
   const [rates, setRates] = useState<ShippingRate[]>([]);
   const [ratesLoading, setRatesLoading] = useState(false);
@@ -174,6 +177,10 @@ function CheckoutContent() {
 
   const handleContinuePayment = async () => {
     if (!selected) return;
+    if (!captchaToken) {
+      setError("Selesaikan verifikasi reCAPTCHA terlebih dahulu.");
+      return;
+    }
     setSubmitting(true);
     setError(null);
     try {
@@ -201,7 +208,7 @@ function CheckoutContent() {
       const payRes = await fetch("/api/checkout/pay", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ order_number: orderJson.order_number, method: selected }),
+        body: JSON.stringify({ order_number: orderJson.order_number, method: selected, captchaToken }),
       });
       const payJson = await payRes.json();
       setPaymentDisplay(payJson.display ?? { kind: "unavailable", message: "Gagal memuat instruksi pembayaran." });
@@ -212,6 +219,8 @@ function CheckoutContent() {
       setError("Tidak bisa terhubung ke server.");
     } finally {
       setSubmitting(false);
+      setCaptchaToken(null);
+      recaptchaRef.current?.reset();
     }
   };
 
@@ -228,7 +237,7 @@ function CheckoutContent() {
           {items.map((item) => (
             <div
               key={item.slug}
-              className="bg-white border border-[#e6ecf7] rounded-[20px] overflow-hidden max-w-[480px] flex"
+              className="bg-white border border-[#e6ecf7] rounded-[20px] overflow-hidden w-full lg:max-w-[480px] flex"
               style={{ boxShadow: "0px 4px 4px -4px rgba(12,12,13,0.05), 0px 16px 16px -8px rgba(12,12,13,0.1)" }}
             >
               <div className="w-[100px] h-[100px] shrink-0 flex items-center justify-center" style={{ background: "linear-gradient(180deg, #f4ece4 0%, #e8d9bd 100%)" }}>
@@ -261,7 +270,7 @@ function CheckoutContent() {
 
         {/* Total due accordion */}
         <div
-          className="bg-white border border-[#e6ecf7] rounded-[20px] px-5 py-6 max-w-[480px]"
+          className="bg-white border border-[#e6ecf7] rounded-[20px] px-5 py-6 w-full lg:max-w-[480px]"
           style={{ boxShadow: "0px 4px 4px -4px rgba(12,12,13,0.05), 0px 16px 16px -8px rgba(12,12,13,0.1)" }}
         >
           <button type="button" onClick={() => setDueOpen(!dueOpen)} className="w-full flex items-center justify-between cursor-pointer">
@@ -299,37 +308,37 @@ function CheckoutContent() {
       {/* ── Kolom kanan ── */}
       <div className="bg-white flex-1 px-6 py-10 lg:pl-[120px] lg:pr-[160px] lg:pt-[100px] lg:pb-[80px]">
         {view === "delivery" && (
-          <div className="flex flex-col gap-10 max-w-[480px]">
+          <div className="flex flex-col gap-10 w-full lg:max-w-[480px]">
             {/* Step 1 — Delivery */}
             <div className="flex flex-col gap-6">
               <StepHeading num="1" label="Delivery" />
 
               {editing ? (
                 <form className="flex flex-wrap gap-2" onSubmit={handleSaveAddress}>
-                  <div className="w-full sm:w-[calc(50%-4px)]">
+                  <div className="w-full md:w-[calc(50%-4px)]">
                     <label className={labelCls}>Full Name</label>
                     <input required className={inputCls} placeholder="Enter your name" value={addr.name} onChange={set("name")} />
                   </div>
-                  <div className="w-full sm:w-[calc(50%-4px)]">
+                  <div className="w-full md:w-[calc(50%-4px)]">
                     <label className={labelCls}>Phone Number</label>
                     <input required className={inputCls} placeholder="08xxxxxxxxxx" value={addr.phone} onChange={set("phone")} inputMode="tel" />
                   </div>
-                  <div className="w-full sm:w-[calc(50%-4px)]">
+                  <div className="w-full md:w-[calc(50%-4px)]">
                     <label className={labelCls}>Province</label>
                     <select required className={inputCls} value={addr.province} onChange={set("province")}>
                       <option value="" disabled>Select province</option>
                       {PROVINCES.map((p) => <option key={p}>{p}</option>)}
                     </select>
                   </div>
-                  <div className="w-full sm:w-[calc(50%-4px)]">
+                  <div className="w-full md:w-[calc(50%-4px)]">
                     <label className={labelCls}>City</label>
                     <input required className={inputCls} placeholder="Select city" value={addr.city} onChange={set("city")} />
                   </div>
-                  <div className="w-full sm:w-[calc(50%-4px)]">
+                  <div className="w-full md:w-[calc(50%-4px)]">
                     <label className={labelCls}>District</label>
                     <input required className={inputCls} placeholder="Select district" value={addr.district} onChange={set("district")} />
                   </div>
-                  <div className="w-full sm:w-[calc(50%-4px)]">
+                  <div className="w-full md:w-[calc(50%-4px)]">
                     <label className={labelCls}>Postal Code</label>
                     <input required className={inputCls} placeholder="Enter code" value={addr.postal} onChange={set("postal")} inputMode="numeric" />
                   </div>
@@ -455,7 +464,7 @@ function CheckoutContent() {
         )}
 
         {view === "method" && (
-          <div className="flex flex-col gap-6 max-w-[480px]">
+          <div className="flex flex-col gap-6 w-full lg:max-w-[480px]">
             <button
               type="button"
               onClick={() => setView("delivery")}
@@ -492,11 +501,18 @@ function CheckoutContent() {
               <Link href="/privacy" className="underline">Privacy and Warranty Policy.</Link>
             </p>
 
+            <ReCAPTCHA
+              ref={recaptchaRef}
+              sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY ?? ""}
+              onChange={(token) => setCaptchaToken(token)}
+              onExpired={() => setCaptchaToken(null)}
+            />
+
             {error && <p className="font-['Inter',sans-serif] text-[14px] text-red-600">{error}</p>}
 
             <button
               type="button"
-              disabled={!selected || submitting}
+              disabled={!selected || submitting || !captchaToken}
               onClick={handleContinuePayment}
               className="w-full rounded-[8px] px-4 py-3 font-['Inter',sans-serif] font-semibold text-[14px] transition-opacity cursor-pointer disabled:cursor-not-allowed"
               style={
@@ -511,7 +527,7 @@ function CheckoutContent() {
         )}
 
         {view === "pay" && (
-          <div className="flex flex-col gap-6 max-w-[480px] items-center text-center pt-8">
+          <div className="flex flex-col gap-6 w-full lg:max-w-[480px] items-center text-center pt-8">
             <div className="w-16 h-16 rounded-full bg-[#b59637] flex items-center justify-center">
               <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
                 <path d="M5 13l4 4L19 7" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />

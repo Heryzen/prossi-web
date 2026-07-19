@@ -17,9 +17,24 @@ async function directus(path: string, init?: RequestInit) {
 
 export async function POST(req: Request) {
   try {
-    const { order_number, method } = await req.json();
+    const { order_number, method, captchaToken } = await req.json();
     if (!order_number || !method) {
       return NextResponse.json({ error: "order_number dan method wajib diisi" }, { status: 400 });
+    }
+
+    const recaptchaSecret = process.env.RECAPTCHA_SECRET_KEY;
+    if (recaptchaSecret) {
+      if (!captchaToken) {
+        return NextResponse.json({ error: "Verifikasi reCAPTCHA diperlukan." }, { status: 400 });
+      }
+      const verify = await fetch(
+        `https://www.google.com/recaptcha/api/siteverify?secret=${recaptchaSecret}&response=${captchaToken}`,
+        { method: "POST" }
+      );
+      const { success } = await verify.json();
+      if (!success) {
+        return NextResponse.json({ error: "Verifikasi reCAPTCHA gagal. Coba lagi." }, { status: 403 });
+      }
     }
 
     const rows = await directus(`/items/orders?filter[order_number][_eq]=${encodeURIComponent(order_number)}&limit=1`);

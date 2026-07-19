@@ -62,7 +62,7 @@ export default function LoginPage() {
             Masuk
           </h1>
 
-          <form className="flex flex-col gap-9" onSubmit={handleSubmit}>
+          <form className="flex flex-col gap-9" onSubmit={handleSubmit} autoComplete="off">
             <div className="flex flex-col gap-1.5">
               <label className="font-['Readex_Pro',sans-serif] text-[14px] text-black">Email Address</label>
               <input
@@ -71,6 +71,7 @@ export default function LoginPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="prossi@yahoo.com"
+                autoComplete="off"
                 className={inputCls}
               />
             </div>
@@ -83,6 +84,7 @@ export default function LoginPage() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Masukkan password"
+                autoComplete="new-password"
                 className={inputCls}
               />
             </div>

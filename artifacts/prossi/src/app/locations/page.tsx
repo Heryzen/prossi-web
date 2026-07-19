@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import dynamic from "next/dynamic";
 import { branches as staticBranches, type Branch } from "@/components/locations-data";
+import { ReservationModal } from "@/components/ReservationModal";
 
 const DIRECTUS_URL = process.env.NEXT_PUBLIC_DIRECTUS_URL ?? "http://localhost:8055";
 
@@ -34,9 +35,26 @@ function DirectionIcon() {
   );
 }
 
+function SearchIcon() {
+  return (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+      <path
+        d="M11 19a8 8 0 1 0 0-16 8 8 0 0 0 0 16ZM21 21l-4.35-4.35"
+        stroke="#868787"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
 export default function LocationsPage() {
   const [selected, setSelected] = useState(0);
   const [branches, setBranches] = useState<Branch[]>(staticBranches);
+  const [query, setQuery] = useState("");
+  const [reservationOpen, setReservationOpen] = useState(false);
+  const [reservationClinic, setReservationClinic] = useState<string | undefined>(undefined);
 
   useEffect(() => {
     fetch(`${DIRECTUS_URL}/items/locations?fields=name,address,latitude,longitude,open_hours`)
@@ -58,6 +76,12 @@ export default function LocationsPage() {
       })
       .catch(() => {});
   }, []);
+
+  const filteredBranches = query.trim()
+    ? branches.filter((b) =>
+        `${b.name} ${b.address}`.toLowerCase().includes(query.trim().toLowerCase())
+      )
+    : branches;
 
   return (
     <div className="flex flex-col pt-[79px]">
@@ -108,8 +132,8 @@ export default function LocationsPage() {
       {/* ── Map + branch list — mobile: stacked, desktop: overlay ── */}
       <div className="flex flex-col md:block md:relative w-full md:h-[680px] bg-white">
         {/* Map — below panel on mobile, full-area behind panel on desktop */}
-        <div className="order-2 md:order-none md:absolute md:inset-0 w-full h-[300px] md:h-full">
-          <MapSection selectedBranch={selected} onSelectBranch={setSelected} branches={branches} />
+        <div className="order-2 md:order-none md:absolute md:inset-0 w-full h-[300px] md:h-full" style={{ isolation: "isolate" }}>
+          <MapSection selectedBranch={selected} onSelectBranch={setSelected} branches={filteredBranches} />
         </div>
 
         {/* Branch panel — above map on mobile, floating overlay on desktop */}
@@ -136,15 +160,56 @@ export default function LocationsPage() {
             </p>
           </div>
 
+          {/* Search */}
+          <div className="px-6 pt-4 md:px-10">
+            <div
+              className="flex items-center gap-2 rounded-[8px] border border-[#dbdbdb] px-3 h-11 focus-within:border-[#b59637] transition-colors"
+            >
+              <SearchIcon />
+              <input
+                type="text"
+                value={query}
+                onChange={(e) => {
+                  setQuery(e.target.value);
+                  setSelected(0);
+                }}
+                placeholder="Cari lokasi, area, kota atau alamat"
+                className="flex-1 min-w-0 outline-none font-['Readex_Pro','Inter',sans-serif] text-[14px] text-[#292929] placeholder:text-[#868787]"
+              />
+              {query && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setQuery("");
+                    setSelected(0);
+                  }}
+                  aria-label="Hapus pencarian"
+                  className="flex items-center justify-center w-6 h-6 rounded-full hover:bg-[#f4ece4] transition-colors cursor-pointer shrink-0"
+                >
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                    <path d="M6 6l12 12M18 6L6 18" stroke="#868787" strokeWidth="2" strokeLinecap="round" />
+                  </svg>
+                </button>
+              )}
+            </div>
+          </div>
+
           {/* Scrollable list */}
           <div className="flex-1 overflow-y-auto flex flex-col gap-3 px-6 py-4 md:px-10">
-            {branches.map((b, i) => {
+            {filteredBranches.length === 0 && (
+              <p className="font-['Readex_Pro','Inter',sans-serif] text-[14px] text-[#868787] text-center py-4">
+                Tidak ada cabang yang cocok dengan pencarian.
+              </p>
+            )}
+            {filteredBranches.map((b, i) => {
               const active = i === selected;
               return (
-                <button
+                <div
                   key={i}
-                  type="button"
+                  role="button"
+                  tabIndex={0}
                   onClick={() => setSelected(i)}
+                  onKeyDown={(e) => e.key === "Enter" && setSelected(i)}
                   className="text-left flex flex-col gap-3 rounded-[6px] border bg-white transition-colors cursor-pointer"
                   style={{
                     padding: 16,
@@ -176,21 +241,31 @@ export default function LocationsPage() {
                       <DirectionIcon />
                       Direction
                     </a>
-                    <Link
-                      href="/contact"
-                      onClick={(e) => e.stopPropagation()}
-                      className="flex items-center rounded-full border-2 border-[#b59637] text-[#b59637] font-['Lato',sans-serif] font-bold uppercase hover:bg-[#b59637] hover:text-white transition-colors"
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setReservationClinic(b.name);
+                        setReservationOpen(true);
+                      }}
+                      className="flex items-center rounded-full border-2 border-[#b59637] text-[#b59637] font-['Lato',sans-serif] font-bold uppercase hover:bg-[#b59637] hover:text-white transition-colors cursor-pointer"
                       style={{ padding: "3px 12px", fontSize: 13, lineHeight: "20px" }}
                     >
                       Reservation
-                    </Link>
+                    </button>
                   </div>
-                </button>
+                </div>
               );
             })}
           </div>
         </div>
       </div>
+
+      <ReservationModal
+        isOpen={reservationOpen}
+        onClose={() => { setReservationOpen(false); setReservationClinic(undefined); }}
+        initialClinicName={reservationClinic}
+      />
     </div>
   );
 }

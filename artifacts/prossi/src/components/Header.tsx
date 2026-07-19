@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useCart } from "@/lib/cart";
@@ -37,6 +37,7 @@ export function Header({ topBar }: { topBar?: HeaderTopBar }) {
   const treatmentsOpen = openMenu === "treatments";
   const doctorsOpen = openMenu === "doctors";
   const location = usePathname();
+  const headerRef = useRef<HTMLElement>(null);
 
   const isTreatments = location.startsWith("/treatments");
 
@@ -45,6 +46,17 @@ export function Header({ topBar }: { topBar?: HeaderTopBar }) {
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  useEffect(() => {
+    if (!openMenu) return;
+    const onClickOutside = (e: MouseEvent) => {
+      if (headerRef.current && !headerRef.current.contains(e.target as Node)) {
+        setOpenMenu(null);
+      }
+    };
+    document.addEventListener("mousedown", onClickOutside);
+    return () => document.removeEventListener("mousedown", onClickOutside);
+  }, [openMenu]);
 
   useEffect(() => {
     try {
@@ -63,7 +75,7 @@ export function Header({ topBar }: { topBar?: HeaderTopBar }) {
   const showTopBar = scrolled;
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50">
+    <header ref={headerRef} className="fixed top-0 left-0 right-0 z-[1001]">
       {/* ── Top bar — slides in on scroll ── */}
       <div
         className={`overflow-hidden transition-all duration-500 ease-in-out ${showTopBar ? "max-h-[32px] opacity-100" : "max-h-0 opacity-0"}`}
@@ -186,6 +198,7 @@ export function Header({ topBar }: { topBar?: HeaderTopBar }) {
                         {item.label === "Doctors" && [
                           { label: "Dokter Spesialis Gizi Klinik", category: "slimming" },
                           { label: "Dokter Spesialis Dermatologi, Venereologi, dan Estetika", category: "skin" },
+                          { label: "Dokter Estetika", category: "estetika" },
                         ].map((d) => (
                           <Link
                             key={d.category}
@@ -303,6 +316,68 @@ export function Header({ topBar }: { topBar?: HeaderTopBar }) {
             </Link>
           </div>
 
+          {/* Mobile quick-access icons — account + cart (hidden on desktop, shown in the row above there) */}
+          <div className="flex lg:hidden items-center gap-1">
+            {memberName ? (
+              <div className="relative">
+                <button
+                  type="button"
+                  onClick={() => setOpenMenu(openMenu === "account" ? null : "account")}
+                  aria-label="Menu akun"
+                  className="flex items-center justify-center w-9 h-9 rounded-full bg-[#f4ece4] hover:bg-[#ecd5a5] transition-colors cursor-pointer"
+                >
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                    <path d="M12 12a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9ZM4 20.5c1.4-3.6 4.6-5.5 8-5.5s6.6 1.9 8 5.5" stroke="#120f0b" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                </button>
+                {openMenu === "account" && (
+                  <div className="absolute right-0 top-[calc(100%+10px)] w-[180px] rounded-[20px] bg-white p-4 shadow-[0px_10px_30px_rgba(18,15,11,0.12)] z-50">
+                    <div className="flex flex-col gap-1">
+                      <span className="px-4 py-2 text-[14px] font-semibold text-[#120f0b] truncate">
+                        Halo, {memberName.split(" ")[0]}
+                      </span>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setOpenMenu(null);
+                          handleLogout();
+                        }}
+                        className="text-left rounded-lg px-4 py-3 text-[15px] text-[#868787] hover:bg-[#f4ece4] hover:text-[#b59637] transition-colors cursor-pointer"
+                      >
+                        Keluar
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <Link
+                href="/login"
+                aria-label="Masuk"
+                title="Masuk"
+                className="flex items-center justify-center w-9 h-9 rounded-full bg-[#f4ece4] hover:bg-[#ecd5a5] transition-colors"
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                  <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4M10 17l5-5-5-5M15 12H3" stroke="#120f0b" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </Link>
+            )}
+            <Link
+              href="/cart"
+              aria-label="Menu keranjang"
+              className="relative flex items-center justify-center w-9 h-9 hover:opacity-70 transition-opacity"
+            >
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                <path d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.3 4.6A1 1 0 0 0 5.6 19H17M9 21a1 1 0 1 0 0-2 1 1 0 0 0 0 2zM17 21a1 1 0 1 0 0-2 1 1 0 0 0 0 2z" stroke="#120f0b" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+              {cartCount > 0 && (
+                <span className="absolute -top-0.5 -right-0.5 w-[18px] h-[18px] rounded-full bg-[#b59637] text-white text-[10px] font-semibold flex items-center justify-center">
+                  {cartCount}
+                </span>
+              )}
+            </Link>
+          </div>
+
           {/* Mobile hamburger */}
           <button
             className="lg:hidden flex flex-col gap-1.5 z-50 p-2"
@@ -361,6 +436,7 @@ export function Header({ topBar }: { topBar?: HeaderTopBar }) {
                         {[
                           { label: "Dokter Spesialis Gizi Klinik", category: "slimming" },
                           { label: "Dokter Spesialis Dermatologi, Venereologi, dan Estetika", category: "skin" },
+                          { label: "Dokter Estetika", category: "estetika" },
                         ].map((d) => (
                           <Link
                             key={d.category}

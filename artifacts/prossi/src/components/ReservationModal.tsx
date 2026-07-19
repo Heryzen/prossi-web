@@ -5,23 +5,30 @@ import { useEffect, useState } from "react";
 interface Props {
   isOpen: boolean;
   onClose: () => void;
+  /** Nama cabang yang mau di-pre-select saat modal dibuka dari tombol reservasi per-lokasi. */
+  initialClinicName?: string;
 }
 
 type Location = { id: string; name: string; wa_number: string };
+type Member = { id: string; full_name: string; email: string; phone: string };
 
 const TREATMENTS = ["Slimming Program", "Skin Treatment"];
 const DIRECTUS_URL = process.env.NEXT_PUBLIC_DIRECTUS_URL ?? "http://localhost:8055";
 
-function getMemberId(): string | undefined {
+function getMember(): Member | undefined {
   try {
     const raw = localStorage.getItem("prossi_member");
-    return raw ? JSON.parse(raw).id : undefined;
+    return raw ? JSON.parse(raw) : undefined;
   } catch {
     return undefined;
   }
 }
 
-export function ReservationModal({ isOpen, onClose }: Props) {
+function getMemberId(): string | undefined {
+  return getMember()?.id;
+}
+
+export function ReservationModal({ isOpen, onClose, initialClinicName }: Props) {
   const [form, setForm] = useState({ fullName: "", phone: "", treatment: "", clinic: "" });
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -39,6 +46,25 @@ export function ReservationModal({ isOpen, onClose }: Props) {
       .catch(() => {});
   }, [isOpen, locations.length]);
 
+  // Auto-select klinik dari tombol reservasi per-lokasi, begitu daftar lokasi selesai dimuat.
+  useEffect(() => {
+    if (!isOpen || !initialClinicName || locations.length === 0) return;
+    const match = locations.find((l) => l.name === initialClinicName);
+    if (match) setForm((prev) => (prev.clinic ? prev : { ...prev, clinic: match.id }));
+  }, [isOpen, initialClinicName, locations]);
+
+  // Auto-fill nama & nomor HP kalau user sudah login.
+  useEffect(() => {
+    if (!isOpen) return;
+    const member = getMember();
+    if (!member) return;
+    setForm((prev) => ({
+      ...prev,
+      fullName: prev.fullName || member.full_name || "",
+      phone: prev.phone || member.phone?.replace(/\D/g, "") || "",
+    }));
+  }, [isOpen]);
+
   const handleSubmit = () => {
     if (!form.fullName || !form.phone || !form.treatment || !form.clinic) {
       setError("Lengkapi semua kolom terlebih dahulu.");
@@ -52,7 +78,7 @@ export function ReservationModal({ isOpen, onClose }: Props) {
 
     // Buka tab WA segera (masih dalam gesture klik yang sama) sebelum await apa pun,
     // supaya tidak diblokir popup blocker browser.
-    const waMessage = `Halo, saya ${form.fullName} (${form.phone}) ingin melakukan reservasi untuk ${form.treatment} di ${location.name}.`;
+    const waMessage = `Halo Prossi Clinic! Saya ${form.fullName} mau reservasi untuk ${form.treatment} di cabang ${location.name}. Mohon info jadwal yang tersedia ya, terima kasih!`;
     const link = `https://wa.me/${location.wa_number.replace(/\D/g, "")}?text=${encodeURIComponent(waMessage)}`;
     setWaLink(link);
     window.open(link, "_blank", "noopener,noreferrer");
@@ -68,6 +94,7 @@ export function ReservationModal({ isOpen, onClose }: Props) {
         treatment: form.treatment,
         clinic: location.name,
         location_id: location.id,
+        wa_number: location.wa_number,
         member_id: getMemberId(),
       }),
     })
@@ -106,7 +133,7 @@ export function ReservationModal({ isOpen, onClose }: Props) {
 
   return (
     <div
-      className="fixed inset-0 z-[100] flex items-center justify-center p-4"
+      className="fixed inset-0 z-[2000] flex items-center justify-center p-4"
       style={{ background: "rgba(0,0,0,0.5)" }}
       onClick={onClose}
     >

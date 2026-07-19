@@ -15,6 +15,7 @@ type CmsDoctor = {
 
 type CmsArticle = {
   id: string;
+  slug: string;
   title: string;
   cover_image: string | null;
   category: { name: string } | null;
@@ -23,6 +24,7 @@ type CmsArticle = {
 const CATEGORY_LABEL: Record<string, string> = {
   slimming: "Slimming Program",
   skin: "Skin Treatment",
+  estetika: "Dokter Estetika",
 };
 
 export async function generateMetadata({
@@ -57,13 +59,14 @@ export default async function Doctors({
       `/items/doctors?filter[status][_eq]=published&sort=sort&fields=name,photo,specialty,bio,schedule_days,schedule_hours,treatment_category${filter}`
     ),
     directusFetch<CmsArticle[]>(
-      "/items/articles?filter[status][_eq]=published&sort=-date_created&limit=3&fields=id,title,cover_image,category.name"
+      "/items/articles?filter[status][_eq]=published&sort=-date_created&limit=3&fields=id,slug,title,cover_image,category.name"
     ),
   ]);
 
   const articles =
     cmsArticles?.map((a) => ({
       id: a.id,
+      slug: a.slug,
       img: a.cover_image ? assetUrl(a.cover_image) : "/figma/imgArticleGizi.png",
       tag: a.category?.name ?? "Prossi Journal",
       title: a.title,
@@ -84,7 +87,7 @@ export default async function Doctors({
         : ALL_DOCTORS;
 
   const eyebrow = category ? `DOKTER ${CATEGORY_LABEL[category] ?? ""}`.toUpperCase() : "DOKTER SPESIALIS";
-  const heroGradientRgb = category === "skin" ? "63,109,112" : category === "slimming" ? "205,114,79" : "63,109,112";
+  const heroGradientRgb = category === "skin" ? "63,109,112" : category === "slimming" ? "205,114,79" : category === "estetika" ? "120,80,140" : "63,109,112";
 
   const jsonLd = {
     "@context": "https://schema.org",

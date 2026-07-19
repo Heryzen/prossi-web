@@ -16,7 +16,7 @@ async function directus(path: string, init?: RequestInit) {
 
 export async function POST(req: Request) {
   try {
-    const { full_name, phone, treatment, clinic, location_id, member_id } = await req.json();
+    const { full_name, phone, treatment, clinic, location_id, member_id, wa_number } = await req.json();
 
     if (!full_name || !phone || !treatment || !clinic) {
       return NextResponse.json({ error: "Semua kolom wajib diisi" }, { status: 400 });
@@ -27,6 +27,7 @@ export async function POST(req: Request) {
       body: JSON.stringify({
         member: member_id ?? null,
         location: location_id ?? null,
+        wa_number: wa_number ?? null,
         guest_name: full_name,
         guest_phone: phone,
         notes: `Kategori Treatment: ${treatment}\nKlinik Pilihan: ${clinic}`,
