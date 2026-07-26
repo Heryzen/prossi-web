@@ -109,8 +109,8 @@ export default function AdminOrdersPage() {
   if (!token) return null;
 
   return (
-    <div className="min-h-screen bg-[#f9f7f4]">
-      <div className="sticky top-0 z-50 bg-white border-b border-[#e6ecf7] px-6 py-3 flex items-center justify-between">
+    <div className="min-h-screen bg-[#f9f7f4] pt-[72px]">
+      <div className="sticky top-[72px] z-50 bg-white border-b border-[#e6ecf7] px-6 py-3 flex items-center justify-between">
         <div className="flex items-center gap-3">
           <span className="font-['Merriweather_Sans',sans-serif] font-extrabold text-[16px] text-[#11151c]">
             Prossi Admin

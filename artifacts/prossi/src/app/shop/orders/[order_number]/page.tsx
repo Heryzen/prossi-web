@@ -61,6 +61,12 @@ function trackingUrl(courier: string, waybill: string) {
 }
 
 type OrderItem = { slug: string; name: string; price: number; qty: number };
+function fmtDate(iso: string) {
+  return new Date(iso).toLocaleDateString("id-ID", {
+    day: "numeric", month: "short", year: "numeric",
+  });
+}
+
 type Order = {
   order_number: string;
   items: OrderItem[];
@@ -73,6 +79,7 @@ type Order = {
   status: string;
   internal_status: string | null;
   shipping_status: string | null;
+  date_created: string;
 };
 
 async function getOrder(orderNumber: string): Promise<Order | null> {
@@ -135,6 +142,11 @@ export default async function OrderTrackingPage({ params }: { params: Promise<{ 
                       <p className={`font-['Inter',sans-serif] font-semibold text-[14px] ${active ? "text-[#b59637]" : done ? "text-[#11151c]" : "text-[#c8cef4]"}`}>
                         {step.label}
                       </p>
+                      {i === 0 && done && (
+                        <p className="font-['Inter',sans-serif] text-[12px] text-[#889bbf] mt-0.5">
+                          {fmtDate(order.date_created)}
+                        </p>
+                      )}
                       {active && order.shipping_status && (
                         <p className="font-['Inter',sans-serif] text-[12px] text-[#6b3fa0] mt-0.5">
                           {SHIPPING_LABEL[order.shipping_status] ?? order.shipping_status}

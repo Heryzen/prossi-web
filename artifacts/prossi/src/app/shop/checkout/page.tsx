@@ -3,35 +3,20 @@
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useRef, useState } from "react";
-import ReCAPTCHA from "react-google-recaptcha";
 import { useCart, type CartItem } from "@/lib/cart";
 import type { ShippingRate } from "@/lib/biteship";
-import type { PaymentDisplay } from "@/lib/xendit";
 
 const DIRECTUS_URL = process.env.NEXT_PUBLIC_DIRECTUS_URL ?? "http://localhost:8055";
 
+const enableShipping = process.env.NEXT_PUBLIC_ENABLE_SHIPPING !== "false";
+
 const rupiah = (n: number) => `Rp ${n.toLocaleString("id-ID")}`;
 
-const PAYMENT_METHODS = [
-  {
-    group: "Virtual Account",
-    items: [
-      { label: "Virtual Account BCA", logo: "/figma/banks/bank-bca.png" },
-      { label: "Virtual Account Mandiri", logo: "/figma/banks/bank-mandiri.png" },
-      { label: "Virtual Account BNI", logo: "/figma/banks/bank-bni.png" },
-      { label: "BRIVA", logo: "/figma/banks/bank-bri.png" },
-      { label: "Virtual Account CIMB", logo: "/figma/banks/bank-cimb.png" },
-    ],
-  },
-  {
-    group: "E-wallet",
-    items: [
-      { label: "Gopay", logo: "/figma/banks/ewallet-gopay.png" },
-      { label: "OVO", logo: "/figma/banks/ewallet-ovo.png" },
-      { label: "DANA", logo: "/figma/banks/ewallet-dana.png" },
-    ],
-  },
-];
+declare global {
+  interface Window {
+    snap: { pay: (token: string, options: object) => void };
+  }
+}
 
 type AreaResult = {
   id: string;
@@ -118,20 +103,27 @@ function CheckoutContent() {
   const [addr, setAddr] = useState<Address>(emptyAddress);
   const [saved, setSaved] = useState(false);
   const [editing, setEditing] = useState(true);
-  const [view, setView] = useState<"delivery" | "method" | "pay">("delivery");
+  const [view, setView] = useState<"delivery" | "verify-email" | "pay">("delivery");
   const [dueOpen, setDueOpen] = useState(true);
-  const [selected, setSelected] = useState<string | null>(null);
-  const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [captchaToken, setCaptchaToken] = useState<string | null>(null);
-  const recaptchaRef = useRef<ReCAPTCHA>(null);
+  const [hasPhysical, setHasPhysical] = useState(false);
+  const [snapToken, setSnapToken] = useState<string | null>(null);
+  const [payLoading, setPayLoading] = useState(false);
+  const [payError, setPayError] = useState<string | null>(null);
+
+  const [guestEmail, setGuestEmail] = useState("");
+  const [otpToken, setOtpToken] = useState<string | null>(null);
+  const [otpSending, setOtpSending] = useState(false);
+  const [otpDigits, setOtpDigits] = useState<string[]>(Array(6).fill(""));
+  const [otpError, setOtpError] = useState<string | null>(null);
+  const [otpVerifying, setOtpVerifying] = useState(false);
+  const otpRefs = useRef<(HTMLInputElement | null)[]>([]);
 
   const [rates, setRates] = useState<ShippingRate[]>([]);
   const [ratesLoading, setRatesLoading] = useState(false);
   const [selectedRate, setSelectedRate] = useState<ShippingRate | null>(null);
 
   const [orderNumber, setOrderNumber] = useState<string | null>(null);
-  const [paymentDisplay, setPaymentDisplay] = useState<PaymentDisplay | null>(null);
 
   const [areaQuery, setAreaQuery] = useState("");
   const [areaSuggestions, setAreaSuggestions] = useState<AreaResult[]>([]);
@@ -158,6 +150,39 @@ function CheckoutContent() {
       })
       .catch(() => {});
   }, [productSlug, qty]);
+
+  // Load Midtrans Snap.js
+  useEffect(() => {
+    const MIDTRANS_ENV = process.env.NEXT_PUBLIC_MIDTRANS_ENV ?? "sandbox";
+    const snapUrl =
+      MIDTRANS_ENV === "production"
+        ? "https://app.midtrans.com/snap/snap.js"
+        : "https://app.sandbox.midtrans.com/snap/snap.js";
+    const clientKey = process.env.NEXT_PUBLIC_MIDTRANS_CLIENT_KEY ?? "";
+    if (!clientKey) return;
+    const script = document.createElement("script");
+    script.src = snapUrl;
+    script.setAttribute("data-client-key", clientKey);
+    script.async = true;
+    document.body.appendChild(script);
+    return () => {
+      document.body.removeChild(script);
+    };
+  }, []);
+
+  // Detect physical products in cart
+  useEffect(() => {
+    if (!cartItems || cartItems.length === 0) return;
+    const slugs = cartItems.map((i) => i.slug).join(",");
+    fetch(`/api/products/types?slugs=${encodeURIComponent(slugs)}`)
+      .then((r) => r.json())
+      .then((json) => {
+        const types: Record<string, string> = json.types ?? {};
+        const physical = cartItems.some((i) => types[i.slug] === "physical");
+        setHasPhysical(physical);
+      })
+      .catch(() => {}); // default to no shipping (e-voucher)
+  }, [cartItems]);
 
   const set = (k: keyof Address) => (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) =>
     setAddr({ ...addr, [k]: e.target.value });
@@ -194,13 +219,14 @@ function CheckoutContent() {
 
   const handleSaveAddress = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!addr.area_id) {
+    if (enableShipping && hasPhysical && !addr.area_id) {
       setError("Pilih kecamatan dari daftar dropdown terlebih dahulu.");
       return;
     }
     setError(null);
     setSaved(true);
     setEditing(false);
+    if (!(enableShipping && hasPhysical)) return;
     setRatesLoading(true);
     try {
       const res = await fetch("/api/shipping/rates", {
@@ -222,52 +248,100 @@ function CheckoutContent() {
     }
   };
 
-  const handleContinuePayment = async () => {
-    if (!selected) return;
-    if (!captchaToken) {
-      setError("Selesaikan verifikasi reCAPTCHA terlebih dahulu.");
+  const handleGoToVerifyOrMethod = async () => {
+    if (otpToken === "verified") {
+      setView("pay");
       return;
     }
-    setSubmitting(true);
+    setOtpSending(true);
     setError(null);
     try {
-      const member = getMember();
-      const orderRes = await fetch("/api/orders", {
+      const res = await fetch("/api/otp/request", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          items: items.map((i) => ({ slug: i.slug, name: i.name, price: i.price, qty: i.qty })),
-          address: addr,
-          shipping_courier: selectedRate?.courier ?? "",
-          shipping_service: selectedRate?.service ?? "",
-          shipping_cost: shippingCost,
-          payment_method: selected,
-          member_id: member?.id,
-        }),
+        body: JSON.stringify({ email: guestEmail }),
       });
-      const orderJson = await orderRes.json();
-      if (!orderRes.ok) {
-        setError(orderJson.error ?? "Gagal membuat pesanan.");
-        return;
-      }
-      setOrderNumber(orderJson.order_number);
-
-      const payRes = await fetch("/api/checkout/pay", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ order_number: orderJson.order_number, method: selected, captchaToken }),
-      });
-      const payJson = await payRes.json();
-      setPaymentDisplay(payJson.display ?? { kind: "unavailable", message: "Gagal memuat instruksi pembayaran." });
-
-      if (!productSlug) clearCart();
-      setView("pay");
+      const json = await res.json();
+      setOtpToken(json.otpToken ?? json.token ?? null);
+      setView("verify-email");
     } catch {
-      setError("Tidak bisa terhubung ke server.");
+      setError("Tidak bisa mengirim kode OTP.");
     } finally {
-      setSubmitting(false);
-      setCaptchaToken(null);
-      recaptchaRef.current?.reset();
+      setOtpSending(false);
+    }
+  };
+
+  const handleSnapPay = async () => {
+    setPayLoading(true);
+    setPayError(null);
+    try {
+      let currentOrderNumber = orderNumber;
+      if (!currentOrderNumber) {
+        const member = getMember();
+        const orderRes = await fetch("/api/orders", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            items: items.map((i) => ({ slug: i.slug, name: i.name, price: i.price, qty: i.qty })),
+            address: addr,
+            ...(enableShipping && hasPhysical
+              ? {
+                  shipping_courier: selectedRate?.courierCode ?? "",
+                  shipping_service: selectedRate?.serviceCode ?? "",
+                  shipping_cost: shippingCost,
+                }
+              : {}),
+            payment_method: "midtrans",
+            member_id: member?.id,
+            guest_email: guestEmail,
+          }),
+        });
+        const orderJson = await orderRes.json();
+        if (!orderRes.ok) {
+          setPayError(orderJson.error ?? "Gagal membuat pesanan.");
+          return;
+        }
+        currentOrderNumber = orderJson.order_number;
+        setOrderNumber(currentOrderNumber);
+        if (!productSlug) clearCart();
+      }
+
+      let token = snapToken;
+      if (!token) {
+        const midRes = await fetch("/api/payment/midtrans", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ order_number: currentOrderNumber }),
+        });
+        const midJson = await midRes.json();
+        if (!midRes.ok) {
+          setPayError(midJson.error ?? "Gagal memulai pembayaran.");
+          return;
+        }
+        token = midJson.snap_token;
+        setSnapToken(token);
+      }
+
+      setPayLoading(false);
+      window.snap.pay(token!, {
+        onSuccess: () => {
+          window.location.href = `/shop/orders/${currentOrderNumber}`;
+        },
+        onPending: () => {
+          window.location.href = `/shop/orders/${currentOrderNumber}`;
+        },
+        onError: (result: unknown) => {
+          setPayError("Pembayaran gagal. Silakan coba lagi.");
+          console.error("Snap error:", result);
+        },
+        onClose: () => {
+          // user closed the Snap popup, stay on pay view
+        },
+      });
+    } catch {
+      setPayError("Tidak bisa terhubung ke server.");
+    } finally {
+      setPayLoading(false);
     }
   };
 
@@ -362,6 +436,10 @@ function CheckoutContent() {
 
               {editing ? (
                 <form className="flex flex-wrap gap-2" onSubmit={handleSaveAddress}>
+                  <div className="w-full">
+                    <label className={labelCls}>Email</label>
+                    <input type="email" required className={inputCls} placeholder="email@contoh.com" value={guestEmail} onChange={(e) => setGuestEmail(e.target.value)} />
+                  </div>
                   <div className="w-full md:w-[calc(50%-4px)]">
                     <label className={labelCls}>Full Name</label>
                     <input required className={inputCls} placeholder="Enter your name" value={addr.name} onChange={set("name")} />
@@ -370,6 +448,8 @@ function CheckoutContent() {
                     <label className={labelCls}>Phone Number</label>
                     <input required className={inputCls} placeholder="08xxxxxxxxxx" value={addr.phone} onChange={set("phone")} inputMode="tel" />
                   </div>
+                  {enableShipping && hasPhysical && (
+                    <>
                   <div className="w-full relative">
                     <label className={labelCls}>Kecamatan / Kelurahan</label>
                     <input
@@ -426,6 +506,8 @@ function CheckoutContent() {
                       onChange={set("note")}
                     />
                   </div>
+                    </>
+                  )}
                   <button
                     type="submit"
                     disabled={items.length === 0}
@@ -464,7 +546,7 @@ function CheckoutContent() {
             </div>
 
             {/* Step 1.5 — Pilih Kurir */}
-            {saved && !editing && (
+            {enableShipping && hasPhysical && saved && !editing && (
               <div className="flex flex-col gap-4">
                 <span className="font-['Inter',sans-serif] font-medium text-[14px] text-[#3b4963]">Pilih Pengiriman</span>
                 {ratesLoading ? (
@@ -500,7 +582,7 @@ function CheckoutContent() {
             <div className="flex flex-col gap-6">
               <StepHeading num="2" label="Payment Summary" />
 
-              {saved && !editing && selectedRate ? (
+              {saved && !editing && (selectedRate || !(enableShipping && hasPhysical)) ? (
                 <>
                   <div className="flex flex-col gap-2 pb-3" style={{ borderBottom: "2px solid #e6ecf7" }}>
                     {items.map((item) => (
@@ -513,12 +595,14 @@ function CheckoutContent() {
                         </span>
                       </div>
                     ))}
-                    <div className="flex justify-between gap-4">
-                      <span className="font-['Lato',sans-serif] text-[16px] leading-[30px] text-[#11151c]">
-                        Delivery ({selectedRate.courier} {selectedRate.service})
-                      </span>
-                      <span className="font-['Lato',sans-serif] font-medium text-[16px] text-[#3b4963]">{rupiah(shippingCost)}</span>
-                    </div>
+                    {enableShipping && hasPhysical && selectedRate && (
+                      <div className="flex justify-between gap-4">
+                        <span className="font-['Lato',sans-serif] text-[16px] leading-[30px] text-[#11151c]">
+                          Delivery ({selectedRate.courier} {selectedRate.service})
+                        </span>
+                        <span className="font-['Lato',sans-serif] font-medium text-[16px] text-[#3b4963]">{rupiah(shippingCost)}</span>
+                      </div>
+                    )}
                   </div>
                   <div className="flex justify-between items-baseline">
                     <span className="font-['Inter',sans-serif] font-medium text-[14px] text-[#3b4963]">Total due</span>
@@ -526,10 +610,11 @@ function CheckoutContent() {
                   </div>
                   <button
                     type="button"
-                    onClick={() => setView("method")}
-                    className="w-full bg-[#11151c] rounded-[8px] px-4 py-3 text-white font-['Inter',sans-serif] font-semibold text-[14px] hover:opacity-90 transition-opacity cursor-pointer"
+                    disabled={otpSending}
+                    onClick={handleGoToVerifyOrMethod}
+                    className="w-full bg-[#11151c] rounded-[8px] px-4 py-3 text-white font-['Inter',sans-serif] font-semibold text-[14px] hover:opacity-90 transition-opacity cursor-pointer disabled:opacity-50"
                   >
-                    Select Payment Method
+                    {otpSending ? "Mengirim kode..." : "Lanjutkan ke Pembayaran"}
                   </button>
                 </>
               ) : (
@@ -541,7 +626,7 @@ function CheckoutContent() {
           </div>
         )}
 
-        {view === "method" && (
+        {view === "verify-email" && (
           <div className="flex flex-col gap-6 w-full lg:max-w-[480px]">
             <button
               type="button"
@@ -549,114 +634,163 @@ function CheckoutContent() {
               className="flex items-center gap-2 font-['Inter',sans-serif] font-medium text-[16px] text-[#11151c] hover:opacity-70 transition-opacity w-fit cursor-pointer"
             >
               <ChevronLeft />
-              Payment Method
+              Kembali
             </button>
 
-            {PAYMENT_METHODS.map((group) => (
-              <div key={group.group} className="flex flex-col">
-                <span className="font-['Inter',sans-serif] font-medium text-[14px] text-[#3b4963] pb-2">{group.group}</span>
-                {group.items.map((method) => (
-                  <button
-                    key={method.label}
-                    type="button"
-                    onClick={() => setSelected(method.label)}
-                    className="flex items-center gap-3 py-4 px-2 -mx-2 rounded-lg cursor-pointer text-left hover:bg-[#f8f9fd] transition-colors"
-                    style={{ borderBottom: "2px solid #eff1fc" }}
-                  >
-                    <img src={method.logo} alt="" className="w-[29px] h-5 object-contain shrink-0" />
-                    <span className="font-['Inter',sans-serif] font-medium text-[14px] text-[#11151c] flex-1">{method.label}</span>
-                    <span
-                      className="w-4 h-4 rounded-full shrink-0"
-                      style={{ border: selected === method.label ? "5px solid #11151c" : "1px solid #c4cfe1" }}
-                    />
-                  </button>
+            <div className="bg-white rounded-[16px] border border-[#e6ecf7] px-6 py-8 flex flex-col gap-6">
+              <div className="flex flex-col gap-1">
+                <h2 className="font-['Merriweather_Sans',sans-serif] font-extrabold text-[20px] text-[#11151c]">
+                  Verifikasi Email
+                </h2>
+                <p className="font-['Inter',sans-serif] text-[14px] text-[#3b4963]">
+                  Kode 6 digit telah dikirim ke{" "}
+                  <span className="font-semibold">{guestEmail}</span>
+                </p>
+              </div>
+
+              <div className="flex gap-2 justify-center">
+                {otpDigits.map((digit, i) => (
+                  <input
+                    key={i}
+                    ref={(el) => { otpRefs.current[i] = el; }}
+                    type="text"
+                    inputMode="numeric"
+                    maxLength={1}
+                    value={digit}
+                    className="w-11 h-14 text-center border border-[#c4cfe1] rounded-[5px] font-['Inter',sans-serif] font-medium text-[20px] text-[#11151c] outline-none focus:border-[#b59637] transition-colors"
+                    onChange={(e) => {
+                      const val = e.target.value.replace(/\D/g, "");
+                      const newDigits = [...otpDigits];
+                      newDigits[i] = val.slice(-1);
+                      setOtpDigits(newDigits);
+                      if (val && i < 5) otpRefs.current[i + 1]?.focus();
+                    }}
+                    onKeyDown={(e) => {
+                      if (e.key === "Backspace" && !otpDigits[i] && i > 0) {
+                        otpRefs.current[i - 1]?.focus();
+                      }
+                    }}
+                  />
                 ))}
               </div>
-            ))}
 
-            <p className="font-['Inter',sans-serif] font-medium text-[14px] text-[#3b4963]">
-              By clicking the button below, you acknowledge that you have read, understood and agree to the{" "}
-              <Link href="/privacy" className="underline">Privacy and Warranty Policy.</Link>
-            </p>
+              {otpError && <p className="text-red-500 text-sm text-center">{otpError}</p>}
 
-            <ReCAPTCHA
-              ref={recaptchaRef}
-              sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY ?? ""}
-              onChange={(token) => setCaptchaToken(token)}
-              onExpired={() => setCaptchaToken(null)}
-            />
+              <button
+                type="button"
+                disabled={otpDigits.join("").length !== 6 || otpVerifying}
+                onClick={async () => {
+                  setOtpVerifying(true);
+                  setOtpError(null);
+                  try {
+                    const res = await fetch("/api/otp/verify", {
+                      method: "POST",
+                      headers: { "Content-Type": "application/json" },
+                      body: JSON.stringify({ email: guestEmail, otpToken, code: otpDigits.join("") }),
+                    });
+                    const json = await res.json();
+                    if (res.ok && json.valid) {
+                      setOtpToken("verified");
+                      setView("pay");
+                    } else {
+                      setOtpError(json.error ?? "Kode tidak valid. Silakan coba lagi.");
+                      setOtpDigits(Array(6).fill(""));
+                      otpRefs.current[0]?.focus();
+                    }
+                  } catch {
+                    setOtpError("Tidak bisa terhubung ke server.");
+                  } finally {
+                    setOtpVerifying(false);
+                  }
+                }}
+                className="w-full bg-[#b59637] text-white rounded-[100px] px-4 py-3 font-['Inter',sans-serif] font-semibold text-[14px] hover:opacity-90 transition-opacity cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {otpVerifying ? "Memverifikasi..." : "Verifikasi"}
+              </button>
 
-            {error && <p className="font-['Inter',sans-serif] text-[14px] text-red-600">{error}</p>}
-
-            <button
-              type="button"
-              disabled={!selected || submitting || !captchaToken}
-              onClick={handleContinuePayment}
-              className="w-full rounded-[8px] px-4 py-3 font-['Inter',sans-serif] font-semibold text-[14px] transition-opacity cursor-pointer disabled:cursor-not-allowed"
-              style={
-                selected
-                  ? { background: "#11151c", color: "#ffffff" }
-                  : { background: "#f1f4fa", color: "#889bbf", border: "1px solid #889bbf" }
-              }
-            >
-              {submitting ? "Memproses..." : "Continue Payment"}
-            </button>
+              <button
+                type="button"
+                disabled={otpSending}
+                onClick={async () => {
+                  setOtpSending(true);
+                  setOtpError(null);
+                  try {
+                    const res = await fetch("/api/otp/request", {
+                      method: "POST",
+                      headers: { "Content-Type": "application/json" },
+                      body: JSON.stringify({ email: guestEmail }),
+                    });
+                    const json = await res.json();
+                    setOtpToken(json.otpToken ?? json.token ?? null);
+                    setOtpDigits(Array(6).fill(""));
+                  } catch {
+                    setOtpError("Tidak bisa mengirim ulang kode.");
+                  } finally {
+                    setOtpSending(false);
+                  }
+                }}
+                className="w-fit self-center font-['Inter',sans-serif] text-[14px] text-[#3b4963] underline cursor-pointer disabled:opacity-50"
+              >
+                {otpSending ? "Mengirim..." : "Kirim Ulang"}
+              </button>
+            </div>
           </div>
         )}
 
         {view === "pay" && (
-          <div className="flex flex-col gap-6 w-full lg:max-w-[480px] items-center text-center pt-8">
-            <div className="w-16 h-16 rounded-full bg-[#b59637] flex items-center justify-center">
-              <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
-                <path d="M5 13l4 4L19 7" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
+          <div className="flex flex-col gap-6 w-full lg:max-w-[480px]">
+            <button
+              type="button"
+              onClick={() => setView("delivery")}
+              className="flex items-center gap-2 font-['Inter',sans-serif] font-medium text-[16px] text-[#11151c] hover:opacity-70 transition-opacity w-fit cursor-pointer"
+            >
+              <ChevronLeft />
+              Kembali
+            </button>
+
+            <StepHeading num="2" label="Ringkasan Pesanan" />
+
+            <div className="flex flex-col gap-2 pb-4" style={{ borderBottom: "2px solid #e6ecf7" }}>
+              {items.map((item) => (
+                <div key={item.slug} className="flex justify-between gap-4">
+                  <span className="font-['Lato',sans-serif] text-[15px] leading-[30px] text-[#11151c]">
+                    {item.name} x{item.qty}
+                  </span>
+                  <span className="font-['Lato',sans-serif] font-medium text-[15px] text-[#3b4963] whitespace-nowrap">
+                    {rupiah(item.price * item.qty)}
+                  </span>
+                </div>
+              ))}
+              {enableShipping && hasPhysical && selectedRate && (
+                <div className="flex justify-between gap-4">
+                  <span className="font-['Lato',sans-serif] text-[16px] leading-[30px] text-[#11151c]">
+                    Delivery ({selectedRate.courier} {selectedRate.service})
+                  </span>
+                  <span className="font-['Lato',sans-serif] font-medium text-[16px] text-[#3b4963]">{rupiah(shippingCost)}</span>
+                </div>
+              )}
             </div>
-            <h1 className="font-['Merriweather_Sans',sans-serif] font-extrabold text-[20px] text-[#11151c]">
-              Pesanan #{orderNumber} Diterima
-            </h1>
 
-            {paymentDisplay?.kind === "virtual_account" && (
-              <div className="bg-[#f1f4fa] rounded-[12px] px-8 py-6 flex flex-col gap-2 w-full">
-                <span className="font-['Inter',sans-serif] text-[14px] text-[#3b4963]">Transfer ke {paymentDisplay.bankName} Virtual Account</span>
-                <span className="font-mono font-bold text-[24px] text-[#11151c] tracking-wider">{paymentDisplay.accountNumber}</span>
-              </div>
-            )}
-            {paymentDisplay?.kind === "qr" && (
-              <div className="bg-[#f1f4fa] rounded-[12px] px-8 py-6 flex flex-col gap-2 w-full">
-                <span className="font-['Inter',sans-serif] text-[14px] text-[#3b4963]">Scan QR untuk membayar</span>
-                <span className="font-mono text-[11px] text-[#11151c] break-all">{paymentDisplay.qrString}</span>
-              </div>
-            )}
-            {paymentDisplay?.kind === "redirect" && (
-              <a href={paymentDisplay.url} target="_blank" rel="noopener noreferrer" className="bg-[#11151c] rounded-[8px] px-6 py-3 text-white font-['Inter',sans-serif] font-semibold text-[14px]">
-                Lanjutkan Pembayaran
-              </a>
-            )}
-            {paymentDisplay?.kind === "unavailable" && (
-              <p className="font-['Inter',sans-serif] text-[14px] text-[#3b4963]">{paymentDisplay.message}</p>
-            )}
+            <div className="flex justify-between items-baseline">
+              <span className="font-['Inter',sans-serif] font-medium text-[14px] text-[#3b4963]">Total</span>
+              <span className="font-['Merriweather_Sans',sans-serif] font-extrabold text-[20px] text-black">{rupiah(total)}</span>
+            </div>
 
-            <p className="font-['Inter',sans-serif] text-[13px] text-[#889bbf]">
-              Status pembayaran akan otomatis terupdate begitu kami menerima konfirmasi. Kami juga akan mengirim
-              update via WhatsApp ke {addr.phone}.
+            <p className="font-['Inter',sans-serif] font-medium text-[14px] text-[#3b4963]">
+              Dengan mengklik tombol di bawah, Anda menyetujui{" "}
+              <Link href="/privacy" className="underline">Kebijakan Privasi dan Garansi.</Link>
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-3">
-              {orderNumber && (
-                <Link
-                  href={`/shop/orders/${orderNumber}`}
-                  className="bg-[#11151c] rounded-[8px] px-6 py-3 text-white font-['Inter',sans-serif] font-semibold text-[14px] hover:opacity-90 transition-opacity"
-                >
-                  Lihat Detail Pesanan
-                </Link>
-              )}
-              <Link
-                href="/shop"
-                className="bg-transparent border-2 border-[#b59637] text-[#b59637] rounded-[8px] px-6 py-3 font-['Inter',sans-serif] font-semibold text-[14px] hover:bg-[#b59637]/10 transition-colors"
-              >
-                Kembali ke Shop
-              </Link>
-            </div>
+            {payError && <p className="font-['Inter',sans-serif] text-[14px] text-red-600">{payError}</p>}
+
+            <button
+              type="button"
+              disabled={payLoading}
+              onClick={handleSnapPay}
+              className="w-full bg-[#b59637] rounded-[8px] px-4 py-3 text-white font-['Inter',sans-serif] font-semibold text-[14px] hover:opacity-90 transition-opacity cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {payLoading ? "Memproses..." : "Bayar Sekarang"}
+            </button>
           </div>
         )}
       </div>

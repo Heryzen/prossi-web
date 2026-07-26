@@ -59,8 +59,8 @@ export async function POST(
       destinationContactPhone: addr.phone ?? order.guest_phone ?? "-",
       destinationAddress: destAddress,
       destinationPostalCode: addr.postal ?? "00000",
-      courierCode: order.shipping_courier,
-      courierType: order.shipping_service,
+      courierCode: (order.shipping_courier ?? "").toLowerCase(),
+      courierType: (order.shipping_service ?? "").toLowerCase(),
       items: (order.items ?? []).map((i: { name: string; price: number; qty: number }) => ({
         name: i.name,
         value: i.price,

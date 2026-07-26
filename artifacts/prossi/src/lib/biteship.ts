@@ -54,7 +54,7 @@ export async function getShippingRates(
     : { origin_postal_code: Number(originPostal) };
 
   const destination = destinationAreaId
-    ? { destination_area_id: destinationAreaId, destination_postal_code: Number(destinationPostalCode) || undefined }
+    ? { destination_area_id: destinationAreaId }
     : { destination_postal_code: Number(destinationPostalCode) };
 
   try {
