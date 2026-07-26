@@ -12,7 +12,7 @@ export async function GET(req: Request) {
     const res = await fetch(
       `${BASE}/v1/maps/areas?countries=ID&input=${encodeURIComponent(input)}&type=single`,
       {
-        headers: { Authorization: process.env.BITESHIP_API_KEY ?? "" },
+        headers: { Authorization: process.env.SHIPPING_API_KEY ?? "" },
         cache: "no-store",
       }
     );

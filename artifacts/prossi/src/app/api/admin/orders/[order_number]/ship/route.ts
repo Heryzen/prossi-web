@@ -39,11 +39,11 @@ export async function POST(
       return NextResponse.json({ error: "Order belum ready_to_ship" }, { status: 400 });
     }
 
-    const originPostal = process.env.BITESHIP_ORIGIN_POSTAL_CODE ?? "12190";
-    const originName = process.env.BITESHIP_ORIGIN_CONTACT_NAME ?? "Prossi Clinic";
+    const originPostal = process.env.SHIPPING_ORIGIN_POSTAL_CODE ?? "12190";
+    const originName = process.env.SHIPPING_ORIGIN_CONTACT_NAME ?? "Prossi Clinic";
     const originPhone =
-      process.env.BITESHIP_ORIGIN_CONTACT_PHONE ?? process.env.NEXT_PUBLIC_WA_NUMBER ?? "6221000000";
-    const originAddress = process.env.BITESHIP_ORIGIN_ADDRESS ?? "Jl. Klinik Prossi";
+      process.env.SHIPPING_ORIGIN_CONTACT_PHONE ?? process.env.NEXT_PUBLIC_WA_NUMBER ?? "6221000000";
+    const originAddress = process.env.SHIPPING_ORIGIN_ADDRESS ?? "Jl. Klinik Prossi";
 
     const addr = order.address ?? {};
     const destAddress =

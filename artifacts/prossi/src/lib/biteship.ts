@@ -34,7 +34,7 @@ const FALLBACK_RATES: ShippingRate[] = [
 function biteshipHeaders() {
   return {
     "Content-Type": "application/json",
-    Authorization: process.env.BITESHIP_API_KEY ?? "",
+    Authorization: process.env.SHIPPING_API_KEY ?? "",
   };
 }
 
@@ -43,9 +43,9 @@ export async function getShippingRates(
   items: { name: string; value: number; qty: number }[],
   destinationAreaId?: string
 ): Promise<ShippingRate[]> {
-  const apiKey = process.env.BITESHIP_API_KEY;
-  const originLocationId = process.env.BITESHIP_ORIGIN_LOCATION_ID;
-  const originPostal = process.env.BITESHIP_ORIGIN_POSTAL_CODE ?? "12330";
+  const apiKey = process.env.SHIPPING_API_KEY;
+  const originLocationId = process.env.SHIPPING_ORIGIN_LOCATION_ID;
+  const originPostal = process.env.SHIPPING_ORIGIN_POSTAL_CODE ?? "12330";
 
   if (!apiKey) return FALLBACK_RATES;
 
@@ -119,7 +119,7 @@ export async function createBiteshipOrder(params: {
   courierType: string;
   items: { name: string; value: number; qty: number }[];
 }): Promise<BiteshipOrder> {
-  const originLocationId = process.env.BITESHIP_ORIGIN_LOCATION_ID;
+  const originLocationId = process.env.SHIPPING_ORIGIN_LOCATION_ID;
   const originFields = originLocationId
     ? { origin_location_id: originLocationId, origin_collection_method: "pickup" }
     : {

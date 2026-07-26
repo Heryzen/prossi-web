@@ -74,13 +74,27 @@ function LocationIcon() {
   );
 }
 
-function getMember(): { id: string; full_name: string } | null {
+function getMember(): { id: string; full_name: string; email?: string; phone?: string } | null {
   try {
     const raw = localStorage.getItem("prossi_member");
     return raw ? JSON.parse(raw) : null;
   } catch {
     return null;
   }
+}
+
+function getVerifiedEmail(): string | null {
+  try {
+    return localStorage.getItem("prossi_verified_email");
+  } catch {
+    return null;
+  }
+}
+
+function saveVerifiedEmail(email: string) {
+  try {
+    localStorage.setItem("prossi_verified_email", email);
+  } catch { /* ignore */ }
 }
 
 export default function CheckoutPage() {
@@ -130,6 +144,15 @@ function CheckoutContent() {
   const [areaLoading, setAreaLoading] = useState(false);
   const [areaOpen, setAreaOpen] = useState(false);
   const areaTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // Auto-fill dari akun yang sedang login
+  useEffect(() => {
+    const member = getMember();
+    if (!member) return;
+    if (member.full_name) setAddr((prev) => ({ ...prev, name: prev.name || member.full_name }));
+    if (member.phone) setAddr((prev) => ({ ...prev, phone: prev.phone || member.phone! }));
+    if (member.email) setGuestEmail((prev) => prev || member.email!);
+  }, []);
 
   // quick-buy (Beli Sekarang) — ambil detail produk by slug
   useEffect(() => {
@@ -250,6 +273,13 @@ function CheckoutContent() {
 
   const handleGoToVerifyOrMethod = async () => {
     if (otpToken === "verified") {
+      setView("pay");
+      return;
+    }
+    // Skip OTP jika email ini sudah pernah diverifikasi di sesi sebelumnya
+    const prevVerified = getVerifiedEmail();
+    if (prevVerified && prevVerified.toLowerCase() === guestEmail.toLowerCase()) {
+      setOtpToken("verified");
       setView("pay");
       return;
     }
@@ -690,6 +720,7 @@ function CheckoutContent() {
                     });
                     const json = await res.json();
                     if (res.ok && json.valid) {
+                      saveVerifiedEmail(guestEmail);
                       setOtpToken("verified");
                       setView("pay");
                     } else {

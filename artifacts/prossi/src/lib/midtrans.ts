@@ -1,7 +1,7 @@
 import crypto from "crypto";
 
 const SERVER_KEY = process.env.MIDTRANS_SERVER_KEY ?? "";
-const IS_PROD = process.env.MIDTRANS_ENV === "production";
+const IS_PROD = process.env.NEXT_PUBLIC_MIDTRANS_ENV === "production";
 const SNAP_BASE = IS_PROD ? "https://app.midtrans.com" : "https://app.sandbox.midtrans.com";
 
 export const MIDTRANS_SNAP_JS = IS_PROD

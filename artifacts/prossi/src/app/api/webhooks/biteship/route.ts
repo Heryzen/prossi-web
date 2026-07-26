@@ -15,7 +15,7 @@ async function directus(path: string, init?: RequestInit) {
 }
 
 export async function POST(req: Request) {
-  const webhookToken = process.env.BITESHIP_WEBHOOK_TOKEN;
+  const webhookToken = process.env.SHIPPING_WEBHOOK_TOKEN;
   if (webhookToken) {
     const incoming = req.headers.get("x-biteship-token");
     if (incoming !== webhookToken) {

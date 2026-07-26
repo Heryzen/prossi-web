@@ -32,14 +32,48 @@ export async function sendOtpEmail(email: string, code: string) {
   await sendMail(
     email,
     "Kode Verifikasi Prossi Clinic",
-    `<div style="font-family:Inter,sans-serif;max-width:480px;margin:0 auto;padding:32px 24px">
-      <p style="margin:0 0 6px;font-size:13px;font-weight:600;color:#b59637;letter-spacing:.06em;text-transform:uppercase">Prossi Clinic</p>
-      <h2 style="color:#11151c;font-size:22px;margin:0 0 12px;font-weight:700">Kode Verifikasi Email</h2>
-      <p style="color:#555;font-size:14px;margin:0 0 24px">Masukkan kode berikut untuk melanjutkan proses checkout:</p>
-      <div style="background:#f9f7f4;border-radius:12px;padding:28px;text-align:center;margin:0 0 24px">
-        <span style="font-size:40px;font-weight:700;letter-spacing:10px;color:#b59637;font-family:monospace">${code}</span>
-      </div>
-      <p style="color:#889bbf;font-size:13px;margin:0">Kode berlaku <strong>10 menit</strong>. Jangan bagikan ke siapapun.</p>
-    </div>`
+    `<!DOCTYPE html>
+<html lang="id">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head>
+<body style="margin:0;padding:0;background:#f4f1ea;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background:#f4f1ea;padding:40px 16px">
+    <tr><td align="center">
+      <table width="100%" cellpadding="0" cellspacing="0" style="max-width:480px;background:#ffffff;border-radius:16px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,.06)">
+        <tr>
+          <td style="background:#11151c;padding:28px 32px 24px">
+            <table cellpadding="0" cellspacing="0"><tr>
+              <td style="padding-right:12px">
+                <div style="width:36px;height:36px;background:#b59637;border-radius:50%;text-align:center;line-height:36px">
+                  <span style="color:#fff;font-size:18px;font-weight:700">P</span>
+                </div>
+              </td>
+              <td>
+                <div style="color:#fff;font-size:18px;font-weight:700;letter-spacing:.02em">Prossi</div>
+                <div style="color:#b59637;font-size:11px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;margin-top:2px">Clinic</div>
+              </td>
+            </tr></table>
+          </td>
+        </tr>
+        <tr>
+          <td style="padding:36px 32px 28px">
+            <h1 style="margin:0 0 8px;font-size:22px;font-weight:700;color:#11151c">Verifikasi Email Kamu</h1>
+            <p style="margin:0 0 28px;font-size:14px;color:#666;line-height:1.6">Gunakan kode di bawah ini untuk melanjutkan. Kode berlaku selama <strong style="color:#11151c">10 menit</strong>.</p>
+            <div style="background:#f9f7f4;border:2px solid #e8e0d0;border-radius:12px;padding:28px 24px;text-align:center;margin:0 0 28px">
+              <div style="font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#b59637;margin-bottom:12px">Kode Verifikasi</div>
+              <div style="font-size:42px;font-weight:700;letter-spacing:14px;color:#11151c;font-family:Courier,monospace;padding-left:14px">${code}</div>
+            </div>
+            <p style="margin:0;font-size:13px;color:#999;line-height:1.6">Jika kamu tidak meminta kode ini, abaikan email ini. Jangan bagikan kode ini ke siapapun.</p>
+          </td>
+        </tr>
+        <tr>
+          <td style="background:#f9f7f4;padding:20px 32px;border-top:1px solid #eee8da">
+            <p style="margin:0;font-size:12px;color:#aaa;line-height:1.6">Ada pertanyaan? Hubungi kami via <a href="https://wa.me/${process.env.NEXT_PUBLIC_WA_NUMBER}" style="color:#b59637;text-decoration:none">WhatsApp</a>.<br>© 2026 Prossi Clinic. Jl. Bintaro Utama 3A, Bintaro Jaya Sektor 3.</p>
+          </td>
+        </tr>
+      </table>
+    </td></tr>
+  </table>
+</body>
+</html>`
   );
 }
