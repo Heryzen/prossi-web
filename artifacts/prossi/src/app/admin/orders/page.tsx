@@ -254,7 +254,7 @@ export default function AdminOrdersPage() {
                 </tbody>
               </table>
             </div>
-          {totalPages > 1 && (
+          {filtered.length > 0 && (
             <div className="flex items-center justify-between px-4 py-3 border-t border-[#e6ecf7]">
               <span className="font-['Inter',sans-serif] text-[12px] text-[#889bbf]">
                 {filtered.length} pesanan · Hal {page} dari {totalPages}
