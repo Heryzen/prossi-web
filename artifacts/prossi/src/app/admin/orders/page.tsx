@@ -66,7 +66,7 @@ const FILTERS = [
   { key: "cancelled", label: "Batal" },
 ];
 
-const PAGE_SIZE = 20;
+const PAGE_SIZE = 10;
 
 export default function AdminOrdersPage() {
   const router = useRouter();
