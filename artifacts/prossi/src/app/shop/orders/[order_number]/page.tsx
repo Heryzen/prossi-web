@@ -29,11 +29,11 @@ const INTERNAL_LABEL: Record<string, string> = {
 
 const SHIPPING_LABEL: Record<string, string> = {
   confirmed: "Resi Terbit",
-  allocated: "Menunggu Kurir",
-  picking_up: "Kurir Menuju",
-  picked: "Dijemput",
+  allocated: "Kurir Dialokasikan",
+  picking_up: "Kurir Menuju Lokasi",
+  picked: "Paket Dijemput",
   in_transit: "Dalam Perjalanan",
-  dropping_off: "Sedang Diantar",
+  dropping_off: "Kurir Mengantar",
   delivered: "Terkirim",
   on_hold: "Ditahan",
   cancelled: "Batal Kurir",
