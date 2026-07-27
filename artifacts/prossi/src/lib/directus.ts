@@ -1,4 +1,7 @@
-const DIRECTUS_URL = process.env.NEXT_PUBLIC_DIRECTUS_URL ?? "http://localhost:8055";
+const DIRECTUS_URL =
+  process.env.DIRECTUS_URL ??
+  process.env.NEXT_PUBLIC_DIRECTUS_URL ??
+  "http://localhost:8055";
 
 /** URL publik untuk file/gambar Directus */
 export function assetUrl(fileId: string): string {
