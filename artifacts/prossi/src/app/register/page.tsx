@@ -24,7 +24,7 @@ export default function Register() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!captchaToken) {
+    if (process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY && !captchaToken) {
       setError("Selesaikan verifikasi reCAPTCHA terlebih dahulu.");
       return;
     }
@@ -174,16 +174,18 @@ export default function Register() {
                 </Link>
               </p>
 
-              <ReCAPTCHA
-                ref={recaptchaRef}
-                sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY ?? ""}
-                onChange={(token) => setCaptchaToken(token)}
-                onExpired={() => setCaptchaToken(null)}
-              />
+              {process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY ? (
+                <ReCAPTCHA
+                  ref={recaptchaRef}
+                  sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}
+                  onChange={(token) => setCaptchaToken(token)}
+                  onExpired={() => setCaptchaToken(null)}
+                />
+              ) : null}
 
               <button
                 type="submit"
-                disabled={submitting || !captchaToken}
+                disabled={submitting || (!!process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY && !captchaToken)}
                 className="w-full bg-[#b59637] rounded-[20px] px-4 py-3 text-white font-['Lato'] font-medium text-[16px] uppercase tracking-wide hover:opacity-90 transition-opacity disabled:opacity-50 cursor-pointer disabled:cursor-not-allowed"
               >
                 {submitting ? "Memproses..." : "Register"}
