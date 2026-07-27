@@ -147,7 +147,7 @@ export async function createBiteshipOrder(params: {
       reference_id: params.referenceId,
       items: params.items.map((i) => ({
         name: i.name,
-        category: "healthcare",
+        category: "beauty",
         value: i.value,
         quantity: i.qty,
         weight: 500,

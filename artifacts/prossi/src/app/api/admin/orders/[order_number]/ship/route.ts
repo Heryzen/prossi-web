@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { createBiteshipOrder } from "@/lib/biteship";
 import { sendWhatsAppMessage } from "@/lib/whatsapp";
+import { sendOrderShippedEmail } from "@/lib/emailTemplates";
 
 const DIRECTUS_URL = process.env.NEXT_PUBLIC_DIRECTUS_URL ?? "http://localhost:8055";
 const TOKEN = process.env.DIRECTUS_STATIC_TOKEN;
@@ -30,7 +31,7 @@ export async function POST(
 
   try {
     const rows = await directus(
-      `/items/orders?filter[order_number][_eq]=${encodeURIComponent(order_number)}&limit=1`
+      `/items/orders?filter[order_number][_eq]=${encodeURIComponent(order_number)}&fields=*&limit=1`
     );
     const order = rows?.[0];
     if (!order) return NextResponse.json({ error: "Order tidak ditemukan" }, { status: 404 });
@@ -71,14 +72,18 @@ export async function POST(
     const waybill = biteshipOrder.courier?.waybill_id ?? biteshipOrder.waybill_id ?? "";
     const trackingLink = biteshipOrder.courier?.link ?? "";
 
+    const history: { status: string; date: string }[] = Array.isArray(order.status_history) ? order.status_history : [];
+    history.push({ status: "pickup_requested", date: new Date().toISOString() });
+
     await directus(`/items/orders/${order.id}`, {
       method: "PATCH",
       body: JSON.stringify({
-        internal_status: "shipped",
-        status: "shipped",
+        internal_status: "pickup_requested",
+        status: "pickup_requested",
         biteship_order_id: biteshipOrder.id,
         tracking_number: waybill,
         shipping_status: biteshipOrder.status ?? "confirmed",
+        status_history: history,
       }),
     });
 
@@ -91,8 +96,24 @@ export async function POST(
       ).catch(() => {});
     }
 
+    const email = order.guest_email;
+    if (email && waybill) {
+      sendOrderShippedEmail(email, {
+        order_number: order.order_number,
+        guest_name: order.guest_name ?? addr.name ?? "",
+        shipping_courier: order.shipping_courier ?? "",
+        shipping_service: order.shipping_service ?? null,
+        tracking_number: waybill,
+      }).catch(() => {});
+    }
+
     return NextResponse.json({ ok: true, waybill_id: waybill, biteship_order_id: biteshipOrder.id });
   } catch (e) {
-    return NextResponse.json({ error: String(e instanceof Error ? e.message : e) }, { status: 500 });
+    const raw = String(e instanceof Error ? e.message : e);
+    const safe = raw
+      .replace(/biteship/gi, "layanan pengiriman")
+      .replace(/Please check .* documentation\.?/gi, "")
+      .trim();
+    return NextResponse.json({ error: safe || "Gagal memproses pengiriman." }, { status: 500 });
   }
 }

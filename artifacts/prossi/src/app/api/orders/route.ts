@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { sendWhatsAppMessage } from "@/lib/whatsapp";
+import { sendNewOrderAdminEmail } from "@/lib/emailTemplates";
 
 const DIRECTUS_URL = process.env.NEXT_PUBLIC_DIRECTUS_URL ?? "http://localhost:8055";
 const TOKEN = process.env.DIRECTUS_STATIC_TOKEN;
@@ -39,22 +40,33 @@ export async function POST(req: Request) {
     const {
       items,
       address,
+      guest_name,
+      guest_phone,
+      guest_email,
       shipping_courier,
       shipping_service,
       shipping_cost,
       payment_method,
-      member_id, // opsional — kalau user login
+      member_id,
+      payment_group_id,
     }: {
       items: OrderItem[];
-      address: Address;
-      shipping_courier: string;
-      shipping_service: string;
-      shipping_cost: number;
+      address?: Address;
+      guest_name?: string;
+      guest_phone?: string;
+      guest_email?: string;
+      shipping_courier?: string;
+      shipping_service?: string;
+      shipping_cost?: number;
       payment_method: string;
       member_id?: string;
+      payment_group_id?: string;
     } = body;
 
-    if (!items?.length || !address?.phone) {
+    const name = address?.name ?? guest_name ?? "";
+    const phone = address?.phone ?? guest_phone ?? "";
+
+    if (!items?.length || !phone) {
       return NextResponse.json({ error: "Data order tidak lengkap" }, { status: 400 });
     }
 
@@ -67,28 +79,43 @@ export async function POST(req: Request) {
       body: JSON.stringify({
         order_number,
         member: member_id ?? null,
-        guest_name: address.name,
-        guest_phone: address.phone,
-        guest_email: null,
+        guest_name: name,
+        guest_phone: phone,
+        guest_email: guest_email ?? null,
         items,
         subtotal,
         shipping_cost: shipping_cost ?? 0,
         total,
-        shipping_courier,
-        shipping_service,
-        address,
+        shipping_courier: shipping_courier ?? null,
+        shipping_service: shipping_service ?? null,
+        address: address ?? null,
         payment_method,
         payment_status: "unpaid",
         status: "new",
         internal_status: "pending_payment",
+        payment_group_id: payment_group_id ?? null,
       }),
     });
 
-    const itemLines = items.map((i) => `- ${i.name} x${i.qty}`).join("\n");
-    sendWhatsAppMessage(
-      address.phone,
-      `Halo ${address.name}, pesanan kamu #${order_number} sudah kami terima!\n\n${itemLines}\n\nTotal: ${rupiah(total)}\n\nKami akan konfirmasi pembayaran secepatnya. Terima kasih sudah belanja di Prossi Clinic 💛`
-    ).catch(() => {});
+    // Send admin notification email (fire-and-forget)
+    sendNewOrderAdminEmail({
+      order_number,
+      guest_name: name,
+      guest_phone: phone,
+      guest_email: guest_email ?? null,
+      items,
+      total,
+      shipping_courier: shipping_courier ?? null,
+      shipping_service: shipping_service ?? null,
+    }).catch(() => {});
+
+    if (phone) {
+      const itemLines = items.map((i) => `- ${i.name} x${i.qty}`).join("\n");
+      sendWhatsAppMessage(
+        phone,
+        `Halo ${name}, pesanan kamu #${order_number} sudah kami terima!\n\n${itemLines}\n\nTotal: ${rupiah(total)}\n\nKami akan konfirmasi pembayaran secepatnya. Terima kasih sudah belanja di Prossi Clinic 💛`
+      ).catch(() => {});
+    }
 
     return NextResponse.json({ order_number, total });
   } catch (e) {

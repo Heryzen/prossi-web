@@ -75,7 +75,7 @@ export default function OrderHistoryPage() {
 
   if (loading) {
     return (
-      <section className="bg-white w-full pt-[140px] pb-[80px] px-6 md:px-[160px]">
+      <section className="bg-white w-full min-h-screen pt-[140px] pb-[80px] px-6 md:px-[160px]">
         <div className="max-w-[700px] mx-auto flex flex-col gap-4">
           {Array.from({ length: 3 }, (_, i) => (
             <div key={i} className="h-20 w-full bg-[#f4ece4] rounded-[12px] animate-pulse" />
@@ -87,7 +87,7 @@ export default function OrderHistoryPage() {
 
   if (!loggedIn) {
     return (
-      <section className="bg-white w-full pt-[140px] pb-[80px] px-6 md:px-[160px]">
+      <section className="bg-white w-full min-h-screen pt-[140px] pb-[80px] px-6 md:px-[160px]">
         <div className="max-w-[700px] mx-auto flex flex-col items-center gap-6 text-center">
           <h1 className="font-['Merriweather_Sans',sans-serif] font-extrabold text-[24px] text-[#11151c]">
             Riwayat Pesanan
@@ -107,7 +107,7 @@ export default function OrderHistoryPage() {
   }
 
   return (
-    <section className="bg-white w-full pt-[140px] pb-[80px] px-6 md:px-[160px]">
+    <section className="bg-white w-full min-h-screen pt-[140px] pb-[80px] px-6 md:px-[160px]">
       <div className="max-w-[700px] mx-auto flex flex-col gap-8">
         <h1 className="font-['Merriweather_Sans',sans-serif] font-extrabold text-[24px] text-[#11151c]">
           Riwayat Pesanan

@@ -13,8 +13,16 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Email tidak valid." }, { status: 400 });
   }
 
+  const isDev = process.env.NODE_ENV !== "production";
+
   if (!process.env.SMTP_USER) {
-    return NextResponse.json({ error: "Email service belum dikonfigurasi." }, { status: 500 });
+    if (!isDev) {
+      return NextResponse.json({ error: "Email service belum dikonfigurasi." }, { status: 500 });
+    }
+    // Dev: return token tanpa kirim email, log kode ke server console
+    const { code, token } = generateOtpToken(email.toLowerCase().trim());
+    console.log(`\n[DEV OTP] ${email} → ${code}\n`);
+    return NextResponse.json({ otpToken: token });
   }
 
   try {

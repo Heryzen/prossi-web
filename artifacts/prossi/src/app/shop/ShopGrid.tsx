@@ -11,6 +11,7 @@ export type Product = {
   priceLabel: string;
   img: string | null;
   category: string | null;
+  enable_shipping: boolean;
 };
 
 function ProductCard({ product }: { product: Product }) {
@@ -18,7 +19,7 @@ function ProductCard({ product }: { product: Product }) {
   const [added, setAdded] = useState(false);
 
   const handleAdd = () => {
-    addItem({ slug: product.slug, name: product.name, price: product.price, image: product.img }, 1);
+    addItem({ slug: product.slug, name: product.name, price: product.price, image: product.img, enable_shipping: product.enable_shipping ?? false }, 1);
     setAdded(true);
     setTimeout(() => setAdded(false), 1500);
   };

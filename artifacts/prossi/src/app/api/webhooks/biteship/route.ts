@@ -52,9 +52,28 @@ export async function POST(req: Request) {
         const status = body.status as string | undefined;
         if (status) {
           patch.shipping_status = status;
-          if (status === "delivered") {
+          const existing: { status: string; date: string }[] = Array.isArray(order.status_history)
+            ? order.status_history : [];
+          patch.status_history = [
+            ...existing,
+            { status: `shipping_${status}`, date: new Date().toISOString() },
+          ];
+          if (status === "picked" && order.internal_status === "pickup_requested") {
+            patch.internal_status = "shipped";
+            patch.status = "shipped";
+            patch.status_history = [
+              ...existing,
+              { status: `shipping_${status}`, date: new Date().toISOString() },
+              { status: "shipped", date: new Date().toISOString() },
+            ];
+          } else if (status === "delivered") {
             patch.internal_status = "delivered";
             patch.status = "completed";
+            patch.status_history = [
+              ...existing,
+              { status: `shipping_${status}`, date: new Date().toISOString() },
+              { status: "delivered", date: new Date().toISOString() },
+            ];
           }
         }
         const waybill = body.courier_waybill_id as string | undefined;

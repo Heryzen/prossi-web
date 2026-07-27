@@ -8,7 +8,6 @@ import type { ShippingRate } from "@/lib/biteship";
 
 const DIRECTUS_URL = process.env.NEXT_PUBLIC_DIRECTUS_URL ?? "http://localhost:8055";
 
-const enableShipping = process.env.NEXT_PUBLIC_ENABLE_SHIPPING !== "false";
 
 const rupiah = (n: number) => `Rp ${n.toLocaleString("id-ID")}`;
 
@@ -120,7 +119,9 @@ function CheckoutContent() {
   const [view, setView] = useState<"delivery" | "verify-email" | "pay">("delivery");
   const [dueOpen, setDueOpen] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [hasPhysical, setHasPhysical] = useState(false);
+  // Derived from cart items directly — no API call needed
+  const hasPhysical = items.some((i) => i.enable_shipping);
+  const hasNonPhysical = items.some((i) => !i.enable_shipping);
   const [snapToken, setSnapToken] = useState<string | null>(null);
   const [payLoading, setPayLoading] = useState(false);
   const [payError, setPayError] = useState<string | null>(null);
@@ -157,7 +158,7 @@ function CheckoutContent() {
   // quick-buy (Beli Sekarang) — ambil detail produk by slug
   useEffect(() => {
     if (!productSlug) return;
-    fetch(`${DIRECTUS_URL}/items/products?filter[slug][_eq]=${encodeURIComponent(productSlug)}&fields=name,price,image&limit=1`)
+    fetch(`${DIRECTUS_URL}/items/products?filter[slug][_eq]=${encodeURIComponent(productSlug)}&fields=name,price,image,enable_shipping&limit=1`)
       .then((r) => (r.ok ? r.json() : null))
       .then((json) => {
         const p = json?.data?.[0];
@@ -168,6 +169,7 @@ function CheckoutContent() {
             price: p.price,
             image: p.image ? `${DIRECTUS_URL}/assets/${p.image}` : null,
             qty: qty > 0 ? qty : 1,
+            enable_shipping: p.enable_shipping ?? false,
           });
         }
       })
@@ -193,19 +195,6 @@ function CheckoutContent() {
     };
   }, []);
 
-  // Detect physical products in cart
-  useEffect(() => {
-    if (!cartItems || cartItems.length === 0) return;
-    const slugs = cartItems.map((i) => i.slug).join(",");
-    fetch(`/api/products/types?slugs=${encodeURIComponent(slugs)}`)
-      .then((r) => r.json())
-      .then((json) => {
-        const types: Record<string, string> = json.types ?? {};
-        const physical = cartItems.some((i) => types[i.slug] === "physical");
-        setHasPhysical(physical);
-      })
-      .catch(() => {}); // default to no shipping (e-voucher)
-  }, [cartItems]);
 
   const set = (k: keyof Address) => (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) =>
     setAddr({ ...addr, [k]: e.target.value });
@@ -242,14 +231,14 @@ function CheckoutContent() {
 
   const handleSaveAddress = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (enableShipping && hasPhysical && !addr.area_id) {
+    if (hasPhysical && !addr.area_id) {
       setError("Pilih kecamatan dari daftar dropdown terlebih dahulu.");
       return;
     }
     setError(null);
     setSaved(true);
     setEditing(false);
-    if (!(enableShipping && hasPhysical)) return;
+    if (!(hasPhysical)) return;
     setRatesLoading(true);
     try {
       const res = await fetch("/api/shipping/rates", {
@@ -308,13 +297,22 @@ function CheckoutContent() {
       let currentOrderNumber = orderNumber;
       if (!currentOrderNumber) {
         const member = getMember();
+
+        const physicalItems = items.filter((i) => i.enable_shipping);
+        const nonPhysicalItems = items.filter((i) => !i.enable_shipping);
+        const isMixed = physicalItems.length > 0 && nonPhysicalItems.length > 0;
+
+        // Always create the "main" order first
+        // For physical or mixed: main order = physical items with address+shipping
+        // For non-physical only: main order = non-physical items without address
+        const mainItems = hasPhysical ? physicalItems : nonPhysicalItems;
         const orderRes = await fetch("/api/orders", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            items: items.map((i) => ({ slug: i.slug, name: i.name, price: i.price, qty: i.qty })),
-            address: addr,
-            ...(enableShipping && hasPhysical
+            items: mainItems.map((i) => ({ slug: i.slug, name: i.name, price: i.price, qty: i.qty })),
+            ...(hasPhysical ? { address: addr } : { guest_name: addr.name, guest_phone: addr.phone }),
+            ...(hasPhysical
               ? {
                   shipping_courier: selectedRate?.courierCode ?? "",
                   shipping_service: selectedRate?.serviceCode ?? "",
@@ -332,8 +330,50 @@ function CheckoutContent() {
           return;
         }
         currentOrderNumber = orderJson.order_number;
+
+        // If mixed cart, create second order for non-physical items linked to main order
+        let nonPhysicalOrderNumber: string | null = null;
+        if (isMixed) {
+          const nonPhysRes = await fetch("/api/orders", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              items: nonPhysicalItems.map((i) => ({ slug: i.slug, name: i.name, price: i.price, qty: i.qty })),
+              guest_name: addr.name,
+              guest_phone: addr.phone,
+              payment_method: "midtrans",
+              member_id: member?.id,
+              guest_email: guestEmail,
+              payment_group_id: currentOrderNumber,
+            }),
+          });
+          const nonPhysJson = await nonPhysRes.json();
+          if (nonPhysRes.ok) nonPhysicalOrderNumber = nonPhysJson.order_number;
+        }
+
         setOrderNumber(currentOrderNumber);
         if (!productSlug) clearCart();
+
+        // Store extra order number for redirect after payment
+        if (nonPhysicalOrderNumber) {
+          try { sessionStorage.setItem("prossi_linked_order", nonPhysicalOrderNumber); } catch { /* ignore */ }
+        }
+      }
+
+      // Mock payment bypass (sementara Midtrans key belum ada)
+      if (process.env.NEXT_PUBLIC_PAYMENT_MOCK === "true") {
+        const mockRes = await fetch("/api/payment/mock-success", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ order_number: currentOrderNumber }),
+        });
+        if (!mockRes.ok) {
+          const mockJson = await mockRes.json();
+          setPayError(mockJson.error ?? "Gagal memproses pembayaran.");
+          return;
+        }
+        window.location.href = `/shop/orders/${currentOrderNumber}`;
+        return;
       }
 
       let token = snapToken;
@@ -478,7 +518,7 @@ function CheckoutContent() {
                     <label className={labelCls}>Phone Number</label>
                     <input required className={inputCls} placeholder="08xxxxxxxxxx" value={addr.phone} onChange={set("phone")} inputMode="tel" />
                   </div>
-                  {enableShipping && hasPhysical && (
+                  {hasPhysical && (
                     <>
                   <div className="w-full relative">
                     <label className={labelCls}>Kecamatan / Kelurahan</label>
@@ -553,10 +593,12 @@ function CheckoutContent() {
                     <div className="flex flex-col gap-1">
                       <span className="font-['Inter',sans-serif] font-bold text-[16px] text-[#11151c]">{addr.name}</span>
                       <span className="font-['Inter',sans-serif] font-medium text-[14px] text-[#3b4963]">{addr.phone}</span>
-                      <span className="font-['Inter',sans-serif] font-medium text-[14px] text-[#3b4963]">{addr.detail}</span>
-                      <span className="font-['Inter',sans-serif] font-medium text-[14px] text-[#3b4963]">
-                        {addr.district}, {addr.city}, {addr.province} {addr.postal}
-                      </span>
+                      {addr.detail && <span className="font-['Inter',sans-serif] font-medium text-[14px] text-[#3b4963]">{addr.detail}</span>}
+                      {[addr.district, addr.city, addr.province].filter(Boolean).length > 0 && (
+                        <span className="font-['Inter',sans-serif] font-medium text-[14px] text-[#3b4963]">
+                          {[addr.district, addr.city, addr.province].filter(Boolean).join(", ")}{addr.postal ? ` ${addr.postal}` : ""}
+                        </span>
+                      )}
                       {addr.note && (
                         <span className="font-['Inter',sans-serif] text-[13px] text-[#889bbf]">
                           Catatan: {addr.note}
@@ -576,7 +618,7 @@ function CheckoutContent() {
             </div>
 
             {/* Step 1.5 — Pilih Kurir */}
-            {enableShipping && hasPhysical && saved && !editing && (
+            {hasPhysical && saved && !editing && (
               <div className="flex flex-col gap-4">
                 <span className="font-['Inter',sans-serif] font-medium text-[14px] text-[#3b4963]">Pilih Pengiriman</span>
                 {ratesLoading ? (
@@ -603,6 +645,12 @@ function CheckoutContent() {
                         <span className="font-['Inter',sans-serif] font-bold text-[14px] text-[#11151c]">{rupiah(r.cost)}</span>
                       </button>
                     ))}
+                    <div className="flex items-start gap-2 mt-1 px-1">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" className="mt-0.5 flex-shrink-0"><circle cx="12" cy="12" r="10" stroke="#889bbf" strokeWidth="1.8"/><path d="M12 8v4m0 4h.01" stroke="#889bbf" strokeWidth="1.8" strokeLinecap="round"/></svg>
+                      <p className="font-['Inter',sans-serif] text-[12px] text-[#889bbf]">
+                        Pengiriman dilakukan <strong className="font-semibold text-[#3b4963]">Senin–Jumat</strong>. Pesanan di luar jadwal akan diproses hari kerja berikutnya.
+                      </p>
+                    </div>
                   </div>
                 )}
               </div>
@@ -612,7 +660,7 @@ function CheckoutContent() {
             <div className="flex flex-col gap-6">
               <StepHeading num="2" label="Payment Summary" />
 
-              {saved && !editing && (selectedRate || !(enableShipping && hasPhysical)) ? (
+              {saved && !editing && (selectedRate || !(hasPhysical)) ? (
                 <>
                   <div className="flex flex-col gap-2 pb-3" style={{ borderBottom: "2px solid #e6ecf7" }}>
                     {items.map((item) => (
@@ -625,7 +673,7 @@ function CheckoutContent() {
                         </span>
                       </div>
                     ))}
-                    {enableShipping && hasPhysical && selectedRate && (
+                    {hasPhysical && selectedRate && (
                       <div className="flex justify-between gap-4">
                         <span className="font-['Lato',sans-serif] text-[16px] leading-[30px] text-[#11151c]">
                           Delivery ({selectedRate.courier} {selectedRate.service})
@@ -792,7 +840,7 @@ function CheckoutContent() {
                   </span>
                 </div>
               ))}
-              {enableShipping && hasPhysical && selectedRate && (
+              {hasPhysical && selectedRate && (
                 <div className="flex justify-between gap-4">
                   <span className="font-['Lato',sans-serif] text-[16px] leading-[30px] text-[#11151c]">
                     Delivery ({selectedRate.courier} {selectedRate.service})

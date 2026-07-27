@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const inputCls =
   "w-full h-10 bg-white border border-[#dbdbdb] rounded px-[9px] font-['Readex_Pro',sans-serif] text-[16px] text-[#292929] placeholder:text-[#aeafaf] outline-none focus:border-[#b59637] transition-colors";
@@ -13,6 +13,13 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [adminConflict, setAdminConflict] = useState(false);
+
+  useEffect(() => {
+    try {
+      if (localStorage.getItem("prossi_admin_token")) setAdminConflict(true);
+    } catch { /* ignore */ }
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -61,6 +68,12 @@ export default function LoginPage() {
           <h1 className="font-['Readex_Pro',sans-serif] font-semibold text-[26px] md:text-[30px] leading-[42px] text-[#292929] mb-8 md:mb-12">
             Masuk
           </h1>
+
+          {adminConflict && (
+            <div className="bg-[#fdf0ee] border border-[#f5cbc7] rounded-[12px] px-4 py-3 mb-4 text-[13px] text-[#a8312a] font-['Inter',sans-serif]">
+              Kamu sedang login sebagai admin. <button onClick={() => { localStorage.removeItem("prossi_admin_token"); setAdminConflict(false); }} className="font-semibold underline cursor-pointer">Logout admin dulu</button> sebelum masuk sebagai member.
+            </div>
+          )}
 
           <form className="flex flex-col gap-9" onSubmit={handleSubmit} autoComplete="off">
             <div className="flex flex-col gap-1.5">

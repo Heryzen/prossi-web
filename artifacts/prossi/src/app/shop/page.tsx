@@ -15,6 +15,7 @@ type CmsProduct = {
   slug: string;
   price: number;
   image: string | null;
+  enable_shipping: boolean;
   category: { name: string } | null;
 };
 type CmsSettings = {
@@ -32,12 +33,13 @@ const fallbackProducts: Product[] = Array.from({ length: 6 }, (_, i) => ({
   priceLabel: "Rp 89.000",
   img: null,
   category: null,
+  enable_shipping: false,
 }));
 
 export default async function ShopPage() {
   const [cms, settings] = await Promise.all([
     directusFetch<CmsProduct[]>(
-      "/items/products?filter[status][_eq]=published&sort=sort&fields=name,slug,price,image,category.name"
+      "/items/products?filter[status][_eq]=published&sort=sort&fields=name,slug,price,image,enable_shipping,category.name"
     ),
     directusFetch<CmsSettings>(
       "/items/site_settings?fields=shop_hero_heading,shop_hero_subheading,shop_hero_image"
@@ -53,6 +55,7 @@ export default async function ShopPage() {
           priceLabel: rupiah(p.price),
           img: p.image ? assetUrl(p.image) : null,
           category: p.category?.name ?? null,
+          enable_shipping: p.enable_shipping ?? false,
         }))
       : fallbackProducts;
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 
 export default function AdminLoginPage() {
@@ -8,6 +8,13 @@ export default function AdminLoginPage() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [memberConflict, setMemberConflict] = useState(false);
+
+  useEffect(() => {
+    try {
+      if (localStorage.getItem("prossi_member")) setMemberConflict(true);
+    } catch { /* ignore */ }
+  }, []);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -41,6 +48,11 @@ export default function AdminLoginPage() {
             Admin Panel
           </h1>
         </div>
+        {memberConflict && (
+          <div className="bg-[#fdf0ee] border border-[#f5cbc7] rounded-[12px] px-4 py-3 mb-4 text-[13px] text-[#a8312a] font-['Inter',sans-serif]">
+            Kamu sedang login sebagai member. <button onClick={() => { localStorage.removeItem("prossi_member"); setMemberConflict(false); }} className="font-semibold underline cursor-pointer">Logout member dulu</button> sebelum masuk sebagai admin.
+          </div>
+        )}
         <form
           onSubmit={handleSubmit}
           className="bg-white rounded-[16px] border border-[#e6ecf7] px-6 py-8 flex flex-col gap-5"

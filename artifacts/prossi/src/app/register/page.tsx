@@ -9,7 +9,6 @@ type Step = "register" | "done";
 const inputCls =
   "w-full h-10 bg-white border border-[#dbdbdb] rounded px-[9px] font-['Readex_Pro',sans-serif] text-[16px] text-[#292929] placeholder:text-[#aeafaf] outline-none focus:border-[#b59637] transition-colors";
 
-
 export default function Register() {
   const [step, setStep] = useState<Step>("register");
   const [fullName, setFullName] = useState("");
@@ -193,7 +192,7 @@ export default function Register() {
           </div>
         </div>
       )}
-      {/* ── Step 4: Success ── */}
+      {/* ── Step 2: Success ── */}
       {step === "done" && (
         <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center px-4 py-8 overflow-y-auto">
           <div

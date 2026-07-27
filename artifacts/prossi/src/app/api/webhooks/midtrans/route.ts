@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { verifyMidtransSignature } from "@/lib/midtrans";
 import { generateVoucherCode, sendVoucherEmail } from "@/lib/voucher";
+import { sendPaymentConfirmedEmail } from "@/lib/emailTemplates";
 
 const DIRECTUS_URL = process.env.NEXT_PUBLIC_DIRECTUS_URL ?? "http://localhost:8055";
 const TOKEN = process.env.DIRECTUS_STATIC_TOKEN;
@@ -48,10 +49,16 @@ export async function POST(req: Request) {
         (i: { product_type?: string }) => i.product_type === "physical"
       );
 
+      const now = new Date().toISOString();
+      const history: { status: string; date: string }[] = Array.isArray(order.status_history) ? order.status_history : [];
+      history.push({ status: "paid", date: now });
+      if (!hasPhysical) history.push({ status: "delivered", date: now });
+
       const patch: Record<string, unknown> = {
         payment_status: "paid",
         internal_status: hasPhysical ? "processing" : "delivered",
         status: hasPhysical ? "processing" : "completed",
+        status_history: history,
       };
 
       if (!hasPhysical) {
@@ -74,6 +81,34 @@ export async function POST(req: Request) {
         method: "PATCH",
         body: JSON.stringify(patch),
       });
+
+      // Mark linked non-physical orders paid too
+      if (order.payment_group_id) {
+        const linkedRows = await directus(
+          `/items/orders?filter[payment_group_id][_eq]=${encodeURIComponent(order.payment_group_id)}&fields=*&limit=20`
+        ).catch(() => []);
+        for (const linked of linkedRows ?? []) {
+          if (linked.payment_status !== "paid") {
+            const lHistory = Array.isArray(linked.status_history) ? linked.status_history : [];
+            lHistory.push({ status: "paid", date: now });
+            await directus(`/items/orders/${linked.id}`, {
+              method: "PATCH",
+              body: JSON.stringify({ payment_status: "paid", internal_status: "processing", status: "processing", status_history: lHistory }),
+            }).catch(() => {});
+          }
+        }
+      }
+
+      const email = order.guest_email;
+      if (email) {
+        sendPaymentConfirmedEmail(email, {
+          order_number: order.order_number,
+          guest_name: order.guest_name ?? "",
+          items: order.items ?? [],
+          total: order.total ?? 0,
+          shipping_courier: order.shipping_courier ?? null,
+        }).catch(() => {});
+      }
     } else if (isFailed) {
       await directus(`/items/orders/${order.id}`, {
         method: "PATCH",

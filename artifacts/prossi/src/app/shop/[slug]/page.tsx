@@ -11,13 +11,14 @@ type CmsProduct = {
   price: number;
   image: string | null;
   stock: number;
+  enable_shipping: boolean;
 };
 
 const rupiah = (n: number) => `Rp ${n.toLocaleString("id-ID")}`;
 
 async function fetchProduct(slug: string) {
   const results = await directusFetch<CmsProduct[]>(
-    `/items/products?filter[slug][_eq]=${encodeURIComponent(slug)}&filter[status][_eq]=published&fields=name,slug,description,price,image,stock&limit=1`
+    `/items/products?filter[slug][_eq]=${encodeURIComponent(slug)}&filter[status][_eq]=published&fields=name,slug,description,price,image,stock,enable_shipping&limit=1`
   );
   return results?.[0];
 }
@@ -120,6 +121,7 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
               name={product.name}
               price={product.price}
               image={product.image ? assetUrl(product.image) : null}
+              enable_shipping={product.enable_shipping ?? false}
             />
           </div>
         </div>

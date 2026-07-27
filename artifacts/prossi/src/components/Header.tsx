@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useCart } from "@/lib/cart";
 
 const navItems = [
@@ -31,6 +31,8 @@ export function Header({ topBar }: { topBar?: HeaderTopBar }) {
   ];
   const { count: cartCount } = useCart();
   const [memberName, setMemberName] = useState<string | null>(null);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const router = useRouter();
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [openMenu, setOpenMenu] = useState<"treatments" | "doctors" | "cart" | "account" | null>(null);
@@ -65,11 +67,19 @@ export function Header({ topBar }: { topBar?: HeaderTopBar }) {
     } catch {
       setMemberName(null);
     }
+    setIsAdmin(localStorage.getItem("prossi_admin_token") === "prossi-admin-2026");
   }, [location]);
 
   const handleLogout = () => {
     localStorage.removeItem("prossi_member");
     setMemberName(null);
+  };
+
+  const handleAdminLogout = () => {
+    localStorage.removeItem("prossi_admin_token");
+    setIsAdmin(false);
+    setOpenMenu(null);
+    router.push("/admin/login");
   };
 
   const showTopBar = scrolled;
@@ -219,7 +229,44 @@ export function Header({ topBar }: { topBar?: HeaderTopBar }) {
 
           <div className="hidden lg:flex items-center gap-4">
             {/* Login / Account */}
-            {memberName ? (
+            {isAdmin ? (
+              <div className="relative">
+                <button
+                  type="button"
+                  onClick={() => setOpenMenu(openMenu === "account" ? null : "account")}
+                  aria-label="Menu admin"
+                  className="flex items-center justify-center w-9 h-9 rounded-full bg-[#f4ece4] hover:bg-[#ecd5a5] transition-colors cursor-pointer"
+                >
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                    <path d="M12 12a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9ZM4 20.5c1.4-3.6 4.6-5.5 8-5.5s6.6 1.9 8 5.5" stroke="#b59637" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                </button>
+
+                {openMenu === "account" && (
+                  <div className="absolute right-0 top-[calc(100%+14px)] w-[200px] rounded-[20px] bg-white p-4 shadow-[0px_10px_30px_rgba(18,15,11,0.12)] z-50">
+                    <div className="flex flex-col gap-1">
+                      <span className="px-4 py-2 text-[14px] font-semibold text-[#b59637] truncate">
+                        Admin
+                      </span>
+                      <Link
+                        href="/admin/orders"
+                        onClick={() => setOpenMenu(null)}
+                        className="rounded-lg px-4 py-3 text-[15px] text-[#120f0b] hover:bg-[#f4ece4] hover:text-[#b59637] transition-colors"
+                      >
+                        ← Pesanan Admin
+                      </Link>
+                      <button
+                        type="button"
+                        onClick={handleAdminLogout}
+                        className="text-left rounded-lg px-4 py-3 text-[15px] text-[#868787] hover:bg-[#f4ece4] hover:text-[#a8312a] transition-colors cursor-pointer"
+                      >
+                        Keluar Admin
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
+            ) : memberName ? (
               <div className="relative">
                 <button
                   type="button"
@@ -318,7 +365,43 @@ export function Header({ topBar }: { topBar?: HeaderTopBar }) {
 
           {/* Mobile quick-access icons — account + cart (hidden on desktop, shown in the row above there) */}
           <div className="flex lg:hidden items-center gap-1">
-            {memberName ? (
+            {isAdmin ? (
+              <div className="relative">
+                <button
+                  type="button"
+                  onClick={() => setOpenMenu(openMenu === "account" ? null : "account")}
+                  aria-label="Menu admin"
+                  className="flex items-center justify-center w-9 h-9 rounded-full bg-[#f4ece4] hover:bg-[#ecd5a5] transition-colors cursor-pointer"
+                >
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                    <path d="M12 12a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9ZM4 20.5c1.4-3.6 4.6-5.5 8-5.5s6.6 1.9 8 5.5" stroke="#b59637" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                </button>
+                {openMenu === "account" && (
+                  <div className="absolute right-0 top-[calc(100%+10px)] w-[180px] rounded-[20px] bg-white p-4 shadow-[0px_10px_30px_rgba(18,15,11,0.12)] z-50">
+                    <div className="flex flex-col gap-1">
+                      <span className="px-4 py-2 text-[14px] font-semibold text-[#b59637] truncate">
+                        Admin
+                      </span>
+                      <Link
+                        href="/admin/orders"
+                        onClick={() => setOpenMenu(null)}
+                        className="rounded-lg px-4 py-3 text-[15px] text-[#120f0b] hover:bg-[#f4ece4] hover:text-[#b59637] transition-colors"
+                      >
+                        ← Pesanan Admin
+                      </Link>
+                      <button
+                        type="button"
+                        onClick={handleAdminLogout}
+                        className="text-left rounded-lg px-4 py-3 text-[15px] text-[#868787] hover:bg-[#f4ece4] hover:text-[#a8312a] transition-colors cursor-pointer"
+                      >
+                        Keluar Admin
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
+            ) : memberName ? (
               <div className="relative">
                 <button
                   type="button"

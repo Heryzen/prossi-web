@@ -1,9 +1,10 @@
 import { NextResponse } from "next/server";
+import { sendOrderCancelledEmail, sendOrderDeliveredEmail } from "@/lib/emailTemplates";
 
 const DIRECTUS_URL = process.env.NEXT_PUBLIC_DIRECTUS_URL ?? "http://localhost:8055";
 const TOKEN = process.env.DIRECTUS_STATIC_TOKEN;
 
-const ALLOWED_STATUS = ["processing", "packaging", "ready_to_ship", "cancelled"];
+const ALLOWED_STATUS = ["processing", "packaging", "ready_to_ship", "cancelled", "paid", "delivered"];
 
 function verifyAdmin(req: Request): boolean {
   return !!process.env.ADMIN_SECRET && req.headers.get("x-admin-token") === process.env.ADMIN_SECRET;
@@ -35,19 +36,30 @@ export async function PATCH(
 
   try {
     const rows = await directus(
-      `/items/orders?filter[order_number][_eq]=${encodeURIComponent(order_number)}&limit=1`
+      `/items/orders?filter[order_number][_eq]=${encodeURIComponent(order_number)}&fields=*&limit=1`
     );
     const order = rows?.[0];
     if (!order) return NextResponse.json({ error: "Order tidak ditemukan" }, { status: 404 });
 
-    if (["shipped", "delivered", "cancelled"].includes(order.internal_status ?? "")) {
-      return NextResponse.json({ error: "Status sudah final" }, { status: 400 });
+    if (order.internal_status === "cancelled") {
+      return NextResponse.json({ error: "Order sudah dibatalkan" }, { status: 400 });
     }
+
+    const history: { status: string; date: string }[] = Array.isArray(order.status_history) ? order.status_history : [];
+    history.push({ status: internal_status, date: new Date().toISOString() });
 
     await directus(`/items/orders/${order.id}`, {
       method: "PATCH",
-      body: JSON.stringify({ internal_status }),
+      body: JSON.stringify({ internal_status, status_history: history }),
     });
+
+    const email = order.guest_email;
+    if (internal_status === "cancelled" && email) {
+      sendOrderCancelledEmail(email, { order_number, guest_name: order.guest_name ?? "" }).catch(() => {});
+    }
+    if (internal_status === "delivered" && email) {
+      sendOrderDeliveredEmail(email, { order_number, guest_name: order.guest_name ?? "" }).catch(() => {});
+    }
 
     return NextResponse.json({ ok: true, internal_status });
   } catch (e) {

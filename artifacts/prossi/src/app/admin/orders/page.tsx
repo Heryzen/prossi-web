@@ -56,8 +56,10 @@ type Order = {
 
 const FILTERS = [
   { key: "all", label: "Semua" },
+  { key: "pending_payment", label: "Menunggu Bayar" },
   { key: "paid", label: "Dibayar" },
   { key: "processing", label: "Diproses" },
+  { key: "packaging", label: "Dikemas" },
   { key: "ready_to_ship", label: "Siap Kirim" },
   { key: "shipped", label: "Dikirim" },
   { key: "delivered", label: "Selesai" },
@@ -89,11 +91,6 @@ export default function AdminOrdersPage() {
       .finally(() => setLoading(false));
   }, [token, filter]);
 
-  function logout() {
-    localStorage.removeItem("prossi_admin_token");
-    router.push("/admin/login");
-  }
-
   const displayed = search
     ? orders.filter(
         (o) =>
@@ -109,8 +106,8 @@ export default function AdminOrdersPage() {
   if (!token) return null;
 
   return (
-    <div className="min-h-screen bg-[#f9f7f4] pt-[72px]">
-      <div className="sticky top-[72px] z-50 bg-white border-b border-[#e6ecf7] px-6 py-3 flex items-center justify-between">
+    <div className="min-h-screen bg-[#f9f7f4] pt-[104px]">
+      <div className="sticky top-[104px] z-50 bg-white border-b border-[#e6ecf7] px-6 py-3 flex items-center justify-between">
         <div className="flex items-center gap-3">
           <span className="font-['Merriweather_Sans',sans-serif] font-extrabold text-[16px] text-[#11151c]">
             Prossi Admin
@@ -121,12 +118,6 @@ export default function AdminOrdersPage() {
             </span>
           )}
         </div>
-        <button
-          onClick={logout}
-          className="font-['Inter',sans-serif] text-[13px] text-[#889bbf] hover:text-[#a8312a] transition-colors"
-        >
-          Keluar
-        </button>
       </div>
 
       <div className="px-4 md:px-8 py-6 max-w-[1100px] mx-auto">

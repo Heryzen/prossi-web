@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
+import PayButton from "./PayButton";
 
 const DIRECTUS_URL = process.env.NEXT_PUBLIC_DIRECTUS_URL ?? "http://localhost:8055";
 const TOKEN = process.env.DIRECTUS_STATIC_TOKEN;
@@ -18,6 +19,7 @@ const INTERNAL_LABEL: Record<string, string> = {
   processing: "Diproses",
   packaging: "Dikemas",
   ready_to_ship: "Siap Kirim",
+  pickup_requested: "Menunggu Penjemputan",
   shipped: "Dikirim",
   delivered: "Selesai",
   cancelled: "Dibatalkan",
@@ -50,22 +52,41 @@ const STEPS = [
   { key: "processing", label: "Sedang Diproses" },
   { key: "packaging", label: "Sedang Dikemas" },
   { key: "ready_to_ship", label: "Siap Kirim" },
+  { key: "pickup_requested", label: "Menunggu Penjemputan" },
   { key: "shipped", label: "Dalam Pengiriman" },
   { key: "delivered", label: "Pesanan Diterima" },
 ];
 
+const SHIPPING_STEPS = [
+  { key: "confirmed",    label: "Resi Terbit" },
+  { key: "allocated",    label: "Kurir Dialokasikan" },
+  { key: "picking_up",  label: "Kurir Menuju" },
+  { key: "picked",      label: "Paket Dijemput" },
+  { key: "in_transit",  label: "Dalam Perjalanan" },
+  { key: "dropping_off", label: "Sedang Diantar" },
+];
+
+const EXCEPTION_SHIPPING: Record<string, { label: string; color: string }> = {
+  on_hold:   { label: "Paket Ditahan", color: "#b85c1a" },
+  returned:  { label: "Paket Dikembalikan", color: "#a8312a" },
+  cancelled: { label: "Pengiriman Dibatalkan", color: "#a8312a" },
+};
+
 function trackingUrl(courier: string, waybill: string) {
   if (courier === "jne") return `https://www.jne.co.id/id/tracking/trace?airwayNumber=${waybill}`;
   if (courier === "jnt") return `https://jet.co.id/track?awb=${waybill}`;
-  return `https://biteship.com/track?waybill=${encodeURIComponent(waybill)}`;
+  return `https://cekresi.com/?noresi=${encodeURIComponent(waybill)}`;
 }
 
 type OrderItem = { slug: string; name: string; price: number; qty: number };
 function fmtDate(iso: string) {
-  return new Date(iso).toLocaleDateString("id-ID", {
+  return new Date(iso).toLocaleString("id-ID", {
     day: "numeric", month: "short", year: "numeric",
+    hour: "2-digit", minute: "2-digit",
   });
 }
+
+type Address = { name: string; phone: string; district: string; city: string; province: string; postal: string; detail: string };
 
 type Order = {
   order_number: string;
@@ -80,12 +101,15 @@ type Order = {
   internal_status: string | null;
   shipping_status: string | null;
   date_created: string;
+  date_updated: string | null;
+  status_history: { status: string; date: string }[] | null;
+  address: Address | null;
 };
 
 async function getOrder(orderNumber: string): Promise<Order | null> {
   try {
     const res = await fetch(
-      `${DIRECTUS_URL}/items/orders?filter[order_number][_eq]=${encodeURIComponent(orderNumber)}&limit=1`,
+      `${DIRECTUS_URL}/items/orders?filter[order_number][_eq]=${encodeURIComponent(orderNumber)}&fields=*&limit=1`,
       { headers: { Authorization: `Bearer ${TOKEN}` }, cache: "no-store" }
     );
     if (!res.ok) return null;
@@ -107,8 +131,14 @@ export default async function OrderTrackingPage({ params }: { params: Promise<{ 
   const isCancelled = st === "cancelled";
   const isShipped = st === "shipped" || st === "delivered";
 
+  const historyMap = new Map<string, string>();
+  historyMap.set("paid", order.date_created); // fallback: order creation = payment confirmation
+  for (const entry of order.status_history ?? []) {
+    historyMap.set(entry.status, entry.date);
+  }
+
   return (
-    <section className="bg-white w-full pt-[140px] pb-[80px] px-6 md:px-[160px]">
+    <section className="bg-white w-full min-h-screen pt-[140px] pb-[80px] px-6 md:px-[160px]">
       <div className="max-w-[700px] mx-auto flex flex-col gap-8">
         {/* Header */}
         <div>
@@ -128,30 +158,60 @@ export default async function OrderTrackingPage({ params }: { params: Promise<{ 
             <div className="flex flex-col">
               {STEPS.map((step, i) => {
                 const done = i <= currentStepIdx;
-                const active = i === currentStepIdx;
+                // Final step at "delivered" should be green (completed), not gold (active)
+                const active = i === currentStepIdx && i < STEPS.length - 1;
+                const completed = done && !active;
                 const isLast = i === STEPS.length - 1;
                 return (
                   <div key={step.key} className="flex gap-4">
                     <div className="flex flex-col items-center">
-                      <div className={`w-6 h-6 rounded-full flex-shrink-0 flex items-center justify-center text-[10px] font-bold ${active ? "bg-[#b59637] text-white" : done ? "bg-[#2a7a50] text-white" : "bg-[#e6ecf7] text-[#c8cef4]"}`}>
-                        {done && !active ? "✓" : ""}
+                      <div className={`w-6 h-6 rounded-full flex-shrink-0 flex items-center justify-center text-[10px] font-bold ${active ? "bg-[#b59637] text-white" : completed ? "bg-[#2a7a50] text-white" : "bg-[#e6ecf7] text-[#c8cef4]"}`}>
+                        {completed ? "✓" : ""}
                       </div>
-                      {!isLast && <div className={`w-0.5 h-8 mt-1 ${done && !active ? "bg-[#2a7a50]" : "bg-[#e6ecf7]"}`} />}
+                      {!isLast && <div className={`w-0.5 h-8 mt-1 ${completed ? "bg-[#2a7a50]" : "bg-[#e6ecf7]"}`} />}
                     </div>
                     <div className="pt-0.5 pb-6">
-                      <p className={`font-['Inter',sans-serif] font-semibold text-[14px] ${active ? "text-[#b59637]" : done ? "text-[#11151c]" : "text-[#c8cef4]"}`}>
+                      <p className={`font-['Inter',sans-serif] font-semibold text-[14px] ${active ? "text-[#b59637]" : completed ? "text-[#11151c]" : "text-[#c8cef4]"}`}>
                         {step.label}
                       </p>
-                      {i === 0 && done && (
+                      {done && historyMap.get(step.key) && (
                         <p className="font-['Inter',sans-serif] text-[12px] text-[#889bbf] mt-0.5">
-                          {fmtDate(order.date_created)}
+                          {fmtDate(historyMap.get(step.key)!)}
                         </p>
                       )}
-                      {active && order.shipping_status && (
-                        <p className="font-['Inter',sans-serif] text-[12px] text-[#6b3fa0] mt-0.5">
-                          {SHIPPING_LABEL[order.shipping_status] ?? order.shipping_status}
+                      {active && step.key === "ready_to_ship" && (
+                        <p className="font-['Inter',sans-serif] text-[12px] text-[#889bbf] mt-1">
+                          Pengiriman dilakukan <span className="font-semibold text-[#3b4963]">Senin–Jumat</span>
                         </p>
                       )}
+                      {active && order.shipping_status && (() => {
+                        const ss = order.shipping_status;
+                        const exc = EXCEPTION_SHIPPING[ss];
+                        if (exc) {
+                          return (
+                            <p className="font-['Inter',sans-serif] text-[12px] font-semibold mt-1.5" style={{ color: exc.color }}>
+                              {exc.label}
+                            </p>
+                          );
+                        }
+                        const shipIdx = SHIPPING_STEPS.findIndex(s => s.key === ss);
+                        return (
+                          <div className="mt-3 flex flex-col gap-2">
+                            {SHIPPING_STEPS.map((s, si) => {
+                              const done = si <= shipIdx;
+                              const cur = si === shipIdx;
+                              return (
+                                <div key={s.key} className="flex items-center gap-2">
+                                  <div className={`w-2 h-2 rounded-full flex-shrink-0 ${cur ? "bg-[#b59637]" : done ? "bg-[#2a7a50]" : "bg-[#dde3f0]"}`} />
+                                  <span className={`font-['Inter',sans-serif] text-[12px] ${cur ? "text-[#b59637] font-semibold" : done ? "text-[#3b4963]" : "text-[#c8cef4]"}`}>
+                                    {s.label}
+                                  </span>
+                                </div>
+                              );
+                            })}
+                          </div>
+                        );
+                      })()}
                     </div>
                   </div>
                 );
@@ -161,6 +221,50 @@ export default async function OrderTrackingPage({ params }: { params: Promise<{ 
         ) : (
           <div className="bg-[#fdf0ee] border border-[#f5cbc7] rounded-[12px] px-5 py-4">
             <p className="font-['Inter',sans-serif] font-semibold text-[14px] text-[#a8312a]">Pesanan ini telah dibatalkan.</p>
+          </div>
+        )}
+
+        {/* Rute pengiriman: dari → ke */}
+        {order.address && (
+          <div className="border border-[#e6ecf7] rounded-[16px] px-6 py-6 flex flex-col gap-4">
+            <p className="font-['Inter',sans-serif] text-[11px] font-bold uppercase tracking-wider text-[#889bbf]">Rute Pengiriman</p>
+            <div className="flex flex-col gap-3">
+              {/* From */}
+              <div className="flex gap-3 items-start">
+                <div className="mt-1 w-7 h-7 rounded-full bg-[#f4ece4] flex items-center justify-center flex-shrink-0">
+                  <span className="text-[11px] font-bold text-[#b59637]">DARI</span>
+                </div>
+                <div>
+                  <p className="font-['Inter',sans-serif] font-semibold text-[14px] text-[#11151c]">
+                    {process.env.SHIPPING_ORIGIN_CONTACT_NAME ?? "Prossi Clinic"}
+                  </p>
+                  <p className="font-['Inter',sans-serif] text-[13px] text-[#3b4963] leading-relaxed">
+                    {process.env.SHIPPING_ORIGIN_ADDRESS ?? "Jl. Bintaro Utama 3A, Bintaro Jaya Sektor 3"}
+                  </p>
+                </div>
+              </div>
+              {/* Divider */}
+              <div className="ml-3.5 w-0.5 h-4 bg-[#e6ecf7]" />
+              {/* To */}
+              <div className="flex gap-3 items-start">
+                <div className="mt-1 w-7 h-7 rounded-full bg-[#eaf3ee] flex items-center justify-center flex-shrink-0">
+                  <span className="text-[11px] font-bold text-[#2a7a50]">KE</span>
+                </div>
+                <div>
+                  <p className="font-['Inter',sans-serif] font-semibold text-[14px] text-[#11151c]">{order.address.name}</p>
+                  <p className="font-['Inter',sans-serif] text-[13px] text-[#3b4963]">{order.address.phone}</p>
+                  {order.address.detail && (
+                    <p className="font-['Inter',sans-serif] text-[13px] text-[#3b4963] leading-relaxed">{order.address.detail}</p>
+                  )}
+                  {[order.address.district, order.address.city, order.address.province].filter(Boolean).length > 0 && (
+                    <p className="font-['Inter',sans-serif] text-[13px] text-[#3b4963]">
+                      {[order.address.district, order.address.city, order.address.province].filter(Boolean).join(", ")}
+                      {order.address.postal ? ` ${order.address.postal}` : ""}
+                    </p>
+                  )}
+                </div>
+              </div>
+            </div>
           </div>
         )}
 
@@ -197,15 +301,6 @@ export default async function OrderTrackingPage({ params }: { params: Promise<{ 
           </div>
         )}
 
-        {/* Payment status chip — only show if unpaid */}
-        {order.payment_status !== "paid" && (
-          <div className="flex gap-3 flex-wrap">
-            <span className="px-4 py-2 rounded-[100px] font-['Inter',sans-serif] font-semibold text-[13px] bg-[#f4ece4] text-[#b59637]">
-              {PAYMENT_LABEL[order.payment_status] ?? order.payment_status}
-            </span>
-          </div>
-        )}
-
         {/* Items */}
         <div className="flex flex-col gap-3">
           {order.items.map((item, i) => (
@@ -220,7 +315,7 @@ export default async function OrderTrackingPage({ params }: { params: Promise<{ 
           ))}
           <div className="flex justify-between pt-3" style={{ borderTop: "1px dashed #c8cef4" }}>
             <span className="font-['Inter',sans-serif] text-[15px] text-[#11151c]">
-              Pengiriman ({(order.shipping_courier ?? "").toUpperCase()} {(order.shipping_service ?? "").toUpperCase()})
+              Pengiriman{order.shipping_courier ? ` (${order.shipping_courier.toUpperCase()} ${(order.shipping_service ?? "").toUpperCase()})` : ""}
             </span>
             <span className="font-['Inter',sans-serif] font-medium text-[15px] text-[#3b4963]">{rupiah(order.shipping_cost ?? 0)}</span>
           </div>
@@ -230,9 +325,19 @@ export default async function OrderTrackingPage({ params }: { params: Promise<{ 
           </div>
         </div>
 
-        <Link href="/shop" className="w-fit bg-[#b59637] rounded-[100px] px-9 py-3 text-white font-['Inter',sans-serif] font-semibold text-[15px] hover:opacity-90 transition-opacity">
-          Lanjut Belanja
-        </Link>
+        {order.payment_status !== "paid" && !isCancelled ? (
+          <div className="flex flex-col gap-3">
+            <div className="bg-[#fdf6ec] border border-[#f0d89a] rounded-[12px] px-5 py-4">
+              <p className="font-['Inter',sans-serif] font-semibold text-[14px] text-[#7a5c0a] mb-1">Menunggu Pembayaran</p>
+              <p className="font-['Inter',sans-serif] text-[13px] text-[#a07820]">Selesaikan pembayaran untuk memproses pesanan Anda.</p>
+            </div>
+            <PayButton orderNumber={order.order_number} />
+          </div>
+        ) : (
+          <Link href="/shop" className="w-fit bg-[#b59637] rounded-[100px] px-9 py-3 text-white font-['Inter',sans-serif] font-semibold text-[15px] hover:opacity-90 transition-opacity">
+            Lanjut Belanja
+          </Link>
+        )}
       </div>
     </section>
   );

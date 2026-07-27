@@ -9,18 +9,20 @@ export function AddToCartActions({
   name,
   price,
   image,
+  enable_shipping = false,
 }: {
   slug: string;
   name: string;
   price: number;
   image: string | null;
+  enable_shipping?: boolean;
 }) {
   const { addItem } = useCart();
   const [qty, setQty] = useState(1);
   const [added, setAdded] = useState(false);
 
   const handleAdd = () => {
-    addItem({ slug, name, price, image }, qty);
+    addItem({ slug, name, price, image, enable_shipping }, qty);
     setAdded(true);
     setTimeout(() => setAdded(false), 2000);
   };
