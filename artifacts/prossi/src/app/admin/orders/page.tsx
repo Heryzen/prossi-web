@@ -66,6 +66,8 @@ const FILTERS = [
   { key: "cancelled", label: "Batal" },
 ];
 
+const PAGE_SIZE = 20;
+
 export default function AdminOrdersPage() {
   const router = useRouter();
   const [token, setToken] = useState<string | null>(null);
@@ -73,6 +75,7 @@ export default function AdminOrdersPage() {
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState("all");
   const [search, setSearch] = useState("");
+  const [page, setPage] = useState(1);
 
   useEffect(() => {
     const t = localStorage.getItem("prossi_admin_token");
@@ -91,13 +94,18 @@ export default function AdminOrdersPage() {
       .finally(() => setLoading(false));
   }, [token, filter]);
 
-  const displayed = search
+  useEffect(() => { setPage(1); }, [filter, search]);
+
+  const filtered = search
     ? orders.filter(
         (o) =>
           o.order_number.toLowerCase().includes(search.toLowerCase()) ||
           (o.guest_name ?? "").toLowerCase().includes(search.toLowerCase())
       )
     : orders;
+
+  const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
+  const displayed = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
 
   const urgent = orders.filter(
     (o) => o.internal_status === "paid" || o.internal_status === "ready_to_ship"
@@ -246,6 +254,29 @@ export default function AdminOrdersPage() {
                 </tbody>
               </table>
             </div>
+          {totalPages > 1 && (
+            <div className="flex items-center justify-between px-4 py-3 border-t border-[#e6ecf7]">
+              <span className="font-['Inter',sans-serif] text-[12px] text-[#889bbf]">
+                {filtered.length} pesanan · Hal {page} dari {totalPages}
+              </span>
+              <div className="flex gap-2">
+                <button
+                  onClick={() => setPage((p) => Math.max(1, p - 1))}
+                  disabled={page === 1}
+                  className="px-3 py-1.5 rounded-[8px] font-['Inter',sans-serif] text-[13px] font-semibold border border-[#e6ecf7] text-[#3b4963] hover:border-[#b59637] disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+                >
+                  ← Prev
+                </button>
+                <button
+                  onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+                  disabled={page === totalPages}
+                  className="px-3 py-1.5 rounded-[8px] font-['Inter',sans-serif] text-[13px] font-semibold border border-[#e6ecf7] text-[#3b4963] hover:border-[#b59637] disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+                >
+                  Next →
+                </button>
+              </div>
+            </div>
+          )}
           </div>
         )}
       </div>
