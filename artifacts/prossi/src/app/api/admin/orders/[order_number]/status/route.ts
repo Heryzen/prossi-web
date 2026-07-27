@@ -4,7 +4,7 @@ import { sendOrderCancelledEmail, sendOrderDeliveredEmail } from "@/lib/emailTem
 const DIRECTUS_URL = process.env.NEXT_PUBLIC_DIRECTUS_URL ?? "http://localhost:8055";
 const TOKEN = process.env.DIRECTUS_STATIC_TOKEN;
 
-const ALLOWED_STATUS = ["processing", "packaging", "ready_to_ship", "cancelled", "paid", "delivered"];
+const ALLOWED_STATUS = ["processing", "packaging", "ready_to_ship", "pickup_requested", "shipped", "cancelled", "paid", "delivered"];
 
 function verifyAdmin(req: Request): boolean {
   return !!process.env.ADMIN_SECRET && req.headers.get("x-admin-token") === process.env.ADMIN_SECRET;
