@@ -43,7 +43,7 @@ export async function POST(req: Request) {
       `/items/orders?filter[biteship_order_id][_eq]=${encodeURIComponent(biteshipOrderId)}&limit=1`
     );
     const order = rows?.[0];
-    if (!order) return NextResponse.json({ received: true });
+    if (!order) return NextResponse.json({ received: true, matched: false, biteship_order_id: biteshipOrderId });
 
     const patch: Record<string, unknown> = {};
 
@@ -104,8 +104,8 @@ export async function POST(req: Request) {
       });
     }
 
-    return NextResponse.json({ received: true });
-  } catch {
-    return NextResponse.json({ received: true });
+    return NextResponse.json({ received: true, matched: true, order_number: order.order_number, patch: Object.keys(patch) });
+  } catch (e) {
+    return NextResponse.json({ received: true, error: String(e instanceof Error ? e.message : e) });
   }
 }
