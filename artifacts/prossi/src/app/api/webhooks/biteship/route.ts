@@ -15,14 +15,6 @@ async function directus(path: string, init?: RequestInit) {
 }
 
 export async function POST(req: Request) {
-  const webhookToken = process.env.SHIPPING_WEBHOOK_TOKEN;
-  if (webhookToken) {
-    const incoming = req.headers.get("x-biteship-token");
-    if (incoming !== webhookToken) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
-  }
-
   let body: Record<string, unknown>;
   try {
     body = await req.json();
@@ -32,6 +24,14 @@ export async function POST(req: Request) {
 
   if (!body || Object.keys(body).length === 0) {
     return NextResponse.json({ received: true });
+  }
+
+  const webhookToken = process.env.SHIPPING_WEBHOOK_TOKEN;
+  if (webhookToken) {
+    const incoming = req.headers.get("x-biteship-token");
+    if (incoming !== webhookToken) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
   }
 
   const event = body.event as string | undefined;
