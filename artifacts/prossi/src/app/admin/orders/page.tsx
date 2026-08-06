@@ -45,14 +45,24 @@ type Order = {
   order_number: string;
   guest_name: string;
   guest_phone: string;
+  guest_email: string | null;
   total: number;
   shipping_courier: string;
-  items: { name: string; qty: number }[];
+  items: { name: string; qty: number; enable_shipping?: boolean }[];
   internal_status: string | null;
   status: string;
   shipping_status: string | null;
   date_created: string;
 };
+
+// Orders created before per-item enable_shipping tracking fall back to
+// "no courier assigned" as the voucher signal.
+function isVoucherOrder(order: Order): boolean {
+  if (order.items?.some((i) => typeof i.enable_shipping === "boolean")) {
+    return order.items.every((i) => i.enable_shipping === false);
+  }
+  return !order.shipping_courier;
+}
 
 const FILTERS = [
   { key: "all", label: "Semua" },
@@ -206,7 +216,10 @@ export default function AdminOrdersPage() {
                         </td>
                         <td className="px-4 py-3">
                           <span className="font-['Inter',sans-serif] text-[13px] text-[#11151c] block">{order.guest_name}</span>
-                          <span className="font-['Inter',sans-serif] text-[11px] text-[#889bbf]">{order.guest_phone}</span>
+                          <span className="font-['Inter',sans-serif] text-[11px] text-[#889bbf] block">{order.guest_phone}</span>
+                          {order.guest_email && (
+                            <span className="font-['Inter',sans-serif] text-[11px] text-[#889bbf] block">{order.guest_email}</span>
+                          )}
                         </td>
                         <td className="px-4 py-3 max-w-[150px]">
                           <span className="font-['Inter',sans-serif] text-[12px] text-[#3b4963] line-clamp-1">
@@ -219,7 +232,13 @@ export default function AdminOrdersPage() {
                           </span>
                         </td>
                         <td className="px-4 py-3">
-                          <span className="font-['Inter',sans-serif] text-[12px] text-[#3b4963] uppercase">{order.shipping_courier ?? "-"}</span>
+                          {isVoucherOrder(order) ? (
+                            <span className="px-2 py-0.5 rounded-[100px] bg-[#fdf6ec] border border-[#f0d89a] font-['Inter',sans-serif] font-semibold text-[11px] text-[#b59637] whitespace-nowrap">
+                              Voucher
+                            </span>
+                          ) : (
+                            <span className="font-['Inter',sans-serif] text-[12px] text-[#3b4963] uppercase">{order.shipping_courier ?? "-"}</span>
+                          )}
                         </td>
                         <td className="px-4 py-3">
                           <span className={`px-3 py-1 rounded-[100px] font-['Inter',sans-serif] font-semibold text-[11px] whitespace-nowrap ${INTERNAL_CHIP[st] ?? "bg-[#f1f4fa] text-[#11151c]"}`}>

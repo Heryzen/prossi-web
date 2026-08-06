@@ -32,16 +32,23 @@ const NEXT_STATUS: Record<string, { value: string; label: string; desc: string }
   pickup_requested: { value: "shipped",       label: "Serahkan ke Kurir", desc: "Konfirmasi paket sudah diserahkan ke kurir" },
 };
 
-type OrderItem = { name: string; price: number; qty: number };
+type OrderItem = { name: string; price: number; qty: number; enable_shipping?: boolean };
 type Address = { name: string; phone: string; province: string; city: string; district: string; postal: string; detail: string };
 type Order = {
-  id: string; order_number: string; guest_name: string; guest_phone: string;
+  id: string; order_number: string; guest_name: string; guest_phone: string; guest_email: string | null;
   items: OrderItem[]; subtotal: number; shipping_cost: number; total: number;
   shipping_courier: string; shipping_service: string; address: Address;
   payment_method: string; payment_status: string; status: string;
   internal_status: string | null; shipping_status: string | null;
   biteship_order_id: string | null; tracking_number: string | null; date_created: string;
 };
+
+// Items created before per-item enable_shipping tracking fall back to
+// "order has no courier assigned" as the voucher signal.
+function isVoucherItem(item: OrderItem, order: { shipping_courier?: string | null }): boolean {
+  if (typeof item.enable_shipping === "boolean") return !item.enable_shipping;
+  return !order.shipping_courier;
+}
 
 function trackingUrl(courier: string, waybill: string) {
   if (courier === "jne") return `https://www.jne.co.id/id/tracking/trace?airwayNumber=${waybill}`;
@@ -163,6 +170,7 @@ export default function AdminOrderDetailPage() {
             <p className="font-['Inter',sans-serif] text-[13px] text-[#889bbf] mt-1">
               {new Date(order.date_created).toLocaleDateString("id-ID", { day: "numeric", month: "long", year: "numeric" })}
               {" · "}{order.guest_name} · {order.guest_phone}
+              {order.guest_email ? ` · ${order.guest_email}` : ""}
             </p>
           </div>
           <span className={`mt-1 px-4 py-1.5 rounded-full font-['Inter',sans-serif] text-[12px] font-bold whitespace-nowrap ${
@@ -335,7 +343,14 @@ export default function AdminOrderDetailPage() {
           <div className="flex flex-col gap-3">
             {order.items?.map((item, i) => (
               <div key={i} className="flex justify-between gap-4">
-                <span className="font-['Inter',sans-serif] text-[14px] text-[#11151c]">{item.name} <span className="text-[#889bbf]">x{item.qty}</span></span>
+                <span className="font-['Inter',sans-serif] text-[14px] text-[#11151c] flex items-center gap-2 flex-wrap">
+                  {item.name} <span className="text-[#889bbf]">x{item.qty}</span>
+                  {isVoucherItem(item, order) && (
+                    <span className="px-2 py-0.5 rounded-[100px] bg-[#fdf6ec] border border-[#f0d89a] font-['Inter',sans-serif] font-semibold text-[10px] text-[#b59637] whitespace-nowrap">
+                      Voucher
+                    </span>
+                  )}
+                </span>
                 <span className="font-['Inter',sans-serif] font-medium text-[14px] text-[#3b4963] whitespace-nowrap">{rupiah(item.price * item.qty)}</span>
               </div>
             ))}

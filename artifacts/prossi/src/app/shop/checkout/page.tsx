@@ -127,6 +127,7 @@ function CheckoutContent() {
   const [payError, setPayError] = useState<string | null>(null);
 
   const [guestEmail, setGuestEmail] = useState("");
+  const [isMemberEmail, setIsMemberEmail] = useState(false);
   const [otpToken, setOtpToken] = useState<string | null>(null);
   const [otpSending, setOtpSending] = useState(false);
   const [otpDigits, setOtpDigits] = useState<string[]>(Array(6).fill(""));
@@ -152,7 +153,10 @@ function CheckoutContent() {
     if (!member) return;
     if (member.full_name) setAddr((prev) => ({ ...prev, name: prev.name || member.full_name }));
     if (member.phone) setAddr((prev) => ({ ...prev, phone: prev.phone || member.phone! }));
-    if (member.email) setGuestEmail((prev) => prev || member.email!);
+    if (member.email) {
+      setGuestEmail((prev) => prev || member.email!);
+      setIsMemberEmail(true);
+    }
   }, []);
 
   // quick-buy (Beli Sekarang) — ambil detail produk by slug
@@ -310,7 +314,7 @@ function CheckoutContent() {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            items: mainItems.map((i) => ({ slug: i.slug, name: i.name, price: i.price, qty: i.qty })),
+            items: mainItems.map((i) => ({ slug: i.slug, name: i.name, price: i.price, qty: i.qty, enable_shipping: i.enable_shipping })),
             ...(hasPhysical ? { address: addr } : { guest_name: addr.name, guest_phone: addr.phone }),
             ...(hasPhysical
               ? {
@@ -338,7 +342,7 @@ function CheckoutContent() {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
-              items: nonPhysicalItems.map((i) => ({ slug: i.slug, name: i.name, price: i.price, qty: i.qty })),
+              items: nonPhysicalItems.map((i) => ({ slug: i.slug, name: i.name, price: i.price, qty: i.qty, enable_shipping: i.enable_shipping })),
               guest_name: addr.name,
               guest_phone: addr.phone,
               payment_method: "midtrans",
@@ -508,7 +512,15 @@ function CheckoutContent() {
                 <form className="flex flex-wrap gap-2" onSubmit={handleSaveAddress}>
                   <div className="w-full">
                     <label className={labelCls}>Email</label>
-                    <input type="email" required className={inputCls} placeholder="email@contoh.com" value={guestEmail} onChange={(e) => setGuestEmail(e.target.value)} />
+                    <input
+                      type="email"
+                      required
+                      disabled={isMemberEmail}
+                      className={`${inputCls} ${isMemberEmail ? "bg-[#f3f5f9] text-[#889bbf] cursor-not-allowed" : ""}`}
+                      placeholder="email@contoh.com"
+                      value={guestEmail}
+                      onChange={(e) => setGuestEmail(e.target.value)}
+                    />
                   </div>
                   <div className="w-full md:w-[calc(50%-4px)]">
                     <label className={labelCls}>Full Name</label>

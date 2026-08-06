@@ -5,7 +5,7 @@ import { sendNewOrderAdminEmail } from "@/lib/emailTemplates";
 const DIRECTUS_URL = process.env.NEXT_PUBLIC_DIRECTUS_URL ?? "http://localhost:8055";
 const TOKEN = process.env.DIRECTUS_STATIC_TOKEN;
 
-type OrderItem = { slug: string; name: string; price: number; qty: number };
+type OrderItem = { slug: string; name: string; price: number; qty: number; enable_shipping?: boolean };
 type Address = {
   name: string;
   phone: string;
