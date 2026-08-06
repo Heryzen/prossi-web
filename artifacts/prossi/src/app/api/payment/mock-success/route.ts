@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { generateVoucherCode, sendVoucherEmail } from "@/lib/voucher";
+import { computeVoucherExpiry, generateVoucherCode, getVoucherProductInfo, sendVoucherEmail } from "@/lib/voucher";
 import { sendPaymentConfirmedEmail } from "@/lib/emailTemplates";
 
 const DIRECTUS_URL = process.env.NEXT_PUBLIC_DIRECTUS_URL ?? "http://localhost:8055";
@@ -33,15 +33,26 @@ async function markOrderPaid(order: Record<string, unknown>, now: string) {
 
   if (isNonPhysical) {
     const voucherCode = generateVoucherCode();
+    const items = (order.items as { name: string; qty: number; slug?: string }[]) ?? [];
+    const firstSlug = items[0]?.slug;
+    const { terms, redeemInstructions, validityDays } = firstSlug
+      ? await getVoucherProductInfo(firstSlug)
+      : { terms: null, redeemInstructions: null, validityDays: undefined };
+    const expiresAt = computeVoucherExpiry(validityDays ?? 90, new Date(now));
     patch.voucher_code = voucherCode;
+    patch.voucher_expires_at = expiresAt;
+
     const email = order.guest_email as string | null;
     if (email) {
       sendVoucherEmail({
         to: email,
         customerName: (order.guest_name as string) ?? "Pelanggan",
         orderNumber: order.order_number as string,
-        items: (order.items as { name: string; qty: number }[]) ?? [],
+        items,
         voucherCode,
+        expiresAt,
+        terms,
+        redeemInstructions,
       }).catch(() => {});
     }
   }

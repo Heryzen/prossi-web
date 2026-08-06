@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { verifyMidtransSignature } from "@/lib/midtrans";
-import { generateVoucherCode, sendVoucherEmail } from "@/lib/voucher";
+import { computeVoucherExpiry, generateVoucherCode, getVoucherProductInfo, sendVoucherEmail } from "@/lib/voucher";
 import { sendPaymentConfirmedEmail } from "@/lib/emailTemplates";
 
 const DIRECTUS_URL = process.env.NEXT_PUBLIC_DIRECTUS_URL ?? "http://localhost:8055";
@@ -45,9 +45,7 @@ export async function POST(req: Request) {
     if (!order) return NextResponse.json({ received: true });
 
     if (isPaid) {
-      const hasPhysical = (order.items ?? []).some(
-        (i: { product_type?: string }) => i.product_type === "physical"
-      );
+      const hasPhysical = !!order.address;
 
       const now = new Date().toISOString();
       const history: { status: string; date: string }[] = Array.isArray(order.status_history) ? order.status_history : [];
@@ -63,7 +61,13 @@ export async function POST(req: Request) {
 
       if (!hasPhysical) {
         const voucherCode = generateVoucherCode();
+        const firstItem = (order.items ?? [])[0];
+        const { terms, redeemInstructions, validityDays } = firstItem?.slug
+          ? await getVoucherProductInfo(firstItem.slug)
+          : { terms: null, redeemInstructions: null, validityDays: undefined };
+        const expiresAt = computeVoucherExpiry(validityDays ?? 90, new Date(now));
         patch.voucher_code = voucherCode;
+        patch.voucher_expires_at = expiresAt;
 
         const email = order.guest_email;
         if (email) {
@@ -73,6 +77,9 @@ export async function POST(req: Request) {
             orderNumber: order.order_number,
             items: order.items ?? [],
             voucherCode,
+            expiresAt,
+            terms,
+            redeemInstructions,
           }).catch(() => {});
         }
       }

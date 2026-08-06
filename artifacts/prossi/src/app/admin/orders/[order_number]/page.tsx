@@ -324,7 +324,7 @@ export default function AdminOrderDetailPage() {
               <div className="border-t border-[#e6ecf7] pt-4 mt-2">
                 <p className="font-['Inter',sans-serif] text-[11px] text-[#889bbf] mb-2">Label Pengiriman</p>
                 <a
-                  href={`/admin/orders/${order.order_number}/label`}
+                  href={`/api/admin/orders/${order.order_number}/label?token=${encodeURIComponent(token)}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 bg-[#b59637] text-white rounded-[100px] px-6 py-2.5 font-['Inter',sans-serif] font-semibold text-[13px] hover:opacity-90 transition-opacity"
