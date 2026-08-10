@@ -172,7 +172,10 @@ export default function AdminOrderDetailPage() {
   const nextAction = NEXT_STATUS[st] ?? null;
   const canShip = st === "ready_to_ship";
   const isFinal = ["shipped", "delivered", "cancelled"].includes(st);
-  const isShipped = st === "shipped" || st === "delivered";
+  // Voucher orders jump straight to "delivered" on payment without ever
+  // shipping, so they must never show the shipping-info panel below.
+  const isVoucherOrder = (order.items?.length ?? 0) > 0 && order.items.every((i) => isVoucherItem(i, order));
+  const isShipped = (st === "shipped" || st === "delivered") && !isVoucherOrder;
   const isPendingPayment = st === "pending_payment";
 
   return (
