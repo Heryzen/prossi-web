@@ -41,7 +41,13 @@ type Order = {
   payment_method: string; payment_status: string; status: string;
   internal_status: string | null; shipping_status: string | null;
   biteship_order_id: string | null; tracking_number: string | null; date_created: string;
+  voucher_code: string | null; voucher_expires_at: string | null;
+  voucher_used: boolean; voucher_used_at: string | null;
 };
+
+function fmtDate(iso: string) {
+  return new Date(iso).toLocaleDateString("id-ID", { day: "numeric", month: "long", year: "numeric" });
+}
 
 // Items created before per-item enable_shipping tracking fall back to
 // "order has no courier assigned" as the voucher signal.
@@ -72,6 +78,9 @@ export default function AdminOrderDetailPage() {
   const [shipping, setShipping] = useState(false);
   const [shipError, setShipError] = useState("");
   const [shipSuccess, setShipSuccess] = useState<{ waybill: string } | null>(null);
+
+  const [redeemingVoucher, setRedeemingVoucher] = useState(false);
+  const [voucherError, setVoucherError] = useState("");
 
   useEffect(() => {
     const t = localStorage.getItem("prossi_admin_token");
@@ -107,6 +116,21 @@ export default function AdminOrderDetailPage() {
       setOrder((o) => o ? { ...o, internal_status: newStatus } : o);
     } catch { setStatusError("Gagal terhubung ke server"); }
     finally { setSavingStatus(false); }
+  }
+
+  async function handleRedeemVoucher() {
+    if (!token || !order) return;
+    setRedeemingVoucher(true); setVoucherError("");
+    try {
+      const res = await fetch(`/api/admin/orders/${order.order_number}/voucher`, {
+        method: "PATCH",
+        headers: { "x-admin-token": token },
+      });
+      const j = await res.json();
+      if (!res.ok) { setVoucherError(j.error ?? "Gagal"); return; }
+      setOrder((o) => o ? { ...o, voucher_used: true, voucher_used_at: j.voucher_used_at } : o);
+    } catch { setVoucherError("Gagal terhubung ke server"); }
+    finally { setRedeemingVoucher(false); }
   }
 
   async function handleShip() {
@@ -332,6 +356,43 @@ export default function AdminOrderDetailPage() {
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M6 9V2h12v7M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2M6 14h12v8H6v-8z" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>
                   Cetak Label Pengiriman
                 </a>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Voucher panel */}
+        {order.voucher_code && (
+          <div className="bg-[#fdf6ec] border border-[#f0d89a] rounded-[16px] px-5 py-5">
+            <p className="font-['Inter',sans-serif] text-[11px] font-bold uppercase tracking-wider text-[#b59637] mb-3">Info Voucher</p>
+            <div className="flex flex-col gap-2">
+              <div>
+                <p className="font-['Inter',sans-serif] text-[11px] text-[#889bbf] mb-0.5">Kode Voucher</p>
+                <p className="font-mono font-bold text-[16px] text-[#11151c]">{order.voucher_code}</p>
+              </div>
+              {order.voucher_expires_at && (
+                <div>
+                  <p className="font-['Inter',sans-serif] text-[11px] text-[#889bbf] mb-0.5">Berlaku Sampai</p>
+                  <p className="font-['Inter',sans-serif] font-semibold text-[14px] text-[#11151c]">{fmtDate(order.voucher_expires_at)}</p>
+                </div>
+              )}
+              <div className="border-t border-dashed border-[#e8d9a8] pt-3 mt-1">
+                {order.voucher_used ? (
+                  <p className="font-['Inter',sans-serif] text-[13px] font-semibold text-[#2a7a50]">
+                    ✓ Sudah digunakan{order.voucher_used_at ? ` pada ${fmtDate(order.voucher_used_at)}` : ""}
+                  </p>
+                ) : (
+                  <div className="flex flex-col gap-2 items-start">
+                    <button
+                      onClick={handleRedeemVoucher}
+                      disabled={redeemingVoucher}
+                      className="bg-[#b59637] rounded-[100px] px-6 py-2.5 text-white font-['Inter',sans-serif] font-semibold text-[13px] hover:opacity-90 transition-opacity disabled:opacity-50"
+                    >
+                      {redeemingVoucher ? "Menyimpan..." : "Tandai Voucher Digunakan"}
+                    </button>
+                    {voucherError && <p className="font-['Inter',sans-serif] text-[13px] text-[#a8312a]">{voucherError}</p>}
+                  </div>
+                )}
               </div>
             </div>
           </div>

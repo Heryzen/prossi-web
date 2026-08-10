@@ -53,7 +53,13 @@ type Order = {
   status: string;
   shipping_status: string | null;
   date_created: string;
+  voucher_code: string | null;
+  voucher_expires_at: string | null;
+  voucher_used: boolean;
 };
+
+const fmtShortDate = (iso: string) =>
+  new Date(iso).toLocaleDateString("id-ID", { day: "numeric", month: "short", year: "numeric" });
 
 // Orders created before per-item enable_shipping tracking fall back to
 // "no courier assigned" as the voucher signal.
@@ -110,7 +116,8 @@ export default function AdminOrdersPage() {
     ? orders.filter(
         (o) =>
           o.order_number.toLowerCase().includes(search.toLowerCase()) ||
-          (o.guest_name ?? "").toLowerCase().includes(search.toLowerCase())
+          (o.guest_name ?? "").toLowerCase().includes(search.toLowerCase()) ||
+          (o.voucher_code ?? "").toLowerCase().includes(search.toLowerCase())
       )
     : orders;
 
@@ -145,7 +152,7 @@ export default function AdminOrdersPage() {
 
         <input
           type="text"
-          placeholder="Cari nomor order atau nama..."
+          placeholder="Cari nomor order, nama, atau kode voucher..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           className="w-full max-w-[380px] border border-[#dde3f0] rounded-[10px] px-4 py-2.5 font-['Inter',sans-serif] text-[14px] outline-none focus:border-[#b59637] transition-colors mb-4"
@@ -233,9 +240,19 @@ export default function AdminOrdersPage() {
                         </td>
                         <td className="px-4 py-3">
                           {isVoucherOrder(order) ? (
-                            <span className="px-2 py-0.5 rounded-[100px] bg-[#fdf6ec] border border-[#f0d89a] font-['Inter',sans-serif] font-semibold text-[11px] text-[#b59637] whitespace-nowrap">
-                              Voucher
-                            </span>
+                            <div className="flex flex-col gap-0.5">
+                              <span className="w-fit px-2 py-0.5 rounded-[100px] bg-[#fdf6ec] border border-[#f0d89a] font-['Inter',sans-serif] font-semibold text-[11px] text-[#b59637] whitespace-nowrap">
+                                {order.voucher_used ? "Voucher ✓" : "Voucher"}
+                              </span>
+                              {order.voucher_code && (
+                                <span className="font-mono text-[11px] text-[#3b4963] whitespace-nowrap">{order.voucher_code}</span>
+                              )}
+                              {order.voucher_expires_at && (
+                                <span className="font-['Inter',sans-serif] text-[10px] text-[#889bbf] whitespace-nowrap">
+                                  s.d. {fmtShortDate(order.voucher_expires_at)}
+                                </span>
+                              )}
+                            </div>
                           ) : (
                             <span className="font-['Inter',sans-serif] text-[12px] text-[#3b4963] uppercase">{order.shipping_courier ?? "-"}</span>
                           )}
