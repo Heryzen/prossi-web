@@ -229,8 +229,11 @@ export default function AdminOrderDetailPage() {
           <div className="bg-white rounded-[14px] border border-[#e6ecf7] px-5 py-5">
             <div className="flex items-center overflow-x-auto pb-1 gap-0">
               {displaySteps.map((step, i) => {
-                const done = i < currentStepIdx;
-                const active = i === currentStepIdx;
+                // The terminal step, once reached, should render as completed
+                // (green ✓) rather than "active" (gold, no next step to await).
+                const isLastStep = i === displaySteps.length - 1;
+                const done = i < currentStepIdx || (isLastStep && i === currentStepIdx);
+                const active = i === currentStepIdx && !isLastStep;
                 return (
                   <div key={step.key} className="flex items-center flex-shrink-0">
                     <div className="flex flex-col items-center gap-1.5">
