@@ -87,7 +87,7 @@ export default async function Doctors({
         : ALL_DOCTORS;
 
   const eyebrow = category ? `DOKTER ${CATEGORY_LABEL[category] ?? ""}`.toUpperCase() : "DOKTER SPESIALIS";
-  const heroGradientRgb = category === "skin" ? "63,109,112" : category === "slimming" ? "205,114,79" : category === "estetika" ? "120,80,140" : "63,109,112";
+  const heroGradientRgb = category === "skin" ? "63,109,112" : category === "slimming" ? "205,114,79" : category === "estetika" ? "181,150,55" : "63,109,112";
 
   const jsonLd = {
     "@context": "https://schema.org",

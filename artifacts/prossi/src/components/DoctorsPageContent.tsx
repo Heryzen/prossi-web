@@ -123,7 +123,7 @@ export function DoctorsPageContent({
   articles,
 }: {
   eyebrow: string;
-  /** e.g. "205,114,79" (terracotta) or "63,109,112" (teal) */
+  /** e.g. "205,114,79" (terracotta), "63,109,112" (teal), or "181,150,55" (gold) */
   heroGradientRgb: string;
   doctors: Doctor[];
   articles: Article[];
