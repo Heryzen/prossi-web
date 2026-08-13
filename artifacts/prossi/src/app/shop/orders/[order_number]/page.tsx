@@ -127,9 +127,15 @@ export default async function OrderTrackingPage({ params }: { params: Promise<{ 
   if (!order) notFound();
 
   const st = order.internal_status ?? order.status;
-  const currentStepIdx = STEPS.findIndex((s) => s.key === st);
   const isCancelled = st === "cancelled";
   const isShipped = st === "shipped" || st === "delivered";
+  // Voucher (non-physical) orders never have a shipping address and skip
+  // straight from paid to delivered — the packaging/shipping steps never
+  // apply to them and would otherwise render as falsely "completed".
+  const isVoucherOrder = !order.address;
+  const PHYSICAL_ONLY_STEPS = ["packaging", "ready_to_ship", "pickup_requested", "shipped"];
+  const displaySteps = isVoucherOrder ? STEPS.filter((s) => !PHYSICAL_ONLY_STEPS.includes(s.key)) : STEPS;
+  const currentStepIdx = displaySteps.findIndex((s) => s.key === st);
 
   const historyMap = new Map<string, string>();
   historyMap.set("paid", order.date_created); // fallback: order creation = payment confirmation
@@ -156,12 +162,12 @@ export default async function OrderTrackingPage({ params }: { params: Promise<{ 
           <div className="border border-[#e6ecf7] rounded-[16px] px-6 py-6">
             <p className="font-['Inter',sans-serif] text-[11px] font-bold uppercase tracking-wider text-[#889bbf] mb-5">Status Pesanan</p>
             <div className="flex flex-col">
-              {STEPS.map((step, i) => {
+              {displaySteps.map((step, i) => {
                 const done = i <= currentStepIdx;
                 // Final step at "delivered" should be green (completed), not gold (active)
-                const active = i === currentStepIdx && i < STEPS.length - 1;
+                const active = i === currentStepIdx && i < displaySteps.length - 1;
                 const completed = done && !active;
-                const isLast = i === STEPS.length - 1;
+                const isLast = i === displaySteps.length - 1;
                 return (
                   <div key={step.key} className="flex gap-4">
                     <div className="flex flex-col items-center">

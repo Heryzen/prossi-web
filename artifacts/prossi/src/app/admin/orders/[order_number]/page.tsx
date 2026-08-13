@@ -168,15 +168,18 @@ export default function AdminOrderDetailPage() {
   }
 
   const st = order.internal_status ?? order.status;
-  const currentStepIdx = STEPS.findIndex((s) => s.key === st);
   const nextAction = NEXT_STATUS[st] ?? null;
   const canShip = st === "ready_to_ship";
   const isFinal = ["shipped", "delivered", "cancelled"].includes(st);
   // Voucher orders jump straight to "delivered" on payment without ever
-  // shipping, so they must never show the shipping-info panel below.
+  // shipping, so they must never show the shipping-info panel or the
+  // packaging/shipping steps in the stepper below.
   const isVoucherOrder = (order.items?.length ?? 0) > 0 && order.items.every((i) => isVoucherItem(i, order));
   const isShipped = (st === "shipped" || st === "delivered") && !isVoucherOrder;
   const isPendingPayment = st === "pending_payment";
+  const PHYSICAL_ONLY_STEPS = ["packaging", "ready_to_ship", "pickup_requested", "shipped"];
+  const displaySteps = isVoucherOrder ? STEPS.filter((s) => !PHYSICAL_ONLY_STEPS.includes(s.key)) : STEPS;
+  const currentStepIdx = displaySteps.findIndex((s) => s.key === st);
 
   return (
     <div className="min-h-screen bg-[#f9f7f4] pt-[104px]">
@@ -225,7 +228,7 @@ export default function AdminOrderDetailPage() {
         ) : st !== "cancelled" ? (
           <div className="bg-white rounded-[14px] border border-[#e6ecf7] px-5 py-5">
             <div className="flex items-center overflow-x-auto pb-1 gap-0">
-              {STEPS.map((step, i) => {
+              {displaySteps.map((step, i) => {
                 const done = i < currentStepIdx;
                 const active = i === currentStepIdx;
                 return (
@@ -246,7 +249,7 @@ export default function AdminOrderDetailPage() {
                         {step.label}
                       </span>
                     </div>
-                    {i < STEPS.length - 1 && (
+                    {i < displaySteps.length - 1 && (
                       <div className={`h-[3px] w-8 md:w-14 flex-shrink-0 mx-1 rounded-full mb-4 ${i < currentStepIdx ? "bg-[#2a7a50]" : "bg-[#e6ecf7]"}`} />
                     )}
                   </div>
