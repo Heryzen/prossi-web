@@ -185,6 +185,11 @@ export default async function OrderTrackingPage({ params }: { params: Promise<{ 
                           {fmtDate(historyMap.get(step.key)!)}
                         </p>
                       )}
+                      {completed && step.key === "delivered" && isVoucherOrder && (
+                        <p className="font-['Inter',sans-serif] text-[12px] font-semibold text-[#2a7a50] mt-1">
+                          Voucher Anda sudah berhasil dikirim melalui email.
+                        </p>
+                      )}
                       {active && step.key === "ready_to_ship" && (
                         <p className="font-['Inter',sans-serif] text-[12px] text-[#889bbf] mt-1">
                           Pengiriman dilakukan <span className="font-semibold text-[#3b4963]">Senin–Jumat</span>
