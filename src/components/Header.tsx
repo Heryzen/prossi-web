@@ -140,14 +140,16 @@ export function Header({ topBar }: { topBar?: HeaderTopBar }) {
               never reflows/spreads during the morph. */}
           <div
             className="flex items-center justify-between w-full max-w-[1240px] mx-auto transition-all duration-500 ease-in-out"
-            style={{ padding: scrolled ? "8px 32px" : "10px 20px" }}
+            style={{ padding: scrolled ? "6px 32px" : "8px 20px" }}
           >
-          {/* Logo */}
+          {/* Logo — a bit smaller even at idle, and shrinks further once scrolled */}
           <Link href="/">
             <img
               src="/figma/imgUntitledDesign181.webp"
               alt="Prossi Clinic"
-              className="w-[72px] h-[40px] lg:w-[128px] lg:h-[72px] object-contain"
+              className={`object-contain transition-all duration-500 ease-in-out ${
+                scrolled ? "w-[60px] h-[34px] lg:w-[96px] lg:h-[54px]" : "w-[64px] h-[36px] lg:w-[108px] lg:h-[60px]"
+              }`}
               style={{ filter: "none" }}
             />
           </Link>
@@ -354,10 +356,12 @@ export function Header({ topBar }: { topBar?: HeaderTopBar }) {
               )}
             </div>
 
-            {/* CTA Button */}
+            {/* CTA Button — a touch shorter once scrolled, matching the shrunk logo */}
             <Link
               href="/contact"
-              className="flex bg-[#b59637] rounded-full px-7 h-11 text-white font-medium text-[15px] hover:opacity-90 transition-opacity items-center justify-center whitespace-nowrap"
+              className={`flex bg-[#b59637] rounded-full text-white font-medium hover:opacity-90 transition-all duration-500 ease-in-out items-center justify-center whitespace-nowrap ${
+                scrolled ? "px-6 h-9 text-[14px]" : "px-6 h-10 text-[15px]"
+              }`}
             >
               Reservation
             </Link>

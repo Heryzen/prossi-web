@@ -10,6 +10,7 @@ export type Review = {
   avatar: string;
   image: string | null;
   videoUrl?: string | null;
+  sourceUrl?: string | null;
   rating?: number;
 };
 
@@ -53,8 +54,48 @@ function Avatar({ src, name }: { src: string; name: string }) {
   );
 }
 
-function isDirectVideo(url: string) {
-  return /\.(mp4|webm|mov)$/i.test(url);
+type EmbedInfo =
+  | { kind: "video"; src: string }
+  | { kind: "instagram"; src: string }
+  | { kind: "tiktok"; videoId: string; authorHandle: string }
+  | { kind: "iframe"; src: string };
+
+function getEmbedInfo(url: string): EmbedInfo {
+  if (/\.(mp4|webm|mov)$/i.test(url)) return { kind: "video", src: url };
+
+  const igMatch = url.match(/instagram\.com\/(reel|p)\/([A-Za-z0-9_-]+)/i);
+  if (igMatch) return { kind: "instagram", src: `https://www.instagram.com/${igMatch[1]}/${igMatch[2]}/embed` };
+
+  const tiktokMatch = url.match(/tiktok\.com\/@([^/]+)\/video\/(\d+)/i);
+  if (tiktokMatch) return { kind: "tiktok", authorHandle: tiktokMatch[1], videoId: tiktokMatch[2] };
+
+  return { kind: "iframe", src: url };
+}
+
+/** TikTok only supports third-party embedding via their official blockquote + embed.js widget — a bare iframe to their internal player URL reports "Video currently unavailable". */
+function TikTokEmbed({ videoId, authorHandle }: { videoId: string; authorHandle: string }) {
+  useEffect(() => {
+    const script = document.createElement("script");
+    script.src = "https://www.tiktok.com/embed.js";
+    script.async = true;
+    document.body.appendChild(script);
+    return () => {
+      document.body.removeChild(script);
+    };
+  }, [videoId]);
+
+  return (
+    <div className="w-full h-full flex items-center justify-center overflow-y-auto py-6">
+      <blockquote
+        className="tiktok-embed"
+        cite={`https://www.tiktok.com/@${authorHandle}/video/${videoId}`}
+        data-video-id={videoId}
+        style={{ maxWidth: "420px", minWidth: "260px" }}
+      >
+        <section />
+      </blockquote>
+    </div>
+  );
 }
 
 function PlayIcon() {
@@ -67,7 +108,7 @@ function PlayIcon() {
 
 export function Testimonials({ reviews: reviewsProp }: { reviews?: Review[] }) {
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true, align: 'start' });
-  const [activeVideo, setActiveVideo] = useState<string | null>(null);
+  const [activeVideo, setActiveVideo] = useState<{ url: string; sourceUrl?: string | null } | null>(null);
 
   useEffect(() => {
     if (!activeVideo) return;
@@ -172,7 +213,7 @@ export function Testimonials({ reviews: reviewsProp }: { reviews?: Review[] }) {
                     {review.videoUrl ? (
                       <button
                         type="button"
-                        onClick={() => setActiveVideo(review.videoUrl!)}
+                        onClick={() => setActiveVideo({ url: review.videoUrl!, sourceUrl: review.sourceUrl })}
                         aria-label={`Play video testimonial from ${review.name}`}
                         className="group absolute inset-0 w-full h-full cursor-pointer"
                       >
@@ -209,24 +250,48 @@ export function Testimonials({ reviews: reviewsProp }: { reviews?: Review[] }) {
         </div>
       </div>
 
-      {activeVideo && (
+      {activeVideo && (() => {
+        const embed = getEmbedInfo(activeVideo.url);
+        const isInstagram = embed.kind === "instagram";
+        const isTikTok = embed.kind === "tiktok";
+        return (
         <div
           className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 p-6"
           onClick={() => setActiveVideo(null)}
         >
           <div
-            className="relative w-full max-w-[900px] aspect-video bg-black rounded-xl overflow-hidden"
+            key={activeVideo.url}
+            className={`relative w-full rounded-xl overflow-hidden ${
+              isInstagram
+                ? "max-w-[400px] aspect-[9/16] bg-black"
+                : isTikTok
+                  ? "max-w-[460px] max-h-[85vh] bg-white"
+                  : "max-w-[900px] aspect-video bg-black"
+            }`}
             onClick={(e) => e.stopPropagation()}
           >
-            {isDirectVideo(activeVideo) ? (
-              <video src={activeVideo} controls autoPlay className="absolute inset-0 w-full h-full object-contain" />
+            {embed.kind === "video" ? (
+              <video src={embed.src} controls autoPlay className="absolute inset-0 w-full h-full object-contain" />
+            ) : embed.kind === "tiktok" ? (
+              <TikTokEmbed videoId={embed.videoId} authorHandle={embed.authorHandle} />
             ) : (
               <iframe
-                src={activeVideo}
+                src={embed.src}
                 allow="autoplay; encrypted-media; picture-in-picture"
                 allowFullScreen
                 className="absolute inset-0 w-full h-full border-0"
               />
+            )}
+            {activeVideo.sourceUrl && (
+              <a
+                href={activeVideo.sourceUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={(e) => e.stopPropagation()}
+                className="absolute bottom-3 left-3 px-4 py-2 rounded-full bg-black/60 hover:bg-black/80 transition-colors text-white text-sm font-medium"
+              >
+                Lihat di TikTok/IG
+              </a>
             )}
             <button
               type="button"
@@ -240,7 +305,8 @@ export function Testimonials({ reviews: reviewsProp }: { reviews?: Review[] }) {
             </button>
           </div>
         </div>
-      )}
+        );
+      })()}
     </section>
   );
 }

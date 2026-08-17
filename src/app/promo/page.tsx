@@ -1,93 +1,65 @@
-import Link from "next/link";
 import type { Metadata } from "next";
-import { directusFetch, assetUrl } from "@/lib/directus";
+import { directusFetch } from "@/lib/directus";
+import { PromoPageContent, type PromoItem } from "@/components/PromoPageContent";
 
 export const metadata: Metadata = {
   title: "Promo",
   description: "Promo dan penawaran terbaru dari Prossi Clinic untuk program slimming dan skin treatment.",
 };
 
-const GOLD_RING =
-  "linear-gradient(270deg, rgba(222,186,105,1) 0%, rgba(235,210,151,1) 30%, rgba(251,232,166,1) 50%, rgba(235,210,151,1) 70%, rgba(222,186,105,1) 100%)";
-
-type CmsPromo = {
-  title: string;
-  description: string;
-  image: string | null;
-  cta_link: string | null;
-  valid_until: string | null;
-};
+type CmsSiteSettings = { whatsapp_number: string | null };
 
 export default async function PromoPage() {
-  const promos = await directusFetch<CmsPromo[]>(
-    "/items/promos?filter[status][_eq]=published&fields=title,description,image,cta_link,valid_until"
-  );
+  const [promos, siteSettings] = await Promise.all([
+    directusFetch<PromoItem[]>(
+      "/items/promos?filter[status][_eq]=published&fields=title,description,image,cta_link,valid_until,category"
+    ),
+    directusFetch<CmsSiteSettings>("/items/site_settings?fields=whatsapp_number"),
+  ]);
 
   return (
-    <main className="min-h-screen bg-[#f4ece4] px-6 md:px-[100px] pt-[160px] pb-[80px]">
-      <div className="max-w-[1240px] mx-auto flex flex-col items-center gap-12">
-        <div className="flex flex-col items-center gap-4 text-center">
-          <h1 className="font-serif font-semibold text-[36px] md:text-[48px] text-[#503d1c]">Promo</h1>
-          <p className="font-sans text-lg text-[#503d1c]/70 max-w-[600px]">
+    <main className="min-h-screen bg-[#f4ece4] flex flex-col pt-[79px]">
+      {/* ── Hero ── */}
+      <div className="relative w-full overflow-hidden h-[320px] md:h-[440px] rounded-b-[100px]">
+        <img
+          src="/figma/imgContactHero-4f95a9.webp"
+          alt=""
+          className="absolute inset-0 w-full h-full object-cover object-right"
+        />
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              "linear-gradient(270deg, rgba(105,85,56,0) 30%, rgba(105,85,56,0.6) 41%, rgba(105,85,56,0.82) 53%, rgba(105,85,56,1) 100%)",
+          }}
+        />
+        <div className="relative z-10 flex flex-col gap-4 px-6 pt-[100px] md:px-0 md:pt-[200px]" style={{ maxWidth: 711 }}>
+          <h1
+            className="font-['Source_Serif_4',serif] font-normal leading-tight md:pl-[100px]"
+            style={{
+              fontSize: "clamp(28px, 7vw, 45px)",
+              background:
+                "linear-gradient(270deg, rgba(251,232,166,1) 0%, rgba(235,210,151,1) 41%, rgba(251,232,166,1) 67%, rgba(251,232,166,1) 100%)",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+              backgroundClip: "text",
+            }}
+          >
+            Promo
+          </h1>
+          <p
+            className="font-['Lato',sans-serif] font-normal text-white md:pl-[100px]"
+            style={{ fontSize: "clamp(14px, 4vw, 18px)", lineHeight: "1.6" }}
+          >
             Penawaran spesial dari Prossi Clinic untuk perjalanan kesehatan dan kecantikanmu.
           </p>
         </div>
+      </div>
 
-        {promos && promos.length > 0 ? (
-          <div className="flex flex-col gap-8 w-full">
-            {promos.map((p) => (
-              <div key={p.title} className="rounded-[32px] p-[1px] w-full" style={{ background: GOLD_RING }}>
-                <div className="bg-[#f1e7da] rounded-[31px] overflow-hidden flex flex-col md:flex-row">
-                  <div className="flex flex-col gap-6 p-8 md:p-[60px] md:max-w-[547px] justify-center">
-                    <div className="flex flex-col gap-4">
-                      <h2 className="font-['Lato'] font-semibold text-[28px] md:text-[40px] text-[#120f0b] leading-tight">
-                        {p.title}
-                      </h2>
-                      <p className="font-['Inter'] text-[16px] md:text-[18px] text-[#120f0b]">{p.description}</p>
-                      {p.valid_until && (
-                        <p className="font-['Inter'] font-semibold text-[14px] text-[#b59637]">
-                          Berlaku sampai{" "}
-                          {new Date(p.valid_until).toLocaleDateString("id-ID", {
-                            day: "numeric",
-                            month: "long",
-                            year: "numeric",
-                          })}
-                        </p>
-                      )}
-                    </div>
-                    <Link
-                      href={p.cta_link || "/contact"}
-                      className="self-start rounded-full px-9 py-[18px] text-[#503d1c] font-serif font-semibold text-[18px] border border-[#ecd5a5] hover:opacity-90 transition-opacity"
-                      style={{
-                        background:
-                          "linear-gradient(129deg, rgba(229,190,128,1) 0%, rgba(237,216,171,1) 50%, rgba(229,190,128,1) 100%)",
-                      }}
-                    >
-                      View Offers
-                    </Link>
-                  </div>
-                  {p.image && (
-                    <div className="hidden md:block flex-1 min-h-[240px]">
-                      <img src={assetUrl(p.image)} alt={p.title} className="w-full h-full object-cover" />
-                    </div>
-                  )}
-                </div>
-              </div>
-            ))}
-          </div>
-        ) : (
-          <div className="flex flex-col items-center gap-8 text-center">
-            <p className="font-sans text-lg text-[#503d1c]/70">
-              Belum ada promo aktif saat ini. Pantau terus penawaran spesial dari Prossi Clinic.
-            </p>
-            <Link
-              href="/"
-              className="bg-[#b59637] border border-[#ecd5a5] rounded-full px-9 py-[18px] text-white font-serif font-semibold text-lg hover:opacity-90 transition-opacity"
-            >
-              Kembali ke Beranda
-            </Link>
-          </div>
-        )}
+      <div className="px-6 md:px-[100px] py-[60px] md:py-[80px]">
+        <div className="max-w-[1240px] mx-auto flex flex-col items-center">
+          <PromoPageContent promos={promos ?? []} waNumber={siteSettings?.whatsapp_number} />
+        </div>
       </div>
     </main>
   );

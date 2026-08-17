@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
@@ -190,7 +189,7 @@ export default function AdminOrdersPage() {
               <table className="w-full">
                 <thead>
                   <tr className="border-b border-[#e6ecf7]">
-                    {["No. Order", "Customer", "Produk", "Total", "Kurir", "Status", "Status Kurir", "Tanggal", ""].map((h) => (
+                    {["No. Order", "Customer", "Produk", "Total", "Kurir", "Status", "Status Kurir", "Tanggal"].map((h) => (
                       <th
                         key={h}
                         className="text-left font-['Inter',sans-serif] text-[11px] font-bold uppercase tracking-wider text-[#889bbf] px-4 py-3 whitespace-nowrap"
@@ -209,7 +208,8 @@ export default function AdminOrdersPage() {
                     return (
                       <tr
                         key={order.order_number}
-                        className={`border-b border-[#f0f3fa] hover:bg-[#fafbff] ${isUrgent ? "bg-[#fffcf0]" : ""}`}
+                        onClick={() => router.push(`/admin/orders/${order.order_number}`)}
+                        className={`border-b border-[#f0f3fa] hover:bg-[#fafbff] cursor-pointer ${isUrgent ? "bg-[#fffcf0]" : ""}`}
                       >
                         <td className="px-4 py-3 whitespace-nowrap">
                           <span className="font-['Merriweather_Sans',sans-serif] font-bold text-[13px] text-[#11151c]">
@@ -275,14 +275,6 @@ export default function AdminOrdersPage() {
                           <span className="font-['Inter',sans-serif] text-[12px] text-[#889bbf]">
                             {new Date(order.date_created).toLocaleDateString("id-ID", { day: "numeric", month: "short", year: "numeric" })}
                           </span>
-                        </td>
-                        <td className="px-4 py-3">
-                          <Link
-                            href={`/admin/orders/${order.order_number}`}
-                            className="font-['Inter',sans-serif] text-[13px] font-semibold text-[#b59637] hover:opacity-70 whitespace-nowrap"
-                          >
-                            Detail →
-                          </Link>
                         </td>
                       </tr>
                     );

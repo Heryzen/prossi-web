@@ -28,15 +28,15 @@ function Eyebrow({ text }: { text: string }) {
 function DoctorModal({ doctor, onClose }: { doctor: Doctor; onClose: () => void }) {
   return (
     <div
-      className="fixed inset-0 z-[100] flex items-center justify-center bg-black/30 px-4 py-8 overflow-y-auto"
+      className="fixed inset-0 z-[100] flex items-start justify-center bg-black/30 px-4 pt-[104px] pb-8 md:pt-[124px] overflow-y-auto"
       onClick={onClose}
     >
       <div
-        className="rounded-[32px] p-[1px] max-w-[1000px] w-full my-auto"
+        className="rounded-[32px] p-[1px] max-w-[1000px] w-full"
         style={{ background: GOLD_RING, boxShadow: "0px 9px 20px rgba(74,49,34,0.06)" }}
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="bg-[#f4ece4] rounded-[31px] p-6 md:p-16 relative">
+        <div className="bg-[#f4ece4] rounded-[31px] p-6 md:p-12 relative max-h-[calc(100vh-160px)] overflow-y-auto">
           <button
             type="button"
             onClick={onClose}
@@ -61,39 +61,49 @@ function DoctorModal({ doctor, onClose }: { doctor: Doctor; onClose: () => void 
                 </div>
               </div>
               <div className="flex flex-col gap-3 text-center md:text-left">
-                <h3 className="font-['Lato'] font-semibold text-[22px] md:text-[28px] text-[#120f0b] capitalize leading-tight">
+                <h3 className="font-['Lato'] font-semibold text-[18px] md:text-[20px] text-[#120f0b] capitalize leading-snug">
                   {doctor.name}
                 </h3>
                 <p className="font-['Inter'] font-semibold text-[15px] text-[#503d1c] uppercase">
                   {doctor.specialty}
                 </p>
+                {doctor.location && (
+                  <p className="font-['Inter'] text-[14px] text-[#503d1c]">{doctor.location}</p>
+                )}
               </div>
             </div>
 
             {/* Details */}
-            <div className="flex flex-col gap-8 flex-1">
+            <div className="flex flex-col gap-5 flex-1 min-h-0">
               <div className="h-[1px] w-full" style={{ background: "rgba(124,96,51,0.3)" }} />
-              <div className="flex flex-col gap-4">
-                <h4 className="font-serif font-semibold text-[24px] text-[#120f0b]">Tentang Dokter</h4>
-                <p className="font-['Inter'] text-[16px] text-[#120f0b] leading-relaxed">{doctor.bio}</p>
+              <div className="flex flex-col gap-2">
+                <h4 className="font-serif font-semibold text-[20px] text-[#120f0b]">Tentang Dokter</h4>
+                <p className="font-['Inter'] text-[15px] text-[#120f0b] leading-relaxed">{doctor.bio}</p>
               </div>
               <div className="h-[1px] w-full" style={{ background: "rgba(124,96,51,0.3)" }} />
-              <div className="flex flex-col gap-4">
-                <h4 className="font-serif font-semibold text-[24px] text-[#120f0b]">Jadwal Praktik</h4>
-                <ul className="flex flex-col gap-2">
-                  <li className="flex items-center gap-3">
-                    <span className="w-2 h-2 rounded-full bg-[#503d1c] shrink-0" />
-                    <span className="font-['Inter'] text-[16px] text-[#120f0b]">
-                      <strong>Hari:</strong> {doctor.schedule}
-                    </span>
-                  </li>
-                  <li className="flex items-center gap-3">
-                    <span className="w-2 h-2 rounded-full bg-[#503d1c] shrink-0" />
-                    <span className="font-['Inter'] text-[16px] text-[#120f0b]">
-                      <strong>Jam:</strong> {doctor.hours}
-                    </span>
-                  </li>
-                </ul>
+              <div className="flex flex-col gap-2 min-h-0">
+                <h4 className="font-serif font-semibold text-[20px] text-[#120f0b]">Jadwal Praktik</h4>
+                {doctor.scheduleText ? (
+                  <div
+                    className="font-['Inter'] text-[15px] text-[#120f0b] leading-snug [&_p]:mb-1 [&_ul]:mb-2 [&_strong]:font-semibold max-h-[130px] overflow-y-auto pr-2"
+                    dangerouslySetInnerHTML={{ __html: doctor.scheduleText }}
+                  />
+                ) : (
+                  <ul className="flex flex-col gap-2">
+                    <li className="flex items-center gap-3">
+                      <span className="w-2 h-2 rounded-full bg-[#503d1c] shrink-0" />
+                      <span className="font-['Inter'] text-[16px] text-[#120f0b]">
+                        <strong>Hari:</strong> {doctor.schedule}
+                      </span>
+                    </li>
+                    <li className="flex items-center gap-3">
+                      <span className="w-2 h-2 rounded-full bg-[#503d1c] shrink-0" />
+                      <span className="font-['Inter'] text-[16px] text-[#120f0b]">
+                        <strong>Jam:</strong> {doctor.hours}
+                      </span>
+                    </li>
+                  </ul>
+                )}
               </div>
               <div className="flex flex-col gap-4 mt-auto">
                 <Link
@@ -185,14 +195,14 @@ export function DoctorsPageContent({
             </p>
           </div>
 
-          <div className="grid grid-cols-2 gap-x-4 gap-y-10 md:flex md:flex-wrap md:justify-center md:gap-6 w-full">
+          <div className="grid grid-cols-2 gap-x-4 gap-y-10 md:flex md:flex-wrap md:justify-center md:gap-x-6 md:gap-y-16 w-full">
             {doctors.map((doc) => (
               <div
                 key={doc.name}
-                className="flex flex-col items-center gap-3 md:gap-8 md:w-[calc(33.333%-16px)] max-w-[397px]"
+                className="flex flex-col items-center gap-2 md:gap-2.5 md:w-[calc(33.333%-16px)] max-w-[397px]"
               >
                 <div
-                  className="p-[1px] rounded-full w-[140px] h-[140px] md:w-[322px] md:h-[322px]"
+                  className="p-[1px] rounded-full w-[140px] h-[140px] md:w-[264px] md:h-[264px]"
                   style={{ background: GOLD_RING }}
                 >
                   <div className="rounded-full overflow-hidden w-full h-full">
@@ -210,7 +220,7 @@ export function DoctorsPageContent({
                 <button
                   type="button"
                   onClick={() => setSelected(doc)}
-                  className="mt-auto bg-[#b59637] border border-[#ecd5a5] rounded-full px-4 py-2 text-[11px] md:px-9 md:py-[18px] md:text-[18px] text-white font-serif font-semibold hover:opacity-90 transition-opacity w-full max-w-[322px] cursor-pointer"
+                  className="bg-[#b59637] border border-[#ecd5a5] rounded-full px-4 py-2 text-[11px] md:px-8 md:py-3.5 md:text-[16px] text-white font-serif font-semibold hover:opacity-90 transition-opacity w-full max-w-[240px] cursor-pointer"
                 >
                   View Profile
                 </button>

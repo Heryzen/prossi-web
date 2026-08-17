@@ -5,6 +5,8 @@ export type Doctor = {
   bio: string;
   schedule: string;
   hours: string;
+  location?: string | null;
+  scheduleText?: string | null;
 };
 
 export const ALL_DOCTORS: Doctor[] = [

@@ -42,7 +42,7 @@ const programs = [
   },
 ];
 
-function ProgramCard({ title, desc, img }: { title: string; desc: string; img: string; size: "sm" | "lg" }) {
+function ProgramCard({ title, desc, img, ctaLink }: { title: string; desc: string; img: string; size: "sm" | "lg"; ctaLink?: string | null }) {
   return (
     <div
       className="rounded-[24px] p-[1px] w-full flex-1"
@@ -64,17 +64,27 @@ function ProgramCard({ title, desc, img }: { title: string; desc: string; img: s
           <p className="font-['Inter',sans-serif] font-normal text-[16px] text-[#120f0b] leading-relaxed">
             {desc}
           </p>
+          {ctaLink && (
+            <a
+              href={ctaLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-['Inter',sans-serif] font-semibold text-[16px] text-[#cd724f] underline underline-offset-2 hover:text-[#a85a3d] transition-colors"
+            >
+              Selengkapnya
+            </a>
+          )}
         </div>
       </div>
     </div>
   );
 }
 
-type CmsTreatment = { name: string; description: string; image: string | null };
+type CmsTreatment = { name: string; description: string; image: string | null; cta_link: string | null };
 
 export async function CoreServices() {
   const cms = await directusFetch<CmsTreatment[]>(
-    "/items/treatments?filter[category][_eq]=slimming&filter[status][_eq]=published&sort=sort&fields=name,description,image"
+    "/items/treatments?filter[category][_eq]=slimming&filter[status][_eq]=published&sort=sort&fields=name,description,image,cta_link"
   );
 
   const items =
@@ -83,6 +93,7 @@ export async function CoreServices() {
           title: t.name,
           desc: t.description,
           img: t.image ? assetUrl(t.image) : programs[i % programs.length].img,
+          ctaLink: t.cta_link,
           size: "sm" as const,
         }))
       : programs;

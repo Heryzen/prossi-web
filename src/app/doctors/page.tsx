@@ -11,6 +11,8 @@ type CmsDoctor = {
   schedule_days: string;
   schedule_hours: string;
   treatment_category: string | null;
+  location: string | null;
+  schedule_text: string | null;
 };
 
 type CmsArticle = {
@@ -56,7 +58,7 @@ export default async function Doctors({
 
   const [cms, cmsArticles] = await Promise.all([
     directusFetch<CmsDoctor[]>(
-      `/items/doctors?filter[status][_eq]=published&sort=sort&fields=name,photo,specialty,bio,schedule_days,schedule_hours,treatment_category${filter}`
+      `/items/doctors?filter[status][_eq]=published&sort=sort&fields=name,photo,specialty,bio,schedule_days,schedule_hours,treatment_category,location,schedule_text${filter}`
     ),
     directusFetch<CmsArticle[]>(
       "/items/articles?filter[status][_eq]=published&sort=-date_created&limit=3&fields=id,slug,title,cover_image,category.name"
@@ -81,6 +83,8 @@ export default async function Doctors({
           bio: d.bio,
           schedule: d.schedule_days,
           hours: d.schedule_hours,
+          location: d.location,
+          scheduleText: d.schedule_text,
         }))
       : category
         ? []

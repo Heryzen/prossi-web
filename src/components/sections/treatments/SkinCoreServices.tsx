@@ -31,7 +31,7 @@ const programs = [
   },
 ];
 
-function ProgramCard({ title, desc, img, size }: { title: string; desc: string; img: string; size: "sm" | "lg" }) {
+function ProgramCard({ title, desc, img, ctaLink }: { title: string; desc: string; img: string; size: "sm" | "lg"; ctaLink?: string | null }) {
   return (
     <div
       className="rounded-[24px] p-[1px] flex-1"
@@ -48,17 +48,27 @@ function ProgramCard({ title, desc, img, size }: { title: string; desc: string; 
           <p className="font-['Inter',sans-serif] font-normal text-[16px] text-[#120f0b] leading-relaxed">
             {desc}
           </p>
+          {ctaLink && (
+            <a
+              href={ctaLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-['Inter',sans-serif] font-semibold text-[16px] text-[#426B6A] underline underline-offset-2 hover:text-[#2f4b4a] transition-colors"
+            >
+              Selengkapnya
+            </a>
+          )}
         </div>
       </div>
     </div>
   );
 }
 
-type CmsTreatment = { name: string; description: string; image: string | null };
+type CmsTreatment = { name: string; description: string; image: string | null; cta_link: string | null };
 
 export async function SkinCoreServices() {
   const cms = await directusFetch<CmsTreatment[]>(
-    "/items/treatments?filter[category][_eq]=skin&filter[status][_eq]=published&sort=sort&fields=name,description,image"
+    "/items/treatments?filter[category][_eq]=skin&filter[status][_eq]=published&sort=sort&fields=name,description,image,cta_link"
   );
 
   const items =
@@ -67,6 +77,7 @@ export async function SkinCoreServices() {
           title: t.name,
           desc: t.description,
           img: t.image ? assetUrl(t.image) : programs[i % programs.length].img,
+          ctaLink: t.cta_link,
           size: "sm" as const,
         }))
       : programs;
