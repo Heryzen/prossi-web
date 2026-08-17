@@ -1,1 +1,0 @@
-- [Screenshot bottom-fade artifact](screenshot-bottom-fade.md) — app_preview screenshots fade the bottom edge; don't mistake it for a CSS overlay bug.
