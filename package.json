@@ -73,6 +73,7 @@
     "zod": "^3.25.76"
   },
   "dependencies": {
+    "@next/third-parties": "^16.3.3",
     "@types/react-google-recaptcha": "^2.1.9",
     "jsbarcode": "^3.12.3",
     "leaflet": "^1.9.4",
