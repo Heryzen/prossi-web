@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
+import { sendGAEvent } from "@next/third-parties/google";
 import { useCart } from "@/lib/cart";
 
 const navItems = [
@@ -359,6 +360,7 @@ export function Header({ topBar }: { topBar?: HeaderTopBar }) {
             {/* CTA Button — a touch shorter once scrolled, matching the shrunk logo */}
             <Link
               href="/contact"
+              onClick={() => sendGAEvent("event", "klik_reservation", { lokasi: "navbar_desktop" })}
               className={`flex bg-[#b59637] rounded-full text-white font-medium hover:opacity-90 transition-all duration-500 ease-in-out items-center justify-center whitespace-nowrap ${
                 scrolled ? "px-6 h-9 text-[14px]" : "px-6 h-10 text-[15px]"
               }`}
@@ -550,7 +552,10 @@ export function Header({ topBar }: { topBar?: HeaderTopBar }) {
             ))}
             <Link
               href="/contact"
-              onClick={() => setMobileOpen(false)}
+              onClick={() => {
+                sendGAEvent("event", "klik_reservation", { lokasi: "navbar_mobile" });
+                setMobileOpen(false);
+              }}
               className="bg-[#b59637] border border-[#ecd5a5] rounded-full px-9 py-3 text-white font-['Source_Serif_Pro',serif] font-semibold text-base mt-2 text-center"
             >
               Reservation
