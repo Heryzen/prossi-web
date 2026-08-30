@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { MapContainer, TileLayer, Marker, Popup, ZoomControl, useMap } from "react-leaflet";
+import { MapContainer, TileLayer, Marker, Popup, ZoomControl, AttributionControl, useMap } from "react-leaflet";
 import L from "leaflet";
 import { branches as staticBranches, type Branch } from "./locations-data";
 
@@ -62,8 +62,10 @@ export function MapSection({
       style={{ width: "100%", height: "100%" }}
       zoomControl={false}
       scrollWheelZoom={true}
+      attributionControl={false}
     >
       <ZoomControl position="bottomright" />
+      <AttributionControl position="bottomright" prefix={false} />
       <TileLayer
         attribution='&copy; <a href="https://www.esri.com/">Esri</a>'
         url="https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}"
