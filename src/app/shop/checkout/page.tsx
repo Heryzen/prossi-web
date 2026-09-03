@@ -443,9 +443,16 @@ function CheckoutContent() {
                 )}
               </div>
               <div className="px-4 py-3 flex flex-col justify-center gap-1">
-                <p className="font-['Lato',sans-serif] font-bold text-[15px] leading-tight text-[#11151c] line-clamp-2">
-                  {item.name}
-                </p>
+                <div className="flex items-center gap-2">
+                  <p className="font-['Lato',sans-serif] font-bold text-[15px] leading-tight text-[#11151c] line-clamp-2">
+                    {item.name}
+                  </p>
+                  {!item.enable_shipping && (
+                    <span className="shrink-0 px-2 py-0.5 rounded-full bg-[#eef3fb] text-[#2d5fa8] font-['Inter',sans-serif] font-semibold text-[10px] uppercase whitespace-nowrap">
+                      E-Voucher
+                    </span>
+                  )}
+                </div>
                 <p className="font-['Inter',sans-serif] text-[13px] text-[#3b4963]">
                   {item.qty} x {rupiah(item.price)}
                 </p>
@@ -483,6 +490,9 @@ function CheckoutContent() {
                 <div key={item.slug} className="flex justify-between">
                   <span className="font-['Lato',sans-serif] text-[15px] text-[#11151c]">
                     {item.name} x{item.qty}
+                    {!item.enable_shipping && (
+                      <span className="ml-1 text-[12px] text-[#2d5fa8]">(E-Voucher)</span>
+                    )}
                   </span>
                   <span className="font-['Lato',sans-serif] font-medium text-[15px] text-[#3b4963] whitespace-nowrap">
                     {rupiah(item.price * item.qty)}
@@ -495,6 +505,11 @@ function CheckoutContent() {
                   {selectedRate ? rupiah(shippingCost) : "-"}
                 </span>
               </div>
+              {hasPhysical && hasNonPhysical && (
+                <p className="font-['Inter',sans-serif] text-[12px] text-[#889bbf] -mt-1">
+                  Ongkir hanya berlaku untuk produk fisik. Item E-Voucher dikirim lewat email, tanpa biaya kirim.
+                </p>
+              )}
             </div>
           )}
         </div>

@@ -65,7 +65,7 @@ function CoreProgramCard({ title, img, border }: { title: string; img: string; b
             className="inline-flex items-center justify-center px-9 py-[18px] rounded-full font-['Source_Serif_4',serif] font-semibold text-[18px] text-white"
             style={{ background: "#B59637", border: "1px solid #ECD5A5" }}
           >
-            View Doctors
+            Selengkapnya
           </a>
         </div>
       </div>

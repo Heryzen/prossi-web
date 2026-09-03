@@ -451,20 +451,46 @@ export function Header({ topBar }: { topBar?: HeaderTopBar }) {
                 </svg>
               </Link>
             )}
-            <Link
-              href="/cart"
-              aria-label="Menu keranjang"
-              className="relative flex items-center justify-center w-9 h-9 hover:opacity-70 transition-opacity"
-            >
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-                <path d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.3 4.6A1 1 0 0 0 5.6 19H17M9 21a1 1 0 1 0 0-2 1 1 0 0 0 0 2zM17 21a1 1 0 1 0 0-2 1 1 0 0 0 0 2z" stroke="#120f0b" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-              {cartCount > 0 && (
-                <span className="absolute -top-0.5 -right-0.5 w-[18px] h-[18px] rounded-full bg-[#b59637] text-white text-[10px] font-semibold flex items-center justify-center">
-                  {cartCount}
-                </span>
+            <div className="relative">
+              <button
+                type="button"
+                onClick={() => setOpenMenu(openMenu === "cart" ? null : "cart")}
+                aria-label="Menu keranjang"
+                className="relative flex items-center justify-center w-9 h-9 hover:opacity-70 transition-opacity cursor-pointer"
+              >
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                  <path d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.3 4.6A1 1 0 0 0 5.6 19H17M9 21a1 1 0 1 0 0-2 1 1 0 0 0 0 2zM17 21a1 1 0 1 0 0-2 1 1 0 0 0 0 2z" stroke="#120f0b" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+                {cartCount > 0 && (
+                  <span className="absolute -top-0.5 -right-0.5 w-[18px] h-[18px] rounded-full bg-[#b59637] text-white text-[10px] font-semibold flex items-center justify-center">
+                    {cartCount}
+                  </span>
+                )}
+              </button>
+
+              {openMenu === "cart" && (
+                <div className="absolute right-0 top-[calc(100%+10px)] w-[200px] rounded-[20px] bg-white p-4 shadow-[0px_10px_30px_rgba(18,15,11,0.12)] z-50">
+                  <div className="flex flex-col gap-1">
+                    <Link
+                      href="/cart"
+                      onClick={() => setOpenMenu(null)}
+                      className="rounded-lg px-4 py-3 text-[15px] text-[#120f0b] hover:bg-[#f4ece4] hover:text-[#b59637] transition-colors"
+                    >
+                      Keranjang{cartCount > 0 ? ` (${cartCount})` : ""}
+                    </Link>
+                    {memberName && (
+                      <Link
+                        href="/shop/orders"
+                        onClick={() => setOpenMenu(null)}
+                        className="rounded-lg px-4 py-3 text-[15px] text-[#120f0b] hover:bg-[#f4ece4] hover:text-[#b59637] transition-colors"
+                      >
+                        Pesanan Saya
+                      </Link>
+                    )}
+                  </div>
+                </div>
               )}
-            </Link>
+            </div>
           </div>
 
           {/* Mobile hamburger */}
