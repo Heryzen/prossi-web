@@ -82,7 +82,7 @@ export function Hero({ slides: slidesProp }: { slides?: HeroSlide[] }) {
             <div className="absolute inset-0 z-10 flex items-start justify-center">
               <div className="max-w-[816px] w-full flex flex-col items-center gap-5 lg:gap-[42px] px-6 lg:px-0 text-center pt-[80px] lg:pt-[161px]">
                 <div className="flex flex-col gap-3 lg:gap-4 items-center w-full">
-                  <h1 className="prossi-fade-up font-['Lato',sans-serif] font-normal text-[28px] lg:text-[64px] leading-tight lg:leading-[1.15] text-[#503d1c]">
+                  <h1 className="prossi-fade-up font-['Source_Serif_4',serif] font-normal text-[28px] lg:text-[64px] leading-tight lg:leading-[1.15] text-[#503d1c]">
                     {slide.heading}
                   </h1>
                   <p className="prossi-fade-up font-['Lato',sans-serif] text-sm lg:text-[18px] text-[#503d1c] lg:whitespace-nowrap">
