@@ -184,7 +184,7 @@ export function ReservationModal({ isOpen, onClose, initialClinicName }: Props) 
             <div className="flex flex-col w-full" style={{ maxWidth: 426 }}>
               {/* Full name */}
               <div className="flex flex-col gap-1 mb-4">
-                <label className="font-['Readex_Pro',sans-serif] text-[14px] leading-[20px] text-black">
+                <label className="font-['Lato',sans-serif] text-[14px] leading-[20px] text-black">
                   Full name
                 </label>
                 <input
@@ -192,14 +192,14 @@ export function ReservationModal({ isOpen, onClose, initialClinicName }: Props) 
                   placeholder="Full Name"
                   value={form.fullName}
                   onChange={(e) => setForm({ ...form, fullName: e.target.value })}
-                  className="w-full h-[40px] px-[9px] border border-[#DBDBDB] bg-white outline-none focus:border-[#B59637] transition-colors font-['Readex_Pro',sans-serif] text-[16px] text-[#292929] placeholder-[#AEAFAF]"
+                  className="w-full h-[40px] px-[9px] border border-[#DBDBDB] bg-white outline-none focus:border-[#B59637] transition-colors font-['Lato',sans-serif] text-[16px] text-[#292929] placeholder-[#AEAFAF]"
                   style={{ borderRadius: 4 }}
                 />
               </div>
 
               {/* Phone */}
               <div className="flex flex-col gap-1 mb-4">
-                <label className="font-['Readex_Pro',sans-serif] text-[14px] leading-[20px] text-black">
+                <label className="font-['Lato',sans-serif] text-[14px] leading-[20px] text-black">
                   Phone Number
                 </label>
                 <input
@@ -207,21 +207,21 @@ export function ReservationModal({ isOpen, onClose, initialClinicName }: Props) 
                   placeholder="08xxxxxxxxxx"
                   value={form.phone}
                   onChange={(e) => setForm({ ...form, phone: e.target.value.replace(/\D/g, "") })}
-                  className="w-full h-[40px] px-[9px] border border-[#DBDBDB] bg-white outline-none focus:border-[#B59637] transition-colors font-['Readex_Pro',sans-serif] text-[16px] text-[#292929] placeholder-[#AEAFAF]"
+                  className="w-full h-[40px] px-[9px] border border-[#DBDBDB] bg-white outline-none focus:border-[#B59637] transition-colors font-['Lato',sans-serif] text-[16px] text-[#292929] placeholder-[#AEAFAF]"
                   style={{ borderRadius: 4 }}
                 />
               </div>
 
               {/* Treatment */}
               <div className="flex flex-col gap-1 mb-4">
-                <label className="font-['Readex_Pro',sans-serif] text-[14px] leading-[20px] text-black">
+                <label className="font-['Lato',sans-serif] text-[14px] leading-[20px] text-black">
                   Treatment
                 </label>
                 <div className="relative">
                   <select
                     value={form.treatment}
                     onChange={(e) => setForm({ ...form, treatment: e.target.value })}
-                    className="w-full h-[40px] px-[9px] border border-[#DBDBDB] bg-white outline-none focus:border-[#B59637] transition-colors font-['Readex_Pro',sans-serif] text-[16px] appearance-none cursor-pointer"
+                    className="w-full h-[40px] px-[9px] border border-[#DBDBDB] bg-white outline-none focus:border-[#B59637] transition-colors font-['Lato',sans-serif] text-[16px] appearance-none cursor-pointer"
                     style={{ borderRadius: 4, color: form.treatment ? "#292929" : "#AEAFAF" }}
                   >
                     <option value="" disabled>Select Treatment</option>
@@ -239,14 +239,14 @@ export function ReservationModal({ isOpen, onClose, initialClinicName }: Props) 
 
               {/* Clinic */}
               <div className="flex flex-col gap-1">
-                <label className="font-['Readex_Pro',sans-serif] text-[14px] leading-[20px] text-black">
+                <label className="font-['Lato',sans-serif] text-[14px] leading-[20px] text-black">
                   Clinic
                 </label>
                 <div className="relative">
                   <select
                     value={form.clinic}
                     onChange={(e) => setForm({ ...form, clinic: e.target.value })}
-                    className="w-full h-[40px] px-[9px] border border-[#DBDBDB] bg-white outline-none focus:border-[#B59637] transition-colors font-['Readex_Pro',sans-serif] text-[16px] appearance-none cursor-pointer"
+                    className="w-full h-[40px] px-[9px] border border-[#DBDBDB] bg-white outline-none focus:border-[#B59637] transition-colors font-['Lato',sans-serif] text-[16px] appearance-none cursor-pointer"
                     style={{ borderRadius: 4, color: form.clinic ? "#292929" : "#AEAFAF" }}
                   >
                     <option value="" disabled>Select Clinic</option>
@@ -270,7 +270,7 @@ export function ReservationModal({ isOpen, onClose, initialClinicName }: Props) 
                     <path d="M5 13l4 4L19 7" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
                   </svg>
                 </div>
-                <p className="font-['Readex_Pro',sans-serif] text-[16px] text-[#292929]">
+                <p className="font-['Lato',sans-serif] text-[16px] text-[#292929]">
                   Reservasi tersimpan! Kami sudah membuka WhatsApp untuk Anda — lanjutkan chat dengan tim kami di sana untuk konfirmasi jadwal.
                 </p>
                 {waLink && (
@@ -297,16 +297,16 @@ export function ReservationModal({ isOpen, onClose, initialClinicName }: Props) 
               <>
                 {/* Privacy text */}
                 <div className="flex flex-wrap justify-center gap-x-1" style={{ maxWidth: 426 }}>
-                  <span className="font-['Readex_Pro',sans-serif] text-[14px] leading-[20px] text-[#292929]">
+                  <span className="font-['Lato',sans-serif] text-[14px] leading-[20px] text-[#292929]">
                     By signing up, you are agreeing to our
                   </span>
-                  <a href="#" className="font-['Readex_Pro',sans-serif] text-[14px] leading-[20px] text-[#607DFF] underline">
+                  <a href="#" className="font-['Lato',sans-serif] text-[14px] leading-[20px] text-[#607DFF] underline">
                     Privacy Policy &amp; Term of Use
                   </a>
                 </div>
 
                 {error && (
-                  <p className="font-['Readex_Pro',sans-serif] text-[14px] text-red-600 text-center" style={{ maxWidth: 426 }}>
+                  <p className="font-['Lato',sans-serif] text-[14px] text-red-600 text-center" style={{ maxWidth: 426 }}>
                     {error}
                   </p>
                 )}

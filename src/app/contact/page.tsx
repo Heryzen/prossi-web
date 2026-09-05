@@ -129,7 +129,7 @@ export default function Contact() {
         {/* Content */}
         <div className="relative z-10 flex flex-col gap-4 px-6 pt-[100px] md:pt-[200px] md:pl-[100px]" style={{ maxWidth: 711 }}>
           <h1
-            className="font-['Source_Serif_4',serif] font-bold leading-tight"
+            className="font-['Lato',sans-serif] font-bold leading-tight"
             style={{
               fontSize: "clamp(28px, 7vw, 45px)",
               background:
@@ -174,13 +174,13 @@ export default function Contact() {
               </div>
               <div className="flex flex-col gap-1 flex-1 min-w-0">
                 <span
-                  className="font-['Inter',sans-serif] font-medium text-[#001334]"
+                  className="font-['Lato',sans-serif] font-medium text-[#001334]"
                   style={{ fontSize: 16, lineHeight: "24px" }}
                 >
                   {row.label}
                 </span>
                 <span
-                  className="font-['Merriweather_Sans',sans-serif] font-extrabold text-[#001334]"
+                  className="font-['Lato',sans-serif] font-extrabold text-[#001334]"
                   style={{ fontSize: 20, lineHeight: "30px" }}
                 >
                   {row.phone}
@@ -226,7 +226,7 @@ export default function Contact() {
               <h2 className="font-['Lato',sans-serif] font-bold text-[#292929]" style={{ fontSize: 22, lineHeight: "28px", letterSpacing: "0.03em" }}>
                 Reservasi Cabang Prossi Klinik
               </h2>
-              <p className="font-['Readex_Pro',sans-serif] font-normal text-[#292929]" style={{ fontSize: 16, lineHeight: "24px" }}>
+              <p className="font-['Lato',sans-serif] font-normal text-[#292929]" style={{ fontSize: 16, lineHeight: "24px" }}>
                 Temukan Cabang Prossi Terdekat Disini
               </p>
             </div>
@@ -257,7 +257,7 @@ export default function Contact() {
                     <div className="flex flex-col gap-1">
                       <p className="font-['Lato',sans-serif] font-semibold text-[#292929]" style={{ fontSize: 14, lineHeight: "20px" }}>{branch.name}</p>
                       <p className="font-['Lato',sans-serif] font-bold text-[#292929]" style={{ fontSize: 12, lineHeight: "18px" }}>{branch.address}</p>
-                      <p className="font-['Readex_Pro',sans-serif] font-semibold" style={{ fontSize: 12, lineHeight: "18px", color: "#B59637" }}>{branch.hours}</p>
+                      <p className="font-['Lato',sans-serif] font-semibold" style={{ fontSize: 12, lineHeight: "18px", color: "#B59637" }}>{branch.hours}</p>
                       <div className="flex gap-2 mt-1">
                         <a
                           href={branch.mapsUrl}

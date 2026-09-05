@@ -7,7 +7,7 @@ import ReCAPTCHA from "react-google-recaptcha";
 type Step = "register" | "done";
 
 const inputCls =
-  "w-full h-10 bg-white border border-[#dbdbdb] rounded px-[9px] font-['Readex_Pro',sans-serif] text-[16px] text-[#292929] placeholder:text-[#aeafaf] outline-none focus:border-[#b59637] transition-colors";
+  "w-full h-10 bg-white border border-[#dbdbdb] rounded px-[9px] font-['Lato',sans-serif] text-[16px] text-[#292929] placeholder:text-[#aeafaf] outline-none focus:border-[#b59637] transition-colors";
 
 export default function Register() {
   const [step, setStep] = useState<Step>("register");
@@ -84,13 +84,13 @@ export default function Register() {
             className="bg-white w-full md:w-[646px] min-h-screen px-6 md:px-[72px] pt-[120px] pb-16 flex flex-col justify-center"
             style={{ boxShadow: "-10px 0 40px rgba(0,10,55,0.15)" }}
           >
-            <h1 className="font-['Readex_Pro',sans-serif] font-semibold text-[26px] md:text-[30px] leading-[42px] text-[#292929] mb-8 md:mb-12">
+            <h1 className="font-['Lato',sans-serif] font-semibold text-[26px] md:text-[30px] leading-[42px] text-[#292929] mb-8 md:mb-12">
               Register
             </h1>
 
             <form className="flex flex-col gap-9" onSubmit={handleSubmit} autoComplete="off">
               <div className="flex flex-col gap-1.5">
-                <label className="font-['Readex_Pro',sans-serif] text-[14px] text-black">Full name</label>
+                <label className="font-['Lato',sans-serif] text-[14px] text-black">Full name</label>
                 <input
                   type="text"
                   required
@@ -103,7 +103,7 @@ export default function Register() {
               </div>
 
               <div className="flex flex-col gap-1.5">
-                <label className="font-['Readex_Pro',sans-serif] text-[14px] text-black">Email Address</label>
+                <label className="font-['Lato',sans-serif] text-[14px] text-black">Email Address</label>
                 <input
                   type="email"
                   required
@@ -116,10 +116,10 @@ export default function Register() {
               </div>
 
               <div className="flex flex-col gap-1.5">
-                <label className="font-['Readex_Pro',sans-serif] text-[14px] text-black">Phone Number</label>
+                <label className="font-['Lato',sans-serif] text-[14px] text-black">Phone Number</label>
                 <div className="flex gap-2">
                   <div className="flex items-center justify-between gap-1 w-[105px] h-10 bg-white border border-[#dbdbdb] rounded px-[9px] shrink-0">
-                    <span className="font-['Readex_Pro',sans-serif] text-[16px] text-[#292929]">🇮🇩 +62</span>
+                    <span className="font-['Lato',sans-serif] text-[16px] text-[#292929]">🇮🇩 +62</span>
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
                       <path d="M6 9l6 6 6-6" stroke="#292929" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                     </svg>
@@ -136,7 +136,7 @@ export default function Register() {
               </div>
 
               <div className="flex flex-col gap-1.5">
-                <label className="font-['Readex_Pro',sans-serif] text-[14px] text-black">Password</label>
+                <label className="font-['Lato',sans-serif] text-[14px] text-black">Password</label>
                 <input
                   type="password"
                   required
@@ -150,7 +150,7 @@ export default function Register() {
               </div>
 
               <div className="flex flex-col gap-1.5">
-                <label className="font-['Readex_Pro',sans-serif] text-[14px] text-black">Confirm Password</label>
+                <label className="font-['Lato',sans-serif] text-[14px] text-black">Confirm Password</label>
                 <input
                   type="password"
                   required
@@ -164,10 +164,10 @@ export default function Register() {
               </div>
 
               {error && (
-                <p className="font-['Readex_Pro',sans-serif] text-[14px] text-red-600">{error}</p>
+                <p className="font-['Lato',sans-serif] text-[14px] text-red-600">{error}</p>
               )}
 
-              <p className="font-['Readex_Pro',sans-serif] text-[14px] leading-[20px] text-[#292929]">
+              <p className="font-['Lato',sans-serif] text-[14px] leading-[20px] text-[#292929]">
                 By signing up, you are agreeing to our{" "}
                 <Link href="/privacy" className="text-[#607dff] underline">
                   Privacy Policy &amp; Term of Use
@@ -207,10 +207,10 @@ export default function Register() {
               </svg>
             </div>
             <div className="flex flex-col gap-2">
-              <h1 className="font-['Readex_Pro',sans-serif] font-semibold text-[26px] md:text-[30px] text-[#292929]">
+              <h1 className="font-['Lato',sans-serif] font-semibold text-[26px] md:text-[30px] text-[#292929]">
                 Registration Complete
               </h1>
-              <p className="font-['Readex_Pro',sans-serif] text-[16px] md:text-[18px] text-[#292929]">
+              <p className="font-['Lato',sans-serif] text-[16px] md:text-[18px] text-[#292929]">
                 Selamat datang di Prossi Clinic, {fullName.split(" ")[0] || "there"}!
               </p>
             </div>

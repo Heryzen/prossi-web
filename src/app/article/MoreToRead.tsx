@@ -31,19 +31,19 @@ function RelatedCard({ article }: { article: Article }) {
       </div>
       <div className="flex flex-col gap-2">
         <p
-          className="font-['Inter',sans-serif] font-bold text-[#B41833]"
+          className="font-['Lato',sans-serif] font-bold text-[#B41833]"
           style={{ fontSize: 16, lineHeight: "24px", letterSpacing: "0.0094em" }}
         >
           {article.date}
         </p>
         <h3
-          className="font-['Merriweather_Sans',sans-serif] font-extrabold text-[#0D1F3E]"
+          className="font-['Lato',sans-serif] font-extrabold text-[#0D1F3E]"
           style={{ fontSize: 20, lineHeight: "30px" }}
         >
           {article.title}
         </h3>
         <p
-          className="font-['Inter',sans-serif] font-medium text-[#4A576F]"
+          className="font-['Lato',sans-serif] font-medium text-[#4A576F]"
           style={{ fontSize: 16, lineHeight: "24px", letterSpacing: "0.0094em" }}
         >
           {article.excerpt}
@@ -52,7 +52,7 @@ function RelatedCard({ article }: { article: Article }) {
       <div>
         <Link
           href={`/article/${article.slug ?? article.id}`}
-          className="inline-flex items-center justify-center rounded-[8px] font-['Inter',sans-serif] font-semibold text-[14px] text-[#11151C] hover:bg-[#f4ece4] transition-colors"
+          className="inline-flex items-center justify-center rounded-[8px] font-['Lato',sans-serif] font-semibold text-[14px] text-[#11151C] hover:bg-[#f4ece4] transition-colors"
           style={{ padding: "12px 16px", lineHeight: "22px" }}
         >
           Read More
@@ -70,7 +70,7 @@ export function MoreToRead({ articles }: { articles: Article[] }) {
   return (
     <div className="bg-white flex flex-col gap-[47px] px-6 py-12 md:px-[160px] md:py-[100px]">
       <h2
-        className="font-['Merriweather_Sans',sans-serif] font-extrabold text-[#11151C]"
+        className="font-['Lato',sans-serif] font-extrabold text-[#11151C]"
         style={{ fontSize: 28, lineHeight: "34px" }}
       >
         More to read...

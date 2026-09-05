@@ -107,7 +107,7 @@ export default function LocationsPage() {
             style={{ maxWidth: 711 }}
           >
             <h1
-              className="font-['Source_Serif_4',serif] font-bold leading-tight"
+              className="font-['Lato',sans-serif] font-bold leading-tight"
               style={{
                 fontSize: "clamp(28px, 7vw, 45px)",
                 background:
@@ -120,7 +120,7 @@ export default function LocationsPage() {
               Prossi Location
             </h1>
             <p
-              className="font-['Inter',sans-serif] font-normal text-white"
+              className="font-['Lato',sans-serif] font-normal text-white"
               style={{ fontSize: "clamp(14px, 4vw, 18px)" }}
             >
               Kami Hadir di 34 Provinsi di Seluruh Indonesia
@@ -153,7 +153,7 @@ export default function LocationsPage() {
               Cabang Prossi Klinik
             </h2>
             <p
-              className="font-['Readex_Pro','Inter',sans-serif] font-semibold text-[#292929]"
+              className="font-['Lato',sans-serif] font-semibold text-[#292929]"
               style={{ fontSize: 16, lineHeight: "24px" }}
             >
               Temukan Cabang Prossi Terdekat Disini
@@ -174,7 +174,7 @@ export default function LocationsPage() {
                   setSelected(0);
                 }}
                 placeholder="Cari lokasi, area, kota atau alamat"
-                className="flex-1 min-w-0 outline-none font-['Readex_Pro','Inter',sans-serif] text-[14px] text-[#292929] placeholder:text-[#868787]"
+                className="flex-1 min-w-0 outline-none font-['Lato',sans-serif] text-[14px] text-[#292929] placeholder:text-[#868787]"
               />
               {query && (
                 <button
@@ -197,7 +197,7 @@ export default function LocationsPage() {
           {/* Scrollable list */}
           <div className="flex-1 overflow-y-auto flex flex-col gap-3 px-6 py-4 md:px-10">
             {filteredBranches.length === 0 && (
-              <p className="font-['Readex_Pro','Inter',sans-serif] text-[14px] text-[#868787] text-center py-4">
+              <p className="font-['Lato',sans-serif] text-[14px] text-[#868787] text-center py-4">
                 Tidak ada cabang yang cocok dengan pencarian.
               </p>
             )}

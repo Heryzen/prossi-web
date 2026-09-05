@@ -35,20 +35,20 @@ function ArticleCard({ id, slug, title, date, excerpt, img, featured }: Article 
       <div className="flex flex-col gap-5 flex-1 justify-center">
         <div className="flex flex-col gap-1">
           <h3
-            className="font-['Merriweather_Sans',sans-serif] font-extrabold text-[#0D1F3E]"
+            className="font-['Lato',sans-serif] font-extrabold text-[#0D1F3E]"
             style={{ fontSize: featured ? 26 : 20, lineHeight: featured ? "36px" : "30px" }}
           >
             {title}
           </h3>
           <p
-            className="font-['Inter',sans-serif] font-bold text-[#11151C]"
+            className="font-['Lato',sans-serif] font-bold text-[#11151C]"
             style={{ fontSize: 16, lineHeight: "24px", letterSpacing: "0.0094em" }}
           >
             {date}
           </p>
         </div>
         <p
-          className="font-['Inter',sans-serif] font-medium text-[#3B4963]"
+          className="font-['Lato',sans-serif] font-medium text-[#3B4963]"
           style={{ fontSize: 16, lineHeight: "24px", letterSpacing: "0.0094em" }}
         >
           {excerpt}
@@ -56,7 +56,7 @@ function ArticleCard({ id, slug, title, date, excerpt, img, featured }: Article 
         <div>
           <Link
             href={`/article/${slug ?? id}`}
-            className="inline-flex items-center justify-center rounded-[8px] font-['Inter',sans-serif] font-semibold text-[14px] text-[#11151C] hover:bg-[#f4ece4] transition-colors"
+            className="inline-flex items-center justify-center rounded-[8px] font-['Lato',sans-serif] font-semibold text-[14px] text-[#11151C] hover:bg-[#f4ece4] transition-colors"
             style={{ padding: "12px 16px", lineHeight: "22px" }}
           >
             Read More
@@ -87,7 +87,7 @@ function PageButton({
       disabled={disabled}
       aria-label={ariaLabel}
       aria-current={active ? "page" : undefined}
-      className={`flex items-center justify-center rounded-[8px] font-['Inter',sans-serif] text-[14px] leading-[20px] transition-colors ${
+      className={`flex items-center justify-center rounded-[8px] font-['Lato',sans-serif] text-[14px] leading-[20px] transition-colors ${
         active
           ? "bg-[#11151C] text-white font-semibold"
           : "text-[#11151C] hover:bg-[#f4ece4]"
@@ -213,7 +213,7 @@ export default function ArticlePage() {
             style={{ maxWidth: 711 }}
           >
             <h1
-              className="font-['Source_Serif_4',serif] font-normal leading-tight"
+              className="font-['Lato',sans-serif] font-normal leading-tight"
               style={{
                 fontSize: "clamp(28px, 7vw, 45px)",
                 background:
@@ -251,7 +251,7 @@ export default function ArticlePage() {
                 setSelectedCat(selectedCat === cat ? null : cat);
                 setPage(1);
               }}
-              className={`flex items-center justify-center rounded-full font-['Inter',sans-serif] font-semibold text-[14px] leading-[22px] transition-colors cursor-pointer ${
+              className={`flex items-center justify-center rounded-full font-['Lato',sans-serif] font-semibold text-[14px] leading-[22px] transition-colors cursor-pointer ${
                 selectedCat === cat
                   ? "bg-[#B59637] text-white border border-white"
                   : "bg-transparent text-[#11151C] border border-[#11151C] hover:bg-[#B59637] hover:text-white hover:border-[#B59637]"
@@ -263,13 +263,13 @@ export default function ArticlePage() {
           ))}
         </div>
         <h2
-          className="font-['Merriweather_Sans',sans-serif] font-extrabold text-[#11151C]"
+          className="font-['Lato',sans-serif] font-extrabold text-[#11151C]"
           style={{ fontSize: "clamp(24px, 6vw, 36px)", lineHeight: "1.3", letterSpacing: "0.0069em" }}
         >
           Insight &amp; Inspiration
         </h2>
         <p
-          className="font-['Inter',sans-serif] font-medium text-[#2A3447]"
+          className="font-['Lato',sans-serif] font-medium text-[#2A3447]"
           style={{ fontSize: 16, lineHeight: "24px", letterSpacing: "0.0094em" }}
         >
           Stay informed and inspired with the latest articles on Olympiad tips,

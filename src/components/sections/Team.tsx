@@ -32,7 +32,7 @@ export async function Team() {
                 <img alt="" className="block max-w-none size-full" src="/figma/imgLine4.svg" />
               </div>
             </div>
-            <span className="font-['Inter'] font-semibold leading-normal not-italic relative shrink-0 text-[14px] text-white whitespace-nowrap">OUR DOCTORS</span>
+            <span className="font-['Lato'] font-semibold leading-normal not-italic relative shrink-0 text-[14px] text-white whitespace-nowrap">OUR DOCTORS</span>
             <div className="flex items-center justify-center relative shrink-0">
               <div className="-scale-y-100 flex-none rotate-180">
                 <div className="h-0 relative w-[63px]">
@@ -54,12 +54,12 @@ export async function Team() {
               <div className="w-full h-[200px] lg:h-[428px] border border-[#deba69] rounded-t-[50000px] overflow-hidden relative">
                 <img src={member.img} alt={member.title} className="absolute inset-0 w-full h-full object-cover object-top" />
               </div>
-              <h3 className="font-serif font-semibold text-[11px] leading-tight lg:text-[26px] text-white text-center capitalize">
+              <h3 className="font-sans font-semibold text-[11px] leading-tight lg:text-[26px] text-white text-center capitalize">
                 {member.title}
               </h3>
               <Link
                 href="/doctors"
-                className="w-full text-center lg:w-auto bg-[#b59637] border border-[#ecd5a5] rounded-full px-2 py-1.5 text-[9px] lg:px-9 lg:py-[18px] lg:text-lg text-white font-serif font-semibold hover:bg-[#a3852f] hover:shadow-lg hover:scale-[1.04] transition-all duration-200 whitespace-nowrap"
+                className="w-full text-center lg:w-auto bg-[#b59637] border border-[#ecd5a5] rounded-full px-2 py-1.5 text-[9px] lg:px-9 lg:py-[18px] lg:text-lg text-white font-sans font-semibold hover:bg-[#a3852f] hover:shadow-lg hover:scale-[1.04] transition-all duration-200 whitespace-nowrap"
               >
                 View Doctors
               </Link>

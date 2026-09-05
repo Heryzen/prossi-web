@@ -16,7 +16,7 @@ function Eyebrow({ text }: { text: string }) {
         className="h-[2px] w-[63px]"
         style={{ background: "linear-gradient(270deg, rgba(177,143,82,1) 0%, rgba(177,143,82,0) 100%)" }}
       />
-      <span className="font-['Inter'] font-semibold text-[14px] text-[#120f0b] whitespace-nowrap">{text}</span>
+      <span className="font-['Lato'] font-semibold text-[14px] text-[#120f0b] whitespace-nowrap">{text}</span>
       <div
         className="h-[2px] w-[63px]"
         style={{ background: "linear-gradient(90deg, rgba(177,143,82,1) 0%, rgba(177,143,82,0) 100%)" }}
@@ -64,11 +64,11 @@ function DoctorModal({ doctor, onClose }: { doctor: Doctor; onClose: () => void 
                 <h3 className="font-['Lato'] font-semibold text-[18px] md:text-[20px] text-[#120f0b] capitalize leading-snug">
                   {doctor.name}
                 </h3>
-                <p className="font-['Inter'] font-semibold text-[15px] text-[#503d1c] uppercase">
+                <p className="font-['Lato'] font-semibold text-[15px] text-[#503d1c] uppercase">
                   {doctor.specialty}
                 </p>
                 {doctor.location && (
-                  <p className="font-['Inter'] text-[14px] text-[#503d1c]">{doctor.location}</p>
+                  <p className="font-['Lato'] text-[14px] text-[#503d1c]">{doctor.location}</p>
                 )}
               </div>
             </div>
@@ -77,28 +77,28 @@ function DoctorModal({ doctor, onClose }: { doctor: Doctor; onClose: () => void 
             <div className="flex flex-col gap-5 flex-1 min-h-0">
               <div className="h-[1px] w-full" style={{ background: "rgba(124,96,51,0.3)" }} />
               <div className="flex flex-col gap-2">
-                <h4 className="font-serif font-semibold text-[20px] text-[#120f0b]">Tentang Dokter</h4>
-                <p className="font-['Inter'] text-[15px] text-[#120f0b] leading-relaxed">{doctor.bio}</p>
+                <h4 className="font-sans font-semibold text-[20px] text-[#120f0b]">Tentang Dokter</h4>
+                <p className="font-['Lato'] text-[15px] text-[#120f0b] leading-relaxed">{doctor.bio}</p>
               </div>
               <div className="h-[1px] w-full" style={{ background: "rgba(124,96,51,0.3)" }} />
               <div className="flex flex-col gap-2 min-h-0">
-                <h4 className="font-serif font-semibold text-[20px] text-[#120f0b]">Jadwal Praktik</h4>
+                <h4 className="font-sans font-semibold text-[20px] text-[#120f0b]">Jadwal Praktik</h4>
                 {doctor.scheduleText ? (
                   <div
-                    className="font-['Inter'] text-[15px] text-[#120f0b] leading-snug [&_p]:mb-1 [&_ul]:mb-2 [&_strong]:font-semibold max-h-[130px] overflow-y-auto pr-2"
+                    className="font-['Lato'] text-[15px] text-[#120f0b] leading-snug [&_p]:mb-1 [&_ul]:mb-2 [&_strong]:font-semibold max-h-[130px] overflow-y-auto pr-2"
                     dangerouslySetInnerHTML={{ __html: doctor.scheduleText }}
                   />
                 ) : (
                   <ul className="flex flex-col gap-2">
                     <li className="flex items-center gap-3">
                       <span className="w-2 h-2 rounded-full bg-[#503d1c] shrink-0" />
-                      <span className="font-['Inter'] text-[16px] text-[#120f0b]">
+                      <span className="font-['Lato'] text-[16px] text-[#120f0b]">
                         <strong>Hari:</strong> {doctor.schedule}
                       </span>
                     </li>
                     <li className="flex items-center gap-3">
                       <span className="w-2 h-2 rounded-full bg-[#503d1c] shrink-0" />
-                      <span className="font-['Inter'] text-[16px] text-[#120f0b]">
+                      <span className="font-['Lato'] text-[16px] text-[#120f0b]">
                         <strong>Jam:</strong> {doctor.hours}
                       </span>
                     </li>
@@ -112,7 +112,7 @@ function DoctorModal({ doctor, onClose }: { doctor: Doctor; onClose: () => void 
                 >
                   Reservasi
                 </Link>
-                <p className="font-['Inter'] text-[14px] text-[#503d1c] leading-[1.6]">
+                <p className="font-['Lato'] text-[14px] text-[#503d1c] leading-[1.6]">
                   Availability subject to clinician schedule.
                 </p>
               </div>
@@ -159,7 +159,7 @@ export function DoctorsPageContent({
         <div className="relative z-10 flex flex-col gap-5 md:gap-[42px] max-w-[611px] px-6 md:pl-[100px] pt-[120px] md:pt-[200px]">
           <div className="flex flex-col gap-4 items-start">
             <span
-              className="bg-[#b59637] text-white font-['Inter'] font-semibold text-[13px] md:text-[14px] px-[14px] py-2 rounded-full"
+              className="bg-[#b59637] text-white font-['Lato'] font-semibold text-[13px] md:text-[14px] px-[14px] py-2 rounded-full"
               style={{
                 boxShadow:
                   "0px 4px 4px -4px rgba(79,81,89,0.32), 0px 2px 5px -2px rgba(79,81,89,0.03), 0px 0px 0px 1px rgba(188,189,194,0.25), 0px 1px 1px rgba(188,189,194,0.2)",
@@ -168,12 +168,12 @@ export function DoctorsPageContent({
               {eyebrow}
             </span>
             <h1
-              className="font-serif font-normal leading-tight bg-clip-text text-transparent"
+              className="font-sans font-normal leading-tight bg-clip-text text-transparent"
               style={{ backgroundImage: HEADING_GRADIENT, fontSize: "clamp(28px, 6vw, 45px)" }}
             >
               Perawatan yang Tepat untuk Kulit Sehat & Tubuh Ideal
             </h1>
-            <p className="font-['Inter'] text-white" style={{ fontSize: "clamp(14px, 4vw, 18px)" }}>
+            <p className="font-['Lato'] text-white" style={{ fontSize: "clamp(14px, 4vw, 18px)" }}>
               Mulai dari program slimming hingga perawatan kulit, semua treatment dirancang berdasarkan diagnosis
               dokter untuk hasil yang aman dan terarah.
             </p>
@@ -189,7 +189,7 @@ export function DoctorsPageContent({
             <h2 className="font-['Lato'] font-semibold text-[32px] md:text-[40px] text-[#120f0b] capitalize">
               Tim Dokter Kami
             </h2>
-            <p className="font-['Inter'] text-[16px] md:text-[18px] text-[#120f0b] max-w-[816px]">
+            <p className="font-['Lato'] text-[16px] md:text-[18px] text-[#120f0b] max-w-[816px]">
               Setiap pasien ditangani langsung oleh dokter spesialis, memastikan diagnosis yang tepat dan perawatan
               yang sesuai dengan kondisi Anda.
             </p>
@@ -210,17 +210,17 @@ export function DoctorsPageContent({
                   </div>
                 </div>
                 <div className="flex flex-col items-center gap-1 md:gap-2 text-center flex-1">
-                  <h3 className="font-serif font-semibold text-[14px] md:text-[26px] text-[#120f0b] capitalize leading-tight">
+                  <h3 className="font-sans font-semibold text-[14px] md:text-[26px] text-[#120f0b] capitalize leading-tight">
                     {doc.name}
                   </h3>
-                  <p className="font-['Inter'] font-semibold text-[11px] md:text-[18px] text-[#503d1c] uppercase">
+                  <p className="font-['Lato'] font-semibold text-[11px] md:text-[18px] text-[#503d1c] uppercase">
                     {doc.specialty}
                   </p>
                 </div>
                 <button
                   type="button"
                   onClick={() => setSelected(doc)}
-                  className="bg-[#b59637] border border-[#ecd5a5] rounded-full px-4 py-2 text-[11px] md:px-8 md:py-3.5 md:text-[16px] text-white font-serif font-semibold hover:opacity-90 transition-opacity w-full max-w-[240px] cursor-pointer"
+                  className="bg-[#b59637] border border-[#ecd5a5] rounded-full px-4 py-2 text-[11px] md:px-8 md:py-3.5 md:text-[16px] text-white font-sans font-semibold hover:opacity-90 transition-opacity w-full max-w-[240px] cursor-pointer"
                 >
                   View Profile
                 </button>
@@ -237,7 +237,7 @@ export function DoctorsPageContent({
             <h2 className="font-['Lato'] font-semibold text-[32px] md:text-[40px] text-[#120f0b] capitalize">
               Articles
             </h2>
-            <p className="font-['Inter'] text-[16px] md:text-[18px] text-[#120f0b] max-w-[816px]">
+            <p className="font-['Lato'] text-[16px] md:text-[18px] text-[#120f0b] max-w-[816px]">
               Artikel dari dokter Prossi Clinic untuk membantu Anda memahami kondisi kulit dan tubuh, sebelum memulai
               perawatan yang tepat.
             </p>
@@ -258,9 +258,9 @@ export function DoctorsPageContent({
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="#503d1c">
                       <path d="M11.172 2a3 3 0 0 1 2.121.879l7.71 7.71a3.41 3.41 0 0 1 0 4.822l-5.592 5.592a3.41 3.41 0 0 1-4.822 0l-7.71-7.71A3 3 0 0 1 2 11.172V5a3 3 0 0 1 3-3zM7.5 6a1.5 1.5 0 1 0 0 3a1.5 1.5 0 0 0 0-3" />
                     </svg>
-                    <span className="font-['Inter'] font-medium text-[14px] text-[#503d1c]">{a.tag}</span>
+                    <span className="font-['Lato'] font-medium text-[14px] text-[#503d1c]">{a.tag}</span>
                   </div>
-                  <h3 className="font-serif font-semibold text-[20px] md:text-[24px] text-[#120f0b] leading-snug">
+                  <h3 className="font-sans font-semibold text-[20px] md:text-[24px] text-[#120f0b] leading-snug">
                     {a.title}
                   </h3>
                 </div>
@@ -270,7 +270,7 @@ export function DoctorsPageContent({
 
           <Link
             href="/article"
-            className="bg-[#b59637] border border-[#ecd5a5] rounded-full px-9 py-[18px] text-white font-serif font-semibold text-[18px] hover:opacity-90 transition-opacity"
+            className="bg-[#b59637] border border-[#ecd5a5] rounded-full px-9 py-[18px] text-white font-sans font-semibold text-[18px] hover:opacity-90 transition-opacity"
           >
             Read More
           </Link>

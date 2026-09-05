@@ -41,16 +41,16 @@ type Address = {
 const emptyAddress: Address = { name: "", phone: "", area_id: "", province: "", city: "", district: "", postal: "", detail: "", note: "" };
 
 const inputCls =
-  "w-full border border-[#c4cfe1] rounded-[5px] px-3 py-[9px] font-['Inter',sans-serif] font-medium text-[14px] text-[#11151c] placeholder:text-[#889bbf] outline-none focus:border-[#b59637] transition-colors bg-white";
-const labelCls = "font-['Inter',sans-serif] font-medium text-[14px] text-[#11151c] pb-2 block";
+  "w-full border border-[#c4cfe1] rounded-[5px] px-3 py-[9px] font-['Lato',sans-serif] font-medium text-[14px] text-[#11151c] placeholder:text-[#889bbf] outline-none focus:border-[#b59637] transition-colors bg-white";
+const labelCls = "font-['Lato',sans-serif] font-medium text-[14px] text-[#11151c] pb-2 block";
 
 function StepHeading({ num, label }: { num: string; label: string }) {
   return (
     <div className="flex items-center gap-3">
-      <span className="w-6 h-6 rounded-[20px] bg-[#dee5f0] flex items-center justify-center font-['Inter',sans-serif] font-bold text-[14px] text-[#11151c]">
+      <span className="w-6 h-6 rounded-[20px] bg-[#dee5f0] flex items-center justify-center font-['Lato',sans-serif] font-bold text-[14px] text-[#11151c]">
         {num}
       </span>
-      <span className="font-['Merriweather_Sans',sans-serif] font-extrabold text-[20px] leading-[30px] text-[#11151c]">
+      <span className="font-['Lato',sans-serif] font-extrabold text-[20px] leading-[30px] text-[#11151c]">
         {label}
       </span>
     </div>
@@ -423,7 +423,7 @@ function CheckoutContent() {
     <main className="pt-[112px] min-h-screen flex flex-col lg:flex-row">
       {/* ── Kolom kiri ── */}
       <div className="bg-[#f4ece4] w-full lg:w-[45%] px-6 py-10 lg:pl-[160px] lg:pr-[80px] lg:pt-[100px] lg:pb-[80px] flex flex-col gap-8 lg:gap-12 shrink-0">
-        <Link href="/shop" className="flex items-center gap-2 font-['Inter',sans-serif] font-medium text-[16px] text-[#11151c] hover:opacity-70 transition-opacity w-fit">
+        <Link href="/shop" className="flex items-center gap-2 font-['Lato',sans-serif] font-medium text-[16px] text-[#11151c] hover:opacity-70 transition-opacity w-fit">
           <ChevronLeft />
           Payment
         </Link>
@@ -439,7 +439,7 @@ function CheckoutContent() {
                 {item.image ? (
                   <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
                 ) : (
-                  <span className="font-serif font-semibold text-[14px] text-[#b59637] opacity-60">PROSSI</span>
+                  <span className="font-sans font-semibold text-[14px] text-[#b59637] opacity-60">PROSSI</span>
                 )}
               </div>
               <div className="px-4 py-3 flex flex-col justify-center gap-1">
@@ -448,12 +448,12 @@ function CheckoutContent() {
                     {item.name}
                   </p>
                   {!item.enable_shipping && (
-                    <span className="shrink-0 px-2 py-0.5 rounded-full bg-[#eef3fb] text-[#2d5fa8] font-['Inter',sans-serif] font-semibold text-[10px] uppercase whitespace-nowrap">
+                    <span className="shrink-0 px-2 py-0.5 rounded-full bg-[#eef3fb] text-[#2d5fa8] font-['Lato',sans-serif] font-semibold text-[10px] uppercase whitespace-nowrap">
                       E-Voucher
                     </span>
                   )}
                 </div>
-                <p className="font-['Inter',sans-serif] text-[13px] text-[#3b4963]">
+                <p className="font-['Lato',sans-serif] text-[13px] text-[#3b4963]">
                   {item.qty} x {rupiah(item.price)}
                 </p>
               </div>
@@ -462,7 +462,7 @@ function CheckoutContent() {
         </div>
 
         {items.length === 0 && (
-          <p className="font-['Inter',sans-serif] text-[14px] text-[#889bbf]">
+          <p className="font-['Lato',sans-serif] text-[14px] text-[#889bbf]">
             Keranjang kosong.{" "}
             <Link href="/shop" className="underline">
               Lihat produk
@@ -476,9 +476,9 @@ function CheckoutContent() {
           style={{ boxShadow: "0px 4px 4px -4px rgba(12,12,13,0.05), 0px 16px 16px -8px rgba(12,12,13,0.1)" }}
         >
           <button type="button" onClick={() => setDueOpen(!dueOpen)} className="w-full flex items-center justify-between cursor-pointer">
-            <span className="font-['Inter',sans-serif] font-medium text-[14px] text-[#3b4963]">Total due</span>
+            <span className="font-['Lato',sans-serif] font-medium text-[14px] text-[#3b4963]">Total due</span>
             <span className="flex items-center gap-2">
-              <span className="font-['Merriweather_Sans',sans-serif] font-extrabold text-[20px] text-black">{rupiah(total)}</span>
+              <span className="font-['Lato',sans-serif] font-extrabold text-[20px] text-black">{rupiah(total)}</span>
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" className={dueOpen ? "" : "rotate-180"}>
                 <path d="M18 15l-6-6-6 6" stroke="#11151C" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
@@ -506,7 +506,7 @@ function CheckoutContent() {
                 </span>
               </div>
               {hasPhysical && hasNonPhysical && (
-                <p className="font-['Inter',sans-serif] text-[12px] text-[#889bbf] -mt-1">
+                <p className="font-['Lato',sans-serif] text-[12px] text-[#889bbf] -mt-1">
                   Ongkir hanya berlaku untuk produk fisik. Item E-Voucher dikirim lewat email, tanpa biaya kirim.
                 </p>
               )}
@@ -567,7 +567,7 @@ function CheckoutContent() {
                           <li
                             key={area.id}
                             onMouseDown={() => selectArea(area)}
-                            className="px-4 py-3 font-['Inter',sans-serif] text-[13px] text-[#11151c] cursor-pointer hover:bg-[#f4ece4] border-b border-[#f0f3fa] last:border-0"
+                            className="px-4 py-3 font-['Lato',sans-serif] text-[13px] text-[#11151c] cursor-pointer hover:bg-[#f4ece4] border-b border-[#f0f3fa] last:border-0"
                           >
                             {area.label}
                           </li>
@@ -575,7 +575,7 @@ function CheckoutContent() {
                       </ul>
                     )}
                     {addr.area_id && (
-                      <p className="mt-1.5 font-['Inter',sans-serif] text-[12px] text-[#2a7a50]">
+                      <p className="mt-1.5 font-['Lato',sans-serif] text-[12px] text-[#2a7a50]">
                         ✓ {addr.district}, {addr.city}, {addr.province} · Kode Pos {addr.postal}
                       </p>
                     )}
@@ -608,7 +608,7 @@ function CheckoutContent() {
                   <button
                     type="submit"
                     disabled={items.length === 0}
-                    className="mt-2 bg-[#11151c] rounded-[8px] px-6 py-3 text-white font-['Inter',sans-serif] font-semibold text-[14px] hover:opacity-90 transition-opacity cursor-pointer disabled:opacity-50"
+                    className="mt-2 bg-[#11151c] rounded-[8px] px-6 py-3 text-white font-['Lato',sans-serif] font-semibold text-[14px] hover:opacity-90 transition-opacity cursor-pointer disabled:opacity-50"
                   >
                     Save
                   </button>
@@ -618,16 +618,16 @@ function CheckoutContent() {
                   <div className="flex gap-3 border border-[#c4cfe1] rounded-[6px] px-5 py-4">
                     <LocationIcon />
                     <div className="flex flex-col gap-1">
-                      <span className="font-['Inter',sans-serif] font-bold text-[16px] text-[#11151c]">{addr.name}</span>
-                      <span className="font-['Inter',sans-serif] font-medium text-[14px] text-[#3b4963]">{addr.phone}</span>
-                      {addr.detail && <span className="font-['Inter',sans-serif] font-medium text-[14px] text-[#3b4963]">{addr.detail}</span>}
+                      <span className="font-['Lato',sans-serif] font-bold text-[16px] text-[#11151c]">{addr.name}</span>
+                      <span className="font-['Lato',sans-serif] font-medium text-[14px] text-[#3b4963]">{addr.phone}</span>
+                      {addr.detail && <span className="font-['Lato',sans-serif] font-medium text-[14px] text-[#3b4963]">{addr.detail}</span>}
                       {[addr.district, addr.city, addr.province].filter(Boolean).length > 0 && (
-                        <span className="font-['Inter',sans-serif] font-medium text-[14px] text-[#3b4963]">
+                        <span className="font-['Lato',sans-serif] font-medium text-[14px] text-[#3b4963]">
                           {[addr.district, addr.city, addr.province].filter(Boolean).join(", ")}{addr.postal ? ` ${addr.postal}` : ""}
                         </span>
                       )}
                       {addr.note && (
-                        <span className="font-['Inter',sans-serif] text-[13px] text-[#889bbf]">
+                        <span className="font-['Lato',sans-serif] text-[13px] text-[#889bbf]">
                           Catatan: {addr.note}
                         </span>
                       )}
@@ -636,7 +636,7 @@ function CheckoutContent() {
                   <button
                     type="button"
                     onClick={() => setEditing(true)}
-                    className="w-fit rounded-[8px] px-4 py-3 font-['Inter',sans-serif] font-semibold text-[14px] text-[#11151c] hover:bg-[#f1f4fa] transition-colors cursor-pointer"
+                    className="w-fit rounded-[8px] px-4 py-3 font-['Lato',sans-serif] font-semibold text-[14px] text-[#11151c] hover:bg-[#f1f4fa] transition-colors cursor-pointer"
                   >
                     Edit Delivery Address
                   </button>
@@ -647,11 +647,11 @@ function CheckoutContent() {
             {/* Step 1.5 — Pilih Kurir */}
             {hasPhysical && saved && !editing && (
               <div className="flex flex-col gap-4">
-                <span className="font-['Inter',sans-serif] font-medium text-[14px] text-[#3b4963]">Pilih Pengiriman</span>
+                <span className="font-['Lato',sans-serif] font-medium text-[14px] text-[#3b4963]">Pilih Pengiriman</span>
                 {ratesLoading ? (
                   <div className="flex items-center gap-2">
                     <span className="w-4 h-4 rounded-full border-2 border-[#b59637] border-t-transparent animate-spin" />
-                    <p className="font-['Inter',sans-serif] text-[14px] text-[#889bbf]">Memuat ongkir...</p>
+                    <p className="font-['Lato',sans-serif] text-[14px] text-[#889bbf]">Memuat ongkir...</p>
                   </div>
                 ) : (
                   <div className="flex flex-col gap-2">
@@ -664,17 +664,17 @@ function CheckoutContent() {
                         style={{ borderColor: selectedRate?.courier === r.courier && selectedRate?.service === r.service ? "#11151c" : "#e6ecf7" }}
                       >
                         <div className="flex flex-col">
-                          <span className="font-['Inter',sans-serif] font-semibold text-[14px] text-[#11151c]">
+                          <span className="font-['Lato',sans-serif] font-semibold text-[14px] text-[#11151c]">
                             {r.courier} {r.service}
                           </span>
-                          <span className="font-['Inter',sans-serif] text-[13px] text-[#3b4963]">{r.description} · {r.etd}</span>
+                          <span className="font-['Lato',sans-serif] text-[13px] text-[#3b4963]">{r.description} · {r.etd}</span>
                         </div>
-                        <span className="font-['Inter',sans-serif] font-bold text-[14px] text-[#11151c]">{rupiah(r.cost)}</span>
+                        <span className="font-['Lato',sans-serif] font-bold text-[14px] text-[#11151c]">{rupiah(r.cost)}</span>
                       </button>
                     ))}
                     <div className="flex items-start gap-2 mt-1 px-1">
                       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" className="mt-0.5 flex-shrink-0"><circle cx="12" cy="12" r="10" stroke="#889bbf" strokeWidth="1.8"/><path d="M12 8v4m0 4h.01" stroke="#889bbf" strokeWidth="1.8" strokeLinecap="round"/></svg>
-                      <p className="font-['Inter',sans-serif] text-[12px] text-[#889bbf]">
+                      <p className="font-['Lato',sans-serif] text-[12px] text-[#889bbf]">
                         Pengiriman dilakukan <strong className="font-semibold text-[#3b4963]">Senin–Jumat</strong>. Pesanan di luar jadwal akan diproses hari kerja berikutnya.
                       </p>
                     </div>
@@ -710,20 +710,20 @@ function CheckoutContent() {
                     )}
                   </div>
                   <div className="flex justify-between items-baseline">
-                    <span className="font-['Inter',sans-serif] font-medium text-[14px] text-[#3b4963]">Total due</span>
-                    <span className="font-['Merriweather_Sans',sans-serif] font-extrabold text-[20px] text-black">{rupiah(total)}</span>
+                    <span className="font-['Lato',sans-serif] font-medium text-[14px] text-[#3b4963]">Total due</span>
+                    <span className="font-['Lato',sans-serif] font-extrabold text-[20px] text-black">{rupiah(total)}</span>
                   </div>
                   <button
                     type="button"
                     disabled={otpSending}
                     onClick={handleGoToVerifyOrMethod}
-                    className="w-full bg-[#11151c] rounded-[8px] px-4 py-3 text-white font-['Inter',sans-serif] font-semibold text-[14px] hover:opacity-90 transition-opacity cursor-pointer disabled:opacity-50"
+                    className="w-full bg-[#11151c] rounded-[8px] px-4 py-3 text-white font-['Lato',sans-serif] font-semibold text-[14px] hover:opacity-90 transition-opacity cursor-pointer disabled:opacity-50"
                   >
                     {otpSending ? "Mengirim kode..." : "Lanjutkan ke Pembayaran"}
                   </button>
                 </>
               ) : (
-                <p className="font-['Inter',sans-serif] font-medium text-[14px] text-[#889bbf]">
+                <p className="font-['Lato',sans-serif] font-medium text-[14px] text-[#889bbf]">
                   Lengkapi alamat dan pilih pengiriman terlebih dahulu.
                 </p>
               )}
@@ -736,7 +736,7 @@ function CheckoutContent() {
             <button
               type="button"
               onClick={() => setView("delivery")}
-              className="flex items-center gap-2 font-['Inter',sans-serif] font-medium text-[16px] text-[#11151c] hover:opacity-70 transition-opacity w-fit cursor-pointer"
+              className="flex items-center gap-2 font-['Lato',sans-serif] font-medium text-[16px] text-[#11151c] hover:opacity-70 transition-opacity w-fit cursor-pointer"
             >
               <ChevronLeft />
               Kembali
@@ -744,10 +744,10 @@ function CheckoutContent() {
 
             <div className="bg-white rounded-[16px] border border-[#e6ecf7] px-6 py-8 flex flex-col gap-6">
               <div className="flex flex-col gap-1">
-                <h2 className="font-['Merriweather_Sans',sans-serif] font-extrabold text-[20px] text-[#11151c]">
+                <h2 className="font-['Lato',sans-serif] font-extrabold text-[20px] text-[#11151c]">
                   Verifikasi Email
                 </h2>
-                <p className="font-['Inter',sans-serif] text-[14px] text-[#3b4963]">
+                <p className="font-['Lato',sans-serif] text-[14px] text-[#3b4963]">
                   Kode 6 digit telah dikirim ke{" "}
                   <span className="font-semibold">{guestEmail}</span>
                 </p>
@@ -762,7 +762,7 @@ function CheckoutContent() {
                     inputMode="numeric"
                     maxLength={1}
                     value={digit}
-                    className="w-11 h-14 text-center border border-[#c4cfe1] rounded-[5px] font-['Inter',sans-serif] font-medium text-[20px] text-[#11151c] outline-none focus:border-[#b59637] transition-colors"
+                    className="w-11 h-14 text-center border border-[#c4cfe1] rounded-[5px] font-['Lato',sans-serif] font-medium text-[20px] text-[#11151c] outline-none focus:border-[#b59637] transition-colors"
                     onChange={(e) => {
                       const val = e.target.value.replace(/\D/g, "");
                       const newDigits = [...otpDigits];
@@ -809,7 +809,7 @@ function CheckoutContent() {
                     setOtpVerifying(false);
                   }
                 }}
-                className="w-full bg-[#b59637] text-white rounded-[100px] px-4 py-3 font-['Inter',sans-serif] font-semibold text-[14px] hover:opacity-90 transition-opacity cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full bg-[#b59637] text-white rounded-[100px] px-4 py-3 font-['Lato',sans-serif] font-semibold text-[14px] hover:opacity-90 transition-opacity cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {otpVerifying ? "Memverifikasi..." : "Verifikasi"}
               </button>
@@ -835,7 +835,7 @@ function CheckoutContent() {
                     setOtpSending(false);
                   }
                 }}
-                className="w-fit self-center font-['Inter',sans-serif] text-[14px] text-[#3b4963] underline cursor-pointer disabled:opacity-50"
+                className="w-fit self-center font-['Lato',sans-serif] text-[14px] text-[#3b4963] underline cursor-pointer disabled:opacity-50"
               >
                 {otpSending ? "Mengirim..." : "Kirim Ulang"}
               </button>
@@ -848,7 +848,7 @@ function CheckoutContent() {
             <button
               type="button"
               onClick={() => setView("delivery")}
-              className="flex items-center gap-2 font-['Inter',sans-serif] font-medium text-[16px] text-[#11151c] hover:opacity-70 transition-opacity w-fit cursor-pointer"
+              className="flex items-center gap-2 font-['Lato',sans-serif] font-medium text-[16px] text-[#11151c] hover:opacity-70 transition-opacity w-fit cursor-pointer"
             >
               <ChevronLeft />
               Kembali
@@ -878,22 +878,22 @@ function CheckoutContent() {
             </div>
 
             <div className="flex justify-between items-baseline">
-              <span className="font-['Inter',sans-serif] font-medium text-[14px] text-[#3b4963]">Total</span>
-              <span className="font-['Merriweather_Sans',sans-serif] font-extrabold text-[20px] text-black">{rupiah(total)}</span>
+              <span className="font-['Lato',sans-serif] font-medium text-[14px] text-[#3b4963]">Total</span>
+              <span className="font-['Lato',sans-serif] font-extrabold text-[20px] text-black">{rupiah(total)}</span>
             </div>
 
-            <p className="font-['Inter',sans-serif] font-medium text-[14px] text-[#3b4963]">
+            <p className="font-['Lato',sans-serif] font-medium text-[14px] text-[#3b4963]">
               Dengan mengklik tombol di bawah, Anda menyetujui{" "}
               <Link href="/privacy" className="underline">Kebijakan Privasi dan Garansi.</Link>
             </p>
 
-            {payError && <p className="font-['Inter',sans-serif] text-[14px] text-red-600">{payError}</p>}
+            {payError && <p className="font-['Lato',sans-serif] text-[14px] text-red-600">{payError}</p>}
 
             <button
               type="button"
               disabled={payLoading}
               onClick={handleSnapPay}
-              className="w-full bg-[#b59637] rounded-[8px] px-4 py-3 text-white font-['Inter',sans-serif] font-semibold text-[14px] hover:opacity-90 transition-opacity cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full bg-[#b59637] rounded-[8px] px-4 py-3 text-white font-['Lato',sans-serif] font-semibold text-[14px] hover:opacity-90 transition-opacity cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {payLoading ? "Memproses..." : "Bayar Sekarang"}
             </button>

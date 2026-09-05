@@ -71,7 +71,7 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
       <div className="max-w-[1120px] mx-auto flex flex-col gap-8">
         <Link
           href="/shop"
-          className="flex items-center gap-2 font-['Inter',sans-serif] font-medium text-[16px] text-[#11151c] hover:opacity-70 transition-opacity w-fit"
+          className="flex items-center gap-2 font-['Lato',sans-serif] font-medium text-[16px] text-[#11151c] hover:opacity-70 transition-opacity w-fit"
         >
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
             <path d="M15 18l-6-6 6-6" stroke="#11151C" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
@@ -92,7 +92,7 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
                 className="w-full h-full flex items-center justify-center"
                 style={{ background: "linear-gradient(180deg, #f4ece4 0%, #e8d9bd 100%)" }}
               >
-                <span className="font-serif font-semibold text-[32px] text-[#b59637] opacity-60">PROSSI</span>
+                <span className="font-sans font-semibold text-[32px] text-[#b59637] opacity-60">PROSSI</span>
               </div>
             )}
           </div>
@@ -100,7 +100,7 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
           {/* Info */}
           <div className="flex flex-col gap-6 flex-1">
             <div className="flex flex-col gap-2">
-              <span className="font-['Inter',sans-serif] font-semibold text-[14px] text-[#b59637] uppercase">
+              <span className="font-['Lato',sans-serif] font-semibold text-[14px] text-[#b59637] uppercase">
                 Prossi Clinic
               </span>
               <h1 className="font-['Lato',sans-serif] font-extrabold text-[28px] md:text-[32px] leading-tight text-[#11151c]">
@@ -108,11 +108,11 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
               </h1>
             </div>
 
-            <p className="font-['Inter',sans-serif] font-bold text-[28px] text-[#11151c]">{rupiah(product.price)}</p>
+            <p className="font-['Lato',sans-serif] font-bold text-[28px] text-[#11151c]">{rupiah(product.price)}</p>
 
             <div style={{ borderTop: "1px dashed #c8cef4" }} />
 
-            <p className="font-['Inter',sans-serif] text-[16px] leading-relaxed text-[#3b4963]">
+            <p className="font-['Lato',sans-serif] text-[16px] leading-relaxed text-[#3b4963]">
               {product.description}
             </p>
 

@@ -27,10 +27,10 @@ export function CompareSection() {
       <div className="max-w-[1200px] mx-auto flex flex-col md:flex-row gap-10">
         {/* Left */}
         <div className="flex flex-col gap-3 md:w-[360px] shrink-0">
-          <h2 className="font-['Source_Serif_4',serif] font-normal text-[40px] leading-[56px] tracking-[0.0125em] text-white">
+          <h2 className="font-['Lato',sans-serif] font-normal text-[40px] leading-[56px] tracking-[0.0125em] text-white">
             Apa Yang Membuat Perawatan Kami Berbeda
           </h2>
-          <p className="font-['Inter',sans-serif] text-[18px] text-white/90">
+          <p className="font-['Lato',sans-serif] text-[18px] text-white/90">
             Pendekatan yang memastikan setiap treatment sesuai dengan kondisi Anda aman, terarah, dan dapat dipantau.
           </p>
         </div>
@@ -47,7 +47,7 @@ export function CompareSection() {
                 <span className="font-['Lato',sans-serif] font-extrabold text-[16px] text-white leading-[22px]">
                   {item.title}
                 </span>
-                <span className="font-['Readex_Pro',sans-serif] text-[16px] text-white/90 leading-[22px]">
+                <span className="font-['Lato',sans-serif] text-[16px] text-white/90 leading-[22px]">
                   {item.desc}
                 </span>
               </div>
@@ -56,7 +56,7 @@ export function CompareSection() {
           <div className="flex justify-end mt-4">
             <a
               href="/contact"
-              className="inline-flex items-center gap-2 px-9 py-[18px] rounded-full font-['Source_Serif_4',serif] font-semibold text-[18px] text-white border border-[#ecd5a5] bg-[#b59637] hover:opacity-90 transition-opacity"
+              className="inline-flex items-center gap-2 px-9 py-[18px] rounded-full font-['Lato',sans-serif] font-semibold text-[18px] text-white border border-[#ecd5a5] bg-[#b59637] hover:opacity-90 transition-opacity"
             >
               Reservation
             </a>

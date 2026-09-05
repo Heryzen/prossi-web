@@ -148,11 +148,11 @@ export default async function OrderTrackingPage({ params }: { params: Promise<{ 
       <div className="max-w-[700px] mx-auto flex flex-col gap-8">
         {/* Header */}
         <div>
-          <Link href="/shop/orders" className="font-['Inter',sans-serif] text-[13px] text-[#889bbf] hover:text-[#b59637] mb-3 block">
+          <Link href="/shop/orders" className="font-['Lato',sans-serif] text-[13px] text-[#889bbf] hover:text-[#b59637] mb-3 block">
             ← Riwayat Pesanan
           </Link>
-          <span className="font-['Inter',sans-serif] font-semibold text-[13px] text-[#b59637] uppercase tracking-wider">Pesanan</span>
-          <h1 className="font-['Merriweather_Sans',sans-serif] font-extrabold text-[26px] text-[#11151c] mt-0.5">
+          <span className="font-['Lato',sans-serif] font-semibold text-[13px] text-[#b59637] uppercase tracking-wider">Pesanan</span>
+          <h1 className="font-['Lato',sans-serif] font-extrabold text-[26px] text-[#11151c] mt-0.5">
             #{order.order_number}
           </h1>
         </div>
@@ -160,7 +160,7 @@ export default async function OrderTrackingPage({ params }: { params: Promise<{ 
         {/* Status timeline */}
         {!isCancelled ? (
           <div className="border border-[#e6ecf7] rounded-[16px] px-6 py-6">
-            <p className="font-['Inter',sans-serif] text-[11px] font-bold uppercase tracking-wider text-[#889bbf] mb-5">Status Pesanan</p>
+            <p className="font-['Lato',sans-serif] text-[11px] font-bold uppercase tracking-wider text-[#889bbf] mb-5">Status Pesanan</p>
             <div className="flex flex-col">
               {displaySteps.map((step, i) => {
                 const done = i <= currentStepIdx;
@@ -177,21 +177,21 @@ export default async function OrderTrackingPage({ params }: { params: Promise<{ 
                       {!isLast && <div className={`w-0.5 h-8 mt-1 ${completed ? "bg-[#2a7a50]" : "bg-[#e6ecf7]"}`} />}
                     </div>
                     <div className="pt-0.5 pb-6">
-                      <p className={`font-['Inter',sans-serif] font-semibold text-[14px] ${active ? "text-[#b59637]" : completed ? "text-[#11151c]" : "text-[#c8cef4]"}`}>
+                      <p className={`font-['Lato',sans-serif] font-semibold text-[14px] ${active ? "text-[#b59637]" : completed ? "text-[#11151c]" : "text-[#c8cef4]"}`}>
                         {step.label}
                       </p>
                       {done && historyMap.get(step.key) && (
-                        <p className="font-['Inter',sans-serif] text-[12px] text-[#889bbf] mt-0.5">
+                        <p className="font-['Lato',sans-serif] text-[12px] text-[#889bbf] mt-0.5">
                           {fmtDate(historyMap.get(step.key)!)}
                         </p>
                       )}
                       {completed && step.key === "delivered" && isVoucherOrder && (
-                        <p className="font-['Inter',sans-serif] text-[12px] font-semibold text-[#2a7a50] mt-1">
+                        <p className="font-['Lato',sans-serif] text-[12px] font-semibold text-[#2a7a50] mt-1">
                           Voucher Anda sudah berhasil dikirim melalui email.
                         </p>
                       )}
                       {active && step.key === "ready_to_ship" && (
-                        <p className="font-['Inter',sans-serif] text-[12px] text-[#889bbf] mt-1">
+                        <p className="font-['Lato',sans-serif] text-[12px] text-[#889bbf] mt-1">
                           Pengiriman dilakukan <span className="font-semibold text-[#3b4963]">Senin–Jumat</span>
                         </p>
                       )}
@@ -200,7 +200,7 @@ export default async function OrderTrackingPage({ params }: { params: Promise<{ 
                         const exc = EXCEPTION_SHIPPING[ss];
                         if (exc) {
                           return (
-                            <p className="font-['Inter',sans-serif] text-[12px] font-semibold mt-1.5" style={{ color: exc.color }}>
+                            <p className="font-['Lato',sans-serif] text-[12px] font-semibold mt-1.5" style={{ color: exc.color }}>
                               {exc.label}
                             </p>
                           );
@@ -214,7 +214,7 @@ export default async function OrderTrackingPage({ params }: { params: Promise<{ 
                               return (
                                 <div key={s.key} className="flex items-center gap-2">
                                   <div className={`w-2 h-2 rounded-full flex-shrink-0 ${cur ? "bg-[#b59637]" : done ? "bg-[#2a7a50]" : "bg-[#dde3f0]"}`} />
-                                  <span className={`font-['Inter',sans-serif] text-[12px] ${cur ? "text-[#b59637] font-semibold" : done ? "text-[#3b4963]" : "text-[#c8cef4]"}`}>
+                                  <span className={`font-['Lato',sans-serif] text-[12px] ${cur ? "text-[#b59637] font-semibold" : done ? "text-[#3b4963]" : "text-[#c8cef4]"}`}>
                                     {s.label}
                                   </span>
                                 </div>
@@ -231,14 +231,14 @@ export default async function OrderTrackingPage({ params }: { params: Promise<{ 
           </div>
         ) : (
           <div className="bg-[#fdf0ee] border border-[#f5cbc7] rounded-[12px] px-5 py-4">
-            <p className="font-['Inter',sans-serif] font-semibold text-[14px] text-[#a8312a]">Pesanan ini telah dibatalkan.</p>
+            <p className="font-['Lato',sans-serif] font-semibold text-[14px] text-[#a8312a]">Pesanan ini telah dibatalkan.</p>
           </div>
         )}
 
         {/* Rute pengiriman: dari → ke */}
         {order.address && (
           <div className="border border-[#e6ecf7] rounded-[16px] px-6 py-6 flex flex-col gap-4">
-            <p className="font-['Inter',sans-serif] text-[11px] font-bold uppercase tracking-wider text-[#889bbf]">Rute Pengiriman</p>
+            <p className="font-['Lato',sans-serif] text-[11px] font-bold uppercase tracking-wider text-[#889bbf]">Rute Pengiriman</p>
             <div className="flex flex-col gap-3">
               {/* From */}
               <div className="flex gap-3 items-start">
@@ -246,10 +246,10 @@ export default async function OrderTrackingPage({ params }: { params: Promise<{ 
                   <span className="text-[11px] font-bold text-[#b59637]">DARI</span>
                 </div>
                 <div>
-                  <p className="font-['Inter',sans-serif] font-semibold text-[14px] text-[#11151c]">
+                  <p className="font-['Lato',sans-serif] font-semibold text-[14px] text-[#11151c]">
                     {process.env.SHIPPING_ORIGIN_CONTACT_NAME ?? "Prossi Clinic"}
                   </p>
-                  <p className="font-['Inter',sans-serif] text-[13px] text-[#3b4963] leading-relaxed">
+                  <p className="font-['Lato',sans-serif] text-[13px] text-[#3b4963] leading-relaxed">
                     {process.env.SHIPPING_ORIGIN_ADDRESS ?? "Jl. Bintaro Utama 3A, Bintaro Jaya Sektor 3"}
                   </p>
                 </div>
@@ -262,13 +262,13 @@ export default async function OrderTrackingPage({ params }: { params: Promise<{ 
                   <span className="text-[11px] font-bold text-[#2a7a50]">KE</span>
                 </div>
                 <div>
-                  <p className="font-['Inter',sans-serif] font-semibold text-[14px] text-[#11151c]">{order.address.name}</p>
-                  <p className="font-['Inter',sans-serif] text-[13px] text-[#3b4963]">{order.address.phone}</p>
+                  <p className="font-['Lato',sans-serif] font-semibold text-[14px] text-[#11151c]">{order.address.name}</p>
+                  <p className="font-['Lato',sans-serif] text-[13px] text-[#3b4963]">{order.address.phone}</p>
                   {order.address.detail && (
-                    <p className="font-['Inter',sans-serif] text-[13px] text-[#3b4963] leading-relaxed">{order.address.detail}</p>
+                    <p className="font-['Lato',sans-serif] text-[13px] text-[#3b4963] leading-relaxed">{order.address.detail}</p>
                   )}
                   {[order.address.district, order.address.city, order.address.province].filter(Boolean).length > 0 && (
-                    <p className="font-['Inter',sans-serif] text-[13px] text-[#3b4963]">
+                    <p className="font-['Lato',sans-serif] text-[13px] text-[#3b4963]">
                       {[order.address.district, order.address.city, order.address.province].filter(Boolean).join(", ")}
                       {order.address.postal ? ` ${order.address.postal}` : ""}
                     </p>
@@ -282,21 +282,21 @@ export default async function OrderTrackingPage({ params }: { params: Promise<{ 
         {/* Resi + tracking */}
         {isShipped && order.tracking_number && (
           <div className="bg-[#f3eef8] border border-[#d4c5f5] rounded-[16px] px-6 py-5 flex flex-col gap-3">
-            <p className="font-['Inter',sans-serif] text-[11px] font-bold uppercase tracking-wider text-[#6b3fa0]">Info Pengiriman</p>
+            <p className="font-['Lato',sans-serif] text-[11px] font-bold uppercase tracking-wider text-[#6b3fa0]">Info Pengiriman</p>
             <div>
-              <p className="font-['Inter',sans-serif] text-[12px] text-[#889bbf] mb-0.5">Kurir</p>
-              <p className="font-['Inter',sans-serif] font-semibold text-[14px] text-[#11151c] uppercase">
+              <p className="font-['Lato',sans-serif] text-[12px] text-[#889bbf] mb-0.5">Kurir</p>
+              <p className="font-['Lato',sans-serif] font-semibold text-[14px] text-[#11151c] uppercase">
                 {order.shipping_courier} {order.shipping_service}
               </p>
             </div>
             <div>
-              <p className="font-['Inter',sans-serif] text-[12px] text-[#889bbf] mb-0.5">Nomor Resi</p>
+              <p className="font-['Lato',sans-serif] text-[12px] text-[#889bbf] mb-0.5">Nomor Resi</p>
               <p className="font-mono font-bold text-[18px] text-[#11151c]">{order.tracking_number}</p>
             </div>
             {order.shipping_status && (
               <div>
-                <p className="font-['Inter',sans-serif] text-[12px] text-[#889bbf] mb-0.5">Status Kurir</p>
-                <p className="font-['Inter',sans-serif] font-semibold text-[14px] text-[#6b3fa0]">
+                <p className="font-['Lato',sans-serif] text-[12px] text-[#889bbf] mb-0.5">Status Kurir</p>
+                <p className="font-['Lato',sans-serif] font-semibold text-[14px] text-[#6b3fa0]">
                   {SHIPPING_LABEL[order.shipping_status] ?? order.shipping_status}
                 </p>
               </div>
@@ -305,7 +305,7 @@ export default async function OrderTrackingPage({ params }: { params: Promise<{ 
               href={trackingUrl(order.shipping_courier, order.tracking_number)}
               target="_blank"
               rel="noopener noreferrer"
-              className="w-fit bg-[#6b3fa0] rounded-[100px] px-6 py-2.5 text-white font-['Inter',sans-serif] font-semibold text-[14px] hover:opacity-80 transition-opacity mt-1"
+              className="w-fit bg-[#6b3fa0] rounded-[100px] px-6 py-2.5 text-white font-['Lato',sans-serif] font-semibold text-[14px] hover:opacity-80 transition-opacity mt-1"
             >
               Lacak Paket →
             </a>
@@ -316,36 +316,36 @@ export default async function OrderTrackingPage({ params }: { params: Promise<{ 
         <div className="flex flex-col gap-3">
           {order.items.map((item, i) => (
             <div key={i} className="flex justify-between gap-4">
-              <span className="font-['Inter',sans-serif] text-[15px] text-[#11151c]">
+              <span className="font-['Lato',sans-serif] text-[15px] text-[#11151c]">
                 {item.name} <span className="text-[#889bbf]">x{item.qty}</span>
               </span>
-              <span className="font-['Inter',sans-serif] font-medium text-[15px] text-[#3b4963] whitespace-nowrap">
+              <span className="font-['Lato',sans-serif] font-medium text-[15px] text-[#3b4963] whitespace-nowrap">
                 {rupiah(item.price * item.qty)}
               </span>
             </div>
           ))}
           <div className="flex justify-between pt-3" style={{ borderTop: "1px dashed #c8cef4" }}>
-            <span className="font-['Inter',sans-serif] text-[15px] text-[#11151c]">
+            <span className="font-['Lato',sans-serif] text-[15px] text-[#11151c]">
               Pengiriman{order.shipping_courier ? ` (${order.shipping_courier.toUpperCase()} ${(order.shipping_service ?? "").toUpperCase()})` : ""}
             </span>
-            <span className="font-['Inter',sans-serif] font-medium text-[15px] text-[#3b4963]">{rupiah(order.shipping_cost ?? 0)}</span>
+            <span className="font-['Lato',sans-serif] font-medium text-[15px] text-[#3b4963]">{rupiah(order.shipping_cost ?? 0)}</span>
           </div>
           <div className="flex justify-between">
-            <span className="font-['Merriweather_Sans',sans-serif] font-extrabold text-[16px] text-[#11151c]">Total</span>
-            <span className="font-['Merriweather_Sans',sans-serif] font-extrabold text-[18px] text-[#11151c]">{rupiah(order.total)}</span>
+            <span className="font-['Lato',sans-serif] font-extrabold text-[16px] text-[#11151c]">Total</span>
+            <span className="font-['Lato',sans-serif] font-extrabold text-[18px] text-[#11151c]">{rupiah(order.total)}</span>
           </div>
         </div>
 
         {order.payment_status !== "paid" && !isCancelled ? (
           <div className="flex flex-col gap-3">
             <div className="bg-[#fdf6ec] border border-[#f0d89a] rounded-[12px] px-5 py-4">
-              <p className="font-['Inter',sans-serif] font-semibold text-[14px] text-[#7a5c0a] mb-1">Menunggu Pembayaran</p>
-              <p className="font-['Inter',sans-serif] text-[13px] text-[#a07820]">Selesaikan pembayaran untuk memproses pesanan Anda.</p>
+              <p className="font-['Lato',sans-serif] font-semibold text-[14px] text-[#7a5c0a] mb-1">Menunggu Pembayaran</p>
+              <p className="font-['Lato',sans-serif] text-[13px] text-[#a07820]">Selesaikan pembayaran untuk memproses pesanan Anda.</p>
             </div>
             <PayButton orderNumber={order.order_number} />
           </div>
         ) : (
-          <Link href="/shop" className="w-fit bg-[#b59637] rounded-[100px] px-9 py-3 text-white font-['Inter',sans-serif] font-semibold text-[15px] hover:opacity-90 transition-opacity">
+          <Link href="/shop" className="w-fit bg-[#b59637] rounded-[100px] px-9 py-3 text-white font-['Lato',sans-serif] font-semibold text-[15px] hover:opacity-90 transition-opacity">
             Lanjut Belanja
           </Link>
         )}

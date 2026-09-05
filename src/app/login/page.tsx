@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 
 const inputCls =
-  "w-full h-10 bg-white border border-[#dbdbdb] rounded px-[9px] font-['Readex_Pro',sans-serif] text-[16px] text-[#292929] placeholder:text-[#aeafaf] outline-none focus:border-[#b59637] transition-colors";
+  "w-full h-10 bg-white border border-[#dbdbdb] rounded px-[9px] font-['Lato',sans-serif] text-[16px] text-[#292929] placeholder:text-[#aeafaf] outline-none focus:border-[#b59637] transition-colors";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -65,19 +65,19 @@ export default function LoginPage() {
 
       <div className="relative z-10 flex justify-end min-h-screen">
         <div className="bg-white w-full md:w-[646px] min-h-screen px-6 md:px-[72px] pt-[120px] pb-16 flex flex-col justify-center" style={{ boxShadow: "-10px 0 40px rgba(0,10,55,0.15)" }}>
-          <h1 className="font-['Readex_Pro',sans-serif] font-semibold text-[26px] md:text-[30px] leading-[42px] text-[#292929] mb-8 md:mb-12">
+          <h1 className="font-['Lato',sans-serif] font-semibold text-[26px] md:text-[30px] leading-[42px] text-[#292929] mb-8 md:mb-12">
             Masuk
           </h1>
 
           {adminConflict && (
-            <div className="bg-[#fdf0ee] border border-[#f5cbc7] rounded-[12px] px-4 py-3 mb-4 text-[13px] text-[#a8312a] font-['Inter',sans-serif]">
+            <div className="bg-[#fdf0ee] border border-[#f5cbc7] rounded-[12px] px-4 py-3 mb-4 text-[13px] text-[#a8312a] font-['Lato',sans-serif]">
               Kamu sedang login sebagai admin. <button onClick={() => { localStorage.removeItem("prossi_admin_token"); setAdminConflict(false); }} className="font-semibold underline cursor-pointer">Logout admin dulu</button> sebelum masuk sebagai member.
             </div>
           )}
 
           <form className="flex flex-col gap-9" onSubmit={handleSubmit} autoComplete="off">
             <div className="flex flex-col gap-1.5">
-              <label className="font-['Readex_Pro',sans-serif] text-[14px] text-black">Email Address</label>
+              <label className="font-['Lato',sans-serif] text-[14px] text-black">Email Address</label>
               <input
                 type="email"
                 required
@@ -90,7 +90,7 @@ export default function LoginPage() {
             </div>
 
             <div className="flex flex-col gap-1.5">
-              <label className="font-['Readex_Pro',sans-serif] text-[14px] text-black">Password</label>
+              <label className="font-['Lato',sans-serif] text-[14px] text-black">Password</label>
               <input
                 type="password"
                 required
@@ -102,7 +102,7 @@ export default function LoginPage() {
               />
             </div>
 
-            {error && <p className="font-['Readex_Pro',sans-serif] text-[14px] text-red-600">{error}</p>}
+            {error && <p className="font-['Lato',sans-serif] text-[14px] text-red-600">{error}</p>}
 
             <button
               type="submit"
@@ -112,7 +112,7 @@ export default function LoginPage() {
               {submitting ? "Memproses..." : "Masuk"}
             </button>
 
-            <p className="font-['Readex_Pro',sans-serif] text-[14px] leading-[20px] text-[#292929] text-center">
+            <p className="font-['Lato',sans-serif] text-[14px] leading-[20px] text-[#292929] text-center">
               Belum punya akun?{" "}
               <Link href="/register" className="text-[#607dff] underline">
                 Register di sini

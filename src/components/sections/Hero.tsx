@@ -15,7 +15,7 @@ const defaultSlides: HeroSlide[] = [
     heading: (
       <>
         Kulit Lebih Sehat. Tubuh Lebih Ideal. Dengan Pendekatan medis yang{" "}
-        <span className="font-['Arizonia'] text-[#b59637]">Tepat</span>
+        <span className="font-['Lato'] text-[#b59637]">Tepat</span>
       </>
     ),
     sub: "Perawatan langsung oleh dokter spesialis dengan diagnosis yang akurat dan hasil yang terarah.",
@@ -25,7 +25,7 @@ const defaultSlides: HeroSlide[] = [
     heading: (
       <>
         Perjalanan Menuju Tubuh Ideal Dimulai dari Satu Langkah yang{" "}
-        <span className="font-['Arizonia'] text-[#b59637]">Tepat</span>
+        <span className="font-['Lato'] text-[#b59637]">Tepat</span>
       </>
     ),
     sub: "Prossi Clinic hadir dengan program slimming berbasis medis, ditangani langsung oleh Dokter Sp.GK.",
@@ -35,7 +35,7 @@ const defaultSlides: HeroSlide[] = [
     heading: (
       <>
         Kulit Sehat &amp; Bercahaya dengan Perawatan{" "}
-        <span className="font-['Arizonia'] text-[#b59637]">Medis</span>
+        <span className="font-['Lato'] text-[#b59637]">Medis</span>
       </>
     ),
     sub: "Skin treatment oleh Dokter Sp.DVE dan Dokter Estetika untuk hasil yang aman, terarah, dan nyata.",
@@ -82,16 +82,16 @@ export function Hero({ slides: slidesProp }: { slides?: HeroSlide[] }) {
             <div className="absolute inset-0 z-10 flex items-start justify-center">
               <div className="max-w-[816px] w-full flex flex-col items-center gap-5 lg:gap-[42px] px-6 lg:px-0 text-center pt-[80px] lg:pt-[161px]">
                 <div className="flex flex-col gap-3 lg:gap-4 items-center w-full">
-                  <h1 className="prossi-fade-up font-['Source_Serif_4',serif] font-normal text-[28px] lg:text-[64px] leading-tight lg:leading-[1.15] text-[#503d1c]">
+                  <h1 className="prossi-fade-up font-['Lato',sans-serif] font-normal text-[28px] lg:text-[64px] leading-tight lg:leading-[1.15] text-[#503d1c]">
                     {slide.heading}
                   </h1>
-                  <p className="prossi-fade-up font-['Inter',sans-serif] text-sm lg:text-[18px] text-[#503d1c] lg:whitespace-nowrap">
+                  <p className="prossi-fade-up font-['Lato',sans-serif] text-sm lg:text-[18px] text-[#503d1c] lg:whitespace-nowrap">
                     {slide.sub}
                   </p>
                 </div>
                 <Link
                   href="/treatments"
-                  className="prossi-fade-up bg-[#b59637] border border-[#ecd5a5] rounded-full px-6 py-3 lg:px-9 lg:py-[18px] text-white font-serif font-semibold text-sm lg:text-lg hover:opacity-90 hover:scale-[1.03] transition-all duration-300"
+                  className="prossi-fade-up bg-[#b59637] border border-[#ecd5a5] rounded-full px-6 py-3 lg:px-9 lg:py-[18px] text-white font-sans font-semibold text-sm lg:text-lg hover:opacity-90 hover:scale-[1.03] transition-all duration-300"
                 >
                   Explore Treatments
                 </Link>

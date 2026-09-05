@@ -37,7 +37,7 @@ function ProductCard({ product }: { product: Product }) {
             className="w-full h-full flex items-center justify-center"
             style={{ background: "linear-gradient(180deg, #f4ece4 0%, #e8d9bd 100%)" }}
           >
-            <span className="font-serif font-semibold text-[22px] text-[#b59637] opacity-60">PROSSI</span>
+            <span className="font-sans font-semibold text-[22px] text-[#b59637] opacity-60">PROSSI</span>
           </div>
         )}
       </Link>
@@ -52,7 +52,7 @@ function ProductCard({ product }: { product: Product }) {
 
         <div className="mt-auto flex flex-col gap-4">
           <div style={{ borderTop: "1px dashed #c8cef4" }} />
-          <p className="font-['Inter',sans-serif] font-bold text-[20px] leading-6 text-[#11151c]" style={{ letterSpacing: "0.0075em" }}>
+          <p className="font-['Lato',sans-serif] font-bold text-[20px] leading-6 text-[#11151c]" style={{ letterSpacing: "0.0075em" }}>
             {product.priceLabel}
           </p>
           <div className="flex gap-2">
@@ -77,7 +77,7 @@ function ProductCard({ product }: { product: Product }) {
             </button>
             <Link
               href={`/shop/${product.slug}`}
-              className="flex-1 bg-[#b59637] rounded-[100px] px-4 py-3 text-white font-['Inter',sans-serif] font-semibold text-[14px] leading-[22px] text-center hover:opacity-90 transition-opacity block"
+              className="flex-1 bg-[#b59637] rounded-[100px] px-4 py-3 text-white font-['Lato',sans-serif] font-semibold text-[14px] leading-[22px] text-center hover:opacity-90 transition-opacity block"
               style={{ boxShadow: "0px 2px 0px rgba(0,0,0,0.04)" }}
             >
               Beli Sekarang
@@ -115,7 +115,7 @@ export function ShopGrid({ products, categories }: { products: Product[]; catego
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Cari produk..."
-            className="w-full border border-[#e6ecf7] rounded-[100px] pl-11 pr-4 py-3 font-['Inter',sans-serif] text-[14px] text-[#11151c] placeholder:text-[#889bbf] outline-none focus:border-[#b59637] transition-colors"
+            className="w-full border border-[#e6ecf7] rounded-[100px] pl-11 pr-4 py-3 font-['Lato',sans-serif] text-[14px] text-[#11151c] placeholder:text-[#889bbf] outline-none focus:border-[#b59637] transition-colors"
           />
         </div>
 
@@ -123,7 +123,7 @@ export function ShopGrid({ products, categories }: { products: Product[]; catego
           <button
             type="button"
             onClick={() => setActiveCategory(null)}
-            className="px-5 py-2 rounded-[100px] font-['Inter',sans-serif] font-medium text-[14px] transition-colors cursor-pointer"
+            className="px-5 py-2 rounded-[100px] font-['Lato',sans-serif] font-medium text-[14px] transition-colors cursor-pointer"
             style={
               activeCategory === null
                 ? { background: "#b59637", color: "#fff" }
@@ -137,7 +137,7 @@ export function ShopGrid({ products, categories }: { products: Product[]; catego
               key={cat}
               type="button"
               onClick={() => setActiveCategory(cat)}
-              className="px-5 py-2 rounded-[100px] font-['Inter',sans-serif] font-medium text-[14px] transition-colors cursor-pointer"
+              className="px-5 py-2 rounded-[100px] font-['Lato',sans-serif] font-medium text-[14px] transition-colors cursor-pointer"
               style={
                 activeCategory === cat
                   ? { background: "#b59637", color: "#fff" }
@@ -151,7 +151,7 @@ export function ShopGrid({ products, categories }: { products: Product[]; catego
       </div>
 
       {filtered.length === 0 ? (
-        <p className="font-['Inter',sans-serif] text-[16px] text-[#889bbf] text-center py-12">
+        <p className="font-['Lato',sans-serif] text-[16px] text-[#889bbf] text-center py-12">
           Tidak ada produk yang cocok.
         </p>
       ) : (

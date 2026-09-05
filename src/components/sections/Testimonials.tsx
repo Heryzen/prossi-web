@@ -20,7 +20,7 @@ function DefaultMedia() {
       className="w-full h-full flex items-center justify-center"
       style={{ background: "linear-gradient(180deg, #f4ece4 0%, #e8d9bd 100%)" }}
     >
-      <span className="font-serif font-semibold text-[22px] text-[#b59637] opacity-60">PROSSI</span>
+      <span className="font-sans font-semibold text-[22px] text-[#b59637] opacity-60">PROSSI</span>
     </div>
   );
 }
@@ -170,7 +170,7 @@ export function Testimonials({ reviews: reviewsProp }: { reviews?: Review[] }) {
                 <img alt="" className="block max-w-none size-full" src="/figma/imgLine4.svg" />
               </div>
             </div>
-            <span className="font-['Inter'] font-semibold leading-normal not-italic relative shrink-0 text-[14px] text-[#120f0b] whitespace-nowrap">TESTIMONIALS</span>
+            <span className="font-['Lato'] font-semibold leading-normal not-italic relative shrink-0 text-[14px] text-[#120f0b] whitespace-nowrap">TESTIMONIALS</span>
             <div className="flex items-center justify-center relative shrink-0">
               <div className="-scale-y-100 flex-none rotate-180">
                 <div className="h-0 relative w-[63px]">

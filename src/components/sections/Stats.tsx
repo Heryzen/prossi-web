@@ -17,7 +17,7 @@ export function Stats() {
               <div className="flex flex-col">
                 <CountUp
                   value={stat.value}
-                  className="font-serif font-semibold text-2xl lg:text-[40px] text-[#503d1c] capitalize leading-none"
+                  className="font-sans font-semibold text-2xl lg:text-[40px] text-[#503d1c] capitalize leading-none"
                 />
                 <span className="font-sans text-lg text-[#120f0b] opacity-80 mt-1">
                   {stat.label}

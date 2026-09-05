@@ -30,7 +30,7 @@ export async function BeforeAfter({ category }: { category?: "slimming" | "skin"
           <h2 className="font-['Lato',sans-serif] font-extrabold text-[60px] leading-[0.99em] uppercase text-[#b59637]">
             Before After
           </h2>
-          <p className="font-['Readex_Pro',sans-serif] text-[16px] text-[#b59637] mt-2">
+          <p className="font-['Lato',sans-serif] text-[16px] text-[#b59637] mt-2">
             Panduan Lengkap Menggunakan N3
           </p>
         </div>

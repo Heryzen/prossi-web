@@ -57,12 +57,12 @@ function CoreProgramCard({ title, img, border }: { title: string; img: string; b
                 "linear-gradient(90deg, rgba(124,96,51,0) 0%, rgba(124,96,51,1) 50%, rgba(124,96,51,0) 100%)",
             }}
           />
-          <p className="font-['Inter',sans-serif] text-[16px] text-[#120f0b] text-center leading-relaxed">
+          <p className="font-['Lato',sans-serif] text-[16px] text-[#120f0b] text-center leading-relaxed">
             Temukan program perawatan yang paling sesuai dengan kondisi dan kebutuhan Anda.
           </p>
           <a
             href="/contact"
-            className="inline-flex items-center justify-center px-9 py-[18px] rounded-full font-['Source_Serif_4',serif] font-semibold text-[18px] text-white"
+            className="inline-flex items-center justify-center px-9 py-[18px] rounded-full font-['Lato',sans-serif] font-semibold text-[18px] text-white"
             style={{ background: "#B59637", border: "1px solid #ECD5A5" }}
           >
             Selengkapnya
@@ -97,7 +97,7 @@ export default function AboutPage() {
         />
         <div className="relative z-10 flex flex-col gap-4 px-6 pt-[100px] md:px-0 md:pt-[200px]" style={{ maxWidth: 711, paddingLeft: undefined }}>
           <h1
-            className="font-['Source_Serif_4',serif] font-normal leading-tight md:pl-[100px]"
+            className="font-['Lato',sans-serif] font-normal leading-tight md:pl-[100px]"
             style={{
               fontSize: "clamp(28px, 7vw, 45px)",
               background:
@@ -126,7 +126,7 @@ export default function AboutPage() {
             style={{ maxWidth: 860, height: 481, background: "#ECD5A5" }}
           />
           <p
-            className="font-['Inter',sans-serif] font-medium text-[#000000] text-center"
+            className="font-['Lato',sans-serif] font-medium text-[#000000] text-center"
             style={{ fontSize: 16, lineHeight: "24px", letterSpacing: "0.0094em", maxWidth: 860 }}
           >
             kami menghadirkan pendekatan medis yang personal untuk membantu setiap pasien memahami kebutuhan tubuh dan kulitnya secara lebih menyeluruh. Bukan treatment yang sekadar mengikuti tren, tetapi perawatan yang dirancang berdasarkan kondisi, tujuan, dan kenyamanan setiap individu.
@@ -140,19 +140,19 @@ export default function AboutPage() {
       <div className="px-6 py-12 md:px-[260px] md:py-[80px]" style={{ background: "#F4ECE4" }}>
         <div className="flex flex-col items-center gap-6 text-center">
           <h2
-            className="font-['Merriweather_Sans',sans-serif] font-extrabold text-[#11151C]"
+            className="font-['Lato',sans-serif] font-extrabold text-[#11151C]"
             style={{ fontSize: 36, lineHeight: "44px", letterSpacing: "0.0069em" }}
           >
             Perjalanan Prossi
           </h2>
           <p
-            className="font-['Inter',sans-serif] font-medium text-[#000000]"
+            className="font-['Lato',sans-serif] font-medium text-[#000000]"
             style={{ fontSize: 16, lineHeight: "24px", letterSpacing: "0.0094em" }}
           >
             Berawal dari visi sederhana untuk menghadirkan layanan wellness dan estetika yang lebih terpercaya, Prossi terus berkembang menjadi klinik yang mengedepankan kualitas pelayanan, kenyamanan pasien, dan pendekatan medis yang lebih personal
           </p>
           <p
-            className="font-['Inter',sans-serif] font-medium text-[#000000]"
+            className="font-['Lato',sans-serif] font-medium text-[#000000]"
             style={{ fontSize: 16, lineHeight: "24px", letterSpacing: "0.0094em" }}
           >
             Hari ini, Prossi hadir untuk membantu lebih banyak orang mendapatkan pengalaman perawatan yang tidak hanya efektif, tetapi juga terasa aman, nyaman, dan manusiawi.
@@ -165,13 +165,13 @@ export default function AboutPage() {
         <div className="flex flex-col gap-10 md:gap-20 flex-1">
           <div className="flex flex-col gap-2">
             <h3
-              className="font-['Merriweather_Sans',sans-serif] font-extrabold text-[#11151C]"
+              className="font-['Lato',sans-serif] font-extrabold text-[#11151C]"
               style={{ fontSize: 36, lineHeight: "44px" }}
             >
               Vision
             </h3>
             <p
-              className="font-['Inter',sans-serif] font-medium text-[#000000]"
+              className="font-['Lato',sans-serif] font-medium text-[#000000]"
               style={{ fontSize: 16, lineHeight: "24px", letterSpacing: "0.0094em" }}
             >
               Menjadi klinik kecantikan dan kesehatan terpercaya yang menghadirkan solusi perawatan medis berkualitas tinggi dengan pendekatan personal dan berorientasi pada hasil nyata.
@@ -179,13 +179,13 @@ export default function AboutPage() {
           </div>
           <div className="flex flex-col gap-2">
             <h3
-              className="font-['Merriweather_Sans',sans-serif] font-extrabold text-[#11151C]"
+              className="font-['Lato',sans-serif] font-extrabold text-[#11151C]"
               style={{ fontSize: 36, lineHeight: "44px" }}
             >
               Mission
             </h3>
             <p
-              className="font-['Inter',sans-serif] font-medium text-[#000000]"
+              className="font-['Lato',sans-serif] font-medium text-[#000000]"
               style={{ fontSize: 16, lineHeight: "24px", letterSpacing: "0.0094em" }}
             >
               Memberikan perawatan medis estetika yang aman, terarah, dan dapat dipantau — ditangani langsung oleh dokter spesialis untuk setiap pasien.
@@ -203,7 +203,7 @@ export default function AboutPage() {
       <div className="px-6 py-12 md:px-[82px] md:pt-[62px] md:pb-[80px]" style={{ background: "#F4ECE4" }}>
         <div className="flex flex-col items-center gap-4 mb-14">
           <h2
-            className="font-['Source_Serif_4',serif] font-semibold text-[#120f0b] text-center"
+            className="font-['Lato',sans-serif] font-semibold text-[#120f0b] text-center"
             style={{ fontSize: 46 }}
           >
             Perawatan Sesuai Kebutuhan Anda

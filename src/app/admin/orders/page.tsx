@@ -133,7 +133,7 @@ export default function AdminOrdersPage() {
     <div className="min-h-screen bg-[#f9f7f4] pt-[104px]">
       <div className="sticky top-[104px] z-50 bg-white border-b border-[#e6ecf7] px-6 py-3 flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <span className="font-['Merriweather_Sans',sans-serif] font-extrabold text-[16px] text-[#11151c]">
+          <span className="font-['Lato',sans-serif] font-extrabold text-[16px] text-[#11151c]">
             Prossi Admin
           </span>
           {urgent > 0 && (
@@ -145,7 +145,7 @@ export default function AdminOrdersPage() {
       </div>
 
       <div className="px-4 md:px-8 py-6 max-w-[1100px] mx-auto">
-        <h1 className="font-['Merriweather_Sans',sans-serif] font-extrabold text-[22px] text-[#11151c] mb-5">
+        <h1 className="font-['Lato',sans-serif] font-extrabold text-[22px] text-[#11151c] mb-5">
           Daftar Pesanan
         </h1>
 
@@ -154,7 +154,7 @@ export default function AdminOrdersPage() {
           placeholder="Cari nomor order, nama, atau kode voucher..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="w-full max-w-[380px] border border-[#dde3f0] rounded-[10px] px-4 py-2.5 font-['Inter',sans-serif] text-[14px] outline-none focus:border-[#b59637] transition-colors mb-4"
+          className="w-full max-w-[380px] border border-[#dde3f0] rounded-[10px] px-4 py-2.5 font-['Lato',sans-serif] text-[14px] outline-none focus:border-[#b59637] transition-colors mb-4"
         />
 
         <div className="flex gap-2 flex-wrap mb-5">
@@ -162,7 +162,7 @@ export default function AdminOrdersPage() {
             <button
               key={f.key}
               onClick={() => setFilter(f.key)}
-              className={`px-4 py-1.5 rounded-[100px] font-['Inter',sans-serif] text-[13px] font-semibold transition-colors ${
+              className={`px-4 py-1.5 rounded-[100px] font-['Lato',sans-serif] text-[13px] font-semibold transition-colors ${
                 filter === f.key
                   ? "bg-[#b59637] text-white"
                   : "bg-white border border-[#e6ecf7] text-[#3b4963] hover:border-[#b59637]"
@@ -181,7 +181,7 @@ export default function AdminOrdersPage() {
           </div>
         ) : displayed.length === 0 ? (
           <div className="bg-white rounded-[16px] border border-[#e6ecf7] px-6 py-12 text-center">
-            <p className="font-['Inter',sans-serif] text-[15px] text-[#889bbf]">Tidak ada pesanan.</p>
+            <p className="font-['Lato',sans-serif] text-[15px] text-[#889bbf]">Tidak ada pesanan.</p>
           </div>
         ) : (
           <div className="bg-white rounded-[16px] border border-[#e6ecf7] overflow-hidden">
@@ -192,7 +192,7 @@ export default function AdminOrdersPage() {
                     {["No. Order", "Customer", "Produk", "Total", "Kurir", "Status", "Status Kurir", "Tanggal"].map((h) => (
                       <th
                         key={h}
-                        className="text-left font-['Inter',sans-serif] text-[11px] font-bold uppercase tracking-wider text-[#889bbf] px-4 py-3 whitespace-nowrap"
+                        className="text-left font-['Lato',sans-serif] text-[11px] font-bold uppercase tracking-wider text-[#889bbf] px-4 py-3 whitespace-nowrap"
                       >
                         {h}
                       </th>
@@ -212,7 +212,7 @@ export default function AdminOrdersPage() {
                         className={`border-b border-[#f0f3fa] hover:bg-[#fafbff] cursor-pointer ${isUrgent ? "bg-[#fffcf0]" : ""}`}
                       >
                         <td className="px-4 py-3 whitespace-nowrap">
-                          <span className="font-['Merriweather_Sans',sans-serif] font-bold text-[13px] text-[#11151c]">
+                          <span className="font-['Lato',sans-serif] font-bold text-[13px] text-[#11151c]">
                             #{order.order_number}
                           </span>
                           {isUrgent && (
@@ -222,49 +222,49 @@ export default function AdminOrdersPage() {
                           )}
                         </td>
                         <td className="px-4 py-3">
-                          <span className="font-['Inter',sans-serif] text-[13px] text-[#11151c] block">{order.guest_name}</span>
-                          <span className="font-['Inter',sans-serif] text-[11px] text-[#889bbf] block">{order.guest_phone}</span>
+                          <span className="font-['Lato',sans-serif] text-[13px] text-[#11151c] block">{order.guest_name}</span>
+                          <span className="font-['Lato',sans-serif] text-[11px] text-[#889bbf] block">{order.guest_phone}</span>
                           {order.guest_email && (
-                            <span className="font-['Inter',sans-serif] text-[11px] text-[#889bbf] block">{order.guest_email}</span>
+                            <span className="font-['Lato',sans-serif] text-[11px] text-[#889bbf] block">{order.guest_email}</span>
                           )}
                         </td>
                         <td className="px-4 py-3 max-w-[150px]">
-                          <span className="font-['Inter',sans-serif] text-[12px] text-[#3b4963] line-clamp-1">
+                          <span className="font-['Lato',sans-serif] text-[12px] text-[#3b4963] line-clamp-1">
                             {firstItem?.name ?? "-"}{extra > 0 ? ` +${extra}` : ""}
                           </span>
                         </td>
                         <td className="px-4 py-3 whitespace-nowrap">
-                          <span className="font-['Inter',sans-serif] font-semibold text-[13px] text-[#11151c]">
+                          <span className="font-['Lato',sans-serif] font-semibold text-[13px] text-[#11151c]">
                             {rupiah(order.total)}
                           </span>
                         </td>
                         <td className="px-4 py-3">
                           {isVoucherOrder(order) ? (
                             <div className="flex flex-col gap-0.5">
-                              <span className="w-fit px-2 py-0.5 rounded-[100px] bg-[#fdf6ec] border border-[#f0d89a] font-['Inter',sans-serif] font-semibold text-[11px] text-[#b59637] whitespace-nowrap">
+                              <span className="w-fit px-2 py-0.5 rounded-[100px] bg-[#fdf6ec] border border-[#f0d89a] font-['Lato',sans-serif] font-semibold text-[11px] text-[#b59637] whitespace-nowrap">
                                 {order.voucher_used ? "Voucher ✓" : "Voucher"}
                               </span>
                               {order.voucher_code && (
                                 <span className="font-mono text-[11px] text-[#3b4963] whitespace-nowrap">{order.voucher_code}</span>
                               )}
                               {order.voucher_expires_at && (
-                                <span className="font-['Inter',sans-serif] text-[10px] text-[#889bbf] whitespace-nowrap">
+                                <span className="font-['Lato',sans-serif] text-[10px] text-[#889bbf] whitespace-nowrap">
                                   s.d. {fmtShortDate(order.voucher_expires_at)}
                                 </span>
                               )}
                             </div>
                           ) : (
-                            <span className="font-['Inter',sans-serif] text-[12px] text-[#3b4963] uppercase">{order.shipping_courier ?? "-"}</span>
+                            <span className="font-['Lato',sans-serif] text-[12px] text-[#3b4963] uppercase">{order.shipping_courier ?? "-"}</span>
                           )}
                         </td>
                         <td className="px-4 py-3">
-                          <span className={`px-3 py-1 rounded-[100px] font-['Inter',sans-serif] font-semibold text-[11px] whitespace-nowrap ${INTERNAL_CHIP[st] ?? "bg-[#f1f4fa] text-[#11151c]"}`}>
+                          <span className={`px-3 py-1 rounded-[100px] font-['Lato',sans-serif] font-semibold text-[11px] whitespace-nowrap ${INTERNAL_CHIP[st] ?? "bg-[#f1f4fa] text-[#11151c]"}`}>
                             {INTERNAL_LABEL[st] ?? st}
                           </span>
                         </td>
                         <td className="px-4 py-3">
                           {order.shipping_status ? (
-                            <span className="font-['Inter',sans-serif] text-[12px] text-[#6b3fa0] whitespace-nowrap">
+                            <span className="font-['Lato',sans-serif] text-[12px] text-[#6b3fa0] whitespace-nowrap">
                               {SHIPPING_LABEL[order.shipping_status] ?? order.shipping_status}
                             </span>
                           ) : (
@@ -272,7 +272,7 @@ export default function AdminOrdersPage() {
                           )}
                         </td>
                         <td className="px-4 py-3 whitespace-nowrap">
-                          <span className="font-['Inter',sans-serif] text-[12px] text-[#889bbf]">
+                          <span className="font-['Lato',sans-serif] text-[12px] text-[#889bbf]">
                             {new Date(order.date_created).toLocaleDateString("id-ID", { day: "numeric", month: "short", year: "numeric" })}
                           </span>
                         </td>
@@ -284,21 +284,21 @@ export default function AdminOrdersPage() {
             </div>
           {filtered.length > 0 && (
             <div className="flex items-center justify-between px-4 py-3 border-t border-[#e6ecf7]">
-              <span className="font-['Inter',sans-serif] text-[12px] text-[#889bbf]">
+              <span className="font-['Lato',sans-serif] text-[12px] text-[#889bbf]">
                 {filtered.length} pesanan · Hal {page} dari {totalPages}
               </span>
               <div className="flex gap-2">
                 <button
                   onClick={() => setPage((p) => Math.max(1, p - 1))}
                   disabled={page === 1}
-                  className="px-3 py-1.5 rounded-[8px] font-['Inter',sans-serif] text-[13px] font-semibold border border-[#e6ecf7] text-[#3b4963] hover:border-[#b59637] disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+                  className="px-3 py-1.5 rounded-[8px] font-['Lato',sans-serif] text-[13px] font-semibold border border-[#e6ecf7] text-[#3b4963] hover:border-[#b59637] disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
                 >
                   ← Prev
                 </button>
                 <button
                   onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
                   disabled={page === totalPages}
-                  className="px-3 py-1.5 rounded-[8px] font-['Inter',sans-serif] text-[13px] font-semibold border border-[#e6ecf7] text-[#3b4963] hover:border-[#b59637] disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+                  className="px-3 py-1.5 rounded-[8px] font-['Lato',sans-serif] text-[13px] font-semibold border border-[#e6ecf7] text-[#3b4963] hover:border-[#b59637] disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
                 >
                   Next →
                 </button>

@@ -84,7 +84,7 @@ export function MapSection({
           eventHandlers={{ click: () => onSelectBranch(i) }}
         >
           <Popup>
-            <div style={{ fontFamily: "Inter, sans-serif", fontSize: 12, minWidth: 160 }}>
+            <div style={{ fontFamily: "Lato, sans-serif", fontSize: 12, minWidth: 160 }}>
               <strong style={{ fontSize: 13 }}>{branch.name}</strong>
               <p style={{ margin: "4px 0 2px", color: "#503d1c", opacity: 0.8, lineHeight: 1.4 }}>{branch.address}</p>
               <p style={{ color: "#216d73", fontWeight: 600 }}>{branch.hours}</p>

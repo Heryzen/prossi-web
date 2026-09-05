@@ -41,15 +41,15 @@ export default function AdminLoginPage() {
     <div className="min-h-screen bg-[#f9f7f4] flex items-center justify-center px-4">
       <div className="w-full max-w-[360px]">
         <div className="text-center mb-8">
-          <p className="font-['Inter',sans-serif] text-[11px] font-semibold tracking-widest uppercase text-[#b59637] mb-1">
+          <p className="font-['Lato',sans-serif] text-[11px] font-semibold tracking-widest uppercase text-[#b59637] mb-1">
             Prossi Clinic
           </p>
-          <h1 className="font-['Merriweather_Sans',sans-serif] font-extrabold text-[22px] text-[#11151c]">
+          <h1 className="font-['Lato',sans-serif] font-extrabold text-[22px] text-[#11151c]">
             Admin Panel
           </h1>
         </div>
         {memberConflict && (
-          <div className="bg-[#fdf0ee] border border-[#f5cbc7] rounded-[12px] px-4 py-3 mb-4 text-[13px] text-[#a8312a] font-['Inter',sans-serif]">
+          <div className="bg-[#fdf0ee] border border-[#f5cbc7] rounded-[12px] px-4 py-3 mb-4 text-[13px] text-[#a8312a] font-['Lato',sans-serif]">
             Kamu sedang login sebagai member. <button onClick={() => { localStorage.removeItem("prossi_member"); setMemberConflict(false); }} className="font-semibold underline cursor-pointer">Logout member dulu</button> sebelum masuk sebagai admin.
           </div>
         )}
@@ -58,7 +58,7 @@ export default function AdminLoginPage() {
           className="bg-white rounded-[16px] border border-[#e6ecf7] px-6 py-8 flex flex-col gap-5"
         >
           <div className="flex flex-col gap-2">
-            <label htmlFor="pw" className="font-['Inter',sans-serif] text-[13px] font-semibold text-[#3b4963]">
+            <label htmlFor="pw" className="font-['Lato',sans-serif] text-[13px] font-semibold text-[#3b4963]">
               Password Admin
             </label>
             <input
@@ -68,18 +68,18 @@ export default function AdminLoginPage() {
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Masukkan password"
               required
-              className="border border-[#dde3f0] rounded-[10px] px-4 py-3 font-['Inter',sans-serif] text-[14px] text-[#11151c] outline-none focus:border-[#b59637] transition-colors"
+              className="border border-[#dde3f0] rounded-[10px] px-4 py-3 font-['Lato',sans-serif] text-[14px] text-[#11151c] outline-none focus:border-[#b59637] transition-colors"
             />
           </div>
           {error && (
-            <p className="font-['Inter',sans-serif] text-[13px] text-[#a8312a] bg-[#fdf0ee] rounded-[8px] px-4 py-2">
+            <p className="font-['Lato',sans-serif] text-[13px] text-[#a8312a] bg-[#fdf0ee] rounded-[8px] px-4 py-2">
               {error}
             </p>
           )}
           <button
             type="submit"
             disabled={loading || !password}
-            className="bg-[#b59637] rounded-[100px] py-3 text-white font-['Inter',sans-serif] font-semibold text-[15px] hover:opacity-90 transition-opacity disabled:opacity-50"
+            className="bg-[#b59637] rounded-[100px] py-3 text-white font-['Lato',sans-serif] font-semibold text-[15px] hover:opacity-90 transition-opacity disabled:opacity-50"
           >
             {loading ? "Memverifikasi..." : "Masuk"}
           </button>

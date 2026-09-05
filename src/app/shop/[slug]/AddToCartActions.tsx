@@ -37,7 +37,7 @@ export function AddToCartActions({
         >
           −
         </button>
-        <span className="w-10 text-center font-['Inter',sans-serif] font-medium text-[14px] text-[#11151c]">{qty}</span>
+        <span className="w-10 text-center font-['Lato',sans-serif] font-medium text-[14px] text-[#11151c]">{qty}</span>
         <button
           type="button"
           onClick={() => setQty((q) => q + 1)}
@@ -51,13 +51,13 @@ export function AddToCartActions({
         <button
           type="button"
           onClick={handleAdd}
-          className="w-full sm:w-fit bg-white border-2 border-[#b59637] text-[#b59637] rounded-[100px] px-9 py-4 font-['Inter',sans-serif] font-semibold text-[16px] hover:bg-[#b59637]/10 transition-colors cursor-pointer"
+          className="w-full sm:w-fit bg-white border-2 border-[#b59637] text-[#b59637] rounded-[100px] px-9 py-4 font-['Lato',sans-serif] font-semibold text-[16px] hover:bg-[#b59637]/10 transition-colors cursor-pointer"
         >
           {added ? "Ditambahkan ✓" : "Tambah ke Keranjang"}
         </button>
         <Link
           href={`/shop/checkout?product=${slug}&qty=${qty}`}
-          className="w-full sm:w-fit bg-[#b59637] rounded-[100px] px-9 py-4 text-white font-['Inter',sans-serif] font-semibold text-[16px] text-center hover:opacity-90 transition-opacity"
+          className="w-full sm:w-fit bg-[#b59637] rounded-[100px] px-9 py-4 text-white font-['Lato',sans-serif] font-semibold text-[16px] text-center hover:opacity-90 transition-opacity"
           style={{ boxShadow: "0px 2px 0px rgba(0,0,0,0.04)" }}
         >
           Beli Sekarang

@@ -35,7 +35,7 @@ export async function TreatmentServices() {
       <div className="max-w-[1440px] mx-auto flex flex-col items-center gap-[60px]">
         {/* Header */}
         <div className="flex flex-col items-center gap-4 text-center max-w-[878px]">
-          <h2 className="font-['Source_Serif_4',serif] font-semibold text-3xl lg:text-[46px] leading-tight text-[#120f0b] uppercase">
+          <h2 className="font-['Lato',sans-serif] font-semibold text-3xl lg:text-[46px] leading-tight text-[#120f0b] uppercase">
             Perawatan Sesuai Kebutuhan Anda
           </h2>
           <p className="font-['Lato',sans-serif] font-normal text-[18px] text-black">
@@ -74,13 +74,13 @@ export async function TreatmentServices() {
                         background: "linear-gradient(90deg, rgba(124,96,51,0) 0%, rgba(124,96,51,1) 50%, rgba(124,96,51,0) 100%)",
                       }}
                     />
-                    <p className="font-['Inter',sans-serif] text-[16px] text-[#120f0b] text-center">
+                    <p className="font-['Lato',sans-serif] text-[16px] text-[#120f0b] text-center">
                       {card.desc}
                     </p>
                   </div>
                   <Link
                     href={card.href}
-                    className="rounded-full px-9 py-[18px] text-white font-['Source_Serif_4',serif] font-semibold text-[18px] bg-[#b59637] hover:bg-[#a3852f] hover:shadow-lg hover:scale-[1.04] transition-all duration-200"
+                    className="rounded-full px-9 py-[18px] text-white font-['Lato',sans-serif] font-semibold text-[18px] bg-[#b59637] hover:bg-[#a3852f] hover:shadow-lg hover:scale-[1.04] transition-all duration-200"
                     style={{
                       border: "1px solid rgba(236,213,165,1)",
                     }}

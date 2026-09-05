@@ -56,12 +56,12 @@ export default function PayButton({ orderNumber }: { orderNumber: string }) {
       <button
         onClick={handlePay}
         disabled={loading}
-        className="w-fit bg-[#b59637] rounded-[100px] px-9 py-3 text-white font-['Inter',sans-serif] font-semibold text-[15px] hover:opacity-90 transition-opacity disabled:opacity-50 cursor-pointer"
+        className="w-fit bg-[#b59637] rounded-[100px] px-9 py-3 text-white font-['Lato',sans-serif] font-semibold text-[15px] hover:opacity-90 transition-opacity disabled:opacity-50 cursor-pointer"
       >
         {loading ? "Memproses..." : "Bayar Sekarang"}
       </button>
       {error && (
-        <p className="font-['Inter',sans-serif] text-[13px] text-[#a8312a]">{error}</p>
+        <p className="font-['Lato',sans-serif] text-[13px] text-[#a8312a]">{error}</p>
       )}
     </div>
   );

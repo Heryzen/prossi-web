@@ -16,7 +16,7 @@ export async function Philosophy() {
   const heading = s?.philosophy_heading ?? DEFAULT_HEADING;
   const text = s?.philosophy_text ?? DEFAULT_TEXT;
 
-  // kata terakhir heading di-styling script (Arizonia) sesuai design
+  // kata terakhir heading di-styling beda sesuai design
   const words = heading.trim().split(" ");
   const lastWord = words.pop();
   const headingRest = words.join(" ");
@@ -38,8 +38,8 @@ export async function Philosophy() {
         
         <div className="flex flex-col items-start w-full lg:w-[559px] shrink-0">
           <div className="flex flex-col gap-6 w-full">
-            <h2 className="font-serif text-3xl lg:text-[64px] leading-none text-white">
-              {headingRest} <span className="font-['Arizonia'] text-[36px] lg:text-[70px]">{lastWord}</span>
+            <h2 className="font-sans text-3xl lg:text-[64px] leading-none text-white">
+              {headingRest} <span className="font-['Lato'] text-[36px] lg:text-[70px]">{lastWord}</span>
             </h2>
             <p className="font-sans text-base md:text-lg leading-relaxed text-white whitespace-pre-wrap">
               {text}

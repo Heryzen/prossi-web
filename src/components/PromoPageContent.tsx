@@ -46,10 +46,10 @@ function PromoMediaFallback() {
       className="relative w-full h-full flex items-center justify-center overflow-hidden"
       style={{ background: "linear-gradient(160deg, #f4ece4 0%, #e8d9bd 55%, #ddc48a 100%)" }}
     >
-      <span className="absolute -right-6 -bottom-8 font-serif font-bold text-[140px] leading-none text-[#b59637] opacity-[0.15] select-none">
+      <span className="absolute -right-6 -bottom-8 font-sans font-bold text-[140px] leading-none text-[#b59637] opacity-[0.15] select-none">
         %
       </span>
-      <span className="relative font-serif font-semibold text-[26px] tracking-wide text-[#8a6a2f]">PROSSI</span>
+      <span className="relative font-sans font-semibold text-[26px] tracking-wide text-[#8a6a2f]">PROSSI</span>
     </div>
   );
 }
@@ -58,7 +58,7 @@ function ValidUntilBadge({ validUntil }: { validUntil: string | null }) {
   if (!validUntil) return null;
   return (
     <span
-      className="absolute top-4 right-4 rounded-full px-3 py-1.5 text-[12px] font-['Inter'] font-semibold text-[#503d1c] shadow-md"
+      className="absolute top-4 right-4 rounded-full px-3 py-1.5 text-[12px] font-['Lato'] font-semibold text-[#503d1c] shadow-md"
       style={{ background: GOLD_BUTTON }}
     >
       Berlaku s/d {formatValidUntil(validUntil, "short")}
@@ -85,10 +85,10 @@ function PromoCard({ promo, onOpen }: { promo: PromoItem; onOpen: () => void }) 
         </div>
         <div className="flex flex-col gap-2 p-6 flex-1">
           <h3 className="font-['Lato'] font-semibold text-[19px] text-[#120f0b] leading-tight">{promo.title}</h3>
-          <p className="font-['Inter'] text-[14px] text-[#120f0b]/70 leading-relaxed line-clamp-2 flex-1">
+          <p className="font-['Lato'] text-[14px] text-[#120f0b]/70 leading-relaxed line-clamp-2 flex-1">
             {promo.description}
           </p>
-          <span className="font-['Inter'] font-semibold text-[14px] text-[#b59637] mt-2">Lihat Detail →</span>
+          <span className="font-['Lato'] font-semibold text-[14px] text-[#b59637] mt-2">Lihat Detail →</span>
         </div>
       </div>
     </button>
@@ -146,16 +146,16 @@ function PromoDetailModal({
               {promo.title}
             </h2>
             {promo.valid_until && (
-              <p className="font-['Inter'] font-semibold text-[14px] text-[#b59637]">
+              <p className="font-['Lato'] font-semibold text-[14px] text-[#b59637]">
                 Berlaku sampai {formatValidUntil(promo.valid_until, "long")}
               </p>
             )}
-            <p className="font-['Inter'] text-[16px] text-[#120f0b]/85 leading-relaxed">{promo.description}</p>
+            <p className="font-['Lato'] text-[16px] text-[#120f0b]/85 leading-relaxed">{promo.description}</p>
             <Link
               href={ctaHref}
               target={isExternal ? "_blank" : undefined}
               rel={isExternal ? "noopener noreferrer" : undefined}
-              className="mt-auto self-start rounded-full px-9 py-[16px] text-[#503d1c] font-['Inter'] font-semibold text-[16px] border border-[#ecd5a5] hover:opacity-90 transition-opacity"
+              className="mt-auto self-start rounded-full px-9 py-[16px] text-[#503d1c] font-['Lato'] font-semibold text-[16px] border border-[#ecd5a5] hover:opacity-90 transition-opacity"
               style={{ background: GOLD_BUTTON }}
             >
               {isExternal ? "Chat via WhatsApp" : "View Offers"}
@@ -196,7 +196,7 @@ export function PromoPageContent({
         </p>
         <Link
           href="/"
-          className="bg-[#b59637] border border-[#ecd5a5] rounded-full px-9 py-[18px] text-white font-serif font-semibold text-lg hover:opacity-90 transition-opacity"
+          className="bg-[#b59637] border border-[#ecd5a5] rounded-full px-9 py-[18px] text-white font-sans font-semibold text-lg hover:opacity-90 transition-opacity"
         >
           Kembali ke Beranda
         </Link>
@@ -214,7 +214,7 @@ export function PromoPageContent({
               key={tab.key}
               type="button"
               onClick={() => setActiveKey(tab.key)}
-              className={`rounded-full px-6 py-3 font-['Inter'] font-semibold text-[14px] md:text-[15px] transition-colors cursor-pointer ${
+              className={`rounded-full px-6 py-3 font-['Lato'] font-semibold text-[14px] md:text-[15px] transition-colors cursor-pointer ${
                 isActive
                   ? "text-[#503d1c] border border-[#ecd5a5]"
                   : "text-[#503d1c]/60 border border-transparent hover:text-[#503d1c] hover:bg-[#f1e7da]"

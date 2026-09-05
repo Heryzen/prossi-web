@@ -41,7 +41,7 @@ export async function Footer() {
 
           <div className="flex flex-col md:flex-row flex-1 justify-between w-full md:pl-[72px] gap-10">
             <div className="flex flex-col gap-6">
-              <h4 className="font-serif font-semibold text-lg text-[#f4ece4]">Treatments</h4>
+              <h4 className="font-sans font-semibold text-lg text-[#f4ece4]">Treatments</h4>
               <div className="flex flex-col gap-4 text-white/80">
                 <Link href="/treatments/slimming-program" className="hover:text-white transition-colors">Slimming Program</Link>
                 <Link href="/treatments/skin-treatment" className="hover:text-white transition-colors">Skin Treatment</Link>
@@ -49,7 +49,7 @@ export async function Footer() {
             </div>
 
             <div className="flex flex-col gap-6">
-              <h4 className="font-serif font-semibold text-lg text-[#f4ece4]">Tentang Kami</h4>
+              <h4 className="font-sans font-semibold text-lg text-[#f4ece4]">Tentang Kami</h4>
               <div className="flex flex-col gap-4 text-white/80">
                 <Link href="/about" className="hover:text-white transition-colors">Tentang Prossi Clinic</Link>
                 <Link href="/doctors" className="hover:text-white transition-colors">Dokter Kami</Link>
@@ -58,7 +58,7 @@ export async function Footer() {
             </div>
 
             <div className="flex flex-col gap-6">
-              <h4 className="font-serif font-semibold text-lg text-[#f4ece4]">Contact</h4>
+              <h4 className="font-sans font-semibold text-lg text-[#f4ece4]">Contact</h4>
               <div className="flex flex-col gap-4 text-white/80">
                 <a href={`tel:${phone.replace(/[^+\d]/g, "")}`} className="flex items-center gap-3 hover:text-white transition-colors">
                   <img src="/figma/imgFluentCall24Filled.svg" alt="Phone" className="w-5 h-5 opacity-80" />

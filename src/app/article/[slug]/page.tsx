@@ -193,7 +193,7 @@ export default async function ArticleDetailPage({
             style={{ maxWidth: 711 }}
           >
             <h1
-              className="font-['Source_Serif_4',serif] font-normal leading-tight"
+              className="font-['Lato',sans-serif] font-normal leading-tight"
               style={{
                 fontSize: "clamp(28px, 7vw, 45px)",
                 background:
@@ -226,7 +226,7 @@ export default async function ArticleDetailPage({
         <nav className="flex items-center gap-2 flex-wrap">
           <Link
             href="/"
-            className="font-['Inter',sans-serif] font-medium text-[#11151C] hover:underline"
+            className="font-['Lato',sans-serif] font-medium text-[#11151C] hover:underline"
             style={{ fontSize: 16, lineHeight: "24px" }}
           >
             Home
@@ -234,14 +234,14 @@ export default async function ArticleDetailPage({
           <ChevronRight className="text-[#11151C]" />
           <Link
             href="/article"
-            className="font-['Inter',sans-serif] font-medium text-[#11151C] hover:underline"
+            className="font-['Lato',sans-serif] font-medium text-[#11151C] hover:underline"
             style={{ fontSize: 16, lineHeight: "24px" }}
           >
             Insight &amp; Inspiration
           </Link>
           <ChevronRight className="text-[#11151C]" />
           <span
-            className="font-['Inter',sans-serif] font-medium text-[#4A576F] truncate max-w-[360px]"
+            className="font-['Lato',sans-serif] font-medium text-[#4A576F] truncate max-w-[360px]"
             style={{ fontSize: 16, lineHeight: "24px" }}
           >
             {article.title}
@@ -250,7 +250,7 @@ export default async function ArticleDetailPage({
 
         {/* Title */}
         <h2
-          className="font-['Merriweather_Sans',sans-serif] font-extrabold text-[#11151C]"
+          className="font-['Lato',sans-serif] font-extrabold text-[#11151C]"
           style={{ fontSize: "clamp(22px, 6vw, 36px)", lineHeight: "1.3", letterSpacing: "0.0069em" }}
         >
           {article.title}
@@ -258,7 +258,7 @@ export default async function ArticleDetailPage({
 
         {/* Excerpt */}
         <p
-          className="font-['Inter',sans-serif] font-medium text-[#4A576F]"
+          className="font-['Lato',sans-serif] font-medium text-[#4A576F]"
           style={{ fontSize: 16, lineHeight: "24px", letterSpacing: "0.0094em" }}
         >
           {article.excerpt}
@@ -267,7 +267,7 @@ export default async function ArticleDetailPage({
         {/* Meta */}
         <div className="flex items-center gap-4 flex-wrap">
           <span
-            className="font-['Inter',sans-serif] font-medium text-[#4A576F]"
+            className="font-['Lato',sans-serif] font-medium text-[#4A576F]"
             style={{ fontSize: 16, lineHeight: "24px" }}
           >
             {article.author}
@@ -277,7 +277,7 @@ export default async function ArticleDetailPage({
             style={{ width: 8, height: 8, background: "#DEE0E5" }}
           />
           <span
-            className="font-['Inter',sans-serif] font-bold text-[#2444B9]"
+            className="font-['Lato',sans-serif] font-bold text-[#2444B9]"
             style={{ fontSize: 16, lineHeight: "24px", letterSpacing: "0.0094em" }}
           >
             {article.publishedAt}
@@ -302,7 +302,7 @@ export default async function ArticleDetailPage({
         <div className="flex flex-col gap-5" style={{ maxWidth: 860 }}>
           {htmlContent ? (
             <div
-              className="font-['Inter',sans-serif] font-medium text-[#4A576F] flex flex-col gap-5 [&_p]:leading-6"
+              className="font-['Lato',sans-serif] font-medium text-[#4A576F] flex flex-col gap-5 [&_p]:leading-6"
               style={{ fontSize: 16, letterSpacing: "0.0094em" }}
               dangerouslySetInnerHTML={{ __html: htmlContent }}
             />
@@ -310,7 +310,7 @@ export default async function ArticleDetailPage({
             article.body.map((p, i) => (
               <p
                 key={i}
-                className="font-['Inter',sans-serif] font-medium text-[#4A576F]"
+                className="font-['Lato',sans-serif] font-medium text-[#4A576F]"
                 style={{
                   fontSize: 16,
                   lineHeight: "24px",

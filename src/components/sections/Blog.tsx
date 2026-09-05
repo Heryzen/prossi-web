@@ -53,7 +53,7 @@ export async function Blog() {
     <section className="bg-white w-full py-12 lg:py-[100px] px-6 lg:px-[100px] flex flex-col items-center">
       <div className="max-w-[1240px] w-full flex flex-col items-center gap-[42px]">
         <div className="flex flex-col items-center gap-6 w-full text-center max-w-[1030px]">
-          <h2 className="font-serif font-semibold text-[32px] md:text-[40px] text-[#120f0b] capitalize">
+          <h2 className="font-sans font-semibold text-[32px] md:text-[40px] text-[#120f0b] capitalize">
             Articles
           </h2>
           <p className="font-sans text-lg text-[#120f0b] max-w-[816px]">
@@ -76,7 +76,7 @@ export async function Blog() {
                   <img src="/figma/imgTablerTagFilled.svg" alt="Tag" className="w-5 h-5" />
                   <span className="font-sans font-medium text-sm text-[#503d1c]">{article.category}</span>
                 </div>
-                <h3 className="font-serif font-semibold text-[26px] text-[#120f0b] leading-tight">
+                <h3 className="font-sans font-semibold text-[26px] text-[#120f0b] leading-tight">
                   {article.title}
                 </h3>
               </div>
@@ -84,7 +84,7 @@ export async function Blog() {
           ))}
         </div>
 
-        <Link href="/article" className="bg-[#b59637] border border-[#ecd5a5] rounded-full px-9 py-[18px] text-white font-serif font-semibold text-lg hover:opacity-90 transition-opacity">
+        <Link href="/article" className="bg-[#b59637] border border-[#ecd5a5] rounded-full px-9 py-[18px] text-white font-sans font-semibold text-lg hover:opacity-90 transition-opacity">
           Read More
         </Link>
       </div>

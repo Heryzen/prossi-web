@@ -42,10 +42,10 @@ function ProgramCard({ title, desc, img, ctaLink }: { title: string; desc: strin
           <img src={img} alt={title} className="w-full h-full object-cover" />
         </div>
         <div className="flex flex-col gap-4 px-4 pt-8">
-          <h3 className="font-['Poppins',sans-serif] font-semibold text-[24px] text-[#120f0b] uppercase leading-tight">
+          <h3 className="font-['Lato',sans-serif] font-semibold text-[24px] text-[#120f0b] uppercase leading-tight">
             {title}
           </h3>
-          <p className="font-['Inter',sans-serif] font-normal text-[16px] text-[#120f0b] leading-relaxed">
+          <p className="font-['Lato',sans-serif] font-normal text-[16px] text-[#120f0b] leading-relaxed">
             {desc}
           </p>
           {ctaLink && (
@@ -53,7 +53,7 @@ function ProgramCard({ title, desc, img, ctaLink }: { title: string; desc: strin
               href={ctaLink}
               target="_blank"
               rel="noopener noreferrer"
-              className="font-['Inter',sans-serif] font-semibold text-[16px] text-[#426B6A] underline underline-offset-2 hover:text-[#2f4b4a] transition-colors"
+              className="font-['Lato',sans-serif] font-semibold text-[16px] text-[#426B6A] underline underline-offset-2 hover:text-[#2f4b4a] transition-colors"
             >
               Selengkapnya
             </a>
@@ -102,10 +102,10 @@ export async function SkinCoreServices() {
               Skin Treatments
             </span>
           </div>
-          <h2 className="font-['Source_Serif_4',serif] font-semibold text-[40px] text-white">
+          <h2 className="font-['Lato',sans-serif] font-semibold text-[40px] text-white">
             Pilih Perawatan Sesuai Kebutuhan Anda
           </h2>
-          <p className="font-['Inter',sans-serif] text-[18px] text-white">
+          <p className="font-['Lato',sans-serif] text-[18px] text-white">
             Setiap kategori dirancang untuk membantu Anda menemukan solusi yang paling sesuai dengan kondisi Anda.
           </p>
         </div>

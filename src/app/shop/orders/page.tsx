@@ -89,15 +89,15 @@ export default function OrderHistoryPage() {
     return (
       <section className="bg-white w-full min-h-screen pt-[140px] pb-[80px] px-6 md:px-[160px]">
         <div className="max-w-[700px] mx-auto flex flex-col items-center gap-6 text-center">
-          <h1 className="font-['Merriweather_Sans',sans-serif] font-extrabold text-[24px] text-[#11151c]">
+          <h1 className="font-['Lato',sans-serif] font-extrabold text-[24px] text-[#11151c]">
             Riwayat Pesanan
           </h1>
-          <p className="font-['Inter',sans-serif] text-[15px] text-[#3b4963]">
+          <p className="font-['Lato',sans-serif] text-[15px] text-[#3b4963]">
             Masuk ke akun Anda untuk melihat riwayat pesanan.
           </p>
           <Link
             href="/login"
-            className="bg-[#b59637] rounded-[100px] px-9 py-3 text-white font-['Inter',sans-serif] font-semibold text-[15px] hover:opacity-90 transition-opacity"
+            className="bg-[#b59637] rounded-[100px] px-9 py-3 text-white font-['Lato',sans-serif] font-semibold text-[15px] hover:opacity-90 transition-opacity"
           >
             Masuk
           </Link>
@@ -109,18 +109,18 @@ export default function OrderHistoryPage() {
   return (
     <section className="bg-white w-full min-h-screen pt-[140px] pb-[80px] px-6 md:px-[160px]">
       <div className="max-w-[700px] mx-auto flex flex-col gap-8">
-        <h1 className="font-['Merriweather_Sans',sans-serif] font-extrabold text-[24px] text-[#11151c]">
+        <h1 className="font-['Lato',sans-serif] font-extrabold text-[24px] text-[#11151c]">
           Riwayat Pesanan
         </h1>
 
         {orders.length === 0 ? (
           <div className="flex flex-col items-center gap-4 text-center py-12">
-            <p className="font-['Inter',sans-serif] text-[15px] text-[#3b4963]">
+            <p className="font-['Lato',sans-serif] text-[15px] text-[#3b4963]">
               Belum ada pesanan. Yuk mulai belanja di Shop Prossi.
             </p>
             <Link
               href="/shop"
-              className="bg-[#b59637] rounded-[100px] px-9 py-3 text-white font-['Inter',sans-serif] font-semibold text-[15px] hover:opacity-90 transition-opacity"
+              className="bg-[#b59637] rounded-[100px] px-9 py-3 text-white font-['Lato',sans-serif] font-semibold text-[15px] hover:opacity-90 transition-opacity"
             >
               Ke Shop
             </Link>
@@ -134,15 +134,15 @@ export default function OrderHistoryPage() {
                 className="flex flex-col gap-2 border border-[#e6ecf7] rounded-[12px] px-6 py-4 hover:border-[#b59637] transition-colors"
               >
                 <div className="flex items-center justify-between gap-4">
-                  <span className="font-['Merriweather_Sans',sans-serif] font-extrabold text-[16px] text-[#11151c]">
+                  <span className="font-['Lato',sans-serif] font-extrabold text-[16px] text-[#11151c]">
                     #{order.order_number}
                   </span>
-                  <span className="font-['Inter',sans-serif] font-medium text-[15px] text-[#3b4963]">
+                  <span className="font-['Lato',sans-serif] font-medium text-[15px] text-[#3b4963]">
                     {rupiah(order.total)}
                   </span>
                 </div>
                 <div className="flex items-center justify-between gap-4">
-                  <span className="font-['Inter',sans-serif] text-[13px] text-[#889bbf]">
+                  <span className="font-['Lato',sans-serif] text-[13px] text-[#889bbf]">
                     {new Date(order.date_created).toLocaleDateString("id-ID", {
                       day: "numeric",
                       month: "long",
@@ -153,13 +153,13 @@ export default function OrderHistoryPage() {
                     {(() => {
                       const st = order.internal_status ?? order.status;
                       return (
-                        <span className={`px-3 py-1 rounded-[100px] font-['Inter',sans-serif] font-semibold text-[12px] ${STATUS_CHIP[st] ?? "bg-[#f1f4fa] text-[#11151c]"}`}>
+                        <span className={`px-3 py-1 rounded-[100px] font-['Lato',sans-serif] font-semibold text-[12px] ${STATUS_CHIP[st] ?? "bg-[#f1f4fa] text-[#11151c]"}`}>
                           {STATUS_LABEL[st] ?? st}
                         </span>
                       );
                     })()}
                     {order.payment_status !== "paid" && (
-                      <span className="px-3 py-1 rounded-[100px] font-['Inter',sans-serif] font-semibold text-[12px] bg-[#f4ece4] text-[#b59637]">
+                      <span className="px-3 py-1 rounded-[100px] font-['Lato',sans-serif] font-semibold text-[12px] bg-[#f4ece4] text-[#b59637]">
                         {PAYMENT_LABEL[order.payment_status] ?? order.payment_status}
                       </span>
                     )}

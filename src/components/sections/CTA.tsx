@@ -66,7 +66,7 @@ export function CTA({ promos }: { promos?: PromoSlide[] }) {
                         <img alt="" className="block max-w-none size-full" src="/figma/imgLine4.svg" />
                       </div>
                     </div>
-                    <span className="font-['Inter'] font-semibold leading-normal not-italic relative shrink-0 text-[14px] text-[#120f0b] whitespace-nowrap">Promo</span>
+                    <span className="font-['Lato'] font-semibold leading-normal not-italic relative shrink-0 text-[14px] text-[#120f0b] whitespace-nowrap">Promo</span>
                     <div className="flex items-center justify-center relative shrink-0">
                       <div className="-scale-y-100 flex-none rotate-180">
                         <div className="h-0 relative w-[63px]">
@@ -83,7 +83,7 @@ export function CTA({ promos }: { promos?: PromoSlide[] }) {
                   <p className="font-sans text-lg text-[#120f0b] mb-8">
                     {slide.description}
                   </p>
-                  <Link href={slide.ctaLink} className="bg-gradient-to-r from-[#e5be80] via-[#edd8ab] to-[#e5be80] border border-[#ecd5a5] rounded-full px-9 py-[18px] text-[#503d1c] font-serif font-semibold text-lg hover:opacity-90 transition-opacity w-fit">
+                  <Link href={slide.ctaLink} className="bg-gradient-to-r from-[#e5be80] via-[#edd8ab] to-[#e5be80] border border-[#ecd5a5] rounded-full px-9 py-[18px] text-[#503d1c] font-sans font-semibold text-lg hover:opacity-90 transition-opacity w-fit">
                     View Offers
                   </Link>
                 </div>

@@ -101,7 +101,7 @@ export function Header({ topBar }: { topBar?: HeaderTopBar }) {
               className="w-3 h-3 lg:w-3.5 lg:h-3.5 shrink-0"
               style={{ filter: "brightness(0) invert(1)", opacity: 0.8 }}
             />
-            <span className="text-white/80 font-['Inter'] text-[11px] lg:text-[13px] whitespace-nowrap">
+            <span className="text-white/80 font-['Lato'] text-[11px] lg:text-[13px] whitespace-nowrap">
               {openHours}
             </span>
           </div>
@@ -582,7 +582,7 @@ export function Header({ topBar }: { topBar?: HeaderTopBar }) {
                 sendGAEvent("event", "klik_reservation", { lokasi: "navbar_mobile" });
                 setMobileOpen(false);
               }}
-              className="bg-[#b59637] border border-[#ecd5a5] rounded-full px-9 py-3 text-white font-['Source_Serif_Pro',serif] font-semibold text-base mt-2 text-center"
+              className="bg-[#b59637] border border-[#ecd5a5] rounded-full px-9 py-3 text-white font-['Lato',sans-serif] font-semibold text-base mt-2 text-center"
             >
               Reservation
             </Link>
