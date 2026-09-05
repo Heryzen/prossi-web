@@ -278,8 +278,8 @@ export function ReservationModal({ isOpen, onClose, initialClinicName }: Props) 
                     href={waLink}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="w-full flex items-center justify-center gap-2 font-['Lato',sans-serif] font-medium text-[16px] text-white hover:opacity-90 transition-opacity"
-                    style={{ maxWidth: 426, padding: "12px 16px", background: "#25D366", borderRadius: 8 }}
+                    className="w-full rounded-full flex items-center justify-center gap-2 font-['Lato',sans-serif] font-medium text-[16px] text-white hover:opacity-90 transition-opacity"
+                    style={{ maxWidth: 426, padding: "12px 16px", background: "#25D366" }}
                   >
                     Belum terbuka? Buka WhatsApp
                   </a>
@@ -287,8 +287,8 @@ export function ReservationModal({ isOpen, onClose, initialClinicName }: Props) 
                 <button
                   type="button"
                   onClick={onClose}
-                  className="font-['Lato',sans-serif] font-medium text-[16px] text-white hover:opacity-90 transition-opacity cursor-pointer"
-                  style={{ width: 426, padding: "12px 16px", background: "#B59637", borderRadius: 8 }}
+                  className="rounded-full font-['Lato',sans-serif] font-medium text-[16px] text-white hover:opacity-90 transition-opacity cursor-pointer"
+                  style={{ width: 426, padding: "12px 16px", background: "#B59637" }}
                 >
                   Tutup
                 </button>
@@ -316,8 +316,8 @@ export function ReservationModal({ isOpen, onClose, initialClinicName }: Props) 
                   type="button"
                   disabled={submitting}
                   onClick={handleSubmit}
-                  className="font-['Lato',sans-serif] font-medium text-[16px] leading-[22px] text-white hover:opacity-90 transition-opacity disabled:opacity-60 cursor-pointer disabled:cursor-not-allowed flex items-center justify-center gap-2"
-                  style={{ width: 426, padding: "12px 16px", background: "#B59637", borderRadius: 8 }}
+                  className="rounded-full font-['Lato',sans-serif] font-medium text-[16px] leading-[22px] text-white hover:opacity-90 transition-opacity disabled:opacity-60 cursor-pointer disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                  style={{ width: 426, padding: "12px 16px", background: "#B59637" }}
                 >
                   {submitting && (
                     <span className="w-4 h-4 rounded-full border-2 border-white border-t-transparent animate-spin" />
