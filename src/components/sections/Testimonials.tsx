@@ -189,7 +189,7 @@ export function Testimonials({ reviews: reviewsProp }: { reviews?: Review[] }) {
           </p>
         </div>
 
-        <div className="w-full md:max-w-[869px] md:mx-auto overflow-hidden" ref={emblaRef}>
+        <div className="w-full overflow-hidden" ref={emblaRef}>
           <div className="flex gap-6 -ml-6">
             {reviews.map((review, i) => (
               <div key={i} className="flex-[0_0_100%] md:flex-[0_0_869px] pl-6">
