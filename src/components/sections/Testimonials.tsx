@@ -192,9 +192,9 @@ export function Testimonials({ reviews: reviewsProp }: { reviews?: Review[] }) {
         <div className="w-full overflow-hidden" ref={emblaRef}>
           <div className="flex gap-6 -ml-6">
             {reviews.map((review, i) => (
-              <div key={i} className="flex-[0_0_100%] md:flex-[0_0_869px] pl-6">
+              <div key={i} className="flex-[0_0_100%] md:flex-[0_0_740px] pl-6">
                 <div className="w-full bg-[#fff8f2] border border-[#deba69] rounded-[24px] p-8 flex flex-col md:flex-row gap-6 h-full">
-                  <div className="flex flex-col w-full md:w-[316px] shrink-0 justify-between">
+                  <div className="flex flex-col w-full md:w-[270px] shrink-0 justify-between">
                     <div className="flex flex-col gap-4">
                       <Stars count={review.rating ?? 5} />
                       <p className="font-sans text-lg leading-relaxed text-[#120f0b]">
@@ -209,7 +209,7 @@ export function Testimonials({ reviews: reviewsProp }: { reviews?: Review[] }) {
                       </div>
                     </div>
                   </div>
-                  <div className="w-full h-[200px] md:flex-1 md:h-[338px] rounded-xl overflow-hidden relative">
+                  <div className="w-full h-[200px] md:flex-1 md:h-[288px] rounded-xl overflow-hidden relative">
                     {review.videoUrl ? (
                       <button
                         type="button"
