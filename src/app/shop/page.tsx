@@ -81,7 +81,7 @@ export default async function ShopPage() {
         />
         <div className="relative z-10 flex flex-col gap-4 max-w-[611px] px-6 md:pl-[100px] pt-[100px] md:pt-[200px]">
           <h1
-            className="font-sans font-normal leading-tight bg-clip-text text-transparent"
+            className="font-serif font-normal leading-tight bg-clip-text text-transparent"
             style={{ backgroundImage: HEADING_GRADIENT, fontSize: "clamp(28px, 6vw, 45px)" }}
           >
             {heroHeading}

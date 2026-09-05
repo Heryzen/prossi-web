@@ -41,6 +41,7 @@
   --color-destructive-border: var(--destructive-border);
 
   --font-sans: var(--app-font-sans);
+  --font-serif: var(--app-font-serif);
   --font-mono: var(--app-font-mono);
 
   --radius-sm: calc(var(--radius) - 4px);

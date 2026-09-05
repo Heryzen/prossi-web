@@ -168,7 +168,7 @@ export function DoctorsPageContent({
               {eyebrow}
             </span>
             <h1
-              className="font-sans font-normal leading-tight bg-clip-text text-transparent"
+              className="font-serif font-normal leading-tight bg-clip-text text-transparent"
               style={{ backgroundImage: HEADING_GRADIENT, fontSize: "clamp(28px, 6vw, 45px)" }}
             >
               Perawatan yang Tepat untuk Kulit Sehat & Tubuh Ideal

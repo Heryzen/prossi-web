@@ -107,7 +107,7 @@ export default function LocationsPage() {
             style={{ maxWidth: 711 }}
           >
             <h1
-              className="font-['Lato',sans-serif] font-bold leading-tight"
+              className="font-['Source_Serif_4',serif] font-bold leading-tight"
               style={{
                 fontSize: "clamp(28px, 7vw, 45px)",
                 background:

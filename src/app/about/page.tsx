@@ -97,7 +97,7 @@ export default function AboutPage() {
         />
         <div className="relative z-10 flex flex-col gap-4 px-6 pt-[100px] md:px-0 md:pt-[200px]" style={{ maxWidth: 711, paddingLeft: undefined }}>
           <h1
-            className="font-['Lato',sans-serif] font-normal leading-tight md:pl-[100px]"
+            className="font-['Source_Serif_4',serif] font-normal leading-tight md:pl-[100px]"
             style={{
               fontSize: "clamp(28px, 7vw, 45px)",
               background:

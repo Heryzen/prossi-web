@@ -19,7 +19,7 @@ export function TreatmentsHero() {
       {/* Content */}
       <div className="relative z-10 flex flex-col gap-4 px-6 pt-[120px] pb-12 md:pl-[100px] md:pr-10 md:pt-[172px] md:pb-[60px]" style={{ maxWidth: "813px" }}>
         <h1
-          className="font-['Lato',sans-serif] font-normal text-white leading-tight"
+          className="font-['Source_Serif_4',serif] font-normal text-white leading-tight"
           style={{ fontSize: "clamp(26px, 7vw, 45px)" }}
         >
           Perjalanan Menuju Tubuh Ideal Dimulai dari Satu Langkah yang Tepat

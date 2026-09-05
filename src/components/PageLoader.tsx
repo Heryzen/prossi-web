@@ -54,7 +54,7 @@ export function PageLoader() {
         <h1
           className="prossi-loader-word"
           style={{
-            fontFamily: "'Lato', sans-serif",
+            fontFamily: "'Source Serif 4', 'Source Serif Pro', serif",
             fontWeight: 600,
             fontSize: "clamp(48px, 9vw, 80px)",
             letterSpacing: "0.04em",
@@ -86,7 +86,7 @@ export function PageLoader() {
         <span
           className="prossi-loader-sub"
           style={{
-            fontFamily: "'Lato', sans-serif",
+            fontFamily: "'Inter', sans-serif",
             fontWeight: 600,
             fontSize: 13,
             letterSpacing: "0.62em",

@@ -213,7 +213,7 @@ export default function ArticlePage() {
             style={{ maxWidth: 711 }}
           >
             <h1
-              className="font-['Lato',sans-serif] font-normal leading-tight"
+              className="font-['Source_Serif_4',serif] font-normal leading-tight"
               style={{
                 fontSize: "clamp(28px, 7vw, 45px)",
                 background:
