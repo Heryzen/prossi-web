@@ -107,7 +107,7 @@ function PlayIcon() {
 }
 
 export function Testimonials({ reviews: reviewsProp }: { reviews?: Review[] }) {
-  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true, align: 'start' });
+  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true, align: 'center' });
   const [activeVideo, setActiveVideo] = useState<{ url: string; sourceUrl?: string | null } | null>(null);
 
   useEffect(() => {
@@ -193,15 +193,15 @@ export function Testimonials({ reviews: reviewsProp }: { reviews?: Review[] }) {
           <div className="flex gap-6 -ml-6">
             {reviews.map((review, i) => (
               <div key={i} className="flex-[0_0_100%] md:flex-[0_0_740px] pl-6">
-                <div className="w-full bg-[#fff8f2] border border-[#deba69] rounded-[24px] p-8 flex flex-col md:flex-row gap-6 h-full">
-                  <div className="flex flex-col w-full md:w-[270px] shrink-0 justify-between">
-                    <div className="flex flex-col gap-4">
+                <div className="w-full bg-[#fff8f2] border border-[#deba69] rounded-[24px] p-8 flex flex-col md:flex-row gap-6 md:h-[400px]">
+                  <div className="flex flex-col w-full md:w-[270px] shrink-0 md:h-full">
+                    <div className="flex flex-col gap-4 md:flex-1 md:min-h-0 md:overflow-y-auto pr-1">
                       <Stars count={review.rating ?? 5} />
-                      <p className="font-sans text-lg leading-relaxed text-[#120f0b]">
+                      <p className="font-sans text-base leading-relaxed text-[#120f0b]">
                         {review.text}
                       </p>
                     </div>
-                    <div className="flex items-center gap-4 mt-8">
+                    <div className="flex items-center gap-4 mt-8 shrink-0">
                       <Avatar src={review.avatar} name={review.name} />
                       <div className="flex flex-col gap-2 text-[#120f0b]">
                         <span className="font-sans font-semibold text-sm opacity-60 uppercase">{review.location}</span>
@@ -209,7 +209,7 @@ export function Testimonials({ reviews: reviewsProp }: { reviews?: Review[] }) {
                       </div>
                     </div>
                   </div>
-                  <div className="w-full h-[200px] md:flex-1 md:h-[288px] rounded-xl overflow-hidden relative">
+                  <div className="w-full h-[200px] md:flex-1 md:h-full rounded-xl overflow-hidden relative">
                     {review.videoUrl ? (
                       <button
                         type="button"
