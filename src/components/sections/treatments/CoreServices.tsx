@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { directusFetch, assetUrl } from "@/lib/directus";
 
 const CARD_BORDER = "linear-gradient(270deg, rgba(222,186,105,1) 0%, rgba(235,210,151,1) 30%, rgba(251,232,166,1) 50%, rgba(235,210,151,1) 70%, rgba(222,186,105,1) 100%)";
@@ -42,7 +43,17 @@ const programs = [
   },
 ];
 
-function ProgramCard({ title, desc, img, ctaLink }: { title: string; desc: string; img: string; size: "sm" | "lg"; ctaLink?: string | null }) {
+function ProgramCard({ title, desc, img, ctaLink, link }: { title: string; desc: string; img: string; size: "sm" | "lg"; ctaLink?: string | null; link?: string | null }) {
+  const imageBlock = (
+    <div className="w-full h-[210px] shrink-0 rounded-[20px] overflow-hidden">
+      <img src={img} alt={title} className="w-full h-full object-cover" />
+    </div>
+  );
+  const titleBlock = (
+    <h3 className="font-['Lato',sans-serif] font-semibold text-[18px] md:text-[24px] text-[#120f0b] uppercase leading-tight hover:opacity-80 transition-opacity">
+      {title}
+    </h3>
+  );
   return (
     <div
       className="rounded-[24px] p-[1px] w-full flex-1"
@@ -53,14 +64,10 @@ function ProgramCard({ title, desc, img, ctaLink }: { title: string; desc: strin
         className="rounded-[23px] flex flex-col h-full"
         style={{ background: CARD_BG, padding: "12px 12px 32px" }}
       >
-        <div className="w-full h-[210px] shrink-0 rounded-[20px] overflow-hidden">
-          <img src={img} alt={title} className="w-full h-full object-cover" />
-        </div>
+        {link ? <Link href={link} className="block">{imageBlock}</Link> : imageBlock}
         {/* info padding: 0px 16px, gap: 32px between image and info */}
         <div className="flex flex-col gap-4 px-4 pt-8">
-          <h3 className="font-['Lato',sans-serif] font-semibold text-[18px] md:text-[24px] text-[#120f0b] uppercase leading-tight">
-            {title}
-          </h3>
+          {link ? <Link href={link}>{titleBlock}</Link> : titleBlock}
           <p className="font-['Lato',sans-serif] font-normal text-[16px] text-[#120f0b] leading-relaxed">
             {desc}
           </p>
@@ -80,11 +87,11 @@ function ProgramCard({ title, desc, img, ctaLink }: { title: string; desc: strin
   );
 }
 
-type CmsTreatment = { name: string; description: string; image: string | null; cta_link: string | null };
+type CmsTreatment = { name: string; slug: string | null; description: string; image: string | null; cta_link: string | null };
 
 export async function CoreServices() {
   const cms = await directusFetch<CmsTreatment[]>(
-    "/items/treatments?filter[category][_eq]=slimming&filter[status][_eq]=published&sort=sort&fields=name,description,image,cta_link"
+    "/items/treatments?filter[category][_eq]=slimming&filter[status][_eq]=published&sort=sort&fields=name,slug,description,image,cta_link"
   );
 
   const items =
@@ -94,6 +101,7 @@ export async function CoreServices() {
           desc: t.description,
           img: t.image ? assetUrl(t.image) : programs[i % programs.length].img,
           ctaLink: t.cta_link,
+          link: t.slug ? `/treatments/slimming-program/${t.slug}` : null,
           size: "sm" as const,
         }))
       : programs;

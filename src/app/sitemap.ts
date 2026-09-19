@@ -5,6 +5,7 @@ const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
 
 type CmsArticle = { id: string; slug: string; date_created: string };
 type CmsProduct = { slug: string };
+type CmsTreatment = { slug: string; category: "slimming" | "skin" };
 
 const STATIC_ROUTES = [
   "",
@@ -26,9 +27,10 @@ const STATIC_ROUTES = [
 ];
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const [articles, products] = await Promise.all([
+  const [articles, products, treatments] = await Promise.all([
     directusFetch<CmsArticle[]>("/items/articles?filter[status][_eq]=published&fields=id,slug,date_created"),
     directusFetch<CmsProduct[]>("/items/products?filter[status][_eq]=published&fields=slug"),
+    directusFetch<CmsTreatment[]>("/items/treatments?filter[status][_eq]=published&filter[slug][_nnull]=true&fields=slug,category"),
   ]);
 
   const staticEntries: MetadataRoute.Sitemap = STATIC_ROUTES.map((path) => ({
@@ -46,5 +48,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       url: `${SITE_URL}/shop/${p.slug}`,
     })) ?? [];
 
-  return [...staticEntries, ...articleEntries, ...productEntries];
+  const treatmentEntries: MetadataRoute.Sitemap =
+    treatments?.map((t) => ({
+      url: `${SITE_URL}/treatments/${t.category === "slimming" ? "slimming-program" : "skin-treatment"}/${t.slug}`,
+    })) ?? [];
+
+  return [...staticEntries, ...articleEntries, ...productEntries, ...treatmentEntries];
 }
