@@ -71,7 +71,14 @@ function ProgramCard({ title, desc, img, ctaLink, link }: { title: string; desc:
           <p className="font-['Lato',sans-serif] font-normal text-[16px] text-[#120f0b] leading-relaxed">
             {desc}
           </p>
-          {ctaLink && (
+          {link ? (
+            <Link
+              href={link}
+              className="font-['Lato',sans-serif] font-semibold text-[16px] text-[#cd724f] underline underline-offset-2 hover:text-[#a85a3d] transition-colors"
+            >
+              Selengkapnya
+            </Link>
+          ) : ctaLink && (
             <a
               href={ctaLink}
               target="_blank"
