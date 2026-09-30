@@ -39,17 +39,20 @@ const ORGANIZATION_JSON_LD = {
   email: "info@prossi.com",
   medicalSpecialty: ["Dermatology", "Weight Management", "Aesthetic Medicine"],
   sameAs: [
-    "https://t.me/prossiclinic",
+    "https://www.tiktok.com/@prossi.clinic",
     "https://instagram.com/prossiclinic",
     "https://facebook.com/prossiclinic",
+    "https://www.threads.net/@prossi.clinic",
+    "https://www.linkedin.com/company/prossiclinic",
   ],
 };
 
 type SiteSettings = {
-  open_hours_text: string | null;
-  social_telegram: string | null;
+  social_tiktok: string | null;
   social_instagram: string | null;
   social_facebook: string | null;
+  social_threads: string | null;
+  social_linkedin: string | null;
 };
 
 export default async function RootLayout({
@@ -58,14 +61,15 @@ export default async function RootLayout({
   children: React.ReactNode;
 }) {
   const s = await directusFetch<SiteSettings>(
-    "/items/site_settings?fields=open_hours_text,social_telegram,social_instagram,social_facebook"
+    "/items/site_settings?fields=social_tiktok,social_instagram,social_facebook,social_threads,social_linkedin"
   );
   const topBar: HeaderTopBar | undefined = s
     ? {
-        openHours: s.open_hours_text ?? "Open Daily · 9:00 AM – 8:00 PM",
-        telegram: s.social_telegram ?? "https://t.me/prossiclinic",
+        tiktok: s.social_tiktok ?? "https://www.tiktok.com/@prossi.clinic",
         instagram: s.social_instagram ?? "https://instagram.com/prossiclinic",
         facebook: s.social_facebook ?? "https://facebook.com/prossiclinic",
+        threads: s.social_threads ?? "https://www.threads.net/@prossi.clinic",
+        linkedin: s.social_linkedin ?? "https://www.linkedin.com/company/prossiclinic",
       }
     : undefined;
 

@@ -11,7 +11,7 @@ type CmsDoctor = { specialty: string; photo: string | null };
 
 export async function Team() {
   const cms = await directusFetch<CmsDoctor[]>(
-    "/items/doctors?filter[status][_eq]=published&sort=sort&fields=specialty,photo&limit=3"
+    "/items/doctors?filter[status][_eq]=published&filter[featured][_eq]=true&sort=sort&fields=specialty,photo&limit=3"
   );
 
   const team =

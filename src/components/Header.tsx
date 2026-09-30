@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { sendGAEvent } from "@next/third-parties/google";
 import { useCart } from "@/lib/cart";
+import { TikTokIcon, InstagramIcon, FacebookIcon, ThreadsIcon, LinkedInIcon } from "@/components/SocialIcons";
 
 const navItems = [
   { label: "Home", href: "/", dropdown: false },
@@ -17,18 +18,20 @@ const navItems = [
 ];
 
 export type HeaderTopBar = {
-  openHours: string;
-  telegram: string;
+  tiktok: string;
   instagram: string;
   facebook: string;
+  threads: string;
+  linkedin: string;
 };
 
 export function Header({ topBar }: { topBar?: HeaderTopBar }) {
-  const openHours = topBar?.openHours ?? "Open Daily · 9:00 AM – 8:00 PM";
   const socialLinks = [
-    { src: "/figma/imgGroup.svg", alt: "Telegram", href: topBar?.telegram ?? "https://t.me/prossiclinic" },
-    { src: "/figma/imgRiInstagramLine.svg", alt: "Instagram", href: topBar?.instagram ?? "https://instagram.com/prossiclinic" },
-    { src: "/figma/imgGgFacebook.svg", alt: "Facebook", href: topBar?.facebook ?? "https://facebook.com/prossiclinic" },
+    { Icon: TikTokIcon, alt: "TikTok", href: topBar?.tiktok ?? "https://www.tiktok.com/@prossi.clinic" },
+    { Icon: InstagramIcon, alt: "Instagram", href: topBar?.instagram ?? "https://instagram.com/prossiclinic" },
+    { Icon: FacebookIcon, alt: "Facebook", href: topBar?.facebook ?? "https://facebook.com/prossiclinic" },
+    { Icon: ThreadsIcon, alt: "Threads", href: topBar?.threads ?? "https://www.threads.net/@prossi.clinic" },
+    { Icon: LinkedInIcon, alt: "LinkedIn", href: topBar?.linkedin ?? "https://www.linkedin.com/company/prossiclinic" },
   ];
   const { count: cartCount } = useCart();
   const [memberName, setMemberName] = useState<string | null>(null);
@@ -92,34 +95,19 @@ export function Header({ topBar }: { topBar?: HeaderTopBar }) {
         className={`overflow-hidden transition-all duration-500 ease-in-out ${showTopBar ? "max-h-[32px] opacity-100" : "max-h-0 opacity-0"}`}
       >
         <div
-          className={`h-[32px] px-4 lg:px-[100px] flex items-center justify-between ${isTreatments ? "bg-[#b59637]" : "bg-[#120f0b]"}`}
+          className={`h-[32px] px-4 lg:px-[100px] flex items-center justify-end ${isTreatments ? "bg-[#b59637]" : "bg-[#120f0b]"}`}
         >
-          <div className="flex items-center gap-1.5">
-            <img
-              src="/figma/imgMdiClockOutline.svg"
-              alt=""
-              className="w-3 h-3 lg:w-3.5 lg:h-3.5 shrink-0"
-              style={{ filter: "brightness(0) invert(1)", opacity: 0.8 }}
-            />
-            <span className="text-white/80 font-['Lato'] text-[11px] lg:text-[13px] whitespace-nowrap">
-              {openHours}
-            </span>
-          </div>
           <div className="hidden lg:flex items-center gap-2">
-            {socialLinks.map((icon) => (
+            {socialLinks.map(({ Icon, alt, href }) => (
               <a
-                key={icon.alt}
-                href={icon.href}
+                key={alt}
+                href={href}
                 target="_blank"
                 rel="noopener noreferrer"
+                aria-label={alt}
                 className="w-6 h-6 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors"
               >
-                <img
-                  src={icon.src}
-                  alt={icon.alt}
-                  className="w-3.5 h-3.5"
-                  style={{ filter: "brightness(0) invert(1)" }}
-                />
+                <Icon className="w-3.5 h-3.5 text-white" />
               </a>
             ))}
           </div>

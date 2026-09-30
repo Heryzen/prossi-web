@@ -64,7 +64,7 @@ export async function TreatmentServices() {
                 {/* Content */}
                 <div className="flex flex-col items-center gap-6 py-8 px-4">
                   <div className="flex flex-col items-center gap-4 w-full">
-                    <h3 className="font-['Lato',sans-serif] font-semibold text-[26px] text-[#120f0b] text-center uppercase">
+                    <h3 className="font-['Lato',sans-serif] font-semibold text-[26px] text-[#120f0b] text-center">
                       {card.title}
                     </h3>
                     {/* Divider */}

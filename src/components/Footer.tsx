@@ -1,19 +1,21 @@
 import Link from "next/link";
 import { directusFetch } from "@/lib/directus";
+import { TikTokIcon, InstagramIcon, FacebookIcon, ThreadsIcon, LinkedInIcon } from "@/components/SocialIcons";
 
 type SiteSettings = {
   footer_text: string | null;
   phone: string | null;
   email: string | null;
-  social_telegram: string | null;
+  social_tiktok: string | null;
   social_instagram: string | null;
   social_facebook: string | null;
-  social_twitter: string | null;
+  social_threads: string | null;
+  social_linkedin: string | null;
 };
 
 export async function Footer() {
   const s = await directusFetch<SiteSettings>(
-    "/items/site_settings?fields=footer_text,phone,email,social_telegram,social_instagram,social_facebook,social_twitter"
+    "/items/site_settings?fields=footer_text,phone,email,social_tiktok,social_instagram,social_facebook,social_threads,social_linkedin"
   );
 
   const footerText =
@@ -22,10 +24,11 @@ export async function Footer() {
   const phone = s?.phone ?? "+(021) 456-7891";
   const email = s?.email ?? "info@prossi.com";
   const socials = [
-    { src: "/figma/imgGroup.svg", alt: "Telegram", href: s?.social_telegram ?? "https://t.me/prossiclinic" },
-    { src: "/figma/imgRiInstagramLine.svg", alt: "Instagram", href: s?.social_instagram ?? "https://instagram.com/prossiclinic" },
-    { src: "/figma/imgGgFacebook.svg", alt: "Facebook", href: s?.social_facebook ?? "https://facebook.com/prossiclinic" },
-    { src: "/figma/imgGroup2.svg", alt: "Twitter", href: s?.social_twitter ?? "https://twitter.com/prossiclinic" },
+    { Icon: TikTokIcon, alt: "TikTok", href: s?.social_tiktok ?? "https://www.tiktok.com/@prossi.clinic" },
+    { Icon: InstagramIcon, alt: "Instagram", href: s?.social_instagram ?? "https://instagram.com/prossiclinic" },
+    { Icon: FacebookIcon, alt: "Facebook", href: s?.social_facebook ?? "https://facebook.com/prossiclinic" },
+    { Icon: ThreadsIcon, alt: "Threads", href: s?.social_threads ?? "https://www.threads.net/@prossi.clinic" },
+    { Icon: LinkedInIcon, alt: "LinkedIn", href: s?.social_linkedin ?? "https://www.linkedin.com/company/prossiclinic" },
   ];
 
   return (
@@ -70,9 +73,9 @@ export async function Footer() {
                 </a>
               </div>
               <div className="flex gap-3 justify-end">
-                {socials.map((icon) => (
-                  <a key={icon.alt} href={icon.href} target="_blank" rel="noopener noreferrer" className="bg-[#f4ece4] rounded-full w-8 h-8 flex items-center justify-center hover:bg-white transition-colors">
-                    <img src={icon.src} alt={icon.alt} className="w-4 h-4" style={{filter: 'brightness(0) saturate(100%) invert(35%) sepia(21%) saturate(1450%) hue-rotate(143deg) brightness(88%) contrast(92%)'}} />
+                {socials.map(({ Icon, alt, href }) => (
+                  <a key={alt} href={href} target="_blank" rel="noopener noreferrer" aria-label={alt} className="bg-[#f4ece4] rounded-full w-8 h-8 flex items-center justify-center hover:bg-white transition-colors">
+                    <Icon className="w-4 h-4 text-[#216d73]" />
                   </a>
                 ))}
               </div>

@@ -80,31 +80,35 @@ function DoctorModal({ doctor, onClose }: { doctor: Doctor; onClose: () => void 
                 <h4 className="font-sans font-semibold text-[20px] text-[#120f0b]">Tentang Dokter</h4>
                 <p className="font-['Lato'] text-[15px] text-[#120f0b] leading-relaxed whitespace-pre-line">{doctor.bio}</p>
               </div>
-              <div className="h-[1px] w-full" style={{ background: "rgba(124,96,51,0.3)" }} />
-              <div className="flex flex-col gap-2 min-h-0">
-                <h4 className="font-sans font-semibold text-[20px] text-[#120f0b]">Jadwal Praktik</h4>
-                {doctor.scheduleText ? (
-                  <div
-                    className="font-['Lato'] text-[15px] text-[#120f0b] leading-snug [&_p]:mb-1 [&_ul]:mb-2 [&_strong]:font-semibold max-h-[130px] overflow-y-auto pr-2"
-                    dangerouslySetInnerHTML={{ __html: doctor.scheduleText }}
-                  />
-                ) : (
-                  <ul className="flex flex-col gap-2">
-                    <li className="flex items-center gap-3">
-                      <span className="w-2 h-2 rounded-full bg-[#503d1c] shrink-0" />
-                      <span className="font-['Lato'] text-[16px] text-[#120f0b]">
-                        <strong>Hari:</strong> {doctor.schedule}
-                      </span>
-                    </li>
-                    <li className="flex items-center gap-3">
-                      <span className="w-2 h-2 rounded-full bg-[#503d1c] shrink-0" />
-                      <span className="font-['Lato'] text-[16px] text-[#120f0b]">
-                        <strong>Jam:</strong> {doctor.hours}
-                      </span>
-                    </li>
-                  </ul>
-                )}
-              </div>
+              {(doctor.scheduleText || (doctor.schedule && doctor.hours)) && (
+                <>
+                  <div className="h-[1px] w-full" style={{ background: "rgba(124,96,51,0.3)" }} />
+                  <div className="flex flex-col gap-2 min-h-0">
+                    <h4 className="font-sans font-semibold text-[20px] text-[#120f0b]">Jadwal Praktik</h4>
+                    {doctor.scheduleText ? (
+                      <div
+                        className="font-['Lato'] text-[15px] text-[#120f0b] leading-snug [&_p]:mb-1 [&_ul]:mb-2 [&_strong]:font-semibold max-h-[130px] overflow-y-auto pr-2"
+                        dangerouslySetInnerHTML={{ __html: doctor.scheduleText }}
+                      />
+                    ) : (
+                      <ul className="flex flex-col gap-2">
+                        <li className="flex items-center gap-3">
+                          <span className="w-2 h-2 rounded-full bg-[#503d1c] shrink-0" />
+                          <span className="font-['Lato'] text-[16px] text-[#120f0b]">
+                            <strong>Hari:</strong> {doctor.schedule}
+                          </span>
+                        </li>
+                        <li className="flex items-center gap-3">
+                          <span className="w-2 h-2 rounded-full bg-[#503d1c] shrink-0" />
+                          <span className="font-['Lato'] text-[16px] text-[#120f0b]">
+                            <strong>Jam:</strong> {doctor.hours}
+                          </span>
+                        </li>
+                      </ul>
+                    )}
+                  </div>
+                </>
+              )}
               <div className="flex flex-col gap-4 mt-auto">
                 <Link
                   href="/contact"

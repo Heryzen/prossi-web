@@ -49,27 +49,12 @@ export function PageLoader() {
         }}
       />
 
-      <div className="relative flex flex-col items-center" style={{ gap: 18 }}>
-        {/* Wordmark with sweeping gold shimmer */}
-        <h1
-          className="prossi-loader-word"
-          style={{
-            fontFamily: "'Source Serif 4', 'Source Serif Pro', serif",
-            fontWeight: 600,
-            fontSize: "clamp(48px, 9vw, 80px)",
-            letterSpacing: "0.04em",
-            lineHeight: 1,
-            backgroundImage:
-              "linear-gradient(100deg, #8a6a22 0%, #b59637 28%, #f6e6b4 50%, #b59637 72%, #8a6a22 100%)",
-            backgroundSize: "220% auto",
-            WebkitBackgroundClip: "text",
-            backgroundClip: "text",
-            WebkitTextFillColor: "transparent",
-            color: "transparent",
-          }}
-        >
-          PROSSI
-        </h1>
+      <div className="relative flex flex-col items-center prossi-loader-word" style={{ gap: 18 }}>
+        <img
+          src="/figma/imgUntitledDesign181.webp"
+          alt="Prossi Clinic"
+          className="w-[160px] h-[90px] object-contain"
+        />
 
         {/* Drawing gold divider */}
         <div
@@ -81,22 +66,6 @@ export function PageLoader() {
               "linear-gradient(90deg, rgba(124,96,51,0) 0%, #b59637 50%, rgba(124,96,51,0) 100%)",
           }}
         />
-
-        {/* CLINIC, letter-spaced reveal */}
-        <span
-          className="prossi-loader-sub"
-          style={{
-            fontFamily: "'Inter', sans-serif",
-            fontWeight: 600,
-            fontSize: 13,
-            letterSpacing: "0.62em",
-            textIndent: "0.62em",
-            color: "#7c6033",
-            textTransform: "uppercase",
-          }}
-        >
-          Clinic
-        </span>
       </div>
     </div>
   );
