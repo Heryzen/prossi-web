@@ -152,7 +152,7 @@ function PromoDetailModal({
                 Berlaku sampai {formatValidUntil(promo.valid_until, "long")}
               </p>
             )}
-            <p className="font-['Lato'] text-[16px] text-[#120f0b]/85 leading-relaxed">{promo.description}</p>
+            <p className="font-['Lato'] text-[16px] text-[#120f0b]/85 leading-relaxed whitespace-pre-line">{promo.description}</p>
             <Link
               href={ctaHref}
               target={isExternal ? "_blank" : undefined}

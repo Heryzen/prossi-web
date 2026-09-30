@@ -78,7 +78,7 @@ function DoctorModal({ doctor, onClose }: { doctor: Doctor; onClose: () => void 
               <div className="h-[1px] w-full" style={{ background: "rgba(124,96,51,0.3)" }} />
               <div className="flex flex-col gap-2">
                 <h4 className="font-sans font-semibold text-[20px] text-[#120f0b]">Tentang Dokter</h4>
-                <p className="font-['Lato'] text-[15px] text-[#120f0b] leading-relaxed">{doctor.bio}</p>
+                <p className="font-['Lato'] text-[15px] text-[#120f0b] leading-relaxed whitespace-pre-line">{doctor.bio}</p>
               </div>
               <div className="h-[1px] w-full" style={{ background: "rgba(124,96,51,0.3)" }} />
               <div className="flex flex-col gap-2 min-h-0">
