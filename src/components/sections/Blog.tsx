@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { directusFetch, assetUrl } from "@/lib/directus";
+import { ArticleImageFallback } from "@/components/ArticleImageFallback";
 
 const staticArticles = [
   {
@@ -24,17 +25,6 @@ const staticArticles = [
     img: null as string | null,
   },
 ];
-
-function ArticleImageFallback() {
-  return (
-    <div
-      className="absolute inset-0 flex items-center justify-center"
-      style={{ background: "linear-gradient(160deg, #f4ece4 0%, #e8d9bd 55%, #ddc48a 100%)" }}
-    >
-      <span className="font-sans font-semibold text-[22px] tracking-wide text-[#8a6a2f]">PROSSI</span>
-    </div>
-  );
-}
 
 type CmsArticle = {
   id: string;
@@ -83,7 +73,7 @@ export async function Blog() {
                 {article.img ? (
                   <img src={article.img} alt={article.title} className="absolute inset-0 w-full h-full object-cover" />
                 ) : (
-                  <ArticleImageFallback />
+                  <ArticleImageFallback className="absolute inset-0" />
                 )}
               </div>
               <div className="px-8 flex flex-col gap-6">

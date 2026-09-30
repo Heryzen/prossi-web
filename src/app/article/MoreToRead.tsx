@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import type { Article } from "./articles";
+import { ArticleImageFallback } from "@/components/ArticleImageFallback";
 
 const VISIBLE = 3;
 
@@ -27,7 +28,11 @@ function RelatedCard({ article }: { article: Article }) {
         className="rounded-[20px] overflow-hidden w-full"
         style={{ height: 246, background: "#FFE3E7" }}
       >
-        <img src={article.img} alt={article.title} className="w-full h-full object-cover" />
+        {article.img ? (
+          <img src={article.img} alt={article.title} className="w-full h-full object-cover" />
+        ) : (
+          <ArticleImageFallback />
+        )}
       </div>
       <div className="flex flex-col gap-2">
         <p

@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { allArticles, ITEMS_PER_PAGE, type Article } from "./articles";
 import ArticleListLoading from "./loading";
+import { ArticleImageFallback } from "@/components/ArticleImageFallback";
 
 const FALLBACK_CATEGORIES = ["Spesialis Gizi", "Spesialis Kulit", "Dokter Estetika"];
 
@@ -30,7 +31,11 @@ function ArticleCard({ id, slug, title, date, excerpt, img, featured }: Article 
         className={`rounded-[20px] overflow-hidden shrink-0 w-full ${featured ? "md:w-[640px]" : "md:w-[440px]"}`}
         style={{ height: featured ? 358 : 246, background: "#FFE3E7" }}
       >
-        <img src={img} alt={title} className="w-full h-full object-cover" />
+        {img ? (
+          <img src={img} alt={title} className="w-full h-full object-cover" />
+        ) : (
+          <ArticleImageFallback />
+        )}
       </div>
       <div className="flex flex-col gap-5 flex-1 justify-center">
         <div className="flex flex-col gap-1">
@@ -138,9 +143,7 @@ export default function ArticlePage() {
               slug: a.slug,
               title: a.title,
               excerpt: a.excerpt,
-              img: a.cover_image
-                ? `${DIRECTUS_URL}/assets/${a.cover_image}`
-                : "/figma/imgFrame1984078116.webp",
+              img: a.cover_image ? `${DIRECTUS_URL}/assets/${a.cover_image}` : null,
               date: new Date(a.date_created).toLocaleDateString("id-ID", {
                 day: "numeric", month: "long", year: "numeric",
               }),

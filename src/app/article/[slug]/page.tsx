@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { getArticle, relatedArticles, type Article } from "../articles";
 import { MoreToRead } from "../MoreToRead";
 import { directusFetch, assetUrl } from "@/lib/directus";
+import { ArticleImageFallback } from "@/components/ArticleImageFallback";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
 
@@ -67,7 +68,12 @@ export async function generateMetadata({
     return {
       title: article.title,
       description: article.excerpt,
-      openGraph: { title: article.title, description: article.excerpt, images: [article.img], type: "article" },
+      openGraph: {
+        title: article.title,
+        description: article.excerpt,
+        images: article.img ? [article.img] : undefined,
+        type: "article",
+      },
     };
   }
 
@@ -110,7 +116,7 @@ export default async function ArticleDetailPage({
         slug: cms.slug,
         title: cms.title,
         excerpt: cms.excerpt,
-        img: cms.cover_image ? assetUrl(cms.cover_image) : "/figma/imgFrame1984078116.webp",
+        img: cms.cover_image ? assetUrl(cms.cover_image) : null,
         date: formatDate(cms.date_created),
         author: cms.author?.name ?? "Prossi Clinic",
         publishedAt: formatDate(cms.date_created),
@@ -128,7 +134,7 @@ export default async function ArticleDetailPage({
           slug: o.slug,
           title: o.title,
           excerpt: o.excerpt,
-          img: o.cover_image ? assetUrl(o.cover_image) : "/figma/imgFrame1984078116.webp",
+          img: o.cover_image ? assetUrl(o.cover_image) : null,
           date: formatDate(o.date_created),
           author: "",
           publishedAt: "",
@@ -149,7 +155,7 @@ export default async function ArticleDetailPage({
         "@type": "Article",
         headline: article.title,
         description: article.excerpt,
-        image: article.img,
+        image: article.img ?? undefined,
         author: { "@type": "Organization", name: article.author || "Prossi Clinic" },
         publisher: { "@type": "Organization", name: "Prossi Clinic" },
         ...(publishedISO ? { datePublished: publishedISO } : {}),
@@ -293,11 +299,15 @@ export default async function ArticleDetailPage({
           className="rounded-[20px] overflow-hidden w-full"
           style={{ maxWidth: 860, height: "auto", minHeight: 220, aspectRatio: "860/481", background: "#FFE3E7" }}
         >
-          <img
-            src={article.img}
-            alt={article.title}
-            className="w-full h-full object-cover"
-          />
+          {article.img ? (
+            <img
+              src={article.img}
+              alt={article.title}
+              className="w-full h-full object-cover"
+            />
+          ) : (
+            <ArticleImageFallback />
+          )}
         </div>
         <div className="flex flex-col gap-5" style={{ maxWidth: 860 }}>
           {htmlContent ? (
