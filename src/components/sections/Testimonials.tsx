@@ -256,7 +256,7 @@ export function Testimonials({ reviews: reviewsProp }: { reviews?: Review[] }) {
         const isTikTok = embed.kind === "tiktok";
         return (
         <div
-          className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 p-6"
+          className="fixed inset-0 z-[1200] flex items-center justify-center bg-black/80 p-6"
           onClick={() => setActiveVideo(null)}
         >
           <div

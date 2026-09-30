@@ -28,7 +28,7 @@ function Eyebrow({ text }: { text: string }) {
 function DoctorModal({ doctor, onClose }: { doctor: Doctor; onClose: () => void }) {
   return (
     <div
-      className="fixed inset-0 z-[100] flex items-start justify-center bg-black/30 px-4 pt-[104px] pb-8 md:pt-[124px] overflow-y-auto"
+      className="fixed inset-0 z-[1200] flex items-start justify-center bg-black/30 px-4 pt-[104px] pb-8 md:pt-[124px] overflow-y-auto"
       onClick={onClose}
     >
       <div

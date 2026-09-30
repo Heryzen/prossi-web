@@ -117,7 +117,7 @@ function PromoDetailModal({
 
   return (
     <div
-      className="fixed inset-0 z-[100] flex items-center justify-center bg-black/40 px-4 py-8 overflow-y-auto"
+      className="fixed inset-0 z-[1200] flex items-center justify-center bg-black/40 px-4 py-8 overflow-y-auto"
       onClick={onClose}
     >
       <div
