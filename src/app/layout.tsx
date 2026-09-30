@@ -2,10 +2,9 @@ import type { Metadata } from "next";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import "./globals.css";
 import { Providers } from "./providers";
-import { Header, type HeaderTopBar } from "@/components/Header";
+import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { PageLoader } from "@/components/PageLoader";
-import { directusFetch } from "@/lib/directus";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
 
@@ -47,32 +46,11 @@ const ORGANIZATION_JSON_LD = {
   ],
 };
 
-type SiteSettings = {
-  social_tiktok: string | null;
-  social_instagram: string | null;
-  social_facebook: string | null;
-  social_threads: string | null;
-  social_linkedin: string | null;
-};
-
 export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const s = await directusFetch<SiteSettings>(
-    "/items/site_settings?fields=social_tiktok,social_instagram,social_facebook,social_threads,social_linkedin"
-  );
-  const topBar: HeaderTopBar | undefined = s
-    ? {
-        tiktok: s.social_tiktok ?? "https://www.tiktok.com/@prossi.clinic",
-        instagram: s.social_instagram ?? "https://instagram.com/prossiclinic",
-        facebook: s.social_facebook ?? "https://facebook.com/prossiclinic",
-        threads: s.social_threads ?? "https://www.threads.net/@prossi.clinic",
-        linkedin: s.social_linkedin ?? "https://www.linkedin.com/company/prossiclinic",
-      }
-    : undefined;
-
   return (
     <html lang="id" suppressHydrationWarning>
       <head>
@@ -92,7 +70,7 @@ export default async function RootLayout({
         <Providers>
           <PageLoader />
           <div className="min-h-screen bg-[#f4ece4] flex flex-col font-sans text-[#120f0b] overflow-x-hidden relative">
-            <Header topBar={topBar} />
+            <Header />
             <main className="flex-1 flex flex-col w-full">
               {children}
             </main>

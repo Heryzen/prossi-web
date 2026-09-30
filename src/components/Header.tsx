@@ -5,7 +5,6 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { sendGAEvent } from "@next/third-parties/google";
 import { useCart } from "@/lib/cart";
-import { TikTokIcon, InstagramIcon, FacebookIcon, ThreadsIcon, LinkedInIcon } from "@/components/SocialIcons";
 
 const navItems = [
   { label: "Home", href: "/", dropdown: false },
@@ -17,22 +16,7 @@ const navItems = [
   { label: "Locations", href: "/locations", dropdown: false },
 ];
 
-export type HeaderTopBar = {
-  tiktok: string;
-  instagram: string;
-  facebook: string;
-  threads: string;
-  linkedin: string;
-};
-
-export function Header({ topBar }: { topBar?: HeaderTopBar }) {
-  const socialLinks = [
-    { Icon: TikTokIcon, alt: "TikTok", href: topBar?.tiktok ?? "https://www.tiktok.com/@prossi.clinic" },
-    { Icon: InstagramIcon, alt: "Instagram", href: topBar?.instagram ?? "https://instagram.com/prossiclinic" },
-    { Icon: FacebookIcon, alt: "Facebook", href: topBar?.facebook ?? "https://facebook.com/prossiclinic" },
-    { Icon: ThreadsIcon, alt: "Threads", href: topBar?.threads ?? "https://www.threads.net/@prossi.clinic" },
-    { Icon: LinkedInIcon, alt: "LinkedIn", href: topBar?.linkedin ?? "https://www.linkedin.com/company/prossiclinic" },
-  ];
+export function Header() {
   const { count: cartCount } = useCart();
   const [memberName, setMemberName] = useState<string | null>(null);
   const [isAdmin, setIsAdmin] = useState(false);
@@ -44,8 +28,6 @@ export function Header({ topBar }: { topBar?: HeaderTopBar }) {
   const doctorsOpen = openMenu === "doctors";
   const location = usePathname();
   const headerRef = useRef<HTMLElement>(null);
-
-  const isTreatments = location.startsWith("/treatments");
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -86,34 +68,8 @@ export function Header({ topBar }: { topBar?: HeaderTopBar }) {
     router.push("/admin/login");
   };
 
-  const showTopBar = scrolled;
-
   return (
     <header ref={headerRef} className="fixed top-0 left-0 right-0 z-[1001]">
-      {/* ── Top bar — slides in on scroll ── */}
-      <div
-        className={`overflow-hidden transition-all duration-500 ease-in-out ${showTopBar ? "max-h-[32px] opacity-100" : "max-h-0 opacity-0"}`}
-      >
-        <div
-          className={`h-[32px] px-4 lg:px-[100px] flex items-center justify-end ${isTreatments ? "bg-[#b59637]" : "bg-[#120f0b]"}`}
-        >
-          <div className="hidden lg:flex items-center gap-2">
-            {socialLinks.map(({ Icon, alt, href }) => (
-              <a
-                key={alt}
-                href={href}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label={alt}
-                className="w-6 h-6 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors"
-              >
-                <Icon className="w-3.5 h-3.5 text-white" />
-              </a>
-            ))}
-          </div>
-        </div>
-      </div>
-
       {/* ── Main navbar ── */}
       <div className={`transition-all duration-500 ease-in-out ${scrolled ? "lg:px-[100px] py-2" : "px-0 py-0"}`}>
         {/* Background bar morphs full-width → centered pill … */}
