@@ -15,7 +15,13 @@ export type ChildItem = {
   category: string | null;
 };
 
-function ChildItemCard({ item, accent, onOpen }: { item: ChildItem; accent: string; onOpen: () => void }) {
+type SubTreatment = {
+  label: string;
+  items: ChildItem[];
+};
+
+function SubTreatmentCard({ group, accent, onOpen }: { group: SubTreatment; accent: string; onOpen: () => void }) {
+  const thumb = group.items.find((i) => i.image)?.image ?? null;
   return (
     <button
       type="button"
@@ -28,16 +34,14 @@ function ChildItemCard({ item, accent, onOpen }: { item: ChildItem; accent: stri
         style={{ background: CARD_BG, padding: "12px 12px 32px" }}
       >
         <div className="w-full h-[180px] shrink-0 rounded-[20px] overflow-hidden bg-[#f4ece4]">
-          {item.image && (
-            <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
-          )}
+          {thumb && <img src={thumb} alt={group.label} className="w-full h-full object-cover" />}
         </div>
         <div className="flex flex-col gap-3 px-4 pt-6">
           <h3 className="font-['Lato',sans-serif] font-semibold text-[18px] text-[#120f0b] leading-tight">
-            {item.name}
+            {group.label}
           </h3>
-          <p className="font-['Lato',sans-serif] font-normal text-[14px] text-[#120f0b] leading-relaxed line-clamp-3">
-            {item.description}
+          <p className="font-['Lato',sans-serif] font-normal text-[14px] text-[#120f0b] leading-relaxed">
+            {group.items.length} item perawatan tersedia
           </p>
           <span
             className="font-['Lato',sans-serif] font-semibold text-[14px] underline underline-offset-2"
@@ -51,7 +55,7 @@ function ChildItemCard({ item, accent, onOpen }: { item: ChildItem; accent: stri
   );
 }
 
-function ItemDetailModal({ item, accent, onClose }: { item: ChildItem; accent: string; onClose: () => void }) {
+function SubTreatmentModal({ group, onClose }: { group: SubTreatment; onClose: () => void }) {
   return (
     <div
       className="fixed inset-0 z-[2000] flex items-center justify-center p-4"
@@ -75,25 +79,35 @@ function ItemDetailModal({ item, accent, onClose }: { item: ChildItem; accent: s
         </button>
 
         <div className="overflow-y-auto">
-          {item.image && (
-            <div className="w-full h-[240px] shrink-0">
-              <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
-            </div>
-          )}
-          <div className="flex flex-col gap-4 p-6 md:p-8">
+          <div className="flex flex-col gap-6 p-6 md:p-8">
             <h2 className="font-['Lato',sans-serif] font-semibold text-[24px] text-[#120f0b]">
-              {item.name}
+              {group.label}
             </h2>
-            {item.content ? (
-              <div
-                className="font-['Lato',sans-serif] text-[15px] text-[#3b4963] leading-relaxed flex flex-col gap-3"
-                dangerouslySetInnerHTML={{ __html: item.content }}
-              />
-            ) : (
-              <p className="font-['Lato',sans-serif] text-[15px] text-[#3b4963] leading-relaxed">
-                {item.description}
-              </p>
-            )}
+            <div className="flex flex-col gap-6">
+              {group.items.map((item, i) => (
+                <div key={item.slug} className="flex flex-col gap-3">
+                  {i > 0 && <div className="h-px w-full bg-[#e5e0d8]" />}
+                  {item.image && (
+                    <div className="w-full h-[160px] rounded-[16px] overflow-hidden">
+                      <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
+                    </div>
+                  )}
+                  <h3 className="font-['Lato',sans-serif] font-semibold text-[17px] text-[#120f0b]">
+                    {item.name}
+                  </h3>
+                  {item.content ? (
+                    <div
+                      className="font-['Lato',sans-serif] text-[15px] text-[#3b4963] leading-relaxed flex flex-col gap-3"
+                      dangerouslySetInnerHTML={{ __html: item.content }}
+                    />
+                  ) : (
+                    <p className="font-['Lato',sans-serif] text-[15px] text-[#3b4963] leading-relaxed">
+                      {item.description}
+                    </p>
+                  )}
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>
@@ -102,11 +116,11 @@ function ItemDetailModal({ item, accent, onClose }: { item: ChildItem; accent: s
 }
 
 export function ChildItemsList({ items, accent }: { items: ChildItem[]; accent: string }) {
-  const [selected, setSelected] = useState<ChildItem | null>(null);
+  const [selected, setSelected] = useState<SubTreatment | null>(null);
 
-  // Group items under their sub-treatment (category) heading, shown once per group,
-  // in first-seen order. Items without a category fall into an "Lainnya" bucket.
-  const groups = useMemo(() => {
+  // One card per sub-treatment (category), in first-seen order. Items without a
+  // category fall into a single "Lainnya" bucket.
+  const groups = useMemo<SubTreatment[]>(() => {
     const order: string[] = [];
     const map = new Map<string, ChildItem[]>();
     for (const item of items) {
@@ -131,23 +145,12 @@ export function ChildItemsList({ items, accent }: { items: ChildItem[]; accent: 
   }
 
   return (
-    <div className="flex flex-col gap-10 w-full">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full">
       {groups.map((group) => (
-        <div key={group.label} className="flex flex-col gap-6 w-full">
-          {groups.length > 1 && (
-            <h3 className="font-['Lato',sans-serif] font-semibold text-[20px] md:text-[24px] text-white text-center">
-              {group.label}
-            </h3>
-          )}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full">
-            {group.items.map((item) => (
-              <ChildItemCard key={item.slug} item={item} accent={accent} onOpen={() => setSelected(item)} />
-            ))}
-          </div>
-        </div>
+        <SubTreatmentCard key={group.label} group={group} accent={accent} onOpen={() => setSelected(group)} />
       ))}
 
-      {selected && <ItemDetailModal item={selected} accent={accent} onClose={() => setSelected(null)} />}
+      {selected && <SubTreatmentModal group={selected} onClose={() => setSelected(null)} />}
     </div>
   );
 }
