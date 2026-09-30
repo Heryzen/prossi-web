@@ -7,23 +7,34 @@ const staticArticles = [
     slug: null as string | null,
     category: "Spesialis Gizi",
     title: "Panduan nutrisi, slimming, dan kesehatan metabolisme dari dokter Spesialis Gizi Klinik.",
-    img: "/figma/imgFrame1984078116.webp",
+    img: null as string | null,
   },
   {
     id: null as string | null,
     slug: null as string | null,
     category: "Spesialis Kulit",
     title: "Informasi terpercaya seputar penyakit kulit dan kelamin dari dokter Sp.DVE.",
-    img: "/figma/imgFrame1984078117.webp",
+    img: null as string | null,
   },
   {
     id: null as string | null,
     slug: null as string | null,
     category: "Dokter Estetika",
     title: "Tips dan insight perawatan kecantikan langsung dari dokter estetika Prossi Clinic.",
-    img: "/figma/imgFrame1984078118.webp",
+    img: null as string | null,
   },
 ];
+
+function ArticleImageFallback() {
+  return (
+    <div
+      className="absolute inset-0 flex items-center justify-center"
+      style={{ background: "linear-gradient(160deg, #f4ece4 0%, #e8d9bd 55%, #ddc48a 100%)" }}
+    >
+      <span className="font-sans font-semibold text-[22px] tracking-wide text-[#8a6a2f]">PROSSI</span>
+    </div>
+  );
+}
 
 type CmsArticle = {
   id: string;
@@ -40,12 +51,12 @@ export async function Blog() {
 
   const articles =
     cms && cms.length > 0
-      ? cms.map((a, i) => ({
+      ? cms.map((a) => ({
           id: a.id,
           slug: a.slug as string | null,
           category: a.category?.name ?? "Artikel",
           title: a.title,
-          img: a.cover_image ? assetUrl(a.cover_image) : staticArticles[i % staticArticles.length].img,
+          img: a.cover_image ? assetUrl(a.cover_image) : null,
         }))
       : staticArticles;
 
@@ -69,7 +80,11 @@ export async function Blog() {
               className="flex-1 bg-[#fff8f2] rounded-[24px] overflow-hidden flex flex-col pb-8 hover:shadow-md transition-shadow"
             >
               <div className="w-full h-[260px] relative mb-6">
-                <img src={article.img} alt={article.title} className="absolute inset-0 w-full h-full object-cover" />
+                {article.img ? (
+                  <img src={article.img} alt={article.title} className="absolute inset-0 w-full h-full object-cover" />
+                ) : (
+                  <ArticleImageFallback />
+                )}
               </div>
               <div className="px-8 flex flex-col gap-6">
                 <div className="flex items-center gap-2.5">

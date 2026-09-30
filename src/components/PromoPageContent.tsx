@@ -134,11 +134,13 @@ function PromoDetailModal({
           >
             ✕
           </button>
-          <div className="relative w-full md:w-[320px] aspect-[4/5] md:aspect-auto shrink-0">
+          <div className="relative w-full md:w-[320px] shrink-0 bg-[#e9dfd1] flex items-center justify-center md:max-h-[640px]">
             {promo.image ? (
-              <img src={assetUrl(promo.image)} alt={promo.title} className="w-full h-full object-cover" />
+              <img src={assetUrl(promo.image)} alt={promo.title} className="w-full h-full object-contain" />
             ) : (
-              <PromoMediaFallback />
+              <div className="w-full aspect-[4/5]">
+                <PromoMediaFallback />
+              </div>
             )}
           </div>
           <div className="flex flex-col gap-5 p-8 md:p-10 flex-1">
