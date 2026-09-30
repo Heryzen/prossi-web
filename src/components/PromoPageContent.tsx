@@ -183,7 +183,11 @@ export function PromoPageContent({
       items: promos.filter((p) => p.category === key),
     })).filter((g) => g.items.length > 0);
     const uncategorized = promos.filter((p) => !p.category || !CATEGORY_ORDER.includes(p.category));
-    return uncategorized.length > 0 ? [...grouped, { key: "lainnya", label: "Promo Lainnya", items: uncategorized }] : grouped;
+    const withUncategorized =
+      uncategorized.length > 0 ? [...grouped, { key: "lainnya", label: "Promo Lainnya", items: uncategorized }] : grouped;
+    return promos.length > 0
+      ? [{ key: "all", label: "Semua", items: promos }, ...withUncategorized]
+      : withUncategorized;
   }, [promos]);
 
   const [activeKey, setActiveKey] = useState<string | undefined>(tabs[0]?.key);
