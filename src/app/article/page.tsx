@@ -272,9 +272,8 @@ export default function ArticlePage() {
           className="font-['Lato',sans-serif] font-medium text-[#2A3447]"
           style={{ fontSize: 16, lineHeight: "24px", letterSpacing: "0.0094em" }}
         >
-          Stay informed and inspired with the latest articles on Olympiad tips,
-          study strategies, and success stories from top participants. Unlock
-          your full potential with expert advice!
+          Artikel dari dokter Prossi Clinic untuk membantu Anda memahami
+          kondisi kulit dan tubuh, sebelum memulai perawatan yang tepat.
         </p>
       </div>
 

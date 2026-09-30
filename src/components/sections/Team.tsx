@@ -54,7 +54,7 @@ export async function Team() {
               <div className="w-full h-[200px] lg:h-[428px] border border-[#deba69] rounded-t-[50000px] overflow-hidden relative">
                 <img src={member.img} alt={member.title} className="absolute inset-0 w-full h-full object-cover object-top" />
               </div>
-              <h3 className="font-sans font-semibold text-[11px] leading-tight lg:text-[26px] text-white text-center capitalize">
+              <h3 className="font-sans font-semibold text-[11px] leading-tight lg:text-[26px] text-white text-center capitalize min-h-[28px] lg:min-h-[70px] flex items-center justify-center">
                 {member.title}
               </h3>
               <Link

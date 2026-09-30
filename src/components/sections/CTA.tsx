@@ -80,7 +80,7 @@ export function CTA({ promos }: { promos?: PromoSlide[] }) {
                   <h2 className="font-['Lato'] font-semibold text-2xl lg:text-[40px] text-[#120f0b] capitalize leading-tight mb-6">
                     {slide.title}
                   </h2>
-                  <p className="font-sans text-lg text-[#120f0b] mb-8">
+                  <p className="font-sans text-lg text-[#120f0b] mb-8 line-clamp-3 md:line-clamp-4">
                     {slide.description}
                   </p>
                   <Link href={slide.ctaLink} className="bg-gradient-to-r from-[#e5be80] via-[#edd8ab] to-[#e5be80] border border-[#ecd5a5] rounded-full px-9 py-[18px] text-[#503d1c] font-sans font-semibold text-lg hover:opacity-90 transition-opacity w-fit">
