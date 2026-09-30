@@ -18,12 +18,12 @@ export async function Philosophy() {
 
   return (
     <section className="bg-[#c26345] w-full py-12 lg:py-[130px] px-6 lg:px-[100px] text-white">
-      <div className="max-w-[1240px] mx-auto flex flex-col items-start">
+      <div className="max-w-[1240px] mx-auto flex flex-col items-center text-center">
         <div className="flex flex-col gap-6 w-full max-w-[800px]">
-          <h2 className="font-['Lato',sans-serif] font-semibold text-3xl lg:text-[64px] leading-tight text-white text-left">
+          <h2 className="font-['Lato',sans-serif] font-semibold text-3xl lg:text-[64px] leading-tight text-white">
             {heading}
           </h2>
-          <p className="font-sans text-base md:text-lg leading-relaxed text-white whitespace-pre-wrap text-left">
+          <p className="font-sans text-base md:text-lg leading-relaxed text-white whitespace-pre-wrap">
             {text}
           </p>
         </div>
