@@ -79,7 +79,7 @@ export default async function Doctors({
       ? cms.map((d) => ({
           img: d.photo ? assetUrl(d.photo) : "/figma/imgDoctorPlaceholder.png",
           name: d.name,
-          specialty: d.specialty.toUpperCase(),
+          specialty: d.specialty,
           bio: d.bio,
           schedule: d.schedule_days,
           hours: d.schedule_hours,
