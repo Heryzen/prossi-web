@@ -162,7 +162,7 @@ export function Testimonials({ reviews: reviewsProp }: { reviews?: Review[] }) {
         </div>
       </div>
 
-      <div className="relative z-10 max-w-[1440px] w-full flex flex-col items-center gap-[60px] px-6 lg:px-[100px]">
+      <div className="relative z-10 max-w-[1440px] w-full flex flex-col items-center px-6 lg:px-[100px]">
         <div className="flex flex-col items-center gap-6 w-full text-center max-w-[1019px]">
           <div className="flex gap-[16px] items-center justify-center overflow-clip relative shrink-0">
             <div className="h-0 relative shrink-0 w-[63px]">
@@ -188,8 +188,9 @@ export function Testimonials({ reviews: reviewsProp }: { reviews?: Review[] }) {
             Hear from those who have invested in their long-term vitality.
           </p>
         </div>
+      </div>
 
-        <div className="w-full overflow-hidden" ref={emblaRef}>
+      <div className="relative z-10 w-full overflow-hidden mt-[60px]" ref={emblaRef}>
           <div className="flex gap-6 -ml-6">
             {reviews.map((review, i) => (
               <div key={i} className="flex-[0_0_100%] md:flex-[0_0_740px] pl-6">
@@ -240,7 +241,7 @@ export function Testimonials({ reviews: reviewsProp }: { reviews?: Review[] }) {
           </div>
         </div>
 
-        <div className="flex items-center gap-6">
+        <div className="relative z-10 flex items-center gap-6 mt-[60px] px-6 lg:px-[100px]">
           <button onClick={scrollPrev} className="w-[52px] h-[52px] rounded-full bg-white/50 flex items-center justify-center hover:bg-white transition-colors cursor-pointer z-10">
              <img src="/figma/imgSystemUiconsArrowLeft.svg" alt="Previous" className="w-[26px] h-[26px]" />
           </button>
@@ -248,7 +249,6 @@ export function Testimonials({ reviews: reviewsProp }: { reviews?: Review[] }) {
              <img src="/figma/imgSystemUiconsArrowLeft1.svg" alt="Next" className="w-[26px] h-[26px] rotate-180" />
           </button>
         </div>
-      </div>
 
       {activeVideo && (() => {
         const embed = getEmbedInfo(activeVideo.url);
