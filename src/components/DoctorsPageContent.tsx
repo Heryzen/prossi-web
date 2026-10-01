@@ -65,7 +65,7 @@ function DoctorModal({ doctor, onClose }: { doctor: Doctor; onClose: () => void 
                 <h3 className="font-['Lato'] font-semibold text-[18px] md:text-[20px] text-[#120f0b] leading-snug">
                   {doctor.name}
                 </h3>
-                <p className="font-['Lato'] font-semibold text-[15px] text-[#503d1c] uppercase">
+                <p className="font-['Lato'] font-semibold text-[15px] text-[#503d1c]">
                   {doctor.specialty}
                 </p>
                 {doctor.location && (
@@ -218,7 +218,7 @@ export function DoctorsPageContent({
                   <h3 className="font-sans font-semibold text-[14px] md:text-[26px] text-[#120f0b] leading-tight">
                     {doc.name}
                   </h3>
-                  <p className="font-['Lato'] font-semibold text-[11px] md:text-[18px] text-[#503d1c] uppercase">
+                  <p className="font-['Lato'] font-semibold text-[11px] md:text-[18px] text-[#503d1c]">
                     {doc.specialty}
                   </p>
                 </div>
