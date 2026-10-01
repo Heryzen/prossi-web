@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import { directusFetch } from "@/lib/directus";
 import { PromoPageContent, type PromoItem } from "@/components/PromoPageContent";
 
@@ -12,7 +13,7 @@ type CmsSiteSettings = { whatsapp_number: string | null };
 export default async function PromoPage() {
   const [promos, siteSettings] = await Promise.all([
     directusFetch<PromoItem[]>(
-      "/items/promos?filter[status][_eq]=published&fields=title,description,image,cta_link,valid_until,category"
+      "/items/promos?filter[status][_eq]=published&fields=id,title,description,image,cta_link,valid_until,category"
     ),
     directusFetch<CmsSiteSettings>("/items/site_settings?fields=whatsapp_number"),
   ]);
@@ -58,7 +59,9 @@ export default async function PromoPage() {
 
       <div className="px-6 md:px-[100px] py-[60px] md:py-[80px]">
         <div className="max-w-[1240px] mx-auto flex flex-col items-center">
-          <PromoPageContent promos={promos ?? []} waNumber={siteSettings?.whatsapp_number} />
+          <Suspense fallback={null}>
+            <PromoPageContent promos={promos ?? []} waNumber={siteSettings?.whatsapp_number} />
+          </Suspense>
         </div>
       </div>
     </main>

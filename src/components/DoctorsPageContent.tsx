@@ -62,7 +62,7 @@ function DoctorModal({ doctor, onClose }: { doctor: Doctor; onClose: () => void 
                 </div>
               </div>
               <div className="flex flex-col gap-3 text-center md:text-left">
-                <h3 className="font-['Lato'] font-semibold text-[18px] md:text-[20px] text-[#120f0b] capitalize leading-snug">
+                <h3 className="font-['Lato'] font-semibold text-[18px] md:text-[20px] text-[#120f0b] leading-snug">
                   {doctor.name}
                 </h3>
                 <p className="font-['Lato'] font-semibold text-[15px] text-[#503d1c] uppercase">
@@ -215,7 +215,7 @@ export function DoctorsPageContent({
                   </div>
                 </div>
                 <div className="flex flex-col items-center gap-1 md:gap-2 text-center flex-1">
-                  <h3 className="font-sans font-semibold text-[14px] md:text-[26px] text-[#120f0b] capitalize leading-tight">
+                  <h3 className="font-sans font-semibold text-[14px] md:text-[26px] text-[#120f0b] leading-tight">
                     {doc.name}
                   </h3>
                   <p className="font-['Lato'] font-semibold text-[11px] md:text-[18px] text-[#503d1c] uppercase">

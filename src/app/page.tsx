@@ -19,7 +19,7 @@ type CmsTestimonial = {
   source_url: string | null;
   rating: number | null;
 };
-type CmsPromo = { title: string; description: string; image: string | null; cta_link: string | null };
+type CmsPromo = { id: string; title: string; description: string; image: string | null; cta_link: string | null };
 
 export default async function Home() {
   const [banners, cmsReviews, cmsPromos] = await Promise.all([
@@ -28,7 +28,7 @@ export default async function Home() {
     ),
     directusFetch<CmsTestimonial[]>("/items/testimonials?fields=name,city,quote,photo,banner_image,video_url,source_url,rating"),
     directusFetch<CmsPromo[]>(
-      "/items/promos?filter[status][_eq]=published&fields=title,description,image,cta_link"
+      "/items/promos?filter[status][_eq]=published&fields=id,title,description,image,cta_link"
     ),
   ]);
 
@@ -37,7 +37,7 @@ export default async function Home() {
       ? cmsPromos.map((p) => ({
           title: p.title,
           description: p.description,
-          ctaLink: "/promo",
+          ctaLink: `/promo?promo=${p.id}`,
           image: p.image ? assetUrl(p.image) : null,
         }))
       : undefined;

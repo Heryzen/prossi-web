@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { assetUrl } from "@/lib/directus";
 
 const GOLD_RING =
@@ -10,6 +11,7 @@ const GOLD_BUTTON =
   "linear-gradient(129deg, rgba(229,190,128,1) 0%, rgba(237,216,171,1) 50%, rgba(229,190,128,1) 100%)";
 
 export type PromoItem = {
+  id: string;
   title: string;
   description: string;
   image: string | null;
@@ -192,6 +194,22 @@ export function PromoPageContent({
 
   const [activeKey, setActiveKey] = useState<string | undefined>(tabs[0]?.key);
   const [selected, setSelected] = useState<PromoItem | null>(null);
+  const searchParams = useSearchParams();
+
+  // Deep-link support: ?promo=<id> opens that promo's detail popup directly
+  // (used by the Home page "View Offers" button).
+  useEffect(() => {
+    const promoId = searchParams.get("promo");
+    if (!promoId) return;
+    const match = promos.find((p) => p.id === promoId);
+    if (match) {
+      setSelected(match);
+      if (match.category && CATEGORY_ORDER.includes(match.category)) {
+        setActiveKey(match.category);
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchParams, promos]);
   const activeTab = tabs.find((t) => t.key === activeKey) ?? tabs[0];
 
   if (tabs.length === 0) {
