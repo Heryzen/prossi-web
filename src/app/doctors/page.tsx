@@ -69,7 +69,7 @@ export default async function Doctors({
     cmsArticles?.map((a) => ({
       id: a.id,
       slug: a.slug,
-      img: a.cover_image ? assetUrl(a.cover_image) : "/figma/imgArticleGizi.png",
+      img: a.cover_image ? assetUrl(a.cover_image) : null,
       tag: a.category?.name ?? "Prossi Journal",
       title: a.title,
     })) ?? [];

@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import type { Doctor } from "@/components/doctors-data";
+import { ArticleImageFallback } from "@/components/ArticleImageFallback";
 
 const GOLD_RING =
   "linear-gradient(270deg, rgba(222,186,105,1) 0%, rgba(235,210,151,1) 30%, rgba(251,232,166,1) 50%, rgba(235,210,151,1) 70%, rgba(222,186,105,1) 100%)";
@@ -128,7 +129,7 @@ function DoctorModal({ doctor, onClose }: { doctor: Doctor; onClose: () => void 
   );
 }
 
-type Article = { id: string; slug?: string; img: string; tag: string; title: string };
+type Article = { id: string; slug?: string; img: string | null; tag: string; title: string };
 
 export function DoctorsPageContent({
   eyebrow,
@@ -255,7 +256,11 @@ export function DoctorsPageContent({
                 className="bg-[#fff8f2] rounded-[24px] overflow-hidden pb-8 flex flex-col gap-6 hover:opacity-90 transition-opacity"
               >
                 <div className="w-full h-[220px] md:h-[260px]">
-                  <img src={a.img} alt={a.title} className="w-full h-full object-cover" />
+                  {a.img ? (
+                    <img src={a.img} alt={a.title} className="w-full h-full object-cover" />
+                  ) : (
+                    <ArticleImageFallback />
+                  )}
                 </div>
                 <div className="flex flex-col gap-6 px-6 md:px-8">
                   <div className="flex items-center gap-[10px]">

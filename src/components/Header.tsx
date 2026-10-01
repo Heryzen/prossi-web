@@ -12,7 +12,6 @@ const navItems = [
   { label: "Doctors", href: "/doctors", dropdown: true },
   { label: "Promo", href: "/promo", dropdown: false },
   { label: "Article", href: "/article", dropdown: false },
-  { label: "Shop", href: "/shop", dropdown: false },
   { label: "Locations", href: "/locations", dropdown: false },
 ];
 
