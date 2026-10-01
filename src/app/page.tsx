@@ -37,7 +37,7 @@ export default async function Home() {
       ? cmsPromos.map((p) => ({
           title: p.title,
           description: p.description,
-          ctaLink: p.cta_link || "/promo",
+          ctaLink: "/promo",
           image: p.image ? assetUrl(p.image) : null,
         }))
       : undefined;

@@ -22,7 +22,6 @@ export async function Footer() {
     s?.footer_text ??
     "Perawatan kulit dan program slimming dengan pendekatan yang aman, terarah, dan dapat dipantau.";
   const phone = s?.phone ?? "+(021) 456-7891";
-  const email = s?.email ?? "info@prossi.com";
   const socials = [
     { Icon: TikTokIcon, alt: "TikTok", href: s?.social_tiktok ?? "https://www.tiktok.com/@prossi.clinic" },
     { Icon: InstagramIcon, alt: "Instagram", href: s?.social_instagram ?? "https://instagram.com/prossiclinic" },
@@ -56,7 +55,6 @@ export async function Footer() {
               <div className="flex flex-col gap-4 text-white/80">
                 <Link href="/about" className="hover:text-white transition-colors">Tentang Prossi Clinic</Link>
                 <Link href="/doctors" className="hover:text-white transition-colors">Dokter Kami</Link>
-                <Link href="/careers" className="hover:text-white transition-colors">Careers</Link>
               </div>
             </div>
 
@@ -66,10 +64,6 @@ export async function Footer() {
                 <a href={`tel:${phone.replace(/[^+\d]/g, "")}`} className="flex items-center gap-3 hover:text-white transition-colors">
                   <img src="/figma/imgFluentCall24Filled.svg" alt="Phone" className="w-5 h-5 opacity-80" />
                   <span>{phone}</span>
-                </a>
-                <a href={`mailto:${email}`} className="flex items-center gap-3 hover:text-white transition-colors">
-                  <img src="/figma/imgEmailIcon.svg" alt="Email" className="w-5 h-5 opacity-80" />
-                  <span>{email}</span>
                 </a>
               </div>
               <div className="flex gap-3 justify-end">
@@ -84,12 +78,8 @@ export async function Footer() {
           </div>
         </div>
         
-        <div className="flex flex-col md:flex-row items-center justify-between py-5 text-white/60 text-sm w-full gap-4">
+        <div className="flex flex-col md:flex-row items-center justify-center py-5 text-white/60 text-sm w-full gap-4">
           <p>© 2026 Prossi. All rights reserved.</p>
-          <div className="flex gap-8">
-            <Link href="/terms" className="hover:text-white transition-colors">Terms of Use</Link>
-            <Link href="/privacy" className="hover:text-white transition-colors">Privacy Policy</Link>
-          </div>
         </div>
       </div>
     </footer>

@@ -154,7 +154,6 @@ export function Header() {
                         {item.label === "Doctors" && [
                           { label: "Dokter Spesialis Gizi Klinik", category: "slimming" },
                           { label: "Dokter Spesialis Dermatologi, Venereologi, dan Estetika", category: "skin" },
-                          { label: "Dokter Estetika", category: "estetika" },
                         ].map((d) => (
                           <Link
                             key={d.category}
@@ -494,7 +493,6 @@ export function Header() {
                         {[
                           { label: "Dokter Spesialis Gizi Klinik", category: "slimming" },
                           { label: "Dokter Spesialis Dermatologi, Venereologi, dan Estetika", category: "skin" },
-                          { label: "Dokter Estetika", category: "estetika" },
                         ].map((d) => (
                           <Link
                             key={d.category}

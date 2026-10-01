@@ -7,11 +7,11 @@ const staticTeam = [
   { title: "Dokter Umum", img: "/figma/imgTeamMemberImage2.webp" },
 ];
 
-type CmsDoctor = { specialty: string; photo: string | null };
+type CmsDoctor = { specialty: string; photo: string | null; treatment_category: string | null };
 
 export async function Team() {
   const cms = await directusFetch<CmsDoctor[]>(
-    "/items/doctors?filter[status][_eq]=published&filter[featured][_eq]=true&sort=sort&fields=specialty,photo&limit=3"
+    "/items/doctors?filter[status][_eq]=published&filter[featured][_eq]=true&sort=sort&fields=specialty,photo,treatment_category&limit=3"
   );
 
   const team =
@@ -19,8 +19,9 @@ export async function Team() {
       ? cms.map((d, i) => ({
           title: d.specialty,
           img: d.photo ? assetUrl(d.photo) : staticTeam[i % staticTeam.length].img,
+          href: d.treatment_category ? `/doctors?category=${d.treatment_category}` : "/doctors",
         }))
-      : staticTeam;
+      : staticTeam.map((t) => ({ ...t, href: "/doctors" }));
 
   return (
     <section className="bg-[#b59637] w-full py-12 lg:py-[100px] px-6 lg:px-[100px] flex flex-col items-center">
@@ -58,7 +59,7 @@ export async function Team() {
                 {member.title}
               </h3>
               <Link
-                href="/doctors"
+                href={member.href}
                 className="w-full text-center lg:w-auto bg-[#b59637] border border-[#ecd5a5] rounded-full px-2 py-1.5 text-[9px] lg:px-9 lg:py-[18px] lg:text-lg text-white font-sans font-semibold hover:bg-[#a3852f] hover:shadow-lg hover:scale-[1.04] transition-all duration-200 whitespace-nowrap"
               >
                 View Doctors
