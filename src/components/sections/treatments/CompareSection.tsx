@@ -1,6 +1,8 @@
 import { pick, type PageContent } from "@/lib/pageContent";
 
-const advantages = [
+export type Advantage = { title: string; desc: string };
+
+const FALLBACK_ADVANTAGES: Advantage[] = [
   {
     title: "Ditangani oleh Profesional",
     desc: "Selain ruangan yang disterilisasi secara berkala, seluruh karyawan juga selalu diperhatikan kesehatannya demi menjaga keamanan pasien saat berkunjung",
@@ -23,7 +25,13 @@ const advantages = [
   },
 ];
 
-export function CompareSection({ content }: { content?: PageContent }) {
+export function CompareSection({
+  content,
+  advantages,
+}: {
+  content?: PageContent;
+  advantages?: Advantage[];
+}) {
   return (
     <section className="w-full pt-[64px] pb-[64px] px-6 md:px-[120px] bg-[#b59637]">
       <div className="max-w-[1200px] mx-auto flex flex-col md:flex-row gap-10">
@@ -47,7 +55,7 @@ export function CompareSection({ content }: { content?: PageContent }) {
 
         {/* Right */}
         <div className="flex flex-col gap-0 flex-1">
-          {advantages.map((item, i) => (
+          {(advantages && advantages.length > 0 ? advantages : FALLBACK_ADVANTAGES).map((item, i) => (
             <div key={i} className="flex items-start gap-3 px-4 py-4 border-b border-white/20 last:border-0">
               <svg className="shrink-0 mt-0.5" width="22" height="22" viewBox="0 0 22 22" fill="none">
                 <circle cx="11" cy="11" r="11" fill="rgba(255,255,255,0.2)" />

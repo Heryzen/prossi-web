@@ -136,7 +136,7 @@ export default function ArticlePage() {
       fetch(
         `${DIRECTUS_URL}/items/articles?filter[status][_eq]=published&sort=-date_created&fields=id,slug,title,excerpt,cover_image,date_created,category.name`
       ).then((r) => (r.ok ? r.json() : null)),
-      fetch(`${DIRECTUS_URL}/items/article_categories?fields=id,name`).then((r) =>
+      fetch(`${DIRECTUS_URL}/items/article_categories?filter[status][_eq]=published&sort=sort&fields=id,name`).then((r) =>
         r.ok ? r.json() : null
       ),
     ])

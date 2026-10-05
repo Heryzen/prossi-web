@@ -2,8 +2,11 @@ import type { Metadata } from "next";
 import { TreatmentsHero } from "@/components/sections/treatments/TreatmentsHero";
 import { CoreServices } from "@/components/sections/treatments/CoreServices";
 import { BeforeAfter } from "@/components/sections/treatments/BeforeAfter";
-import { CompareSection } from "@/components/sections/treatments/CompareSection";
+import { CompareSection, type Advantage } from "@/components/sections/treatments/CompareSection";
 import { getPageContent } from "@/lib/pageContent";
+import { directusFetch } from "@/lib/directus";
+
+type CmsAdvantage = { title: string; description: string };
 
 export const metadata: Metadata = {
   title: "Slimming Program by Sp.GK",
@@ -12,12 +15,22 @@ export const metadata: Metadata = {
 };
 
 export default async function SlimmingProgramPage() {
-  const pc = await getPageContent([
-    "treatment.slimming.hero",
-    "treatment.slimming.choose",
-    "treatment.slimming.beforeafter",
-    "treatment.slimming.compare",
+  const [pc, cmsAdvantages] = await Promise.all([
+    getPageContent([
+      "treatment.slimming.hero",
+      "treatment.slimming.choose",
+      "treatment.slimming.beforeafter",
+      "treatment.slimming.compare",
+    ]),
+    directusFetch<CmsAdvantage[]>(
+      "/items/treatment_advantages?filter[category][_eq]=slimming&filter[status][_eq]=published&sort=sort&fields=title,description"
+    ),
   ]);
+
+  const advantages: Advantage[] | undefined =
+    cmsAdvantages && cmsAdvantages.length > 0
+      ? cmsAdvantages.map((a) => ({ title: a.title, desc: a.description }))
+      : undefined;
 
   return (
     <>
@@ -26,7 +39,7 @@ export default async function SlimmingProgramPage() {
         <CoreServices content={pc["treatment.slimming.choose"]} />
       </div>
       <BeforeAfter category="slimming" content={pc["treatment.slimming.beforeafter"]} />
-      <CompareSection content={pc["treatment.slimming.compare"]} />
+      <CompareSection content={pc["treatment.slimming.compare"]} advantages={advantages} />
     </>
   );
 }
