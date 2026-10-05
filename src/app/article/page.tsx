@@ -1,6 +1,9 @@
 "use client";
 
 import Link from "next/link";
+import { assetUrl } from "@/lib/directus";
+import { pick } from "@/lib/pageContent";
+import { usePageContent } from "@/lib/usePageContent";
 import { useEffect, useMemo, useState } from "react";
 import { allArticles, ITEMS_PER_PAGE, type Article } from "./articles";
 import ArticleListLoading from "./loading";
@@ -119,6 +122,9 @@ function buildPageItems(current: number, total: number): (number | "…")[] {
 }
 
 export default function ArticlePage() {
+  const pc = usePageContent(["page.article", "page.article.insight"]);
+  const heroContent = pc["page.article"];
+  const insightContent = pc["page.article.insight"];
   const [page, setPage] = useState(1);
   const [articles, setArticles] = useState<ListArticle[]>([]);
   const [categories, setCategories] = useState<string[]>([]);
@@ -200,7 +206,7 @@ export default function ArticlePage() {
           className="relative w-full overflow-hidden h-[320px] md:h-[440px] rounded-b-[100px]"
         >
           <img
-            src="/figma/imgContactHero-4f95a9.webp"
+            src={heroContent?.image ? assetUrl(heroContent.image) : "/figma/imgContactHero-4f95a9.webp"}
             alt=""
             className="absolute inset-0 w-full h-full object-cover object-right"
           />
@@ -226,7 +232,7 @@ export default function ArticlePage() {
                 backgroundClip: "text",
               }}
             >
-              Prossi Journal
+              {pick(heroContent?.headline, "Prossi Journal")}
             </h1>
             <p
               className="font-['Lato',sans-serif] font-normal text-white"
@@ -269,14 +275,16 @@ export default function ArticlePage() {
           className="font-['Lato',sans-serif] font-extrabold text-[#11151C]"
           style={{ fontSize: "clamp(24px, 6vw, 36px)", lineHeight: "1.3", letterSpacing: "0.0069em" }}
         >
-          Insight &amp; Inspiration
+          {pick(insightContent?.headline, "Insight & Inspiration")}
         </h2>
         <p
           className="font-['Lato',sans-serif] font-medium text-[#2A3447]"
           style={{ fontSize: 16, lineHeight: "24px", letterSpacing: "0.0094em" }}
         >
-          Artikel dari dokter Prossi Clinic untuk membantu Anda memahami
-          kondisi kulit dan tubuh, sebelum memulai perawatan yang tepat.
+          {pick(
+            insightContent?.subheadline,
+            "Artikel dari dokter Prossi Clinic untuk membantu Anda memahami kondisi kulit dan tubuh, sebelum memulai perawatan yang tepat."
+          )}
         </p>
       </div>
 

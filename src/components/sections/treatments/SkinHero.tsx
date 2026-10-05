@@ -1,8 +1,11 @@
-export function SkinHero() {
+import { assetUrl } from "@/lib/directus";
+import { pick, type PageContent } from "@/lib/pageContent";
+
+export function SkinHero({ content }: { content?: PageContent }) {
   return (
     <div className="relative w-full overflow-hidden rounded-b-[100px] h-[460px] md:h-[560px]">
       <img
-        src="/figma/imgSkinHeroFull.webp"
+        src={content?.image ? assetUrl(content.image) : "/figma/imgSkinHeroFull.webp"}
         alt=""
         aria-hidden
         className="absolute inset-0 w-full h-full object-cover object-center"
@@ -12,13 +15,16 @@ export function SkinHero() {
           className="font-['Source_Serif_4',serif] font-normal text-white leading-tight"
           style={{ fontSize: "clamp(26px, 7vw, 45px)" }}
         >
-          Perawatan yang Tepat Untuk Kulit yang Sehat
+          {pick(content?.headline, "Perawatan yang Tepat Untuk Kulit yang Sehat")}
         </h1>
         <p
           className="font-['Lato',sans-serif] font-normal text-white"
           style={{ fontSize: "clamp(14px, 4vw, 18px)", lineHeight: "1.6" }}
         >
-          Prossi Clinic membantu pria dan wanita mendapatkan kulit sehat dan terawat melalui pendekatan medis yang dipersonalisasi, ditangani langsung oleh Dokter Sp.DVE dengan hasil nyata, aman, dan terarah.
+          {pick(
+            content?.subheadline,
+            "Prossi Clinic membantu pria dan wanita mendapatkan kulit sehat dan terawat melalui pendekatan medis yang dipersonalisasi, ditangani langsung oleh Dokter Sp.DVE dengan hasil nyata, aman, dan terarah."
+          )}
         </p>
       </div>
     </div>

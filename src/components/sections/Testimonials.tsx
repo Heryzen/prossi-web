@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import useEmblaCarousel from "embla-carousel-react";
+import { pick } from "@/lib/pageContent";
 
 export type Review = {
   text: string;
@@ -106,7 +107,19 @@ function PlayIcon() {
   );
 }
 
-export function Testimonials({ reviews: reviewsProp }: { reviews?: Review[] }) {
+export type TestimonialsHeader = {
+  eyebrow?: string | null;
+  headline?: string | null;
+  subheadline?: string | null;
+};
+
+export function Testimonials({
+  reviews: reviewsProp,
+  header,
+}: {
+  reviews?: Review[];
+  header?: TestimonialsHeader;
+}) {
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true, align: 'center' });
   const [activeVideo, setActiveVideo] = useState<{ url: string; sourceUrl?: string | null } | null>(null);
 
@@ -170,7 +183,7 @@ export function Testimonials({ reviews: reviewsProp }: { reviews?: Review[] }) {
                 <img alt="" className="block max-w-none size-full" src="/figma/imgLine4.svg" />
               </div>
             </div>
-            <span className="font-['Lato'] font-semibold leading-normal not-italic relative shrink-0 text-[14px] text-[#120f0b] whitespace-nowrap">TESTIMONIALS</span>
+            <span className="font-['Lato'] font-semibold leading-normal not-italic relative shrink-0 text-[14px] text-[#120f0b] whitespace-nowrap">{pick(header?.eyebrow, "TESTIMONIALS")}</span>
             <div className="flex items-center justify-center relative shrink-0">
               <div className="-scale-y-100 flex-none rotate-180">
                 <div className="h-0 relative w-[63px]">
@@ -182,10 +195,10 @@ export function Testimonials({ reviews: reviewsProp }: { reviews?: Review[] }) {
             </div>
           </div>
           <h2 className="font-['Lato'] font-semibold text-[32px] md:text-[40px] text-[#120f0b] capitalize">
-            Voices of Transformation
+            {pick(header?.headline, "Voices of Transformation")}
           </h2>
           <p className="font-sans text-lg text-[#120f0b]">
-            Hear from those who have invested in their long-term vitality.
+            {pick(header?.subheadline, "Hear from those who have invested in their long-term vitality.")}
           </p>
         </div>
       </div>

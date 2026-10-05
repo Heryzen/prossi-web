@@ -51,10 +51,10 @@ export async function Footer() {
             </div>
 
             <div className="flex flex-col gap-6">
-              <h4 className="font-sans font-semibold text-lg text-[#f4ece4]">Tentang Kami</h4>
+              <h4 className="font-sans font-semibold text-lg text-[#f4ece4]">About Us</h4>
               <div className="flex flex-col gap-4 text-white/80">
-                <Link href="/about" className="hover:text-white transition-colors">Tentang Prossi Clinic</Link>
-                <Link href="/doctors" className="hover:text-white transition-colors">Dokter Kami</Link>
+                <Link href="/about" className="hover:text-white transition-colors">About Prossi Clinic</Link>
+                <Link href="/doctors" className="hover:text-white transition-colors">Our Doctors</Link>
               </div>
             </div>
 

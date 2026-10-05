@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useState } from "react";
 import type { Doctor } from "@/components/doctors-data";
 import { ArticleImageFallback } from "@/components/ArticleImageFallback";
+import { pick } from "@/lib/pageContent";
 
 const GOLD_RING =
   "linear-gradient(270deg, rgba(222,186,105,1) 0%, rgba(235,210,151,1) 30%, rgba(251,232,166,1) 50%, rgba(235,210,151,1) 70%, rgba(222,186,105,1) 100%)";
@@ -131,17 +132,31 @@ function DoctorModal({ doctor, onClose }: { doctor: Doctor; onClose: () => void 
 
 type Article = { id: string; slug?: string; img: string | null; tag: string; title: string };
 
+/** Teks & gambar yang bisa diedit dari CMS (null = pakai teks default). */
+export type DoctorsCopy = {
+  heroImage: string | null;
+  heroHeadline: string | null;
+  heroSubheadline: string | null;
+  teamEyebrow: string | null;
+  teamHeadline: string | null;
+  teamSubheadline: string | null;
+  articlesHeadline: string | null;
+  articlesSubheadline: string | null;
+};
+
 export function DoctorsPageContent({
   eyebrow,
   heroGradientRgb,
   doctors,
   articles,
+  copy,
 }: {
   eyebrow: string;
   /** e.g. "205,114,79" (terracotta), "63,109,112" (teal), or "181,150,55" (gold) */
   heroGradientRgb: string;
   doctors: Doctor[];
   articles: Article[];
+  copy?: DoctorsCopy;
 }) {
   const [selected, setSelected] = useState<Doctor | null>(null);
   const rgb = heroGradientRgb;
@@ -151,7 +166,7 @@ export function DoctorsPageContent({
       {/* Hero */}
       <section className="relative w-full h-[420px] md:h-[600px] overflow-hidden rounded-b-[60px] md:rounded-b-[100px]">
         <img
-          src="/figma/imgDoctorsHero.png"
+          src={copy?.heroImage ?? "/figma/imgDoctorsHero.png"}
           alt=""
           className="absolute inset-0 w-full h-full object-cover"
         />
@@ -176,11 +191,13 @@ export function DoctorsPageContent({
               className="font-serif font-normal leading-tight bg-clip-text text-transparent"
               style={{ backgroundImage: HEADING_GRADIENT, fontSize: "clamp(28px, 6vw, 45px)" }}
             >
-              Perawatan yang Tepat untuk Kulit Sehat & Tubuh Ideal
+              {pick(copy?.heroHeadline, "Perawatan yang Tepat untuk Kulit Sehat & Tubuh Ideal")}
             </h1>
             <p className="font-['Lato'] text-white" style={{ fontSize: "clamp(14px, 4vw, 18px)" }}>
-              Mulai dari program slimming hingga perawatan kulit, semua treatment dirancang berdasarkan diagnosis
-              dokter untuk hasil yang aman dan terarah.
+              {pick(
+                copy?.heroSubheadline,
+                "Mulai dari program slimming hingga perawatan kulit, semua treatment dirancang berdasarkan diagnosis dokter untuk hasil yang aman dan terarah."
+              )}
             </p>
           </div>
         </div>
@@ -190,13 +207,15 @@ export function DoctorsPageContent({
       <section className="bg-[#fff8f2] w-full py-[60px] md:py-[100px] px-6 md:px-[100px]">
         <div className="max-w-[1240px] mx-auto flex flex-col items-center gap-[40px] md:gap-[60px]">
           <div className="flex flex-col items-center gap-6 text-center">
-            <Eyebrow text="OUR DOCTORS" />
+            <Eyebrow text={pick(copy?.teamEyebrow, "OUR DOCTORS")} />
             <h2 className="font-['Lato'] font-semibold text-[32px] md:text-[40px] text-[#120f0b] capitalize">
-              Tim Dokter Kami
+              {pick(copy?.teamHeadline, "Tim Dokter Kami")}
             </h2>
             <p className="font-['Lato'] text-[16px] md:text-[18px] text-[#120f0b] max-w-[816px]">
-              Setiap pasien ditangani langsung oleh dokter spesialis, memastikan diagnosis yang tepat dan perawatan
-              yang sesuai dengan kondisi Anda.
+              {pick(
+                copy?.teamSubheadline,
+                "Setiap pasien ditangani langsung oleh dokter spesialis, memastikan diagnosis yang tepat dan perawatan yang sesuai dengan kondisi Anda."
+              )}
             </p>
           </div>
 
@@ -240,11 +259,13 @@ export function DoctorsPageContent({
         <div className="max-w-[1240px] mx-auto flex flex-col items-center gap-[40px] md:gap-[60px]">
           <div className="flex flex-col items-center gap-6 text-center">
             <h2 className="font-['Lato'] font-semibold text-[32px] md:text-[40px] text-[#120f0b] capitalize">
-              Articles
+              {pick(copy?.articlesHeadline, "Articles")}
             </h2>
             <p className="font-['Lato'] text-[16px] md:text-[18px] text-[#120f0b] max-w-[816px]">
-              Artikel dari dokter Prossi Clinic untuk membantu Anda memahami kondisi kulit dan tubuh, sebelum memulai
-              perawatan yang tepat.
+              {pick(
+                copy?.articlesSubheadline,
+                "Artikel dari dokter Prossi Clinic untuk membantu Anda memahami kondisi kulit dan tubuh, sebelum memulai perawatan yang tepat."
+              )}
             </p>
           </div>
 

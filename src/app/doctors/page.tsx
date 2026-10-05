@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { DoctorsPageContent } from "@/components/DoctorsPageContent";
 import { ALL_DOCTORS, type Doctor } from "@/components/doctors-data";
 import { directusFetch, assetUrl } from "@/lib/directus";
+import { getPageContent } from "@/lib/pageContent";
 
 type CmsDoctor = {
   name: string;
@@ -56,14 +57,35 @@ export default async function Doctors({
     ? `&filter[treatment_category][_eq]=${encodeURIComponent(category)}`
     : "";
 
-  const [cms, cmsArticles] = await Promise.all([
+  // Teks & gambar section mengikuti kategori yang dipilih (fallback: "all")
+  const contentKey = category && CATEGORY_LABEL[category] ? category : "all";
+  const [cms, cmsArticles, pc] = await Promise.all([
     directusFetch<CmsDoctor[]>(
       `/items/doctors?filter[status][_eq]=published&sort=sort&fields=name,photo,specialty,bio,schedule_days,schedule_hours,treatment_category,location,schedule_text${filter}`
     ),
     directusFetch<CmsArticle[]>(
       "/items/articles?filter[status][_eq]=published&sort=-date_created&limit=3&fields=id,slug,title,cover_image,category.name"
     ),
+    getPageContent([
+      `doctors.${contentKey}.hero`,
+      `doctors.${contentKey}.team`,
+      `doctors.${contentKey}.articles`,
+    ]),
   ]);
+
+  const hero = pc[`doctors.${contentKey}.hero`];
+  const team = pc[`doctors.${contentKey}.team`];
+  const articlesSection = pc[`doctors.${contentKey}.articles`];
+  const copy = {
+    heroImage: hero?.image ? assetUrl(hero.image) : null,
+    heroHeadline: hero?.headline ?? null,
+    heroSubheadline: hero?.subheadline ?? null,
+    teamEyebrow: team?.eyebrow ?? null,
+    teamHeadline: team?.headline ?? null,
+    teamSubheadline: team?.subheadline ?? null,
+    articlesHeadline: articlesSection?.headline ?? null,
+    articlesSubheadline: articlesSection?.subheadline ?? null,
+  };
 
   const articles =
     cmsArticles?.map((a) => ({
@@ -119,6 +141,7 @@ export default async function Doctors({
         heroGradientRgb={heroGradientRgb}
         doctors={doctors}
         articles={articles}
+        copy={copy}
       />
     </>
   );

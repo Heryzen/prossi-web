@@ -1,3 +1,5 @@
+import { pick, type PageContent } from "@/lib/pageContent";
+
 const advantages = [
   {
     title: "Ditangani oleh Profesional",
@@ -21,18 +23,26 @@ const advantages = [
   },
 ];
 
-export function CompareSection() {
+export function CompareSection({ content }: { content?: PageContent }) {
   return (
     <section className="w-full pt-[64px] pb-[64px] px-6 md:px-[120px] bg-[#b59637]">
       <div className="max-w-[1200px] mx-auto flex flex-col md:flex-row gap-10">
         {/* Left */}
         <div className="flex flex-col gap-3 md:w-[360px] shrink-0">
           <h2 className="font-['Lato',sans-serif] font-normal text-[40px] leading-[56px] tracking-[0.0125em] text-white">
-            Apa Yang Membuat Perawatan Kami Berbeda
+            {pick(content?.headline, "Apa Yang Membuat Perawatan Kami Berbeda")}
           </h2>
           <p className="font-['Lato',sans-serif] text-[18px] text-white/90">
-            Pendekatan yang memastikan setiap treatment sesuai dengan kondisi Anda aman, terarah, dan dapat dipantau.
+            {pick(
+              content?.subheadline,
+              "Pendekatan yang memastikan setiap treatment sesuai dengan kondisi Anda aman, terarah, dan dapat dipantau."
+            )}
           </p>
+          {content?.description && (
+            <div className="font-['Lato',sans-serif] text-[16px] text-white/90 leading-relaxed whitespace-pre-line">
+              {content.description}
+            </div>
+          )}
         </div>
 
         {/* Right */}
@@ -55,10 +65,10 @@ export function CompareSection() {
           ))}
           <div className="flex justify-end mt-4">
             <a
-              href="/contact"
+              href={pick(content?.link_url, "/contact")}
               className="inline-flex items-center gap-2 px-9 py-[18px] rounded-full font-['Lato',sans-serif] font-semibold text-[18px] text-white border border-[#ecd5a5] bg-[#b59637] hover:opacity-90 transition-opacity"
             >
-              Reservation
+              {pick(content?.link_label, "Reservation")}
             </a>
           </div>
         </div>

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { directusFetch, assetUrl } from "@/lib/directus";
+import { pick, type PageContent } from "@/lib/pageContent";
 
 const CARD_BORDER =
   "linear-gradient(270deg, rgba(222,186,105,1) 0%, rgba(235,210,151,1) 30%, rgba(251,232,166,1) 50%, rgba(235,210,151,1) 70%, rgba(222,186,105,1) 100%)";
@@ -80,7 +81,7 @@ function ProgramCard({ title, desc, img, ctaLink, link }: { title: string; desc:
 
 type CmsTreatment = { name: string; slug: string | null; description: string; image: string | null; cta_link: string | null };
 
-export async function SkinCoreServices() {
+export async function SkinCoreServices({ content }: { content?: PageContent }) {
   const cms = await directusFetch<CmsTreatment[]>(
     "/items/treatments?filter[category][_eq]=skin&filter[status][_eq]=published&sort=sort&fields=name,slug,description,image,cta_link"
   );
@@ -114,14 +115,17 @@ export async function SkinCoreServices() {
             }}
           >
             <span className="font-['Lato',sans-serif] font-medium text-[16px] text-white uppercase">
-              Skin Treatments
+              {pick(content?.eyebrow, "Skin Treatments")}
             </span>
           </div>
           <h2 className="font-['Lato',sans-serif] font-semibold text-[40px] text-white">
-            Pilih Perawatan Sesuai Kebutuhan Anda
+            {pick(content?.headline, "Pilih Perawatan Sesuai Kebutuhan Anda")}
           </h2>
           <p className="font-['Lato',sans-serif] text-[18px] text-white">
-            Setiap kategori dirancang untuk membantu Anda menemukan solusi yang paling sesuai dengan kondisi Anda.
+            {pick(
+              content?.subheadline,
+              "Setiap kategori dirancang untuk membantu Anda menemukan solusi yang paling sesuai dengan kondisi Anda."
+            )}
           </p>
         </div>
 

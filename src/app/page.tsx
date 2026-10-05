@@ -7,14 +7,22 @@ import { Testimonials, type Review } from "@/components/sections/Testimonials";
 import { CTA, type PromoSlide } from "@/components/sections/CTA";
 import { Reveal } from "@/components/Reveal";
 import { directusFetch, assetUrl } from "@/lib/directus";
+import { getPageContent } from "@/lib/pageContent";
 
-type CmsBanner = { heading: string; subheading: string; image: string | null };
+type CmsBanner = {
+  heading: string;
+  subheading: string;
+  image: string | null;
+  cta_text: string | null;
+  cta_link: string | null;
+};
 type CmsTestimonial = {
   name: string;
   city: string;
   quote: string;
   photo: string | null;
   banner_image: string | null;
+  cover_image: string | null;
   video_url: string | null;
   source_url: string | null;
   rating: number | null;
@@ -22,15 +30,20 @@ type CmsTestimonial = {
 type CmsPromo = { id: string; title: string; description: string; image: string | null; cta_link: string | null };
 
 export default async function Home() {
-  const [banners, cmsReviews, cmsPromos] = await Promise.all([
+  const [banners, cmsReviews, cmsPromos, pc] = await Promise.all([
     directusFetch<CmsBanner[]>(
-      "/items/hero_banners?filter[status][_eq]=published&sort=sort&fields=heading,subheading,image"
+      "/items/hero_banners?filter[status][_eq]=published&sort=sort&fields=heading,subheading,image,cta_text,cta_link"
     ),
-    directusFetch<CmsTestimonial[]>("/items/testimonials?fields=name,city,quote,photo,banner_image,video_url,source_url,rating"),
+    directusFetch<CmsTestimonial[]>(
+      "/items/testimonials?fields=name,city,quote,photo,banner_image,cover_image,video_url,source_url,rating"
+    ),
     directusFetch<CmsPromo[]>(
       "/items/promos?filter[status][_eq]=published&fields=id,title,description,image,cta_link"
     ),
+    getPageContent(["home.testimonials"]),
   ]);
+
+  const testimonialsHeader = pc["home.testimonials"];
 
   const promos: PromoSlide[] | undefined =
     cmsPromos && cmsPromos.length > 0
@@ -52,7 +65,13 @@ export default async function Home() {
           avatar: t.photo ? assetUrl(t.photo) : "",
           videoUrl: t.video_url,
           sourceUrl: t.source_url,
-          image: t.banner_image ? assetUrl(t.banner_image) : t.photo ? assetUrl(t.photo) : null,
+          image: t.cover_image
+            ? assetUrl(t.cover_image)
+            : t.banner_image
+              ? assetUrl(t.banner_image)
+              : t.photo
+                ? assetUrl(t.photo)
+                : null,
         }))
       : undefined;
 
@@ -62,6 +81,8 @@ export default async function Home() {
           img: b.image ? assetUrl(b.image) : "/figma/imgBackground1.webp",
           heading: b.heading,
           sub: b.subheading,
+          ctaText: b.cta_text,
+          ctaLink: b.cta_link,
         }))
       : undefined;
 
@@ -71,7 +92,7 @@ export default async function Home() {
       <Reveal><Philosophy /></Reveal>
       <Reveal><TreatmentServices /></Reveal>
       <Reveal><Team /></Reveal>
-      <Reveal><Testimonials reviews={reviews} /></Reveal>
+      <Reveal><Testimonials reviews={reviews} header={testimonialsHeader} /></Reveal>
       <Reveal><CTA promos={promos} /></Reveal>
       <Reveal><Blog /></Reveal>
     </>

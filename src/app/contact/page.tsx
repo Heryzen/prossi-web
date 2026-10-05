@@ -4,6 +4,9 @@ import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import { ReservationModal } from "@/components/ReservationModal";
 import { branches as staticBranches, type Branch } from "@/components/locations-data";
+import { assetUrl } from "@/lib/directus";
+import { pick } from "@/lib/pageContent";
+import { usePageContent } from "@/lib/usePageContent";
 
 const MapSection = dynamic(
   () => import("@/components/MapSection").then((m) => m.MapSection),
@@ -63,6 +66,8 @@ function PhoneArrowIcon() {
 const HEADER_OFFSET = "pt-[79px]";
 
 export default function Contact() {
+  const pc = usePageContent(["page.reservation"]);
+  const heroContent = pc["page.reservation"];
   const [selectedBranch, setSelectedBranch] = useState(0);
   const [reservationOpen, setReservationOpen] = useState(false);
   const [waNumber, setWaNumber] = useState(FALLBACK_WA_NUMBER);
@@ -114,7 +119,7 @@ export default function Contact() {
         className="relative w-full overflow-hidden h-[320px] md:h-[440px] rounded-b-[100px]"
       >
         <img
-          src="/figma/imgContactHero-4f95a9.webp"
+          src={heroContent?.image ? assetUrl(heroContent.image) : "/figma/imgContactHero-4f95a9.webp"}
           alt=""
           className="absolute inset-0 w-full h-full object-cover object-right"
         />
@@ -139,14 +144,16 @@ export default function Contact() {
               backgroundClip: "text",
             }}
           >
-            Reservation
+            {pick(heroContent?.headline, "Reservation")}
           </h1>
           <p
             className="font-['Lato',sans-serif] font-bold text-white"
             style={{ fontSize: "clamp(14px, 4vw, 18px)", lineHeight: "1.6", maxWidth: 611 }}
           >
-            Mulai dari program slimming hingga perawatan kulit, semua treatment
-            dirancang berdasarkan diagnosis dokter untuk hasil yang aman dan terarah.
+            {pick(
+              heroContent?.subheadline,
+              "Mulai dari program slimming hingga perawatan kulit, semua treatment dirancang berdasarkan diagnosis dokter untuk hasil yang aman dan terarah."
+            )}
           </p>
         </div>
       </div>

@@ -7,6 +7,9 @@ export type HeroSlide = {
   img: string;
   heading: ReactNode;
   sub: string;
+  /** Tombol CTA dari CMS (hero_banners.cta_text / cta_link). Kosong = default. */
+  ctaText?: string | null;
+  ctaLink?: string | null;
 };
 
 const defaultSlides: HeroSlide[] = [
@@ -90,10 +93,10 @@ export function Hero({ slides: slidesProp }: { slides?: HeroSlide[] }) {
                   </p>
                 </div>
                 <Link
-                  href="/treatments"
+                  href={slide.ctaLink || "/treatments"}
                   className="prossi-fade-up bg-[#b59637] border border-[#ecd5a5] rounded-full px-6 py-3 lg:px-9 lg:py-[18px] text-white font-sans font-semibold text-sm lg:text-lg hover:opacity-90 hover:scale-[1.03] transition-all duration-300"
                 >
-                  Explore Treatments
+                  {slide.ctaText || "Explore Treatments"}
                 </Link>
               </div>
             </div>

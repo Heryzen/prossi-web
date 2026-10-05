@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Suspense } from "react";
 import { directusFetch } from "@/lib/directus";
 import { PromoPageContent, type PromoItem } from "@/components/PromoPageContent";
+import { assetUrl } from "@/lib/directus";
+import { getPageContent, pick } from "@/lib/pageContent";
 
 export const metadata: Metadata = {
   title: "Promo",
@@ -11,19 +13,21 @@ export const metadata: Metadata = {
 type CmsSiteSettings = { whatsapp_number: string | null };
 
 export default async function PromoPage() {
-  const [promos, siteSettings] = await Promise.all([
+  const [promos, siteSettings, pc] = await Promise.all([
     directusFetch<PromoItem[]>(
       "/items/promos?filter[status][_eq]=published&fields=id,title,description,image,cta_link,valid_until,category"
     ),
     directusFetch<CmsSiteSettings>("/items/site_settings?fields=whatsapp_number"),
+    getPageContent(["page.promo"]),
   ]);
+  const hero = pc["page.promo"];
 
   return (
     <main className="min-h-screen bg-[#f4ece4] flex flex-col pt-[79px]">
       {/* ── Hero ── */}
       <div className="relative w-full overflow-hidden h-[320px] md:h-[440px] rounded-b-[100px]">
         <img
-          src="/figma/imgContactHero-4f95a9.webp"
+          src={hero?.image ? assetUrl(hero.image) : "/figma/imgContactHero-4f95a9.webp"}
           alt=""
           className="absolute inset-0 w-full h-full object-cover object-right"
         />
@@ -46,13 +50,13 @@ export default async function PromoPage() {
               backgroundClip: "text",
             }}
           >
-            Promo
+            {pick(hero?.headline, "Promo")}
           </h1>
           <p
             className="font-['Lato',sans-serif] font-normal text-white md:pl-[100px]"
             style={{ fontSize: "clamp(14px, 4vw, 18px)", lineHeight: "1.6" }}
           >
-            Penawaran spesial dari Prossi Clinic untuk perjalanan kesehatan dan kecantikanmu.
+            {pick(hero?.subheadline, "Penawaran spesial dari Prossi Clinic untuk perjalanan kesehatan dan kecantikanmu.")}
           </p>
         </div>
       </div>

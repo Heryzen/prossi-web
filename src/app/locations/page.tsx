@@ -1,6 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { assetUrl } from "@/lib/directus";
+import { pick } from "@/lib/pageContent";
+import { usePageContent } from "@/lib/usePageContent";
 import Link from "next/link";
 import dynamic from "next/dynamic";
 import { branches as staticBranches, type Branch } from "@/components/locations-data";
@@ -50,6 +53,8 @@ function SearchIcon() {
 }
 
 export default function LocationsPage() {
+  const pc = usePageContent(["page.location"]);
+  const heroContent = pc["page.location"];
   const [selected, setSelected] = useState(0);
   const [branches, setBranches] = useState<Branch[]>(staticBranches);
   const [query, setQuery] = useState("");
@@ -91,7 +96,7 @@ export default function LocationsPage() {
           className="relative w-full overflow-hidden h-[320px] md:h-[440px] rounded-b-[100px]"
         >
           <img
-            src="/figma/imgContactHero-4f95a9.webp"
+            src={heroContent?.image ? assetUrl(heroContent.image) : "/figma/imgContactHero-4f95a9.webp"}
             alt=""
             className="absolute inset-0 w-full h-full object-cover object-right"
           />
@@ -117,13 +122,13 @@ export default function LocationsPage() {
                 backgroundClip: "text",
               }}
             >
-              Prossi Location
+              {pick(heroContent?.headline, "Prossi Location")}
             </h1>
             <p
               className="font-['Lato',sans-serif] font-normal text-white"
               style={{ fontSize: "clamp(14px, 4vw, 18px)" }}
             >
-              Kami Hadir di 34 Provinsi di Seluruh Indonesia
+              {pick(heroContent?.subheadline, "Kami Hadir di 34 Provinsi di Seluruh Indonesia")}
             </p>
           </div>
         </div>

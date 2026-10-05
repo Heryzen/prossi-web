@@ -1,9 +1,12 @@
-export function TreatmentsHero() {
+import { assetUrl } from "@/lib/directus";
+import { pick, type PageContent } from "@/lib/pageContent";
+
+export function TreatmentsHero({ content }: { content?: PageContent }) {
   return (
     <div className="relative w-full overflow-hidden rounded-b-[100px] h-[460px] md:h-[560px]">
       {/* Background image — stretch to fill like Figma */}
       <img
-        src="/figma/imgHeroTreatments-31d3d2.webp"
+        src={content?.image ? assetUrl(content.image) : "/figma/imgHeroTreatments-31d3d2.webp"}
         alt=""
         aria-hidden
         className="absolute inset-0 w-full h-full object-cover object-right"
@@ -22,13 +25,16 @@ export function TreatmentsHero() {
           className="font-['Source_Serif_4',serif] font-normal text-white leading-tight"
           style={{ fontSize: "clamp(26px, 7vw, 45px)" }}
         >
-          Perjalanan Menuju Tubuh Ideal Dimulai dari Satu Langkah yang Tepat
+          {pick(content?.headline, "Perjalanan Menuju Tubuh Ideal Dimulai dari Satu Langkah yang Tepat")}
         </h1>
         <p
           className="font-['Lato',sans-serif] text-white"
           style={{ fontSize: "clamp(14px, 4vw, 18px)", lineHeight: "1.6" }}
         >
-          Prossi Clinic mampu membantu pria dan wanita meraih tubuh ideal melalui pendekatan holistik yang dipersonalisasi, didukung oleh dokter profesional dengan hasil nyata.
+          {pick(
+            content?.subheadline,
+            "Prossi Clinic mampu membantu pria dan wanita meraih tubuh ideal melalui pendekatan holistik yang dipersonalisasi, didukung oleh dokter profesional dengan hasil nyata."
+          )}
         </p>
       </div>
     </div>

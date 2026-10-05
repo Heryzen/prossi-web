@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import { assetUrl } from "@/lib/directus";
+import { getPageContent, pick, type PageContent } from "@/lib/pageContent";
 
 export const metadata: Metadata = {
   title: "Tentang Prossi Clinic",
@@ -16,23 +18,37 @@ const CARD_BG = "linear-gradient(180deg, #ffffff 0%, #fff9eb 100%)";
 
 const corePrograms = [
   {
+    key: "about.card.1",
     title: "Slimming Program by\nSp.GK",
     img: "/figma/imgAboutCardSlimming-29ddd5.webp",
     border: CARD_BORDER_SLIMMING,
   },
   {
+    key: "about.card.2",
     title: "Skin Treatment by\nSp.DVE",
     img: "/figma/imgAboutCardSkinDVE-ee6372.webp",
     border: CARD_BORDER_DVE,
   },
   {
+    key: "about.card.3",
     title: "Skin Treatment by\nDokter Estetika",
     img: "/figma/imgAboutCardSkinEst-2ec088.webp",
     border: CARD_BORDER_EST,
   },
 ];
 
-function CoreProgramCard({ title, img, border }: { title: string; img: string; border: string }) {
+function CoreProgramCard({
+  title,
+  img,
+  border,
+  content,
+}: {
+  title: string;
+  img: string;
+  border: string;
+  content?: PageContent;
+}) {
+  const heading = pick(content?.headline, title);
   return (
     <div className="rounded-[24px] p-[4px] flex-1" style={{ background: border }}>
       <div
@@ -40,14 +56,14 @@ function CoreProgramCard({ title, img, border }: { title: string; img: string; b
         style={{ background: CARD_BG, padding: "12px 12px 24px" }}
       >
         <div className="w-full rounded-[20px] overflow-hidden" style={{ height: 295 }}>
-          <img src={img} alt={title} className="w-full h-full object-cover" />
+          <img src={content?.image ? assetUrl(content.image) : img} alt={heading} className="w-full h-full object-cover" />
         </div>
         <div className="flex flex-col items-center gap-4 px-4 pt-6">
           <h3
             className="font-['Lato',sans-serif] font-semibold text-[#120f0b] text-center capitalize whitespace-pre-line"
             style={{ fontSize: 26 }}
           >
-            {title}
+            {heading}
           </h3>
           <div
             style={{
@@ -58,14 +74,14 @@ function CoreProgramCard({ title, img, border }: { title: string; img: string; b
             }}
           />
           <p className="font-['Lato',sans-serif] text-[16px] text-[#120f0b] text-center leading-relaxed">
-            Temukan program perawatan yang paling sesuai dengan kondisi dan kebutuhan Anda.
+            {pick(content?.description, "Temukan program perawatan yang paling sesuai dengan kondisi dan kebutuhan Anda.")}
           </p>
           <a
-            href="/contact"
+            href={pick(content?.link_url, "/contact")}
             className="inline-flex items-center justify-center px-9 py-[18px] rounded-full font-['Lato',sans-serif] font-semibold text-[18px] text-white"
             style={{ background: "#B59637", border: "1px solid #ECD5A5" }}
           >
-            Selengkapnya
+            {pick(content?.link_label, "Selengkapnya")}
           </a>
         </div>
       </div>
@@ -73,7 +89,24 @@ function CoreProgramCard({ title, img, border }: { title: string; img: string; b
   );
 }
 
-export default function AboutPage() {
+export default async function AboutPage() {
+  const pc = await getPageContent([
+    "about.hero",
+    "about.intro",
+    "about.journey",
+    "about.vision",
+    "about.mission",
+    "about.services",
+    ...corePrograms.map((p) => p.key),
+  ]);
+
+  const hero = pc["about.hero"];
+  const intro = pc["about.intro"];
+  const journey = pc["about.journey"];
+  const vision = pc["about.vision"];
+  const mission = pc["about.mission"];
+  const services = pc["about.services"];
+
   return (
     <div className="flex flex-col pt-[79px]">
 
@@ -84,7 +117,7 @@ export default function AboutPage() {
         className="relative w-full overflow-hidden h-[320px] md:h-[440px] rounded-b-[100px]"
       >
         <img
-          src="/figma/imgContactHero-4f95a9.webp"
+          src={hero?.image ? assetUrl(hero.image) : "/figma/imgContactHero-4f95a9.webp"}
           alt=""
           className="absolute inset-0 w-full h-full object-cover object-right"
         />
@@ -107,13 +140,16 @@ export default function AboutPage() {
               backgroundClip: "text",
             }}
           >
-            Tentang Prossi
+            {pick(hero?.headline, "Tentang Prossi")}
           </h1>
           <p
             className="font-['Lato',sans-serif] font-normal text-white md:pl-[100px]"
             style={{ fontSize: "clamp(14px, 4vw, 18px)", lineHeight: "1.6" }}
           >
-            Lebih Dari Sekadar Klinik Estetika. Di Prossi, kami percaya bahwa perawatan bukan hanya tentang penampilan tetapi tentang bagaimana seseorang merasa lebih sehat, lebih percaya diri, dan lebih nyaman dengan dirinya sendiri.
+            {pick(
+              hero?.subheadline,
+              "Lebih Dari Sekadar Klinik Estetika. Di Prossi, kami percaya bahwa perawatan bukan hanya tentang penampilan tetapi tentang bagaimana seseorang merasa lebih sehat, lebih percaya diri, dan lebih nyaman dengan dirinya sendiri."
+            )}
           </p>
         </div>
       </div>
@@ -121,15 +157,27 @@ export default function AboutPage() {
       {/* ── About intro ── */}
       <div className="px-6 py-10 md:px-[160px] md:pt-[40px] md:pb-[80px]">
         <div className="flex flex-col items-center gap-8">
-          <div
-            className="w-full rounded-[20px]"
-            style={{ maxWidth: 860, height: 481, background: "#ECD5A5" }}
-          />
+          {intro?.image ? (
+            <img
+              src={assetUrl(intro.image)}
+              alt=""
+              className="w-full rounded-[20px] object-cover"
+              style={{ maxWidth: 860, height: 481 }}
+            />
+          ) : (
+            <div
+              className="w-full rounded-[20px]"
+              style={{ maxWidth: 860, height: 481, background: "#ECD5A5" }}
+            />
+          )}
           <p
             className="font-['Lato',sans-serif] font-medium text-[#000000] text-center"
             style={{ fontSize: 16, lineHeight: "24px", letterSpacing: "0.0094em", maxWidth: 860 }}
           >
-            kami menghadirkan pendekatan medis yang personal untuk membantu setiap pasien memahami kebutuhan tubuh dan kulitnya secara lebih menyeluruh. Bukan treatment yang sekadar mengikuti tren, tetapi perawatan yang dirancang berdasarkan kondisi, tujuan, dan kenyamanan setiap individu.
+            {pick(
+              intro?.description,
+              "kami menghadirkan pendekatan medis yang personal untuk membantu setiap pasien memahami kebutuhan tubuh dan kulitnya secara lebih menyeluruh. Bukan treatment yang sekadar mengikuti tren, tetapi perawatan yang dirancang berdasarkan kondisi, tujuan, dan kenyamanan setiap individu."
+            )}
           </p>
         </div>
       </div>
@@ -143,19 +191,25 @@ export default function AboutPage() {
             className="font-['Lato',sans-serif] font-extrabold text-[#11151C]"
             style={{ fontSize: 36, lineHeight: "44px", letterSpacing: "0.0069em" }}
           >
-            Perjalanan Prossi
+            {pick(journey?.headline, "Perjalanan Prossi")}
           </h2>
           <p
             className="font-['Lato',sans-serif] font-medium text-[#000000]"
             style={{ fontSize: 16, lineHeight: "24px", letterSpacing: "0.0094em" }}
           >
-            Berawal dari visi sederhana untuk menghadirkan layanan wellness dan estetika yang lebih terpercaya, Prossi terus berkembang menjadi klinik yang mengedepankan kualitas pelayanan, kenyamanan pasien, dan pendekatan medis yang lebih personal
+            {pick(
+              journey?.subheadline,
+              "Berawal dari visi sederhana untuk menghadirkan layanan wellness dan estetika yang lebih terpercaya, Prossi terus berkembang menjadi klinik yang mengedepankan kualitas pelayanan, kenyamanan pasien, dan pendekatan medis yang lebih personal"
+            )}
           </p>
           <p
             className="font-['Lato',sans-serif] font-medium text-[#000000]"
             style={{ fontSize: 16, lineHeight: "24px", letterSpacing: "0.0094em" }}
           >
-            Hari ini, Prossi hadir untuk membantu lebih banyak orang mendapatkan pengalaman perawatan yang tidak hanya efektif, tetapi juga terasa aman, nyaman, dan manusiawi.
+            {pick(
+              journey?.description,
+              "Hari ini, Prossi hadir untuk membantu lebih banyak orang mendapatkan pengalaman perawatan yang tidak hanya efektif, tetapi juga terasa aman, nyaman, dan manusiawi."
+            )}
           </p>
         </div>
       </div>
@@ -168,13 +222,16 @@ export default function AboutPage() {
               className="font-['Lato',sans-serif] font-extrabold text-[#11151C]"
               style={{ fontSize: 36, lineHeight: "44px" }}
             >
-              Vision
+              {pick(vision?.headline, "Vision")}
             </h3>
             <p
               className="font-['Lato',sans-serif] font-medium text-[#000000]"
               style={{ fontSize: 16, lineHeight: "24px", letterSpacing: "0.0094em" }}
             >
-              Menjadi klinik kecantikan dan kesehatan terpercaya yang menghadirkan solusi perawatan medis berkualitas tinggi dengan pendekatan personal dan berorientasi pada hasil nyata.
+              {pick(
+                vision?.description,
+                "Menjadi klinik kecantikan dan kesehatan terpercaya yang menghadirkan solusi perawatan medis berkualitas tinggi dengan pendekatan personal dan berorientasi pada hasil nyata."
+              )}
             </p>
           </div>
           <div className="flex flex-col gap-2">
@@ -182,21 +239,33 @@ export default function AboutPage() {
               className="font-['Lato',sans-serif] font-extrabold text-[#11151C]"
               style={{ fontSize: 36, lineHeight: "44px" }}
             >
-              Mission
+              {pick(mission?.headline, "Mission")}
             </h3>
             <p
               className="font-['Lato',sans-serif] font-medium text-[#000000]"
               style={{ fontSize: 16, lineHeight: "24px", letterSpacing: "0.0094em" }}
             >
-              Memberikan perawatan medis estetika yang aman, terarah, dan dapat dipantau — ditangani langsung oleh dokter spesialis untuk setiap pasien.
+              {pick(
+                mission?.description,
+                "Memberikan perawatan medis estetika yang aman, terarah, dan dapat dipantau — ditangani langsung oleh dokter spesialis untuk setiap pasien."
+              )}
             </p>
           </div>
         </div>
 
-        <div
-          className="mt-10 md:mt-0 w-full md:w-[761px] md:shrink-0 rounded-[20px] md:rounded-[20px_0_0_20px]"
-          style={{ height: 320, background: "#E4C986" }}
-        />
+        {vision?.image ? (
+          <img
+            src={assetUrl(vision.image)}
+            alt=""
+            className="mt-10 md:mt-0 w-full md:w-[761px] md:shrink-0 rounded-[20px] md:rounded-[20px_0_0_20px] object-cover"
+            style={{ height: 320 }}
+          />
+        ) : (
+          <div
+            className="mt-10 md:mt-0 w-full md:w-[761px] md:shrink-0 rounded-[20px] md:rounded-[20px_0_0_20px]"
+            style={{ height: 320, background: "#E4C986" }}
+          />
+        )}
       </div>
 
       {/* ── Core Services ── */}
@@ -206,18 +275,21 @@ export default function AboutPage() {
             className="font-['Lato',sans-serif] font-semibold text-[#120f0b] text-center"
             style={{ fontSize: 46 }}
           >
-            Perawatan Sesuai Kebutuhan Anda
+            {pick(services?.headline, "Perawatan Sesuai Kebutuhan Anda")}
           </h2>
           <p
             className="font-['Lato',sans-serif] font-normal text-[#000000] text-center"
             style={{ fontSize: 18, maxWidth: 878 }}
           >
-            Setiap program, baik untuk kulit maupun slimming, dirancang berdasarkan kondisi tubuh Anda, bukan pendekatan yang sama untuk semua pasien.
+            {pick(
+              services?.subheadline,
+              "Setiap program, baik untuk kulit maupun slimming, dirancang berdasarkan kondisi tubuh Anda, bukan pendekatan yang sama untuk semua pasien."
+            )}
           </p>
         </div>
         <div className="flex flex-col md:flex-row gap-9">
           {corePrograms.map((p) => (
-            <CoreProgramCard key={p.title} {...p} />
+            <CoreProgramCard key={p.key} title={p.title} img={p.img} border={p.border} content={pc[p.key]} />
           ))}
         </div>
       </div>

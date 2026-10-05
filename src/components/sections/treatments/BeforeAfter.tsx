@@ -1,4 +1,5 @@
 import { directusFetch, assetUrl } from "@/lib/directus";
+import { pick, type PageContent } from "@/lib/pageContent";
 import { BeforeAfterCarousel, type BeforeAfterPair } from "./BeforeAfterCarousel";
 
 type CmsBeforeAfter = {
@@ -12,7 +13,13 @@ const fallbackPairs: BeforeAfterPair[] = [
   { before: "/figma/imgBeforeAfter1-41fe45.webp", after: "/figma/imgBeforeAfter2-41fe45b.webp" },
 ];
 
-export async function BeforeAfter({ category }: { category?: "slimming" | "skin" } = {}) {
+export async function BeforeAfter({
+  category,
+  content,
+}: {
+  category?: "slimming" | "skin";
+  content?: PageContent;
+} = {}) {
   const filter = category ? `&filter[treatment][category][_eq]=${category}` : "";
   const items = await directusFetch<CmsBeforeAfter[]>(
     `/items/before_after?fields=id,image_before,image_after&sort=sort${filter}`
@@ -28,10 +35,10 @@ export async function BeforeAfter({ category }: { category?: "slimming" | "skin"
       <div className="max-w-[1358px] mx-auto flex flex-col gap-10">
         <div className="text-center">
           <h2 className="font-['Lato',sans-serif] font-extrabold text-[60px] leading-[0.99em] uppercase text-[#b59637]">
-            Before After
+            {pick(content?.headline, "Before After")}
           </h2>
           <p className="font-['Lato',sans-serif] text-[16px] text-[#b59637] mt-2">
-            Panduan Lengkap Menggunakan N3
+            {pick(content?.subheadline, "Panduan Lengkap Menggunakan N3")}
           </p>
         </div>
 

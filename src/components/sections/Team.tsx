@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { directusFetch, assetUrl } from "@/lib/directus";
+import { getPageContent, pick } from "@/lib/pageContent";
 
 const staticTeam = [
   { title: "Spesialis Gizi Klinis", img: "/figma/imgTeamMemberImage.webp" },
@@ -10,14 +11,19 @@ const staticTeam = [
 type CmsDoctor = { specialty: string; photo: string | null; treatment_category: string | null };
 
 export async function Team() {
-  const cms = await directusFetch<CmsDoctor[]>(
-    "/items/doctors?filter[status][_eq]=published&filter[featured][_eq]=true&sort=sort&fields=specialty,photo,treatment_category&limit=3"
-  );
+  const [cms, pc] = await Promise.all([
+    directusFetch<CmsDoctor[]>(
+      "/items/doctors?filter[status][_eq]=published&filter[featured][_eq]=true&sort=sort&fields=specialty,photo,treatment_category&limit=3"
+    ),
+    getPageContent(["home.doctors", "home.doctor.1", "home.doctor.2", "home.doctor.3"]),
+  ]);
+
+  const header = pc["home.doctors"];
 
   const team =
     cms && cms.length > 0
       ? cms.map((d, i) => ({
-          title: d.specialty,
+          title: pick(pc[`home.doctor.${i + 1}`]?.headline, d.specialty),
           img: d.photo ? assetUrl(d.photo) : staticTeam[i % staticTeam.length].img,
           href: d.treatment_category ? `/doctors?category=${d.treatment_category}` : "/doctors",
         }))
@@ -33,7 +39,7 @@ export async function Team() {
                 <img alt="" className="block max-w-none size-full" src="/figma/imgLine4.svg" />
               </div>
             </div>
-            <span className="font-['Lato'] font-semibold leading-normal not-italic relative shrink-0 text-[14px] text-white whitespace-nowrap">OUR DOCTORS</span>
+            <span className="font-['Lato'] font-semibold leading-normal not-italic relative shrink-0 text-[14px] text-white whitespace-nowrap">{pick(header?.eyebrow, "OUR DOCTORS")}</span>
             <div className="flex items-center justify-center relative shrink-0">
               <div className="-scale-y-100 flex-none rotate-180">
                 <div className="h-0 relative w-[63px]">
@@ -45,7 +51,7 @@ export async function Team() {
             </div>
           </div>
           <h2 className="font-['Lato'] font-semibold text-[32px] md:text-[40px] text-white capitalize">
-            Ditangani oleh Dokter-Dokter Profesional dan Berpengalaman
+            {pick(header?.headline, "Ditangani oleh Dokter-Dokter Profesional dan Berpengalaman")}
           </h2>
         </div>
 

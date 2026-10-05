@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { directusFetch, assetUrl } from "@/lib/directus";
+import { getPageContent, pick } from "@/lib/pageContent";
 
 type Settings = {
   home_slimming_desc: string | null;
@@ -9,22 +10,37 @@ type Settings = {
 };
 
 export async function TreatmentServices() {
-  const s = await directusFetch<Settings>(
-    "/items/site_settings?fields=home_slimming_desc,home_slimming_image,home_skin_desc,home_skin_image"
-  );
+  const [s, pc] = await Promise.all([
+    directusFetch<Settings>(
+      "/items/site_settings?fields=home_slimming_desc,home_slimming_image,home_skin_desc,home_skin_image"
+    ),
+    getPageContent(["home.treatment", "home.treatment.slimming", "home.treatment.skin"]),
+  ]);
+
+  const header = pc["home.treatment"];
+  const slim = pc["home.treatment.slimming"];
+  const skin = pc["home.treatment.skin"];
 
   const cards = [
     {
-      title: "Slimming Program by Sp.GK",
-      desc: s?.home_slimming_desc ?? "Support recovery, energy, and long-term cellular resilience.",
-      img: s?.home_slimming_image ? assetUrl(s.home_slimming_image) : "/figma/imgCoreSlimming.webp",
+      title: pick(slim?.headline, "Slimming Program by Sp.GK"),
+      desc: pick(slim?.subheadline, s?.home_slimming_desc ?? "Support recovery, energy, and long-term cellular resilience."),
+      img: slim?.image
+        ? assetUrl(slim.image)
+        : s?.home_slimming_image
+          ? assetUrl(s.home_slimming_image)
+          : "/figma/imgCoreSlimming.webp",
       borderGradient: "linear-gradient(270deg, rgba(194,99,69,1) 0%, rgba(222,186,105,1) 100%)",
       href: "/treatments/slimming-program",
     },
     {
-      title: "Skin Treatment by Sp.DVE",
-      desc: s?.home_skin_desc ?? "Support recovery, energy, and long-term cellular resilience.",
-      img: s?.home_skin_image ? assetUrl(s.home_skin_image) : "/figma/imgCoreSkin.webp",
+      title: pick(skin?.headline, "Skin Treatment by Sp.DVE"),
+      desc: pick(skin?.subheadline, s?.home_skin_desc ?? "Support recovery, energy, and long-term cellular resilience."),
+      img: skin?.image
+        ? assetUrl(skin.image)
+        : s?.home_skin_image
+          ? assetUrl(s.home_skin_image)
+          : "/figma/imgCoreSkin.webp",
       borderGradient: "linear-gradient(270deg, rgba(57,107,114,1) 0%, rgba(222,186,105,1) 100%)",
       href: "/treatments/skin-treatment",
     },
@@ -36,10 +52,13 @@ export async function TreatmentServices() {
         {/* Header */}
         <div className="flex flex-col items-center gap-4 text-center max-w-[878px]">
           <h2 className="font-['Lato',sans-serif] font-semibold text-3xl lg:text-[46px] leading-tight text-[#120f0b] uppercase">
-            Perawatan Sesuai Kebutuhan Anda
+            {pick(header?.headline, "Perawatan Sesuai Kebutuhan Anda")}
           </h2>
           <p className="font-['Lato',sans-serif] font-normal text-[18px] text-black">
-            Setiap program, baik untuk kulit maupun slimming, dirancang berdasarkan kondisi tubuh Anda, bukan pendekatan yang sama untuk semua pasien.
+            {pick(
+              header?.subheadline,
+              "Setiap program, baik untuk kulit maupun slimming, dirancang berdasarkan kondisi tubuh Anda, bukan pendekatan yang sama untuk semua pasien."
+            )}
           </p>
         </div>
 
