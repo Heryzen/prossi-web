@@ -52,7 +52,7 @@ export function BeforeAfterCarousel({ pairs }: { pairs: BeforeAfterPair[] }) {
           <div
             key={i}
             data-before-after-card
-            className="flex-none w-[85vw] max-w-[717px] h-[280px] md:w-[717px] md:h-[536px] bg-white rounded-[12px] overflow-hidden flex snap-start"
+            className="flex-none w-[85vw] max-w-[717px] h-[400px] md:w-[717px] md:h-[536px] bg-white rounded-[12px] overflow-hidden flex snap-start"
           >
             <div className="relative w-1/2 h-full">
               <img src={pair.before} alt="Before" className="w-full h-full object-cover" />

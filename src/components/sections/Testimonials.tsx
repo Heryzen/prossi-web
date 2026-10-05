@@ -206,7 +206,7 @@ export function Testimonials({
                       </div>
                     </div>
                   </div>
-                  <div className="w-full h-[200px] md:flex-1 md:h-full rounded-xl overflow-hidden relative">
+                  <div className="w-full h-[280px] md:flex-1 md:h-full rounded-xl overflow-hidden relative">
                     {review.videoUrl ? (
                       <button
                         type="button"
