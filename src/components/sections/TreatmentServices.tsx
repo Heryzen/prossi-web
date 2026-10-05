@@ -51,7 +51,7 @@ export async function TreatmentServices() {
       <div className="max-w-[1440px] mx-auto flex flex-col items-center gap-[60px]">
         {/* Header */}
         <div className="flex flex-col items-center gap-4 text-center max-w-[878px]">
-          <h2 className="font-['Lato',sans-serif] font-semibold text-3xl lg:text-[46px] leading-tight text-[#120f0b] uppercase">
+          <h2 className="font-['Lato',sans-serif] font-semibold text-3xl lg:text-[46px] leading-tight text-[#120f0b]">
             {pick(header?.headline, "Perawatan Sesuai Kebutuhan Anda")}
           </h2>
           <p className="font-['Lato',sans-serif] font-normal text-[18px] text-black">

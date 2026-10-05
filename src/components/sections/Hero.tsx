@@ -88,7 +88,7 @@ export function Hero({ slides: slidesProp }: { slides?: HeroSlide[] }) {
                   <h1 className="prossi-fade-up font-['Source_Serif_4',serif] font-normal text-[28px] lg:text-[64px] leading-tight lg:leading-[1.15] text-[#503d1c]">
                     {slide.heading}
                   </h1>
-                  <p className="prossi-fade-up font-['Lato',sans-serif] text-sm lg:text-[18px] text-[#503d1c] lg:whitespace-nowrap">
+                  <p className="prossi-fade-up font-['Lato',sans-serif] text-sm lg:text-[18px] text-[#503d1c]">
                     {slide.sub}
                   </p>
                 </div>
