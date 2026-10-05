@@ -238,10 +238,10 @@ export default function ArticlePage() {
               className="font-['Lato',sans-serif] font-normal text-white"
               style={{ fontSize: "clamp(14px, 4vw, 18px)", lineHeight: "1.6" }}
             >
-              Lebih Dari Sekadar Klinik Estetika. Di Prossi, kami percaya bahwa
-              perawatan bukan hanya tentang penampilan tetapi tentang bagaimana
-              seseorang merasa lebih sehat, lebih percaya diri, dan lebih nyaman
-              dengan dirinya sendiri.
+              {pick(
+                heroContent?.subheadline,
+                "Lebih Dari Sekadar Klinik Estetika. Di Prossi, kami percaya bahwa perawatan bukan hanya tentang penampilan tetapi tentang bagaimana seseorang merasa lebih sehat, lebih percaya diri, dan lebih nyaman dengan dirinya sendiri."
+              )}
             </p>
           </div>
         </div>
