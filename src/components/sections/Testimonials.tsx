@@ -177,28 +177,11 @@ export function Testimonials({
 
       <div className="relative z-10 max-w-[1440px] w-full flex flex-col items-center px-6 lg:px-[100px]">
         <div className="flex flex-col items-center gap-6 w-full text-center max-w-[1019px]">
-          <div className="flex gap-[16px] items-center justify-center overflow-clip relative shrink-0">
-            <div className="h-0 relative shrink-0 w-[63px]">
-              <div className="absolute inset-[-5.77px_-9.16%_-5.77px_0]">
-                <img alt="" className="block max-w-none size-full" src="/figma/imgLine4.svg" />
-              </div>
-            </div>
-            <span className="font-['Lato'] font-semibold leading-normal not-italic relative shrink-0 text-[14px] text-[#120f0b] whitespace-nowrap">{pick(header?.eyebrow, "TESTIMONIALS")}</span>
-            <div className="flex items-center justify-center relative shrink-0">
-              <div className="-scale-y-100 flex-none rotate-180">
-                <div className="h-0 relative w-[63px]">
-                  <div className="absolute inset-[-5.77px_-9.16%_-5.77px_0]">
-                    <img alt="" className="block max-w-none size-full" src="/figma/imgLine2.svg" />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <h2 className="font-['Lato'] font-semibold text-[32px] md:text-[40px] text-[#120f0b] capitalize">
-            {pick(header?.headline, "Voices of Transformation")}
+          <h2 className="font-['Lato'] font-semibold text-[32px] md:text-[40px] text-[#120f0b]">
+            {pick(header?.headline, "TESTIMONI")}
           </h2>
           <p className="font-sans text-lg text-[#120f0b]">
-            {pick(header?.subheadline, "Hear from those who have invested in their long-term vitality.")}
+            {pick(header?.subheadline, "#LifeAfterProssi")}
           </p>
         </div>
       </div>

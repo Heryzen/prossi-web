@@ -33,25 +33,8 @@ export async function Team() {
     <section className="bg-[#b59637] w-full py-12 lg:py-[100px] px-6 lg:px-[100px] flex flex-col items-center">
       <div className="max-w-[1240px] w-full flex flex-col items-center gap-[60px]">
         <div className="flex flex-col items-center gap-6 w-full text-center">
-          <div className="flex gap-[16px] items-center justify-center overflow-clip relative shrink-0">
-            <div className="h-0 relative shrink-0 w-[63px]">
-              <div className="absolute inset-[-5.77px_-9.16%_-5.77px_0]">
-                <img alt="" className="block max-w-none size-full" src="/figma/imgLine4.svg" />
-              </div>
-            </div>
-            <span className="font-['Lato'] font-semibold leading-normal not-italic relative shrink-0 text-[14px] text-white whitespace-nowrap">{pick(header?.eyebrow, "OUR DOCTORS")}</span>
-            <div className="flex items-center justify-center relative shrink-0">
-              <div className="-scale-y-100 flex-none rotate-180">
-                <div className="h-0 relative w-[63px]">
-                  <div className="absolute inset-[-5.77px_-9.16%_-5.77px_0]">
-                    <img alt="" className="block max-w-none size-full" src="/figma/imgLine2.svg" />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <h2 className="font-['Lato'] font-semibold text-[32px] md:text-[40px] text-white capitalize">
-            {pick(header?.headline, "Ditangani oleh Dokter-Dokter Profesional dan Berpengalaman")}
+          <h2 className="font-['Lato'] font-semibold text-[32px] md:text-[40px] text-white">
+            {pick(header?.headline, "Ditangani oleh Dokter-dokter Profesional dan Berpengalaman")}
           </h2>
         </div>
 
