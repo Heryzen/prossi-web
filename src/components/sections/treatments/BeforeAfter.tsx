@@ -37,9 +37,6 @@ export async function BeforeAfter({
           <h2 className="font-['Lato',sans-serif] font-extrabold text-[60px] leading-[0.99em] uppercase text-[#b59637]">
             {pick(content?.headline, "Before After")}
           </h2>
-          <p className="font-['Lato',sans-serif] text-[16px] text-[#b59637] mt-2">
-            {pick(content?.subheadline, "Panduan Lengkap Menggunakan N3")}
-          </p>
         </div>
 
         <BeforeAfterCarousel pairs={pairs} />

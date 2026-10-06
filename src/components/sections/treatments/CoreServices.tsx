@@ -122,17 +122,6 @@ export async function CoreServices({ content }: { content?: PageContent }) {
       <div className="max-w-[1240px] mx-auto flex flex-col items-center gap-[60px]">
         {/* Header */}
         <div className="flex flex-col items-center gap-6 max-w-[1019px] text-center">
-          <div
-            className="px-[14px] py-2 rounded-full"
-            style={{
-              border: "1px solid #ffffff",
-              boxShadow: "0px 4px 4px -4px rgba(79,81,89,0.32), 0px 2px 5px -2px rgba(79,81,89,0.03), 0px 0px 0px 1px rgba(188,189,194,0.25), 0px 1px 1px 0px rgba(188,189,194,0.2)",
-            }}
-          >
-            <span className="font-['Lato',sans-serif] font-medium text-[16px] text-white uppercase" style={{ letterSpacing: "-0.0063em" }}>
-              {pick(content?.eyebrow, "Slimming Program")}
-            </span>
-          </div>
           <h2 className="font-['Lato',sans-serif] font-semibold text-[26px] md:text-[40px] text-white">
             {pick(content?.headline, "Pilih Perawatan Sesuai Kebutuhan Anda")}
           </h2>

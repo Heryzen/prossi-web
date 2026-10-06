@@ -92,12 +92,14 @@ export function Hero({ slides: slidesProp }: { slides?: HeroSlide[] }) {
                     {slide.sub}
                   </p>
                 </div>
-                <Link
-                  href={slide.ctaLink || "/treatments"}
-                  className="prossi-fade-up bg-[#b59637] border border-[#ecd5a5] rounded-full px-6 py-3 lg:px-9 lg:py-[18px] text-white font-sans font-semibold text-sm lg:text-lg hover:opacity-90 hover:scale-[1.03] transition-all duration-300"
-                >
-                  {slide.ctaText || "Explore Treatments"}
-                </Link>
+                {slide.ctaText && (
+                  <Link
+                    href={slide.ctaLink || "/treatments"}
+                    className="prossi-fade-up bg-[#b59637] border border-[#ecd5a5] rounded-full px-6 py-3 lg:px-9 lg:py-[18px] text-white font-sans font-semibold text-sm lg:text-lg hover:opacity-90 hover:scale-[1.03] transition-all duration-300"
+                  >
+                    {slide.ctaText}
+                  </Link>
+                )}
               </div>
             </div>
           </div>

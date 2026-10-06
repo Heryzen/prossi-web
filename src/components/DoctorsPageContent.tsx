@@ -178,15 +178,6 @@ export function DoctorsPageContent({
         />
         <div className="relative z-10 flex flex-col gap-5 md:gap-[42px] max-w-[611px] px-6 md:pl-[100px] pt-[120px] md:pt-[200px]">
           <div className="flex flex-col gap-4 items-start">
-            <span
-              className="bg-[#b59637] text-white font-['Lato'] font-semibold text-[13px] md:text-[14px] px-[14px] py-2 rounded-full"
-              style={{
-                boxShadow:
-                  "0px 4px 4px -4px rgba(79,81,89,0.32), 0px 2px 5px -2px rgba(79,81,89,0.03), 0px 0px 0px 1px rgba(188,189,194,0.25), 0px 1px 1px rgba(188,189,194,0.2)",
-              }}
-            >
-              {eyebrow}
-            </span>
             <h1
               className="font-serif font-normal leading-tight bg-clip-text text-transparent"
               style={{ backgroundImage: HEADING_GRADIENT, fontSize: "clamp(28px, 6vw, 45px)" }}
@@ -207,8 +198,7 @@ export function DoctorsPageContent({
       <section className="bg-[#fff8f2] w-full py-[60px] md:py-[100px] px-6 md:px-[100px]">
         <div className="max-w-[1240px] mx-auto flex flex-col items-center gap-[40px] md:gap-[60px]">
           <div className="flex flex-col items-center gap-6 text-center">
-            <Eyebrow text={pick(copy?.teamEyebrow, "OUR DOCTORS")} />
-            <h2 className="font-['Lato'] font-semibold text-[32px] md:text-[40px] text-[#120f0b] capitalize">
+            <h2 className="font-['Lato'] font-semibold text-[32px] md:text-[40px] text-[#120f0b]">
               {pick(copy?.teamHeadline, "Tim Dokter Kami")}
             </h2>
             <p className="font-['Lato'] text-[16px] md:text-[18px] text-[#120f0b] max-w-[816px]">

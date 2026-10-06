@@ -295,16 +295,6 @@ export function ReservationModal({ isOpen, onClose, initialClinicName }: Props) 
               </div>
             ) : (
               <>
-                {/* Privacy text */}
-                <div className="flex flex-wrap justify-center gap-x-1" style={{ maxWidth: 426 }}>
-                  <span className="font-['Lato',sans-serif] text-[14px] leading-[20px] text-[#292929]">
-                    By signing up, you are agreeing to our
-                  </span>
-                  <a href="#" className="font-['Lato',sans-serif] text-[14px] leading-[20px] text-[#607DFF] underline">
-                    Privacy Policy &amp; Term of Use
-                  </a>
-                </div>
-
                 {error && (
                   <p className="font-['Lato',sans-serif] text-[14px] text-red-600 text-center" style={{ maxWidth: 426 }}>
                     {error}

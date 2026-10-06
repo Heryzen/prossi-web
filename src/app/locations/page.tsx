@@ -155,13 +155,13 @@ export default function LocationsPage() {
               className="font-['Lato',sans-serif] font-bold text-[#292929]"
               style={{ fontSize: 22, lineHeight: "28px", letterSpacing: "0.03em" }}
             >
-              Cabang Prossi Klinik
+              Cabang Prossi Clinic
             </h2>
             <p
               className="font-['Lato',sans-serif] font-semibold text-[#292929]"
               style={{ fontSize: 16, lineHeight: "24px" }}
             >
-              Temukan Cabang Prossi Terdekat Disini
+              Temukan Prossi Clinic di Kotamu
             </p>
           </div>
 
