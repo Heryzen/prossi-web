@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { directusFetch, assetUrl } from "@/lib/directus";
+import { getPageContent, pick } from "@/lib/pageContent";
 import { ArticleImageFallback } from "@/components/ArticleImageFallback";
 
 const staticArticles = [
@@ -35,9 +36,13 @@ type CmsArticle = {
 };
 
 export async function Blog() {
-  const cms = await directusFetch<CmsArticle[]>(
-    "/items/articles?filter[status][_eq]=published&sort=-date_created&limit=3&fields=id,slug,title,cover_image,category.name"
-  );
+  const [cms, pc] = await Promise.all([
+    directusFetch<CmsArticle[]>(
+      "/items/articles?filter[status][_eq]=published&sort=-date_created&limit=3&fields=id,slug,title,cover_image,category.name"
+    ),
+    getPageContent(["home.articles"]),
+  ]);
+  const blogHeader = pc["home.articles"];
 
   const articles =
     cms && cms.length > 0
@@ -55,10 +60,10 @@ export async function Blog() {
       <div className="max-w-[1240px] w-full flex flex-col items-center gap-[42px]">
         <div className="flex flex-col items-center gap-6 w-full text-center max-w-[1030px]">
           <h2 className="font-sans font-semibold text-[32px] md:text-[40px] text-[#120f0b] capitalize">
-            Articles
+            {pick(blogHeader?.headline, "Articles")}
           </h2>
           <p className="font-sans text-lg text-[#120f0b] max-w-[816px]">
-            Artikel dari dokter Prossi Clinic untuk membantu Anda memahami kondisi kulit dan tubuh, sebelum memulai perawatan yang tepat.
+            {pick(blogHeader?.subheadline, "Artikel dari dokter Prossi Clinic untuk membantu Anda memahami kondisi kulit dan tubuh, sebelum memulai perawatan yang tepat.")}
           </p>
         </div>
 

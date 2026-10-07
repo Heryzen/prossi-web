@@ -3,6 +3,7 @@
 import { useCallback } from "react";
 import Link from "next/link";
 import useEmblaCarousel from "embla-carousel-react";
+import { pick, type PageContent } from "@/lib/pageContent";
 
 export type PromoSlide = {
   title: string;
@@ -26,7 +27,7 @@ const defaultSlides: PromoSlide[] = [
   },
 ];
 
-export function CTA({ promos }: { promos?: PromoSlide[] }) {
+export function CTA({ promos, content }: { promos?: PromoSlide[]; content?: PageContent }) {
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true });
 
   const scrollPrev = useCallback(() => {
@@ -41,7 +42,15 @@ export function CTA({ promos }: { promos?: PromoSlide[] }) {
 
   return (
     <section className="bg-[#f4ece4] w-full py-12 lg:py-[100px] px-6 flex justify-center overflow-hidden">
-      <div className="max-w-[1240px] w-full flex flex-col gap-6">
+      <div className="max-w-[1240px] w-full flex flex-col gap-10 lg:gap-[60px]">
+        <div className="flex flex-col items-center gap-6 text-center">
+          <h2 className="font-['Lato'] font-semibold text-[32px] md:text-[40px] text-[#120f0b]">
+            {pick(content?.headline, "Penawaran Spesial")}
+          </h2>
+          <p className="font-['Lato'] text-[16px] md:text-[18px] text-[#120f0b] max-w-[816px]">
+            {pick(content?.subheadline, "Temukan promo terbaik dari Prossi Clinic")}
+          </p>
+        </div>
         <div className="w-full relative rounded-[32px] overflow-hidden bg-transparent" ref={emblaRef}>
           <div className="flex">
             {slides.map((slide, index) => (
@@ -60,23 +69,6 @@ export function CTA({ promos }: { promos?: PromoSlide[] }) {
                 </div>
 
                 <div className="relative z-10 w-full md:w-[547px] h-full flex flex-col justify-center px-8 md:px-[60px] py-8">
-                  <div className="flex gap-[16px] items-center justify-center overflow-clip relative shrink-0 mb-6">
-                    <div className="h-0 relative shrink-0 w-[63px]">
-                      <div className="absolute inset-[-5.77px_-9.16%_-5.77px_0]">
-                        <img alt="" className="block max-w-none size-full" src="/figma/imgLine4.svg" />
-                      </div>
-                    </div>
-                    <span className="font-['Lato'] font-semibold leading-normal not-italic relative shrink-0 text-[14px] text-[#120f0b] whitespace-nowrap">Promo</span>
-                    <div className="flex items-center justify-center relative shrink-0">
-                      <div className="-scale-y-100 flex-none rotate-180">
-                        <div className="h-0 relative w-[63px]">
-                          <div className="absolute inset-[-5.77px_-9.16%_-5.77px_0]">
-                            <img alt="" className="block max-w-none size-full" src="/figma/imgLine2.svg" />
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
                   <h2 className="font-['Lato'] font-semibold text-2xl lg:text-[40px] text-[#120f0b] capitalize leading-tight mb-6">
                     {slide.title}
                   </h2>

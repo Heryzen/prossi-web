@@ -40,10 +40,11 @@ export default async function Home() {
     directusFetch<CmsPromo[]>(
       "/items/promos?filter[status][_eq]=published&fields=id,title,description,image,cta_link"
     ),
-    getPageContent(["home.testimonials"]),
+    getPageContent(["home.testimonials", "home.promo"]),
   ]);
 
   const testimonialsHeader = pc["home.testimonials"];
+  const promoHeader = pc["home.promo"];
 
   const promos: PromoSlide[] | undefined =
     cmsPromos && cmsPromos.length > 0
@@ -93,7 +94,7 @@ export default async function Home() {
       <Reveal><TreatmentServices /></Reveal>
       <Reveal><Team /></Reveal>
       <Reveal><Testimonials reviews={reviews} header={testimonialsHeader} /></Reveal>
-      <Reveal><CTA promos={promos} /></Reveal>
+      <Reveal><CTA promos={promos} content={promoHeader} /></Reveal>
       <Reveal><Blog /></Reveal>
     </>
   );

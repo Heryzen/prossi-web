@@ -53,8 +53,9 @@ function SearchIcon() {
 }
 
 export default function LocationsPage() {
-  const pc = usePageContent(["page.location"]);
+  const pc = usePageContent(["page.location", "page.location.branches"]);
   const heroContent = pc["page.location"];
+  const branchContent = pc["page.location.branches"];
   const [selected, setSelected] = useState(0);
   const [branches, setBranches] = useState<Branch[]>(staticBranches);
   const [query, setQuery] = useState("");
@@ -155,13 +156,13 @@ export default function LocationsPage() {
               className="font-['Lato',sans-serif] font-bold text-[#292929]"
               style={{ fontSize: 22, lineHeight: "28px", letterSpacing: "0.03em" }}
             >
-              Cabang Prossi Clinic
+              {pick(branchContent?.headline, "Cabang Prossi Clinic")}
             </h2>
             <p
               className="font-['Lato',sans-serif] font-semibold text-[#292929]"
               style={{ fontSize: 16, lineHeight: "24px" }}
             >
-              Temukan Prossi Clinic di Kotamu
+              {pick(branchContent?.subheadline, "Temukan Prossi Clinic di Kotamu")}
             </p>
           </div>
 
