@@ -171,15 +171,11 @@ export default async function AboutPage() {
               style={{ maxWidth: 860, height: 481, background: "#ECD5A5" }}
             />
           )}
-          <p
-            className="font-['Lato',sans-serif] font-medium text-[#000000] text-center"
+          <div
+            className="font-['Lato',sans-serif] font-medium text-[#000000] text-center [&_p]:mb-2 [&_p:last-child]:mb-0"
             style={{ fontSize: 16, lineHeight: "24px", letterSpacing: "0.0094em", maxWidth: 860 }}
-          >
-            {pick(
-              intro?.description,
-              "kami menghadirkan pendekatan medis yang personal untuk membantu setiap pasien memahami kebutuhan tubuh dan kulitnya secara lebih menyeluruh. Bukan treatment yang sekadar mengikuti tren, tetapi perawatan yang dirancang berdasarkan kondisi, tujuan, dan kenyamanan setiap individu."
-            )}
-          </p>
+            dangerouslySetInnerHTML={{ __html: pick(intro?.description, "kami menghadirkan pendekatan medis yang personal untuk membantu setiap pasien memahami kebutuhan tubuh dan kulitnya secara lebih menyeluruh. Bukan treatment yang sekadar mengikuti tren, tetapi perawatan yang dirancang berdasarkan kondisi, tujuan, dan kenyamanan setiap individu.") }}
+          />
         </div>
       </div>
 
@@ -203,15 +199,11 @@ export default async function AboutPage() {
               "Berawal dari visi sederhana untuk menghadirkan layanan wellness dan estetika yang lebih terpercaya, Prossi terus berkembang menjadi klinik yang mengedepankan kualitas pelayanan, kenyamanan pasien, dan pendekatan medis yang lebih personal"
             )}
           </p>
-          <p
-            className="font-['Lato',sans-serif] font-medium text-[#000000]"
+          <div
+            className="font-['Lato',sans-serif] font-medium text-[#000000] [&_p]:mb-2 [&_p:last-child]:mb-0"
             style={{ fontSize: 16, lineHeight: "24px", letterSpacing: "0.0094em" }}
-          >
-            {pick(
-              journey?.description,
-              "Hari ini, Prossi hadir untuk membantu lebih banyak orang mendapatkan pengalaman perawatan yang tidak hanya efektif, tetapi juga terasa aman, nyaman, dan manusiawi."
-            )}
-          </p>
+            dangerouslySetInnerHTML={{ __html: pick(journey?.description, "Hari ini, Prossi hadir untuk membantu lebih banyak orang mendapatkan pengalaman perawatan yang tidak hanya efektif, tetapi juga terasa aman, nyaman, dan manusiawi.") }}
+          />
         </div>
       </div>
 
@@ -225,15 +217,11 @@ export default async function AboutPage() {
             >
               {pick(vision?.headline, "Vision")}
             </h3>
-            <p
-              className="font-['Lato',sans-serif] font-medium text-[#000000]"
+            <div
+              className="font-['Lato',sans-serif] font-medium text-[#000000] [&_p]:mb-2 [&_p:last-child]:mb-0"
               style={{ fontSize: 16, lineHeight: "24px", letterSpacing: "0.0094em" }}
-            >
-              {pick(
-                vision?.description,
-                "Menjadi klinik kecantikan dan kesehatan terpercaya yang menghadirkan solusi perawatan medis berkualitas tinggi dengan pendekatan personal dan berorientasi pada hasil nyata."
-              )}
-            </p>
+              dangerouslySetInnerHTML={{ __html: pick(vision?.description, "Menjadi klinik kecantikan dan kesehatan terpercaya yang menghadirkan solusi perawatan medis berkualitas tinggi dengan pendekatan personal dan berorientasi pada hasil nyata.") }}
+            />
           </div>
           <div className="flex flex-col gap-2">
             <h3
@@ -242,15 +230,11 @@ export default async function AboutPage() {
             >
               {pick(mission?.headline, "Mission")}
             </h3>
-            <p
-              className="font-['Lato',sans-serif] font-medium text-[#000000]"
+            <div
+              className="font-['Lato',sans-serif] font-medium text-[#000000] [&_p]:mb-2 [&_p:last-child]:mb-0"
               style={{ fontSize: 16, lineHeight: "24px", letterSpacing: "0.0094em" }}
-            >
-              {pick(
-                mission?.description,
-                "Memberikan perawatan medis estetika yang aman, terarah, dan dapat dipantau — ditangani langsung oleh dokter spesialis untuk setiap pasien."
-              )}
-            </p>
+              dangerouslySetInnerHTML={{ __html: pick(mission?.description, "Memberikan perawatan medis estetika yang aman, terarah, dan dapat dipantau — ditangani langsung oleh dokter spesialis untuk setiap pasien.") }}
+            />
           </div>
         </div>
 
