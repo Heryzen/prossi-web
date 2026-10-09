@@ -73,9 +73,10 @@ function CoreProgramCard({
                 "linear-gradient(90deg, rgba(124,96,51,0) 0%, rgba(124,96,51,1) 50%, rgba(124,96,51,0) 100%)",
             }}
           />
-          <p className="font-['Lato',sans-serif] text-[16px] text-[#120f0b] text-center leading-relaxed">
-            {pick(content?.description, "Temukan program perawatan yang paling sesuai dengan kondisi dan kebutuhan Anda.")}
-          </p>
+          <div
+            className="font-['Lato',sans-serif] text-[16px] text-[#120f0b] text-center leading-relaxed [&_p]:mb-2 [&_p:last-child]:mb-0"
+            dangerouslySetInnerHTML={{ __html: pick(content?.description, "Temukan program perawatan yang paling sesuai dengan kondisi dan kebutuhan Anda.") }}
+          />
           <a
             href={pick(content?.link_url, "/contact")}
             className="inline-flex items-center justify-center px-9 py-[18px] rounded-full font-['Lato',sans-serif] font-semibold text-[18px] text-white"

@@ -257,8 +257,8 @@ export function Header() {
               </Link>
             )}
 
-            {/* Cart icon + dropdown (Keranjang / Pesanan Saya) */}
-            <div className="relative">
+            {/* Cart icon + dropdown (Keranjang / Pesanan Saya) — hidden until shop feature is live */}
+            <div className="relative hidden">
               <button
                 type="button"
                 onClick={() => setOpenMenu(openMenu === "cart" ? null : "cart")}
@@ -393,7 +393,7 @@ export function Header() {
                 </svg>
               </Link>
             )}
-            <div className="relative">
+            <div className="relative hidden">
               <button
                 type="button"
                 onClick={() => setOpenMenu(openMenu === "cart" ? null : "cart")}
