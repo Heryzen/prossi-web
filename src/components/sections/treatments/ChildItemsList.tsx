@@ -33,8 +33,8 @@ function SubTreatmentCard({ group, accent, onOpen }: { group: SubTreatment; acce
         className="rounded-[23px] flex flex-col h-full"
         style={{ background: CARD_BG, padding: "12px 12px 32px" }}
       >
-        <div className="w-full h-[180px] shrink-0 rounded-[20px] overflow-hidden bg-[#f4ece4]">
-          {thumb && <img src={thumb} alt={group.label} className="w-full h-full object-cover" />}
+        <div className="relative w-full aspect-[4/3] md:aspect-auto md:h-[180px] shrink-0 rounded-[20px] overflow-hidden bg-[#f4ece4]">
+          {thumb && <img src={thumb} alt={group.label} className="absolute inset-0 w-full h-full object-cover" />}
         </div>
         <div className="flex flex-col gap-3 px-4 pt-6">
           <h3 className="font-['Lato',sans-serif] font-semibold text-[18px] text-[#120f0b] leading-tight">

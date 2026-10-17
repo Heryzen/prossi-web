@@ -35,8 +35,8 @@ const programs = [
 
 function ProgramCard({ title, desc, img, ctaLink, link }: { title: string; desc: string; img: string; size: "sm" | "lg"; ctaLink?: string | null; link?: string | null }) {
   const imageBlock = (
-    <div className="w-full aspect-[4/3] md:aspect-auto md:h-[210px] shrink-0 rounded-[20px] overflow-hidden">
-      <img src={img} alt={title} className="w-full h-full object-cover" />
+    <div className="relative w-full aspect-[4/3] md:aspect-auto md:h-[210px] shrink-0 rounded-[20px] overflow-hidden">
+      <img src={img} alt={title} className="absolute inset-0 w-full h-full object-cover" />
     </div>
   );
   const titleBlock = (
@@ -46,7 +46,7 @@ function ProgramCard({ title, desc, img, ctaLink, link }: { title: string; desc:
   );
   return (
     <div
-      className="rounded-[24px] p-[1px] flex-1"
+      className="rounded-[24px] p-[1px] w-full flex-1"
       style={{ background: CARD_BORDER }}
     >
       <div className="rounded-[23px] flex flex-col h-full" style={{ background: CARD_BG, padding: "12px 12px 32px" }}>
