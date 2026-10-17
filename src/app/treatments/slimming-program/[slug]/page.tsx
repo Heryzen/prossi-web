@@ -80,8 +80,8 @@ export default async function SlimmingTreatmentDetailPage({
 
         <div className="flex flex-col items-center gap-6 max-w-[860px] text-center">
           {parent.image && (
-            <div className="w-full aspect-[16/9] md:aspect-auto md:h-[240px] rounded-[24px] overflow-hidden">
-              <img src={assetUrl(parent.image)} alt={parent.name} className="w-full h-full object-cover" />
+            <div className="w-full md:h-[240px] rounded-[24px] overflow-hidden">
+              <img src={assetUrl(parent.image)} alt={parent.name} className="w-full h-auto md:h-full md:object-cover" />
             </div>
           )}
           <h1 className="font-['Lato',sans-serif] font-semibold text-[28px] md:text-[40px] text-white">
