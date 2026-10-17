@@ -80,7 +80,7 @@ export default async function SkinTreatmentDetailPage({
 
         <div className="flex flex-col items-center gap-6 max-w-[860px] text-center">
           {parent.image && (
-            <div className="w-full h-[240px] rounded-[24px] overflow-hidden">
+            <div className="w-full aspect-[16/9] md:aspect-auto md:h-[240px] rounded-[24px] overflow-hidden">
               <img src={assetUrl(parent.image)} alt={parent.name} className="w-full h-full object-cover" />
             </div>
           )}
