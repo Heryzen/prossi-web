@@ -311,129 +311,7 @@ export function Header() {
             </Link>
           </div>
 
-          {/* Mobile quick-access icons — account + cart (hidden on desktop, shown in the row above there) */}
-          <div className="flex lg:hidden items-center gap-1">
-            {isAdmin ? (
-              <div className="relative">
-                <button
-                  type="button"
-                  onClick={() => setOpenMenu(openMenu === "account" ? null : "account")}
-                  aria-label="Menu admin"
-                  className="flex items-center justify-center w-9 h-9 rounded-full bg-[#f4ece4] hover:bg-[#ecd5a5] transition-colors cursor-pointer"
-                >
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-                    <path d="M12 12a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9ZM4 20.5c1.4-3.6 4.6-5.5 8-5.5s6.6 1.9 8 5.5" stroke="#b59637" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
-                </button>
-                {openMenu === "account" && (
-                  <div className="absolute right-0 top-[calc(100%+10px)] w-[180px] rounded-[20px] bg-white p-4 shadow-[0px_10px_30px_rgba(18,15,11,0.12)] z-50">
-                    <div className="flex flex-col gap-1">
-                      <span className="px-4 py-2 text-[14px] font-semibold text-[#b59637] truncate">
-                        Admin
-                      </span>
-                      <Link
-                        href="/admin/orders"
-                        onClick={() => setOpenMenu(null)}
-                        className="rounded-lg px-4 py-3 text-[15px] text-[#120f0b] hover:bg-[#f4ece4] hover:text-[#b59637] transition-colors"
-                      >
-                        ← Pesanan Admin
-                      </Link>
-                      <button
-                        type="button"
-                        onClick={handleAdminLogout}
-                        className="text-left rounded-lg px-4 py-3 text-[15px] text-[#868787] hover:bg-[#f4ece4] hover:text-[#a8312a] transition-colors cursor-pointer"
-                      >
-                        Keluar Admin
-                      </button>
-                    </div>
-                  </div>
-                )}
-              </div>
-            ) : memberName ? (
-              <div className="relative">
-                <button
-                  type="button"
-                  onClick={() => setOpenMenu(openMenu === "account" ? null : "account")}
-                  aria-label="Menu akun"
-                  className="flex items-center justify-center w-9 h-9 rounded-full bg-[#f4ece4] hover:bg-[#ecd5a5] transition-colors cursor-pointer"
-                >
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-                    <path d="M12 12a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9ZM4 20.5c1.4-3.6 4.6-5.5 8-5.5s6.6 1.9 8 5.5" stroke="#120f0b" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
-                </button>
-                {openMenu === "account" && (
-                  <div className="absolute right-0 top-[calc(100%+10px)] w-[180px] rounded-[20px] bg-white p-4 shadow-[0px_10px_30px_rgba(18,15,11,0.12)] z-50">
-                    <div className="flex flex-col gap-1">
-                      <span className="px-4 py-2 text-[14px] font-semibold text-[#120f0b] truncate">
-                        Halo, {memberName.split(" ")[0]}
-                      </span>
-                      <button
-                        type="button"
-                        onClick={() => {
-                          setOpenMenu(null);
-                          handleLogout();
-                        }}
-                        className="text-left rounded-lg px-4 py-3 text-[15px] text-[#868787] hover:bg-[#f4ece4] hover:text-[#b59637] transition-colors cursor-pointer"
-                      >
-                        Keluar
-                      </button>
-                    </div>
-                  </div>
-                )}
-              </div>
-            ) : (
-              <Link
-                href="/login"
-                aria-label="Masuk"
-                title="Masuk"
-                className="flex items-center justify-center w-9 h-9 rounded-full bg-[#f4ece4] hover:bg-[#ecd5a5] transition-colors"
-              >
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-                  <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4M10 17l5-5-5-5M15 12H3" stroke="#120f0b" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-              </Link>
-            )}
-            <div className="relative hidden">
-              <button
-                type="button"
-                onClick={() => setOpenMenu(openMenu === "cart" ? null : "cart")}
-                aria-label="Menu keranjang"
-                className="relative flex items-center justify-center w-9 h-9 hover:opacity-70 transition-opacity cursor-pointer"
-              >
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-                  <path d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.3 4.6A1 1 0 0 0 5.6 19H17M9 21a1 1 0 1 0 0-2 1 1 0 0 0 0 2zM17 21a1 1 0 1 0 0-2 1 1 0 0 0 0 2z" stroke="#120f0b" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-                {cartCount > 0 && (
-                  <span className="absolute -top-0.5 -right-0.5 w-[18px] h-[18px] rounded-full bg-[#b59637] text-white text-[10px] font-semibold flex items-center justify-center">
-                    {cartCount}
-                  </span>
-                )}
-              </button>
-
-              {openMenu === "cart" && (
-                <div className="absolute right-0 top-[calc(100%+10px)] w-[200px] rounded-[20px] bg-white p-4 shadow-[0px_10px_30px_rgba(18,15,11,0.12)] z-50">
-                  <div className="flex flex-col gap-1">
-                    <Link
-                      href="/cart"
-                      onClick={() => setOpenMenu(null)}
-                      className="rounded-lg px-4 py-3 text-[15px] text-[#120f0b] hover:bg-[#f4ece4] hover:text-[#b59637] transition-colors"
-                    >
-                      Keranjang{cartCount > 0 ? ` (${cartCount})` : ""}
-                    </Link>
-                    {memberName && (
-                      <Link
-                        href="/shop/orders"
-                        onClick={() => setOpenMenu(null)}
-                        className="rounded-lg px-4 py-3 text-[15px] text-[#120f0b] hover:bg-[#f4ece4] hover:text-[#b59637] transition-colors"
-                      >
-                        Pesanan Saya
-                      </Link>
-                    )}
-                  </div>
-                </div>
-              )}
-            </div>
-          </div>
+          <div className="flex lg:hidden items-center gap-1" />
 
           {/* Mobile hamburger */}
           <button
@@ -517,6 +395,48 @@ export function Header() {
                 )}
               </div>
             ))}
+            {/* Account / Login in hamburger */}
+            <div className="border-t border-[#e5d9cf] mt-1 pt-2 flex flex-col gap-1">
+              {isAdmin ? (
+                <>
+                  <span className="px-1 py-2 text-[13px] font-semibold text-[#b59637]">Admin</span>
+                  <Link
+                    href="/admin/orders"
+                    onClick={() => setMobileOpen(false)}
+                    className="block py-2 font-medium text-[#120f0b] hover:text-[#b59637] transition-colors"
+                  >
+                    ← Pesanan Admin
+                  </Link>
+                  <button
+                    type="button"
+                    onClick={() => { setMobileOpen(false); handleAdminLogout(); }}
+                    className="text-left py-2 font-medium text-[#868787] hover:text-[#a8312a] transition-colors cursor-pointer"
+                  >
+                    Keluar Admin
+                  </button>
+                </>
+              ) : memberName ? (
+                <>
+                  <span className="px-1 py-2 text-[13px] font-semibold text-[#120f0b]">Halo, {memberName.split(" ")[0]}</span>
+                  <button
+                    type="button"
+                    onClick={() => { setMobileOpen(false); handleLogout(); }}
+                    className="text-left py-2 font-medium text-[#868787] hover:text-[#b59637] transition-colors cursor-pointer"
+                  >
+                    Keluar
+                  </button>
+                </>
+              ) : (
+                <Link
+                  href="/login"
+                  onClick={() => setMobileOpen(false)}
+                  className="block py-2 font-medium text-[#120f0b] hover:text-[#b59637] transition-colors"
+                >
+                  Masuk
+                </Link>
+              )}
+            </div>
+
             <Link
               href="/contact"
               onClick={() => {

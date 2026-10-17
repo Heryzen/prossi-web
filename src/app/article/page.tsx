@@ -31,8 +31,8 @@ function ArticleCard({ id, slug, title, date, excerpt, img, featured }: Article 
   return (
     <article className="flex flex-col md:flex-row items-stretch gap-8 w-full">
       <div
-        className={`rounded-[20px] overflow-hidden shrink-0 w-full ${featured ? "md:w-[640px]" : "md:w-[440px]"}`}
-        style={{ height: featured ? 358 : 246, background: "#FFE3E7" }}
+        className={`rounded-[20px] overflow-hidden shrink-0 w-full aspect-[16/9] ${featured ? "md:w-[640px] md:aspect-auto md:h-[358px]" : "md:w-[440px] md:aspect-auto md:h-[246px]"}`}
+        style={{ background: "#FFE3E7" }}
       >
         {img ? (
           <img src={img} alt={title} className="w-full h-full object-cover" />
