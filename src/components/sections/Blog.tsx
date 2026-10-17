@@ -74,7 +74,7 @@ export async function Blog() {
               href={article.slug ?? article.id ? `/article/${article.slug ?? article.id}` : "/article"}
               className="flex-1 bg-[#fff8f2] rounded-[24px] overflow-hidden flex flex-col pb-8 hover:shadow-md transition-shadow"
             >
-              <div className="w-full h-[260px] relative mb-6">
+              <div className="w-full aspect-[16/9] lg:aspect-auto lg:h-[260px] relative mb-6">
                 {article.img ? (
                   <img src={article.img} alt={article.title} className="absolute inset-0 w-full h-full object-cover" />
                 ) : (
