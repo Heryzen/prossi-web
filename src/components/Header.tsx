@@ -300,15 +300,17 @@ export function Header() {
             </div>
 
             {/* CTA Button — a touch shorter once scrolled, matching the shrunk logo */}
-            <Link
-              href="/contact"
+            <a
+              href="https://reservasi.prossi.clinic/booking?utm_source=website"
+              target="_blank"
+              rel="noopener noreferrer"
               onClick={() => sendGAEvent("event", "klik_reservation", { lokasi: "navbar_desktop" })}
               className={`flex bg-[#b59637] rounded-full text-white font-medium hover:opacity-90 transition-all duration-500 ease-in-out items-center justify-center whitespace-nowrap ${
                 scrolled ? "px-6 h-9 text-[14px]" : "px-6 h-10 text-[15px]"
               }`}
             >
               Reservation
-            </Link>
+            </a>
           </div>
 
           <div className="flex lg:hidden items-center gap-1" />
@@ -437,8 +439,10 @@ export function Header() {
               )}
             </div>
 
-            <Link
-              href="/contact"
+            <a
+              href="https://reservasi.prossi.clinic/booking?utm_source=website"
+              target="_blank"
+              rel="noopener noreferrer"
               onClick={() => {
                 sendGAEvent("event", "klik_reservation", { lokasi: "navbar_mobile" });
                 setMobileOpen(false);
@@ -446,7 +450,7 @@ export function Header() {
               className="bg-[#b59637] border border-[#ecd5a5] rounded-full px-9 py-3 text-white font-['Lato',sans-serif] font-semibold text-base mt-2 text-center"
             >
               Reservation
-            </Link>
+            </a>
           </div>
         )}
       </div>
