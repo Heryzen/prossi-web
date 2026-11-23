@@ -32,7 +32,7 @@ const DEFAULT_RESERVATION_LINK =
   "https://reservasi.prossi.clinic/booking?utm_source=website";
 
 export async function getSiteSettings(): Promise<SiteSettings> {
-  const data = await directusFetch<SiteSettings>("/items/site_settings/1");
+  const data = await directusFetch<SiteSettings>("/items/site_settings");
   return {
     reservation_link: data?.reservation_link || DEFAULT_RESERVATION_LINK,
   };
