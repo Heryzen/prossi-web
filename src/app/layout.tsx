@@ -3,6 +3,7 @@ import { GoogleAnalytics } from "@next/third-parties/google";
 import "./globals.css";
 import { Providers } from "./providers";
 import { Header } from "@/components/Header";
+import { getSiteSettings } from "@/lib/directus";
 import { Footer } from "@/components/Footer";
 import { PageLoader } from "@/components/PageLoader";
 
@@ -51,6 +52,7 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const { reservation_link } = await getSiteSettings();
   return (
     <html lang="id" suppressHydrationWarning>
       <head>
@@ -70,7 +72,7 @@ export default async function RootLayout({
         <Providers>
           <PageLoader />
           <div className="min-h-screen bg-[#f4ece4] flex flex-col font-sans text-[#120f0b] overflow-x-hidden relative">
-            <Header />
+            <Header reservationLink={reservation_link} />
             <main className="flex-1 flex flex-col w-full">
               {children}
             </main>

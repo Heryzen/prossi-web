@@ -23,3 +23,17 @@ export async function directusFetch<T>(path: string): Promise<T | null> {
     return null;
   }
 }
+
+export interface SiteSettings {
+  reservation_link: string | null;
+}
+
+const DEFAULT_RESERVATION_LINK =
+  "https://reservasi.prossi.clinic/booking?utm_source=website";
+
+export async function getSiteSettings(): Promise<SiteSettings> {
+  const data = await directusFetch<SiteSettings>("/items/site_settings/1");
+  return {
+    reservation_link: data?.reservation_link || DEFAULT_RESERVATION_LINK,
+  };
+}

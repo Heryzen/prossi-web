@@ -15,7 +15,9 @@ const navItems = [
   { label: "Locations", href: "/locations", dropdown: false },
 ];
 
-export function Header() {
+export function Header({ reservationLink }: { reservationLink?: string | null }) {
+  const resolvedReservationLink =
+    reservationLink || "https://reservasi.prossi.clinic/booking?utm_source=website";
   const { count: cartCount } = useCart();
   const [memberName, setMemberName] = useState<string | null>(null);
   const [isAdmin, setIsAdmin] = useState(false);
@@ -301,7 +303,7 @@ export function Header() {
 
             {/* CTA Button — a touch shorter once scrolled, matching the shrunk logo */}
             <a
-              href="https://reservasi.prossi.clinic/booking?utm_source=website"
+              href={resolvedReservationLink}
               target="_blank"
               rel="noopener noreferrer"
               onClick={() => sendGAEvent("event", "klik_reservation", { lokasi: "navbar_desktop" })}
@@ -440,7 +442,7 @@ export function Header() {
             </div>
 
             <a
-              href="https://reservasi.prossi.clinic/booking?utm_source=website"
+              href={resolvedReservationLink}
               target="_blank"
               rel="noopener noreferrer"
               onClick={() => {
