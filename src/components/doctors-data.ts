@@ -7,6 +7,7 @@ export type Doctor = {
   hours: string;
   location?: string | null;
   scheduleText?: string | null;
+  reservationLink?: string | null;
 };
 
 export const ALL_DOCTORS: Doctor[] = [

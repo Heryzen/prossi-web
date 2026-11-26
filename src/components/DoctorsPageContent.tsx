@@ -113,7 +113,9 @@ function DoctorModal({ doctor, onClose }: { doctor: Doctor; onClose: () => void 
               )}
               <div className="flex flex-col gap-4 mt-auto">
                 <Link
-                  href="/contact"
+                  href={doctor.reservationLink ?? "/contact"}
+                  target={doctor.reservationLink ? "_blank" : undefined}
+                  rel={doctor.reservationLink ? "noopener noreferrer" : undefined}
                   className="bg-[#b59637] border border-[#ecd5a5] rounded-full px-9 py-[16px] text-white font-['Lato'] font-semibold text-[16px] capitalize text-center hover:opacity-90 transition-opacity w-full"
                 >
                   Reservasi
